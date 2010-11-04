@@ -2718,18 +2718,32 @@ if(_$.settings.inbox_recreate=='1'){
 }
 
 //user stats in profiles
-if(_$.settings.user_stats=='1'){
-	if(location.pathname.indexOf('/user/')==0){
+if(_$.settings.user_stats=='1')
+{
+	if(location.pathname.indexOf('/user/')==0)
+	{
 		var elem = _$.$c('user_name_inner');
-		if(elem.length == 1){
-			var username = elem[0].innerHTML.split('</a></h2>')[0].split('">')[1];
+		if(elem.length == 1)
+		{
 			var ownUsername = _$.getUsername();
 			
+			// made by crea7or
+			// start SCRIPTS-61		
+			// isn't needed for non users
+			if ( ownUsername.length > 0 )
+			{
+				var vS61div = document.createElement('div');
+				vS61div.setAttribute("class", "userinboxwrite");
+				vS61div.innerHTML = _$.$c("userstats")[0].parentNode.childNodes[5].innerHTML;
+				_$.$c("userstats")[0].parentNode.childNodes[1].appendChild( vS61div );
+			}
+			// end SCRIPTS-61
+
+			var username = elem[0].innerHTML.split('</a></h2>')[0].split('">')[1];			
 			var div = document.createElement('div');
 			div.setAttribute("id", "d3search-userinfo");
 			div.setAttribute("class", "userstat");
 			_$.$c("userstats")[0].appendChild(div);
-			
 			_$.injectScriptUrl("http://d3search.ru/wazzup?username=" + encodeURI(username) + "&ownUsername=" + encodeURI(ownUsername)+"&container=d3search-userinfo");
 		}
 	}
