@@ -2382,7 +2382,7 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 			vRanksSetRankNote( vRanksLocStorRank );			
 		}
 
-		// by crea7or
+		// made by crea7or
 		// adding: SCRIPTS-65
 		// start of SCRIPTS-65
 		var vUserIdVote = document.querySelector('strong.vote_result');
