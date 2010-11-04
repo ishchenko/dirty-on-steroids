@@ -1,4 +1,4 @@
-//
+﻿//
 // ==UserScript==
 // @name          Dirty Service Pack 2
 // @author        Stasik0, BearOff, crea7or, flashface, slavka123
@@ -2381,6 +2381,20 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 		{
 			vRanksSetRankNote( vRanksLocStorRank );			
 		}
+
+		// by crea7or
+		// adding: SCRIPTS-65
+		// start of SCRIPTS-65
+		var vUserIdVote = document.querySelector('strong.vote_result');
+		if ( vUserIdVote )
+		{
+			vUserIdJs = vUserIdVote.getAttribute('onclick');
+			vUserIdJsInd = vUserIdJs.indexOf('id:') + 4;
+			vUserIdTxt = vUserIdJs.substring(vUserIdJsInd, vUserIdJs.indexOf("'", vUserIdJsInd ));
+			vRanksDivUser.childNodes[6].innerHTML = 'User ID: ' +  vUserIdTxt + ', ' + vRanksDivUser.childNodes[6].innerHTML;
+		}
+		// end of SCRIPTS-65
+
 	}
 }
 else
