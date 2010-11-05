@@ -1,4 +1,4 @@
-//
+﻿//
 // ==UserScript==
 // @name          Dirty Service Pack 2
 // @author        Stasik0, BearOff, crea7or, flashface, slavka123
@@ -2088,6 +2088,28 @@ if(_$.settings.colors_on=='1'){
 
 //simplest eventDispatcher, listens to standard events like mouseup and mousedown
 var eventDispatcher = document.createElement('div');
+
+// made by crea7or
+// start of SCRIPTS-58
+if ( document.location.href.indexOf("/my/inbox/") >= 0 )
+{
+	// user page
+	var vS58links;
+	var vS58links = document.querySelectorAll('a.c_icon');
+	if ( vS58links )
+	{	
+		for( vS58ind = 0; vS58ind < vS58links.length; vS58ind++)
+		{
+			vS58href = vS58links[ vS58ind].getAttribute('href');
+			if ( vS58href.length > 10 )
+			{
+				vS58links[ vS58ind].setAttribute('href', "/my/inbox/" + vS58href.substring(10, vS58href.length ));
+			}			
+		}
+	}
+}
+// end of SCRIPTS-58
+
 
 //preview posts
 function addEvent(obj,sEvent,sFunc)
