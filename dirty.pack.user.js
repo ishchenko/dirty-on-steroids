@@ -1362,7 +1362,7 @@ _$.tooltip = {
 					var links = event.target.getElementsByTagName('a');
 					for(var i=0;i<links.length;i++){
 						var dup_an = links[i].toString();
-						if((dup_an.indexOf('dirty.ru/user/')>0&&dup_an[dup_an.length-1]!='/')&&dup_an.indexOf('#')<0||i==0){
+						if((dup_an.indexOf('dirty.ru/user/')>0&&dup_an[dup_an.length-1]!='/')&&dup_an.indexOf('#')<0){
 								_$.addEvent(links[i],'mouseover',function(e){clearTimeout(dup_showing);dup_showBaloon(e.target)},true);
 								_$.addEvent(links[i],'mouseout',function(){clearTimeout(dup_showing);dup_processing=0},true);
 						}
