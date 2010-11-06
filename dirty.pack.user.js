@@ -4416,13 +4416,7 @@ if(_$.settings.dirty_tags=='1'){
 					return;
 				}				
 				if(event.target.className != null && event.target.className.indexOf("comment")>-1){
-					var comments = _$.$c('comment', document, 'div');
-					if(comments.length > 0){
-					allPostsArr = comments;
-					var newPosts = _$.$c('new', document, 'div');
-					var mine = _$.$c('mine', document, 'div');
-					var allPosts = comments.length;
-					}
+					recountComments();
 				}
 			}
 
@@ -4547,9 +4541,6 @@ if(_$.settings.dirty_tags=='1'){
 
 			}
 
-			//handle new ajax-generated content
-			_$.addEvent(document,"DOMNodeInserted", documentChanged);
-
 			function scanVisible(array){
 				var newArray = Array();
 				for(var i=0;i<array.length;i++){
@@ -4635,6 +4626,9 @@ if(_$.settings.dirty_tags=='1'){
 			//controls
 			//consider visible stuff
 			recountVisible();
+			
+			//handle new ajax-generated content
+			_$.addEvent(document,"DOMNodeInserted", documentChanged);
 			
 			var newdiv = document.createElement('div');
 			newdiv.style.position = "fixed";
