@@ -2698,7 +2698,7 @@ if(_$.settings.arrows_on=='1'){
 
 		var array = _$.$c('c_previous',element);
 		for(var i=0; i<array.length; i++){
-			array[i].innerHTML = "↓↓↓";
+			array[i].innerHTML = " ↓↓↓";
 		}
 	}
 
