@@ -2209,6 +2209,7 @@ if ( vPrvDiv )
 		// end fix for list of users (for banned users in the inbox)
 		if ( vTortAddLinksInbox)
 		{
+			vTortAddLinksInbox.setAttribute('style', 'background: #FAFAFA;');
 			vTortNewa = document.createElement('div');
 			vTortNewa.setAttribute('style', 'float: right;');
 			vTortNewa.innerHTML = "<a href=\"#\" class=\"dashed comments_header_new_comment\" onclick=\"var e = document.getElementById('js-inboxers-list');  if(e.style.display == 'block') e.style.display = 'none'; else e.style.display = 'block'; return false;\">список инбоксеров</a>&nbsp;&nbsp;";
