@@ -2676,7 +2676,7 @@ if(youtube_textarea!=null){
 //END BIG BLOCK
 
 //click on ещё
-if(location.pathname.indexOf('/user/')==0){
+if(location.pathname.indexOf('/user/')==0 && _$.getElementsByClassName('usermorebutton').length > 0){
 	_$.getElementsByClassName('usermorebutton')[0].style.display = "none";
 	_$.injectScript("$('js-user_page_more').toggleClass('hidden');");	
 }
