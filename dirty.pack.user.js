@@ -2193,6 +2193,20 @@ if ( vPrvDiv )
 	if ( vTortDupDetected == 0 )
 	{
 		var vTortAddLinksInbox = document.querySelector('div.inbox_header');
+		// start fix for list of users (for banned users in the inbox)
+		if ( vTortAddLinksInbox == null )
+		{	
+			vTortInbMenu = document.querySelector('div.under_menu');
+			vTortInbPreHeader = document.querySelector('div.inbox_comments');
+			if ( vTortInbMenu && vTortInbPreHeader )
+			{
+				vTortAddLinksInbox = document.createElement('div');
+				vTortAddLinksInbox.setAttribute('class', 'inbox_header');
+				vTortAddLinksInbox.innerHTML = '&nbsp;';
+				vTortInbMenu.insertBefore( vTortAddLinksInbox, vTortInbPreHeader );
+			}			
+		}
+		// end fix for list of users (for banned users in the inbox)
 		if ( vTortAddLinksInbox)
 		{
 			vTortNewa = document.createElement('div');
@@ -2202,7 +2216,7 @@ if ( vPrvDiv )
 		}
 	
 		var vTortHideInboxers = document.querySelector('div.inbox-tools-static');
-		if ( vTortHideInboxers)
+		if ( vTortHideInboxers )
 		{
 			vTortHideInboxers.setAttribute('id', 'js-inboxers-list');
 			vTortHideInboxers.style.display = 'none';
