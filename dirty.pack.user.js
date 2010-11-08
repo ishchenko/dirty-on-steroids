@@ -2756,23 +2756,16 @@ if(_$.settings.inbox_recreate=='1')
 
 		// made by crea7or
 		// start of SCRIPTS-57
-		var vS57msgFrom = document.querySelector( 'span.important');
-		if ( vS57msgFrom )
-		{	
-			vS57un = vS57msgFrom.getElementsByTagName('a');
-			if ( vS57un.length > 0 )
-			{
-				if ( vS57un == _$.getUsername())
-				{
-					var vS57Scr = document.createElement("script");
-					vS57Scr.type = "application/javascript";
-					vS57Scr.textContent =  s57inboxBanAll;
-					document.body.appendChild( vS57Scr );	
-					var elemz = document.createElement("div");
-					elemz.innerHTML = '[<a href="#" onclick="s57inboxBanAll(); return false;">забанить всех</a>]';
-					_$.insertAfter(form, elemz);
-				}
-			}
+		vS57own = document.getElementById('js-inboxUserAddInput');
+		if ( vS57own )
+		{
+			var vS57Scr = document.createElement("script");
+			vS57Scr.type = "application/javascript";
+			vS57Scr.textContent =  s57inboxBanAll;
+			document.body.appendChild( vS57Scr );	
+			var elemz = document.createElement("div");
+			elemz.innerHTML = '[<a href="#" onclick="s57inboxBanAll(); return false;">забанить всех</a>]';
+			_$.insertAfter(form, elemz);
 		}
 	}
 }
