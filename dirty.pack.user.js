@@ -2737,21 +2737,68 @@ if(_$.settings.arrows_on=='1'){
 }
 
 //recreate inbox link
-if(_$.settings.inbox_recreate=='1'){
+if(_$.settings.inbox_recreate=='1')
+{
 	userlist = "";
 	var arr = _$.$c("js-inboxPerson-name");
-	for(var i=0;i<arr.length;i++){
+	for(var i=0;i<arr.length;i++)
+	{
 		var user = arr[i].innerHTML.replace(/<[^<>]+>/g,'');
 		userlist += user+",";
 	}
 	var arr = _$.$n("banf");
-	if(arr.length == 1 && userlist.length > 0){
+	if(arr.length == 1 && userlist.length > 0)
+	{
 		var form = arr[0];
 		var elem = document.createElement("div");
 		elem.innerHTML = '[<a href="http://dirty.ru/my/inbox/write/'+userlist.substr(0,userlist.length-1)+'">копировать пользователей</a>]';
 		_$.insertAfter(form, elem);
+
+		// made by crea7or
+		// start of SCRIPTS-57
+		var vS57msgFrom = document.querySelector( 'span.important');
+		if ( vS57msgFrom )
+		{	
+			vS57un = vS57msgFrom.getElementsByTagName('a');
+			if ( vS57un.length > 0 )
+			{
+				if ( vS57un == _$.getUsername())
+				{
+					var vS57Scr = document.createElement("script");
+					vS57Scr.type = "application/javascript";
+					vS57Scr.textContent =  s57inboxBanAll;
+					document.body.appendChild( vS57Scr );	
+					var elemz = document.createElement("div");
+					elemz.innerHTML = '[<a href="#" onclick="s57inboxBanAll(); return false;">забанить всех</a>]';
+					_$.insertAfter(form, elemz);
+				}
+			}
+		}
 	}
 }
+
+function s57inboxBanAll()
+{
+	var vS57inbox = document.querySelectorAll( 'a.js-inboxPerson-ban');
+	if ( vS57inbox )
+	{
+		var vS57oncli;
+		var vS57inboxId;
+		var vS57userId;		
+		for ( var vS57i = 0; vS57i < vS57inbox.length; vS57i++)
+		{
+			vS57oncli = vS57inbox[ vS57i ].getAttribute('onclick').split(",");
+			if ( vS57oncli.length > 2 )
+			{
+				vS57inboxId = vS57oncli[1].replace(/\'/g,"");
+				vS57userId = vS57oncli[2].replace(/\'/g,"");
+				inboxHandler.users('ban', vS57inboxId, vS57userId, vS57inbox[ vS57i ] );					
+			}		
+		}
+	}
+}
+// end of SCRIPTS-57
+
 
 //user stats in profiles
 if(_$.settings.user_stats=='1')
