@@ -426,6 +426,8 @@ if(!_$.settings.allow_reverse_list){_$.set_save('allow_reverse_list',1);}
 
 if(!_$.settings.own_threshold){_$.set_save('own_threshold',0);}
 if(!_$.settings.new_window){_$.set_save('new_window',1);}
+
+if(!_$.settings.quotes){_$.set_save('quotes',1);}
 //END CONFIG
 
 if(_$.location.indexOf('/off/')!=0){
@@ -1758,6 +1760,7 @@ function dsp_posts_init(){
 function dsp_comments_init(){
 
 	//SP2
+	add_checkbox_event('dsp_c_quotes','quotes');
 	add_checkbox_event('dsp_c_arrows_on','arrows_on');
 	add_checkbox_event('dsp_c_comment_threshold','comment_threshold');
 	add_checkbox_event('dsp_c_allow_reverse_list','allow_reverse_list');
@@ -1873,6 +1876,7 @@ function DSP_make_content_settings(){
 
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_quotes" type="checkbox" '+((_$.settings.quotes=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_quotes">SP2: цитатник</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comment_threshold" type="checkbox" '+((_$.settings.comment_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comment_threshold">SP2: Фильтр по рейтингу комментариев</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
@@ -4722,6 +4726,33 @@ if(_$.settings.dirty_tags=='1'){
 			}
 			
 		}
+		
+		//quotes
+		if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1){
+			var gAll = _$.$c('comment_inner');
+			for (var key in gAll)
+			{
+				var val = gAll[key];
+				var t_inner = _$.$c('c_body',val);
+				var t_inner = _$.$c('c_body', val);
+				var c_inner = t_inner[0].innerHTML;
+				c_inner = c_inner.replace('&','amp');
+				c_inner = c_inner.replace("'",'');
+				c_inner = c_inner.replace('"','');
+
+				var t_footer = _$.$c('c_footer', val);
+				var t_username = _$.$c('c_user', t_footer[0]);
+				var c_username =  t_username[0].innerHTML;
+				var link = document.createElement('a');
+				link.setAttribute('href', 'http://quotes-dirty.ru/write?username='+encodeURI(c_username)+'&text='+encodeURI(c_inner));
+				link.setAttribute('target', '_blank');
+				link.setAttribute('class', 'c_answer');
+				link.innerHTML = "в цитатник";
+				t_footer[0].appendChild(link);
+
+			}
+		}
+		
 	}
 
 }
