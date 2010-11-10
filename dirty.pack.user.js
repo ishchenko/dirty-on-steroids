@@ -4750,7 +4750,7 @@ if(_$.settings.dirty_tags=='1'){
 				var t_username = _$.$c('c_user', t_footer[0]);
 				var c_username =  t_username[0].innerHTML;
 				var prelink = document.createElement('span');
-				prelink.innerHTML = '&nbsp;&nbsp;&nbsp;';
+				prelink.innerHTML = '&nbsp;&nbsp;';
 				t_footer[0].appendChild(prelink);
 
 				var link = document.createElement('a');
