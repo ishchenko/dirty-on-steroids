@@ -1876,7 +1876,7 @@ function DSP_make_content_settings(){
 
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_quotes" type="checkbox" '+((_$.settings.quotes=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_quotes">SP2: цитатник</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_quotes" type="checkbox" '+((_$.settings.quotes=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_quotes">SP2: Цитатник</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comment_threshold" type="checkbox" '+((_$.settings.comment_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comment_threshold">SP2: Фильтр по рейтингу комментариев</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
@@ -2190,6 +2190,12 @@ if ( vPrvDiv )
 			newa.setAttribute('href', 'http://dirty.ru/banned/');
 			newa.setAttribute('style', 'margin-left: 7px !important;');
 			newa.innerHTML = 'banned';
+			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
+			newa = document.createElement('a');
+			newa.setAttribute('href', 'http://www.quotes-dirty.ru/');
+			newa.setAttribute('style', 'margin-left: 7px !important;');
+			newa.setAttribute('target', '_blank');
+			newa.innerHTML = 'цитатник';
 			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
 		}
 	}
