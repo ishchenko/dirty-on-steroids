@@ -2179,23 +2179,24 @@ if ( vPrvDiv )
 		}
 		else
 		{
-			vTortAddLinks.firstChild.setAttribute( 'style', 'margin-left: 7px !important;');
+			vTortAddLinks.firstChild.setAttribute( 'style', 'margin-left: 15px; padding-left: 15px;');
 			newa = document.createElement('a');
 			newa.setAttribute('href', 'http://music.dirty.ru/');
-			newa.setAttribute('style', 'margin-left: 7px !important;');
+			newa.setAttribute('style', 'margin-left: 14px; background: none; padding-left: 0px;');
 			newa.innerHTML = 'music';
 			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
 			newa = document.createElement('a');
 			newa.setAttribute('href', 'http://dirty.ru/banned/');
-			newa.setAttribute('style', 'margin-left: 7px !important;');
+			newa.setAttribute('style', 'margin-left: 14px; background: none; padding-left: 0px;');
 			newa.innerHTML = 'banned';
 			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
 			newa = document.createElement('a');
 			newa.setAttribute('href', 'http://www.quotes-dirty.ru/');
-			newa.setAttribute('style', 'margin-left: 7px !important;');
+			newa.setAttribute('style', 'margin-left: 0px; background: none; padding-left: 0px;');
 			newa.setAttribute('target', '_blank');
-			newa.innerHTML = 'цитатник';
+			newa.innerHTML = 'quotes';
 			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
+			vTortAddLinks.parentNode.setAttribute( 'style', 'padding-left: 10px;');
 		}
 	}
 
