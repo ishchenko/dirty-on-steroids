@@ -4749,13 +4749,16 @@ if(_$.settings.dirty_tags=='1'){
 				var t_footer = _$.$c('c_footer', val);
 				var t_username = _$.$c('c_user', t_footer[0]);
 				var c_username =  t_username[0].innerHTML;
+				var prelink = document.createElement('span');
+				prelink.innerHTML = '&nbsp;&nbsp;&nbsp;';
+				t_footer[0].appendChild(prelink);
+
 				var link = document.createElement('a');
 				link.setAttribute('href', 'http://quotes-dirty.ru/write?username='+encodeURI(c_username)+'&text='+encodeURI(c_inner));
 				link.setAttribute('target', '_blank');
 				link.setAttribute('class', 'c_answer');
 				link.innerHTML = "в цитатник";
 				t_footer[0].appendChild(link);
-
 			}
 		}
 		
