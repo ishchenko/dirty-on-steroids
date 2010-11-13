@@ -2214,10 +2214,10 @@ if ( _$.settings.grt_enabled =='1' )
 				var vGreetReplacement = "<a href=\"" + vGreetLink+ "\">" + vGreetName + "</a>";
 				var vGreetResult = vTxtsArr[vTxtsArrIndex].text.replace(vGreetPattern, vGreetReplacement);
 	
-				divs.removeChild(divs.childNodes[0]);
-				divs.removeChild(divs.childNodes[0]);
-				divs.removeChild(divs.childNodes[0]);
-
+				while ( divs.childNodes[0].tagName != 'DIV')
+				{
+					divs.removeChild(divs.childNodes[0]);
+				};
 				var vGreetNode = document.createElement('div');
 				vGreetNode.innerHTML = vGreetResult;
 				divs.insertBefore( vGreetNode, divs.childNodes[0] );
