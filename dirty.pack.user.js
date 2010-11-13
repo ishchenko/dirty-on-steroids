@@ -399,6 +399,8 @@ if(!_$.settings.colors_on) _$.set_save('colors_on',0);
 if(!_$.settings.colors_border) _$.set_save('colors_border',1);
 if(!_$.settings.colors){_$.set_save('colors','[]');}
 //SP2 adding scripts - STEP ONE
+if(!_$.settings.grt_enabled) _$.set_save('grt_enabled',1);
+if(!_$.settings.grt_random) _$.set_save('grt_random',1);
 if(!_$.settings.inbox_text){_$.set_save('inbox_text',1);}
 if(!_$.settings.arrows_on){_$.set_save('arrows_on',1);}
 if(!_$.settings.inbox_recreate){_$.set_save('inbox_recreate',1);}
@@ -1822,6 +1824,27 @@ function dsp_tooltip_init(){
 			if(_$.$('dsp_c_tooltip_show_self').checked===true) _$.set_save('tooltip_show_self',1);
 			else _$.set_save('tooltip_show_self',0);
 		});
+
+	
+	// start events for gertrudes options
+	_$.addEvent(_$.$('dsp_c_grt_enabled'),'click',
+	function(){
+		DSP_show_hide_menu('dsp_l_grt_enabled');
+
+		if(_$.$('dsp_c_grt_enabled').checked===true) _$.set_save('grt_enabled',1);
+		else _$.set_save('grt_enabled',0);
+
+	});
+	_$.addEvent(_$.$('dsp_c_grt_random_off'),'click',
+	function(){
+		_$.set_save('grt_random',0);
+	});
+	_$.addEvent(_$.$('dsp_c_grt_random_on'),'click',
+	function(){
+		_$.set_save('grt_random',1);
+	});
+	// end events for gertrudes options
+
 }
 
 
@@ -1910,7 +1933,14 @@ function DSP_make_content_settings(){
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_ban_encoding" type="checkbox" '+((_$.settings.ban_encoding=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_ban_encoding">SP2: Править кодировку в бан-блогах</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_inbox_recreate" type="checkbox" '+((_$.settings.inbox_recreate=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_inbox_recreate">SP2: Кнопка пересоздания инбокса</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_inbox_text" type="checkbox" '+((_$.settings.inbox_text=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_inbox_text">SP2: Добавлять "Инбокс" к конверту</label></td></tr>';
-
+		// start gertrudes options
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_grt_enabled" type="checkbox" '+((_$.settings.grt_enabled=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_grt_enabled">SP2: Показывать новые гертруды</label></td></tr>';
+		dsp_txt += '</table>';
+		dsp_txt += '<div id="dsp_l_grt_enabled" style="display:'+((_$.settings.grt_enabled=='1')?'block':'none')+'"><form style="margin:0"><table cellspacing="0" border="0">';
+		dsp_txt += '<tr><td align="right" width="45"><input name="dsp_grt_random_s" value="1" id="dsp_c_grt_random_on" type="radio" '+((_$.settings.grt_random=='1')?'checked="checked"':'')+'></td><td style=";color:#777"><label for="dsp_c_grt_random_on">Смешивать со старыми случайно</label></td></tr>';
+		dsp_txt += '<tr><td align="right"><input name="dsp_grt_random_s" value="0" id="dsp_c_grt_random_off" type="radio" '+((_$.settings.grt_random=='0')?'checked="checked"':'')+'></td><td style=";color:#777"><label for="dsp_c_grt_random_off">Только новые</label></td></tr>';
+		dsp_txt += '</table></form></div>';
+		// end gertrudes options
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_tooltip_on" type="checkbox" '+((_$.settings.tooltip_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_tooltip_on">Включить Dirty Tooltip</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_tooltip" style="display:'+((_$.settings.tooltip_on=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left: 25px;">';
@@ -2091,6 +2121,71 @@ if(_$.settings.colors_on=='1'){
 
 //simplest eventDispatcher, listens to standard events like mouseup and mousedown
 var eventDispatcher = document.createElement('div');
+
+// made by crea7or
+// start of SCRIPTS-37
+// should be launched as soon as possible after script start
+if ( _$.settings.grt_enabled =='1' )
+{
+	var vGrtLastCheck = new Date();
+	var vGrtLastCheckMsec = localStorage.getItem('vGrtLastCheck' );
+	if ( vGrtLastCheckMsec == null )
+	{
+		localStorage.setItem('vGrtLastCheck', vGrtLastCheck.getTime());
+		vGrtLastCheck.setTime( 0 );
+	}
+	else
+	{	
+		vGrtLastCheck.setTime( vGrtLastCheckMsec );
+	}
+
+	var vGrtCurDate = new Date();
+	if (( vGrtCurDate.getTime() - vGrtLastCheck.getTime()) > 1000 * 60 * 60 * 1 )
+	{
+		// add script to the page and fetch new gertrudes
+		var vPrvScr=document.createElement("script");
+		vPrvScr.type="application/javascript";
+		vPrvScr.src="http://api.d3search.ru/gertrudas";
+		document.body.appendChild( vPrvScr );
+		localStorage.setItem('vGrtLastCheck', vGrtCurDate.getTime());
+	}
+	
+	var divs = document.querySelector('div.gertruda');
+	if ( divs )
+	{
+		var vGrtShow = true;
+	
+		// random or only new
+		if ( _$.settings.grt_random == '1' )
+		{
+			if ( Math.random() > 0.499 )
+			{
+				vGrtShow = false;
+			}
+		}
+	
+		if ( vGrtShow )
+		{
+			var vGrt = localStorage.getItem('vGertrudes' );
+			if ( vGrt != null )
+			{
+				var vImgsArr = eval(vGrt);
+				var vImgsArrIndex = Math.floor( Math.random() * vImgsArr.length );
+				var vImgs = divs.getElementsByTagName('img');
+				var vRandomGrt = vImgsArr[ vImgsArrIndex ];
+				vImgs[1].setAttribute('src', '#' );
+				vImgs[1].setAttribute('src', vRandomGrt.path );
+				if (vRandomGrt.fixMargins) 
+				{
+					// proper-sized images to hide top and bottom
+					vImgs[0].setAttribute('src', 'http://pit.dirty.ru/dirty/1/2010/11/13/14466-162241-866f1139300aba6aae076b1ccc1a1bf7.gif' );
+					vImgs[2].setAttribute('src', 'http://pit.dirty.ru/dirty/1/2010/11/13/14466-162231-5b8c44f94625c1247474ce40292ffa14.gif' );
+				}
+			}
+		}
+	}
+}
+// end of SCRIPTS-37
 
 // made by crea7or
 // start of SCRIPTS-58
