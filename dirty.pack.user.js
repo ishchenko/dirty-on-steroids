@@ -2123,7 +2123,7 @@ if(_$.settings.colors_on=='1'){
 var eventDispatcher = document.createElement('div');
 
 // made by crea7or
-// start of SCRIPTS-37
+// start of SCRIPTS-37 & SCRIPTS-29
 // should be launched as soon as possible after script start
 if ( _$.settings.grt_enabled =='1' )
 {
@@ -2183,8 +2183,49 @@ if ( _$.settings.grt_enabled =='1' )
 			}
 		}
 	}
+	
+
+	divs = document.querySelector('div.header_logout');
+	if ( divs )
+	{
+		divs = document.querySelector('div.header_tagline_inner');
+		var vGreetShow = true;
+		// random or only new
+		if ( _$.settings.grt_random == '1' )
+		{
+			if ( Math.random() > 0.499 )
+			{
+				vGreetShow = false;
+			}
+		}
+
+		if ( vGreetShow )
+		{
+			var vGreets = localStorage.getItem('vHellos');
+			if ( vGreets != null )
+			{
+				var vTxtsArr = eval(vGreets);
+				var vTxtsArrIndex = Math.floor( Math.random() * vTxtsArr.length );
+				
+				var vGreetName = divs.childNodes[1].innerHTML;
+				var vGreetLink = divs.childNodes[1].getAttribute('href');
+	
+				var vGreetPattern = /(\%username\%)+/gi;
+				var vGreetReplacement = "<a href=\"" + vGreetLink+ "\">" + vGreetName + "</a>";
+				var vGreetResult = vTxtsArr[vTxtsArrIndex].text.replace(vGreetPattern, vGreetReplacement);
+	
+				divs.removeChild(divs.childNodes[0]);
+				divs.removeChild(divs.childNodes[0]);
+				divs.removeChild(divs.childNodes[0]);
+
+				var vGreetNode = document.createElement('div');
+				vGreetNode.innerHTML = vGreetResult;
+				divs.insertBefore( vGreetNode, divs.childNodes[0] );
+			}
+		}
+	}
 }
-// end of SCRIPTS-37
+// end of SCRIPTS-37 & SCRIPTS-29
 
 // made by crea7or
 // start of SCRIPTS-58
