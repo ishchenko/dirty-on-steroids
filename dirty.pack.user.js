@@ -2140,7 +2140,7 @@ if ( _$.settings.grt_enabled =='1' )
 	}
 
 	var vGrtCurDate = new Date();
-	if (( vGrtCurDate.getTime() - vGrtLastCheck.getTime()) > 1000 * 60 * 60 * 1 )
+	if (( vGrtCurDate.getTime() - vGrtLastCheck.getTime()) > 1000 * 60 * 60 * 6 )
 	{
 		// add script to the page and fetch new gertrudes
 		var vPrvScr=document.createElement("script");
