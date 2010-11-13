@@ -2173,7 +2173,6 @@ if ( _$.settings.grt_enabled =='1' )
 				var vImgsArrIndex = Math.floor( Math.random() * vImgsArr.length );
 				var vImgs = divs.getElementsByTagName('img');
 				var vRandomGrt = vImgsArr[ vImgsArrIndex ];
-				vImgs[1].setAttribute('src', '#' );
 				vImgs[1].setAttribute('src', vRandomGrt.path );
 				if (vRandomGrt.fixMargins) 
 				{
