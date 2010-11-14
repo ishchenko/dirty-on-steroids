@@ -401,6 +401,7 @@ if(!_$.settings.colors){_$.set_save('colors','[]');}
 //SP2 adding scripts - STEP ONE
 if(!_$.settings.grt_enabled) _$.set_save('grt_enabled',1);
 if(!_$.settings.grt_random) _$.set_save('grt_random',1);
+if(!_$.settings.online_enabled) _$.set_save('online_enabled',1);
 if(!_$.settings.inbox_text){_$.set_save('inbox_text',1);}
 if(!_$.settings.arrows_on){_$.set_save('arrows_on',1);}
 if(!_$.settings.inbox_recreate){_$.set_save('inbox_recreate',1);}
@@ -1670,6 +1671,9 @@ function dsp_d3search_init(){
 function dsp_general_init(){
 	//SP2
 	add_checkbox_event('dsp_c_youtube_preview','youtube_preview');
+	add_checkbox_event('dsp_c_online_enabled','online_enabled');
+
+
 	if(_$.browser().name != "chrome")add_checkbox_event('dsp_c_smooth_scroll','smooth_scroll');
 	_$.addEvent(_$.$('dsp_c_comment_scroller'),'click',
 	function(){
@@ -1705,12 +1709,10 @@ function dsp_general_init(){
 		_$.set_save('favicon_style',1);
 	});
 
-
 	_$.addEvent(_$.$('dsp_c_favicon_style_b'),'click',
 	function(){
 		_$.set_save('favicon_style',0);
 	});
-
 
 	_$.addEvent(_$.$('dsp_c_username_replace'),'click',
 	function(){
@@ -1863,6 +1865,7 @@ function DSP_make_content_settings(){
 		}
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_youtube_preview" type="checkbox" '+((_$.settings.youtube_preview=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_preview">SP2: Предпросмотр youtube видео</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_online_enabled" type="checkbox" '+((_$.settings.online_enabled=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_online_enabled">SP2: Показывать кто на сайте</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_username_replace" type="checkbox" '+((_$.settings.username_replace=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_username_replace">Заменять %username% на ваше имя</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_favicon_on" type="checkbox" '+((_$.settings.favicon_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_favicon_on">Показывать иконку сайта ссылки:</label></td></tr>';
 		dsp_txt += '</table>';
@@ -1887,7 +1890,6 @@ function DSP_make_content_settings(){
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dirty_tags" type="checkbox" '+((_$.settings.dirty_tags=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dirty_tags">SP2: Dirty Tags</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_read_button" type="checkbox" '+((_$.settings.read_button=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_read_button">SP2: Кнопка прочтения новых комментариев</label></td></tr>';
-
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_average" type="checkbox" '+((_$.settings.posts_average=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_average">Показывать средние ID и оценку</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_youtube_fullscreen" type="checkbox" '+((_$.settings.youtube_fullscreen=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_fullscreen">Добавить кнопку "Fullscreen" в постах с видеороликами youtube</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_post_content_filter_layout" type="checkbox" '+((_$.settings.post_content_filter_layout=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_post_content_filter_layout">Фильтр контента без чекбоксов</label></td></tr>';
@@ -2232,6 +2234,8 @@ if ( _$.settings.grt_enabled =='1' )
 
 // made by crea7or
 // start of SCRIPTS-26
+if ( _$.settings.online_enabled =='1' )
+{
 	var vUserName = _$.getUsername();
 	if( vUserName.length > 0 )
 	{
@@ -2243,13 +2247,10 @@ if ( _$.settings.grt_enabled =='1' )
 		var now = new Date().getTime();
 		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 ) 
 		{
-			if ( vUserName )
-			{
-				var checkinScript = document.createElement("script");
-				checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
-				document.body.appendChild(checkinScript);
-				localStorage.setItem('lastCheckinTimestamp', now);
-			}
+			var checkinScript = document.createElement("script");
+			checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
+			document.body.appendChild(checkinScript);
+			localStorage.setItem('lastCheckinTimestamp', now);
 		}
 		var divContentLeft = document.querySelector("div.content_left");
 		var checkinsMarkup = localStorage.getItem('checkinsMarkup');
@@ -2257,6 +2258,7 @@ if ( _$.settings.grt_enabled =='1' )
 		newdiv.innerHTML =  checkinsMarkup;
 		divContentLeft.appendChild( newdiv );
 	}
+}
 // end of SCRIPTS-26
 
 
