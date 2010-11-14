@@ -2206,18 +2206,20 @@ if ( _$.settings.grt_enabled =='1' )
 			{
 				var vTxtsArr = eval(vGreets);
 				var vTxtsArrIndex = Math.floor( Math.random() * vTxtsArr.length );
-				
-				var vGreetName = divs.childNodes[1].innerHTML;
-				var vGreetLink = divs.childNodes[1].getAttribute('href');
-	
+				var vGreetName;
+				var vGreetLink;
+				while ( divs.childNodes[0].tagName != 'DIV')
+				{
+					if (divs.childNodes[0].tagName == 'A')
+					{
+						vGreetName = divs.childNodes[0].innerHTML;
+						vGreetLink = divs.childNodes[0].getAttribute('href');
+					}
+					divs.removeChild(divs.childNodes[0]);
+				};
 				var vGreetPattern = /(\%username\%)+/gi;
 				var vGreetReplacement = "<a href=\"" + vGreetLink+ "\">" + vGreetName + "</a>";
 				var vGreetResult = vTxtsArr[vTxtsArrIndex].text.replace(vGreetPattern, vGreetReplacement);
-	
-				while ( divs.childNodes[0].tagName != 'DIV')
-				{
-					divs.removeChild(divs.childNodes[0]);
-				};
 				var vGreetNode = document.createElement('div');
 				vGreetNode.innerHTML = vGreetResult;
 				divs.insertBefore( vGreetNode, divs.childNodes[0] );
