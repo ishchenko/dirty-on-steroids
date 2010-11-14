@@ -2229,6 +2229,37 @@ if ( _$.settings.grt_enabled =='1' )
 }
 // end of SCRIPTS-37 & SCRIPTS-29
 
+
+// made by crea7or
+// start of SCRIPTS-26
+	var vUserName = _$.getUsername();
+	if( vUserName.length > 0 )
+	{
+		var lastCheckinTimestamp = localStorage.getItem('lastCheckinTimestamp');
+		if (lastCheckinTimestamp == null) 
+		{
+			lastCheckinTimestamp = 0;
+		}
+		var now = new Date().getTime();
+		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 ) 
+		{
+			if ( vUserName )
+			{
+				var checkinScript = document.createElement("script");
+				checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
+				document.body.appendChild(checkinScript);
+				localStorage.setItem('lastCheckinTimestamp', now);
+			}
+		}
+		var divContentLeft = document.querySelector("div.content_left");
+		var checkinsMarkup = localStorage.getItem('checkinsMarkup');
+		var newdiv = document.createElement('div');
+		newdiv.innerHTML =  checkinsMarkup;
+		divContentLeft.appendChild( newdiv );
+	}
+// end of SCRIPTS-26
+
+
 // made by crea7or
 // start of SCRIPTS-58
 if ( document.location.href.indexOf("/my/inbox/") >= 0 )
