@@ -2186,13 +2186,9 @@ if ( _$.settings.grt_enabled =='1' )
 					vImgs[0].setAttribute('src', 'http://pit.dirty.ru/dirty/1/2010/11/13/14466-162241-866f1139300aba6aae076b1ccc1a1bf7.gif' );
 					vImgs[2].setAttribute('src', 'http://pit.dirty.ru/dirty/1/2010/11/13/14466-162231-5b8c44f94625c1247474ce40292ffa14.gif' );
 				}
-				//_$.addEvent(vImgs[1], 'load', function(){alert();});
 			}
 		}
-		
 	}
-	
-	
 
 	divs = document.querySelector('div.header_logout');
 	if ( divs )
