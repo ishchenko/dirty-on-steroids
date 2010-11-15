@@ -2245,8 +2245,7 @@ if ( _$.settings.online_enabled =='1' )
 		{
 			lastCheckinTimestamp = 0;
 		}
-		var now = new Date().getTime();
-		
+	
 		var drawStuff = function(){
 			var divContentLeft = document.querySelector("div.content_left");
 			if ( divContentLeft )
@@ -2264,7 +2263,8 @@ if ( _$.settings.online_enabled =='1' )
 				document.body.appendChild(highlightsDiv);
 			}
 		};
-		
+
+		var now = new Date().getTime();		
 		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 		{
 			var checkinScript = document.createElement("script");
