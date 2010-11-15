@@ -2254,6 +2254,7 @@ if ( _$.settings.online_enabled =='1' )
 			{
 				var checkinsMarkup = localStorage.getItem('checkinsMarkup');
 				var newdiv = document.createElement('div');
+				newdiv.setAttribute('style','margin-top: 20px');
 				newdiv.innerHTML =  checkinsMarkup;
 				divContentLeft.appendChild( newdiv );
 			}
