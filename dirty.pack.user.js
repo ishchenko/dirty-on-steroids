@@ -1324,7 +1324,6 @@ function DSP_colorize_comments(){
 //SP2
 //turn events supression on to optimize loading time
 var supressEvents = true;
-_$.addEvent(window,'load',function(e){supressEvents = false;});
 
 _$.tooltip = {
 
@@ -4940,7 +4939,10 @@ if(_$.settings.dirty_tags=='1'){
 	}
 
 }
+
 _$.tooltip.init();
 DSP_init();
+//Stasik: now turn on event handlers
+supressEvents = false;
 
 }
