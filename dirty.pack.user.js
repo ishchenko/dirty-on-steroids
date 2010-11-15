@@ -2253,10 +2253,13 @@ if ( _$.settings.online_enabled =='1' )
 			localStorage.setItem('lastCheckinTimestamp', now);
 		}
 		var divContentLeft = document.querySelector("div.content_left");
-		var checkinsMarkup = localStorage.getItem('checkinsMarkup');
-		var newdiv = document.createElement('div');
-		newdiv.innerHTML =  checkinsMarkup;
-		divContentLeft.appendChild( newdiv );
+		if ( divContentLeft )
+		{
+			var checkinsMarkup = localStorage.getItem('checkinsMarkup');
+			var newdiv = document.createElement('div');
+			newdiv.innerHTML =  checkinsMarkup;
+			divContentLeft.appendChild( newdiv );
+		}
 	}
 }
 // end of SCRIPTS-26
