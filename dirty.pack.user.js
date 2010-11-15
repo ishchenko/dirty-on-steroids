@@ -2246,7 +2246,7 @@ if ( _$.settings.online_enabled =='1' )
 			lastCheckinTimestamp = 0;
 		}
 		var now = new Date().getTime();
-		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 ) 
+		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 		{
 			var checkinScript = document.createElement("script");
 			checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
@@ -2261,6 +2261,13 @@ if ( _$.settings.online_enabled =='1' )
 			newdiv.innerHTML =  checkinsMarkup;
 			divContentLeft.appendChild( newdiv );
 		}
+        var highlightsStyles = localStorage.getItem('checkinsHighlights');
+        if (highlightsStyles != null) {
+            var highlightsDiv = document.createElement('div');
+            highlightsDiv.innerHTML = highlightsStyles;
+            document.body.appendChild(highlightsDiv);
+        }
+
 	}
 }
 // end of SCRIPTS-26
