@@ -2173,16 +2173,25 @@ if ( _$.settings.grt_enabled =='1' )
 				var vImgsArrIndex = Math.floor( Math.random() * vImgsArr.length );
 				var vImgs = divs.getElementsByTagName('img');
 				var vRandomGrt = vImgsArr[ vImgsArrIndex ];
+				//Stasik0: hack to remove flicker
+				vImgs[1].setAttribute('src', "");
+				vImgs[1].setAttribute('height', "262");
 				vImgs[1].setAttribute('src', vRandomGrt.path );
 				if (vRandomGrt.fixMargins) 
 				{
+					//Stasik0: hack to remove flicker
+					vImgs[0].setAttribute('src', "");
+					vImgs[2].setAttribute('src', "");
 					// proper-sized images to hide top and bottom
 					vImgs[0].setAttribute('src', 'http://pit.dirty.ru/dirty/1/2010/11/13/14466-162241-866f1139300aba6aae076b1ccc1a1bf7.gif' );
 					vImgs[2].setAttribute('src', 'http://pit.dirty.ru/dirty/1/2010/11/13/14466-162231-5b8c44f94625c1247474ce40292ffa14.gif' );
 				}
+				//_$.addEvent(vImgs[1], 'load', function(){alert();});
 			}
 		}
+		
 	}
+	
 	
 
 	divs = document.querySelector('div.header_logout');
