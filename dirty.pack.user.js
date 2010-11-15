@@ -2246,27 +2246,35 @@ if ( _$.settings.online_enabled =='1' )
 			lastCheckinTimestamp = 0;
 		}
 		var now = new Date().getTime();
+		
+		var drawStuff = function(){
+			var divContentLeft = document.querySelector("div.content_left");
+			if ( divContentLeft )
+			{
+				var checkinsMarkup = localStorage.getItem('checkinsMarkup');
+				var newdiv = document.createElement('div');
+				newdiv.innerHTML =  checkinsMarkup;
+				divContentLeft.appendChild( newdiv );
+			}
+			
+			var highlightsStyles = localStorage.getItem('checkinsHighlights');
+			if (highlightsStyles != null) {
+				var highlightsDiv = document.createElement('div');
+				highlightsDiv.innerHTML = highlightsStyles;
+				document.body.appendChild(highlightsDiv);
+			}
+		};
+		
 		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 		{
 			var checkinScript = document.createElement("script");
 			checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
 			document.body.appendChild(checkinScript);
 			localStorage.setItem('lastCheckinTimestamp', now);
+			_$.addEvent(checkinScript, 'load', drawStuff);
+		}else{
+			drawStuff();
 		}
-		var divContentLeft = document.querySelector("div.content_left");
-		if ( divContentLeft )
-		{
-			var checkinsMarkup = localStorage.getItem('checkinsMarkup');
-			var newdiv = document.createElement('div');
-			newdiv.innerHTML =  checkinsMarkup;
-			divContentLeft.appendChild( newdiv );
-		}
-        var highlightsStyles = localStorage.getItem('checkinsHighlights');
-        if (highlightsStyles != null) {
-            var highlightsDiv = document.createElement('div');
-            highlightsDiv.innerHTML = highlightsStyles;
-            document.body.appendChild(highlightsDiv);
-        }
 
 	}
 }
