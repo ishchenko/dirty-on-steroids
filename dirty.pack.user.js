@@ -1322,7 +1322,9 @@ function DSP_colorize_comments(){
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 //SP2
-var supressEvents = false;
+//turn events supression on to optimize loading time
+var supressEvents = true;
+_$.addEvent(window,'load',function(e){supressEvents = false;});
 
 _$.tooltip = {
 
