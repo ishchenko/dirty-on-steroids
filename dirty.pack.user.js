@@ -2146,10 +2146,7 @@ if ( _$.settings.grt_enabled =='1' )
 	if (( vGrtCurDate.getTime() - vGrtLastCheck.getTime()) > 1000 * 60 * 60 * 6 )
 	{
 		// add script to the page and fetch new gertrudes
-		var vPrvScr=document.createElement("script");
-		vPrvScr.type="application/javascript";
-		vPrvScr.src="http://api.d3search.ru/gertrudas";
-		document.body.appendChild( vPrvScr );
+		_$.injectScriptUrl('http://api.d3search.ru/gertrudas');
 		localStorage.setItem('vGrtLastCheck', vGrtCurDate.getTime());
 	}
 	
