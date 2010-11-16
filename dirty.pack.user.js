@@ -421,10 +421,10 @@ if(!_$.settings.smooth_scroll){
 	}
 }
 if(!_$.settings.dirty_tags){_$.set_save('dirty_tags',1);}
-if(!_$.settings.comment_threshold){_$.set_save('comment_threshold',1);}
-if(!_$.settings.post_threshold){_$.set_save('post_threshold',1);}
+if(!_$.settings.comments_threshold){_$.set_save('comments_threshold',0);}
+if(!_$.settings.posts_threshold){_$.set_save('posts_threshold',0);}
 if(!_$.settings.post_content_filter_layout){_$.set_save('post_content_filter_layout',0);}
-if(!_$.settings.post_threshold_use_or){_$.set_save('post_threshold_use_or',0);}
+if(!_$.settings.posts_threshold_use_or){_$.set_save('posts_threshold_use_or',0);}
 if(!_$.settings.allow_reverse_list){_$.set_save('allow_reverse_list',1);}
 
 if(!_$.settings.own_threshold){_$.set_save('own_threshold',0);}
@@ -1732,16 +1732,16 @@ function dsp_general_init(){
 
 function dsp_posts_init(){
 	//SP2
-	_$.addEvent(_$.$('dsp_c_post_threshold'),'click',
+	_$.addEvent(_$.$('dsp_c_posts_threshold'),'click',
 	function(){
 		DSP_show_hide_menu('dsp_l_threshold');
 
-		if(_$.$('dsp_c_post_threshold').checked===true) _$.set_save('post_threshold',1);
-		else _$.set_save('post_threshold',0);
+		if(_$.$('dsp_c_posts_threshold').checked===true) _$.set_save('posts_threshold',1);
+		else _$.set_save('posts_threshold',0);
 
 	});
 	add_checkbox_event('dsp_c_own_threshold','own_threshold');
-	add_checkbox_event('dsp_c_post_threshold_use_or','post_threshold_use_or');
+	add_checkbox_event('dsp_c_posts_threshold_use_or','posts_threshold_use_or');
 
 	add_checkbox_event('dsp_c_read_button','read_button');
 	add_checkbox_event('dsp_c_dirty_tags','dirty_tags');
@@ -1766,7 +1766,7 @@ function dsp_comments_init(){
 	//SP2
 	add_checkbox_event('dsp_c_quotes','quotes');
 	add_checkbox_event('dsp_c_arrows_on','arrows_on');
-	add_checkbox_event('dsp_c_comment_threshold','comment_threshold');
+	add_checkbox_event('dsp_c_comments_threshold','comments_threshold');
 	add_checkbox_event('dsp_c_allow_reverse_list','allow_reverse_list');
 	
 	_$.addEvent(_$.$('dsp_c_colors_on'),'click',
@@ -1880,12 +1880,12 @@ function DSP_make_content_settings(){
 
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_post_threshold" type="checkbox" '+((_$.settings.post_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_post_threshold">SP2: Фильтр по рейтингу постов</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold" type="checkbox" '+((_$.settings.posts_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold">SP2: Фильтр по рейтингу постов</label></td></tr>';
 		dsp_txt += '</table>';
 		
-		dsp_txt += '<div id="dsp_l_threshold" style="display:'+((_$.settings.post_threshold=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
+		dsp_txt += '<div id="dsp_l_threshold" style="display:'+((_$.settings.posts_threshold=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_own_threshold" type="checkbox" '+((_$.settings.own_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_own_threshold">Корректировать родной фильтр (см. FAQ)</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_post_threshold_use_or" type="checkbox" '+((_$.settings.post_threshold_use_or=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_post_threshold_use_or">Использовать ИЛИ</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold_use_or" type="checkbox" '+((_$.settings.posts_threshold_use_or=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold_use_or">Использовать ИЛИ</label></td></tr>';
 		dsp_txt += '</table></div>';
 		
 		dsp_txt += '<table cellspacing="0" border="0">';
@@ -1902,7 +1902,7 @@ function DSP_make_content_settings(){
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_quotes" type="checkbox" '+((_$.settings.quotes=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_quotes">SP2: Цитатник</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comment_threshold" type="checkbox" '+((_$.settings.comment_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comment_threshold">SP2: Фильтр по рейтингу комментариев</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comments_threshold" type="checkbox" '+((_$.settings.comments_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comments_threshold">SP2: Фильтр по рейтингу комментариев</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_allow_reverse_list" type="checkbox" '+((_$.settings.allow_reverse_list=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_allow_reverse_list">SP2: Списком->Деревом->Реверс</label></td></tr>';
@@ -3854,7 +3854,7 @@ if(_$.settings.dirty_tags=='1'){
 	}
 
 	//comment threshold
-	if(_$.settings.comment_threshold=='1'){
+	if(_$.settings.comments_threshold=='1'){
 		var _dct = {
 				comments : {},
 				settings : {},
@@ -4212,7 +4212,7 @@ if(_$.settings.dirty_tags=='1'){
 	}
 	
 	//post threshold
-	if(_$.settings.post_threshold=='1'){
+	if(_$.settings.posts_threshold=='1'){
 
 		var _dpt = {
 				posts : [],
@@ -4388,7 +4388,7 @@ if(_$.settings.dirty_tags=='1'){
 						var thresh_suffix = " голосов";
 						var all_posts_title = "Все посты";
 						var operand_name = " и ";
-						if (_$.settings.post_threshold_use_or=='1') {
+						if (_$.settings.posts_threshold_use_or=='1') {
 							operand_name = " или ";
 						}
 
@@ -4462,7 +4462,7 @@ if(_$.settings.dirty_tags=='1'){
 										continue;
 								}
 
-								if (_$.settings.post_threshold_use_or=='1') {
+								if (_$.settings.posts_threshold_use_or=='1') {
 									if ( (_dpt.settings.thresh_comm_count>0 && _dpt.posts[i].comm_count>=_dpt.settings.thresh_comm_count)
 										|| _dpt.posts[i].vote >= _dpt.settings.threshold)
 									{
