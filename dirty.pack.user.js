@@ -1327,34 +1327,36 @@ var supressEvents = true;
 
 _$.tooltip = {
 
+	processLinks: function(elem){
+		if(!_$.settings.tooltip_on)return;
+		
+		var linkes = elem.getElementsByTagName('a');;
+		for(var i=0; i<linkes.length; i++){
+
+		var dup_an = linkes[i].href.toString();
+
+		if(dup_an.indexOf('dirty.ru/user/')>0&&
+//					dup_an.indexOf('/'+dsp_self_name)<0 &&
+				dup_an[dup_an.length-2]!='/' && dup_an.indexOf('#')<0
+			){
+				_$.addEvent(linkes[i],'mouseover',function(e){
+				clearTimeout(dup_showing);
+				dup_showBaloon(e.target);
+				});
+
+				_$.addEvent(linkes[i],'mouseout',function(){
+				clearTimeout(dup_showing);
+				dup_processing = 0;
+				});
+			}
+		}
+	},
 
 	init: function(){
 
-		if(1==1 || _$.location.indexOf('/user/')==-1){
+		if(_$.location.indexOf('/user/')==-1 && _$.settings.tooltip_on){
 
-			var linkes = _$.$t('a');
-
-			for(var i=0; i<linkes.length; i++){
-
-				var dup_an = linkes[i].href.toString();
-
-				if(
-					dup_an.indexOf('dirty.ru/user/')>0&&
-//					dup_an.indexOf('/'+dsp_self_name)<0 &&
-					dup_an[dup_an.length-2]!='/' && dup_an.indexOf('#')<0
-				){
-
-					_$.addEvent(linkes[i],'mouseover',function(e){
-						clearTimeout(dup_showing);
-						dup_showBaloon(e.target);
-					});
-
-					_$.addEvent(linkes[i],'mouseout',function(){
-						clearTimeout(dup_showing);
-						dup_processing = 0;
-					});
-				}
-			}
+			this.processLinks(document.body);
 
 			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseover',function(e){clearTimeout(dup_showing);dup_showBaloon(e.target)});
 			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseout',function(){clearTimeout(dup_showing);dup_processing=0});
@@ -1365,14 +1367,7 @@ _$.tooltip = {
 					return;
 				}				
 				if(typeof(event.target) !== 'undefined' && typeof(event.target.className) !== 'undefined'  && event.target.className.indexOf("comment")>-1){
-					var links = event.target.getElementsByTagName('a');
-					for(var i=0;i<links.length;i++){
-						var dup_an = links[i].toString();
-						if((dup_an.indexOf('dirty.ru/user/')>0&&dup_an[dup_an.length-1]!='/')&&dup_an.indexOf('#')<0){
-								_$.addEvent(links[i],'mouseover',function(e){clearTimeout(dup_showing);dup_showBaloon(e.target)},true);
-								_$.addEvent(links[i],'mouseout',function(){clearTimeout(dup_showing);dup_processing=0},true);
-						}
-					}
+					this.processLinks(event.target);
 				}
 				
 				if(event.target !== null && typeof(event.target) !== 'undefined' && typeof(event.target.tagName) !== 'undefined' && 
@@ -1385,24 +1380,14 @@ _$.tooltip = {
 					&& typeof(event.target.parentNode.parentNode.parentNode.parentNode.className) !== 'undefined'
 					&& event.target.parentNode.parentNode.parentNode.parentNode.className.indexOf("vote_details") > -1 &&
 					(event.target.tagName.toLowerCase()=='li')){
-					var links = event.target.getElementsByTagName('a');
-					for(var i=0;i<links.length;i++){
-						var dup_an = links[i].toString();
-						if(dup_an.indexOf('dirty.ru/user/')>0&&dup_an.indexOf('#')<0){
-								_$.addEvent(links[i],'mouseover',function(e){clearTimeout(dup_showing);dup_showBaloon(e.target)},true);
-								_$.addEvent(links[i],'mouseout',function(){clearTimeout(dup_showing);dup_processing=0},true);
-						}
-					}
+					
+						this.processLinks(event.target);
 				}
 			}
 			/* watch for any changed attributes */
 			document.addEventListener("DOMNodeInserted", documentChanged, false);
-			
 		}
 	}
-
-
-
 };
 
 
@@ -1413,7 +1398,7 @@ var dup_processing = 0;
 
 function dup_showBaloon(obj){
 
-	if(_$.settings.tooltip_on==1){
+	//if(_$.settings.tooltip_on==1){
 
 		if((obj.innerHTML.toString()==dsp_self_name&&_$.settings.tooltip_show_self==1)||obj.innerHTML!=dsp_self_name){
 
@@ -1460,7 +1445,7 @@ function dup_showBaloon(obj){
 			dup_div.style.top = (dup_pos.y+obj.offsetHeight+5)+'px';
 			dup_div.style.left = (dup_pos.x-dup_leftOffset)+'px';
 		}
-	}
+	//}
 }
 
 function dup_getData(obj){
@@ -2256,6 +2241,7 @@ if ( _$.settings.online_enabled =='1' )
 				var newdiv = document.createElement('div');
 				newdiv.innerHTML =  checkinsMarkup;
 				divContentLeft.appendChild( newdiv );
+				_$.tooltip.processLinks(divContentLeft);
 			}
 			
 			var highlightsStyles = localStorage.getItem('checkinsHighlights');
