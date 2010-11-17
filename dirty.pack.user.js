@@ -2356,15 +2356,15 @@ if ( vPrvDiv )
 		}
 		else
 		{
-			vTortAddLinks.firstChild.setAttribute( 'style', 'margin-left: 15px; padding-left: 15px;');
+			vTortAddLinks.firstChild.setAttribute( 'style', 'margin-left: 10px; padding-left: 15px;');
 			newa = document.createElement('a');
 			newa.setAttribute('href', 'http://music.dirty.ru/');
-			newa.setAttribute('style', 'margin-left: 14px; background: none; padding-left: 0px;');
+			newa.setAttribute('style', 'margin-left: 10px; background: none; padding-left: 0px;');
 			newa.innerHTML = 'music';
 			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
 			newa = document.createElement('a');
 			newa.setAttribute('href', 'http://dirty.ru/banned/');
-			newa.setAttribute('style', 'margin-left: 14px; background: none; padding-left: 0px;');
+			newa.setAttribute('style', 'margin-left: 10px; background: none; padding-left: 0px;');
 			newa.innerHTML = 'banned';
 			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
 			newa = document.createElement('a');
@@ -2374,6 +2374,8 @@ if ( vPrvDiv )
 			newa.innerHTML = 'quotes';
 			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
 			vTortAddLinks.parentNode.setAttribute( 'style', 'padding-left: 10px;');
+			vTortAddLinks = document.querySelector('div.header_tagline');
+			vTortAddLinks.setAttribute('style', 'margin-right: 0px;');
 		}
 	}
 
