@@ -5,8 +5,8 @@
 // @namespace     http://dirty.ru/
 // @description   Dirty Service Pack 2
 // @require       http://crea7or.spb.ru/scripts/user.js.updater.php?id=88906&days=1
-// @include       http://www.dirty.ru/*
 // @include       http://dirty.ru/*
+// @include       http://*.dirty.ru/*
 // ==/UserScript==
 
  
@@ -450,10 +450,9 @@ if(_$.location.indexOf('/off/')!=0){
 
 		var dsp_output = dsp_bars = dsp_params = '';
 		var dsp_left_panel = _$.$c('left_col_nav')[0];
-
 		for(var i=0; i<6; i++){
-			dsp_bars += '<div id="dsp_setting_button_'+i+'" style="background-color:#edf1f6;width:140px;height:30px;line-height:30px;border-top:1px solid #edf1f6;border-right:1px solid #b6b6b6">&nbsp;</div>';
-			dsp_params += '<div id="dsp_setting_'+i+'" style="padding:10px 0 0 10px;display:none;border-top:1px solid #b6b6b6"></div>';
+				dsp_bars += '<div id="dsp_setting_button_'+i+'" style="background-color:#edf1f6;width:140px;height:30px;line-height:30px;border-top:1px solid #edf1f6;border-right:1px solid #b6b6b6">&nbsp;</div>';
+				dsp_params += '<div id="dsp_setting_'+i+'" style="padding:10px 0 0 10px;display:none;border-top:1px solid #b6b6b6"></div>';
 		}
 
 		dsp_output += '<br><div style="background: #fff url(http://pit.dirty.ru/dirty/1/2010/04/27/11119-033725-660249a537b6f5822a9918ea8835026b.png) 7px 4px no-repeat;height:50px;border-top:1px solid #e9e9e9;border-bottom:1px solid #e9e9e9"><a id="dsp_setting_bar" style="cursor:pointer;text-decoration:underline;line-height:50px;margin-left:62px">Настройки</a></div>';
@@ -1945,7 +1944,7 @@ function DSP_make_content_settings(){
 
 function DSP_init(){
 	
-	if(_$.location.indexOf('/user/')==-1) {
+	if ( document.querySelector('div.content_left') != null ) {
 		DSP_make_General_Bar();
 		DSP_show_hide_setting(0);
 	}
@@ -3605,11 +3604,11 @@ if(_$.settings.dirty_tags=='1'){
 				location.href="javascript:void( tagsHandler.submitTag());"				
 			}
 		}
-				// script start
+		// script start
 		// Jovan premium and write buttons
-		if(( document.location.href.indexOf("music") > 0 || document.location.href.indexOf("comments") == -1 ) && document.location.href.indexOf("inbox") == -1 )
+		if(( document.location.href.indexOf("music") > -1 || document.location.href.indexOf("comments") == -1 ) && document.location.href.indexOf("inbox") == -1 )
 		{
-			if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.location.href.indexOf("write") > 0 )  
+			if( document.location.href.indexOf("music.dirty.ru/comments") > -1 || document.location.href.indexOf("write") > -1 )  
 			{ //write buttons
 
 				// add script to the page
