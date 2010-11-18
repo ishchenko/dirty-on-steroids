@@ -1327,7 +1327,7 @@ var supressEvents = true;
 _$.tooltip = {
 
 	processLinks: function(elem){
-		if(!_$.settings.tooltip_on)return;
+		if(_$.settings.tooltip_on==0)return;
 		var linkes = elem.getElementsByTagName('a');
 		for(var i=0; i<linkes.length; i++){
 
@@ -1355,7 +1355,7 @@ _$.tooltip = {
 	},
 	
 	processGreeting: function(){
-		if(_$.settings.tooltip_show_self){
+		if(_$.settings.tooltip_show_self==1 && _$.settings.tooltip_on==1){
 			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseover',function(e){clearTimeout(dup_showing);dup_showBaloon(e.target)});
 			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseout',function(){clearTimeout(dup_showing);dup_processing=0});
 		}
@@ -1363,7 +1363,7 @@ _$.tooltip = {
 
 	init: function(){
 
-		if(_$.settings.tooltip_on){
+		if(_$.settings.tooltip_on==1){
 
 			this.processLinks(document.body);
 			this.processGreeting();
