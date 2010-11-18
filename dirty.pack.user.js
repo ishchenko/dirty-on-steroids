@@ -1328,15 +1328,18 @@ _$.tooltip = {
 
 	processLinks: function(elem){
 		if(!_$.settings.tooltip_on)return;
-		
-		var linkes = elem.getElementsByTagName('a');;
+		var linkes = elem.getElementsByTagName('a');
 		for(var i=0; i<linkes.length; i++){
 
 		var dup_an = linkes[i].href.toString();
 
-		if(dup_an.indexOf('dirty.ru/user/')>0&&
+		if(dup_an.indexOf('/user/')>0&&
+		   dup_an.indexOf('/posts/')<0 &&
+			 dup_an.indexOf('/comments/')<0 &&
+			 dup_an.indexOf('/favs/')<0
 //					dup_an.indexOf('/'+dsp_self_name)<0 &&
-				dup_an[dup_an.length-2]!='/' && dup_an.indexOf('#')<0
+//				dup_an[dup_an.length-2]!='/' &&
+//				dup_an.indexOf('#')<0
 			){
 				_$.addEvent(linkes[i],'mouseover',function(e){
 				clearTimeout(dup_showing);
@@ -1360,7 +1363,7 @@ _$.tooltip = {
 
 	init: function(){
 
-		if(_$.location.indexOf('/user/')==-1 && _$.settings.tooltip_on){
+		if(_$.settings.tooltip_on){
 
 			this.processLinks(document.body);
 			this.processGreeting();
@@ -1371,7 +1374,7 @@ _$.tooltip = {
 					return;
 				}				
 				if(typeof(event.target) !== 'undefined' && typeof(event.target.className) !== 'undefined'  && event.target.className.indexOf("comment")>-1){
-					this.processLinks(event.target);
+					_$.tooltip.processLinks.processLinks(event.target);
 				}
 				
 				if(event.target !== null && typeof(event.target) !== 'undefined' && typeof(event.target.tagName) !== 'undefined' && 
@@ -1384,8 +1387,7 @@ _$.tooltip = {
 					&& typeof(event.target.parentNode.parentNode.parentNode.parentNode.className) !== 'undefined'
 					&& event.target.parentNode.parentNode.parentNode.parentNode.className.indexOf("vote_details") > -1 &&
 					(event.target.tagName.toLowerCase()=='li')){
-					
-						this.processLinks(event.target);
+						_$.tooltip.processLinks(event.target);
 				}
 			}
 			/* watch for any changed attributes */
