@@ -1455,7 +1455,6 @@ function dup_showBaloon(obj){
 }
 
 function dup_getData(obj){
-
 	if(dup_processing!=0){
 
 		_$.ajaxLoad(obj.href,function(ajaxObject){
