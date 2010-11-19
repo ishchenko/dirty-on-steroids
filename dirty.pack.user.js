@@ -3310,112 +3310,158 @@ if(_$.settings.youtube_preview=='1'){
 		_$.addEvent(document,"DOMNodeInserted", documentChanged);
 	}
 
-	
-//dirty tags
-if(_$.settings.dirty_tags=='1'){
-		function vTagsGetCursor(input)
-		{
-				var result = {start: 0, end: 0};
-				if (input.setSelectionRange)
-				{
-						result.start= input.selectionStart;
-						result.end = input.selectionEnd;
-				} else if (!document.selection) 
-				{
-						return false;
-				} else if (document.selection && document.selection.createRange) 
-				{
-						var range = document.selection.createRange();
-						var stored_range = range.duplicate();
-						stored_range.moveToElementText(input);
-						stored_range.setEndPoint('EndToEnd', range);
-						result.start = stored_range.text.length - range.text.length;
-						result.end = result.start + range.text.length;
-				}
-				return result;
-		}
 
-		function vTagsSetCursor(txtarea, start, end)
-		{
-				if(txtarea.createTextRange) 
-				{
-						var range = txtarea.createTextRange();
-						range.move("character", start);
-						range.select();
-				} 
-				else if (txtarea.selectionStart) 
-				{
-						txtarea.setSelectionRange(start, end);
-				}
-		}
+// formatting buttons for post and music.dirty
+function vTagsGetCursor(input)
+{
+	var result = {start: 0, end: 0};
+	if (input.setSelectionRange)
+	{
+		result.start= input.selectionStart;
+		result.end = input.selectionEnd;
+	} else if (!document.selection) 
+	{
+		return false;
+	} else if (document.selection && document.selection.createRange) 
+	{
+		var range = document.selection.createRange();
+		var stored_range = range.duplicate();
+		stored_range.moveToElementText(input);
+		stored_range.setEndPoint('EndToEnd', range);
+		result.start = stored_range.text.length - range.text.length;
+		result.end = result.start + range.text.length;
+	}
+	return result;
+}
 
-		function vTIns_tag(startTag, endTag, elementId)
+function vTagsSetCursor(txtarea, start, end)
+{
+	if(txtarea.createTextRange) 
+	{
+		var range = txtarea.createTextRange();
+		range.move("character", start);
+		range.select();
+	} 
+	else if (txtarea.selectionStart) 
+	{
+		txtarea.setSelectionRange(start, end);
+	}
+}
+
+function vTIns_tag(startTag, endTag, elementId)
+{
+	var txtarea = document.getElementById( elementId );
+	txtarea.focus();
+	var scrtop = txtarea.scrollTop;
+	var cursorPos = vTagsGetCursor(txtarea);
+	var txt_pre = txtarea.value.substring(0, cursorPos.start);
+	var txt_sel = txtarea.value.substring(cursorPos.start, cursorPos.end);
+	var txt_aft = txtarea.value.substring(cursorPos.end);
+	if (cursorPos.start == cursorPos.end)
+	{
+		var nuCursorPos = cursorPos.start + startTag.length;
+	}
+	else
+	{
+		var nuCursorPos=String(txt_pre + startTag + txt_sel + endTag).length;
+	}
+	txtarea.value = txt_pre + startTag + txt_sel + endTag + txt_aft;
+	vTagsSetCursor(txtarea,nuCursorPos,nuCursorPos);
+	if (scrtop) txtarea.scrollTop=scrtop;
+}
+
+function vTIns_text(tagName, elementId)
+{
+	var startTag = '<' + tagName + '>';
+	var endTag = '</' + tagName + '>';
+	vTIns_tag(startTag, endTag, elementId);
+	return false;
+}
+
+function vTIns_image( elementId)
+{
+	var src = prompt('enter image src', 'http://');
+	if(src)
+	{
+		vTIns_tag('<img src="' + src + '" alt="image">', '', elementId);
+	}
+}
+
+
+function vTIns_link( elementId)
+{
+	var href = prompt('enter a href', 'http://');
+	if(href)
+	{
+		vTIns_tag('<a href="' + href + '">', '</a>', elementId);
+	}
+}
+
+function vTagsManage( vTagAnchor )
+{
+	vTagsNoPnt1 = vTagAnchor.title.replace( /(,\s)/ig, ' ');
+	vTagsNoPnt = vTagsNoPnt1.replace( /,/ig, ' ');
+	if (vTagAnchor.innerHTML == 'x' )
+	{ 
+		vTagAnchor.innerHTML = '-'; 
+		$('js-new_tag_input').value = vTagsNoPnt; 
+		tagsHandler.submitTag(); 
+	} 
+	else 
+	{ 	
+		vTagAnchor.innerHTML = 'x' ; 
+		tagsHandler.deleteTag( $('js-tags_private'), vTagsNoPnt );
+	}
+	return false;
+}
+
+//write buttons
+if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.location.href.indexOf("write") > 0 )  
+{ 
+	// add script to the page
+	var vTagsScr=document.createElement("script");
+	vTagsScr.type="application/javascript";
+	vTagsScr.textContent = vTagsGetCursor + "\n" + vTagsSetCursor + "\n" + vTIns_tag + "\n" + vTIns_text + "\n" + vTIns_image + "\n" + vTIns_link;
+	document.body.appendChild( vTagsScr );
+	var vTagsInputs =  document.getElementsByTagName('form');
+	var vTagID;
+	if ( vTagsInputs )
+	{
+		for ( i =0; i < vTagsInputs.length; i++ )
 		{
-				var txtarea = document.getElementById( elementId );
-				txtarea.focus();
-				var scrtop = txtarea.scrollTop;
-				var cursorPos = vTagsGetCursor(txtarea);
-				var txt_pre = txtarea.value.substring(0, cursorPos.start);
-				var txt_sel = txtarea.value.substring(cursorPos.start, cursorPos.end);
-				var txt_aft = txtarea.value.substring(cursorPos.end);
-				if (cursorPos.start == cursorPos.end)
-				{
-						var nuCursorPos = cursorPos.start + startTag.length;
+			vTagID = 'cmnt_' + vTagsInputs[i].getAttribute('id');
+			vTagsTextAreaDiv = vTagsInputs[i].querySelector('textarea');
+			if ( vTagsTextAreaDiv )
+			{
+				vTagsTextAreaDiv.setAttribute('id',vTagID);
+				if ( document.location.href.indexOf("music") >= 0 )
+				{ 
+					vTagTab1 = vTagsInputs[i].querySelector('table');
+					vTagTab2 = vTagTab1.querySelector('table');
+					vTagsTextAreaWriteHdr = vTagTab2.querySelector('td');
 				}
 				else
 				{
-						var nuCursorPos=String(txt_pre + startTag + txt_sel + endTag).length;
+					vTagsTextAreaWriteHdr = vTagsInputs[i].querySelector('div.write_page_header_right');
 				}
-				txtarea.value = txt_pre + startTag + txt_sel + endTag + txt_aft;
-				vTagsSetCursor(txtarea,nuCursorPos,nuCursorPos);
-				if (scrtop) txtarea.scrollTop=scrtop;
-		}
-
-		function vTIns_text(tagName, elementId)
-		{
-				var startTag = '<' + tagName + '>';
-				var endTag = '</' + tagName + '>';
-				vTIns_tag(startTag, endTag, elementId);
-				return false;
-		}
-
-		function vTIns_image( elementId)
-		{
-				var src = prompt('enter image src', 'http://');
-				if(src)
+				if (vTagsTextAreaWriteHdr )
 				{
-						vTIns_tag('<img src="' + src + '" alt="image">', '', elementId);
+					var newdiv = document.createElement('div');
+					newdiv.setAttribute('class', 'textarea_editor');
+					newdiv.setAttribute('style', 'textarea_editor');
+					newdiv.innerHTML = "<br><a onclick=\"return vTIns_text('b', '" + vTagID + "');\" href=\"#\"><b>Bold</b></a>&nbsp;<a onclick=\"return vTIns_text('i', '" + vTagID + "');\" href=\"#\"><i>Italic</i></a>&nbsp;<a onclick=\"return vTIns_text('u', '" + vTagID + "');\" href=\"#\"><u>Underline</u></a>&nbsp;<a onclick=\"return vTIns_text('sup', '" + vTagID + "');\" href=\"#\">x<sup>2</sup></a>&nbsp;<a onclick=\"return vTIns_text('sub', '" + vTagID + "');\" href=\"#\">x<sub>2</sub></a>&nbsp;<a onclick=\"return vTIns_text('irony', '" + vTagID + "');\" href=\"#\"><span class=\"irony\">Irony</span></a><span class=\"textarea_editor_divider\">&nbsp;</span><a onclick=\"vTIns_link('" + vTagID + "'); return false;\" href=\"#\"><b>Link</b></a>&nbsp;<a onclick=\"vTIns_image('" + vTagID + "'); return false;\" href=\"#\"><b>Image</b></a>";
+					vTagsTextAreaWriteHdr.appendChild( newdiv );
 				}
-		}
-
-
-		function vTIns_link( elementId)
-		{
-				var href = prompt('enter a href', 'http://');
-				if(href)
-				{
-						vTIns_tag('<a href="' + href + '">', '</a>', elementId);
-				}
-		}
-
-		function vTagsManage( vTagAnchor )
-		{
-			vTagsNoPnt1 = vTagAnchor.title.replace( /(,\s)/ig, ' ');
-			vTagsNoPnt = vTagsNoPnt1.replace( /,/ig, ' ');
-			if (vTagAnchor.innerHTML == 'x' )
-			{ 
-				vTagAnchor.innerHTML = '-'; 
-				$('js-new_tag_input').value = vTagsNoPnt; 
-				tagsHandler.submitTag(); 
-			} 
-			else 
-			{ 	
-				vTagAnchor.innerHTML = 'x' ; 
-				tagsHandler.deleteTag( $('js-tags_private'), vTagsNoPnt );
 			}
-			return false;
 		}
-
+	}
+} 	
+// end of formatting buttons
+	
+	
+//dirty tags
+if(_$.settings.dirty_tags=='1')
+{
 		function vTagsLoadTagsFromLS( vTagsArrLocalStore )
 		{
 			// load values
@@ -3611,83 +3657,9 @@ if(_$.settings.dirty_tags=='1'){
 				location.href="javascript:void( tagsHandler.submitTag());"				
 			}
 		}
-		// script start
-		// Jovan premium and write buttons
-		if(( document.location.href.indexOf("music") > -1 || document.location.href.indexOf("comments") == -1 ) && document.location.href.indexOf("inbox") == -1 )
+
+		if( document.location.href.indexOf("comments") > -1 && document.location.href.indexOf("inbox") == -1 )
 		{
-			if( document.location.href.indexOf("music.dirty.ru/comments") > -1 || document.location.href.indexOf("write") > -1 )  
-			{ //write buttons
-
-				// add script to the page
-				var vTagsScr=document.createElement("script");
-				vTagsScr.type="application/javascript";
-				vTagsScr.textContent = vTagsGetCursor + "\n" + vTagsSetCursor + "\n" + vTIns_tag + "\n" + vTIns_text + "\n" + vTIns_image + "\n" + vTIns_link;
-				document.body.appendChild( vTagsScr );
-
-				
-				var vTagsInputs =  document.getElementsByTagName('form');
-
-				var vTagID;
-				if ( vTagsInputs )
-				{
-					for ( i =0; i < vTagsInputs.length; i++ )
-					{
-						vTagID = 'cmnt_' + vTagsInputs[i].getAttribute('id');
-						vTagsTextAreaDiv = vTagsInputs[i].querySelector('textarea');
-						if ( vTagsTextAreaDiv )
-						{
-							vTagsTextAreaDiv.setAttribute('id',vTagID);
-
-							if ( document.location.href.indexOf("music") >= 0 )
-							{ 
-								vTagTab1 = vTagsInputs[i].querySelector('table');
-								vTagTab2 = vTagTab1.querySelector('table');
-								vTagsTextAreaWriteHdr = vTagTab2.querySelector('td');
-							}
-							else
-							{
-								vTagsTextAreaWriteHdr = vTagsInputs[i].querySelector('div.write_page_header_right');
-							}
-
-							if (vTagsTextAreaWriteHdr )
-							{
-								var newdiv = document.createElement('div');
-								newdiv.setAttribute('class', 'textarea_editor');
-								newdiv.setAttribute('style', 'textarea_editor');
-								newdiv.innerHTML = "<br><a onclick=\"return vTIns_text('b', '" + vTagID + "');\" href=\"#\"><b>Bold</b></a>&nbsp;<a onclick=\"return vTIns_text('i', '" + vTagID + "');\" href=\"#\"><i>Italic</i></a>&nbsp;<a onclick=\"return vTIns_text('u', '" + vTagID + "');\" href=\"#\"><u>Underline</u></a>&nbsp;<a onclick=\"return vTIns_text('sup', '" + vTagID + "');\" href=\"#\">x<sup>2</sup></a>&nbsp;<a onclick=\"return vTIns_text('sub', '" + vTagID + "');\" href=\"#\">x<sub>2</sub></a>&nbsp;<a onclick=\"return vTIns_text('irony', '" + vTagID + "');\" href=\"#\"><span class=\"irony\">Irony</span></a><span class=\"textarea_editor_divider\">&nbsp;</span><a onclick=\"vTIns_link('" + vTagID + "'); return false;\" href=\"#\"><b>Link</b></a>&nbsp;<a onclick=\"vTIns_image('" + vTagID + "'); return false;\" href=\"#\"><b>Image</b></a>";
-								vTagsTextAreaWriteHdr.appendChild( newdiv );
-							}
-						}
-					}
-				}
-
-			} //write buttons
-			else
-			{ // Jovan premium
-				vTagsJovanPremium = localStorage.getItem('vTagsJovanPremium' );
-				if ( vTagsJovanPremium == 1 )
-				{
-					var vTagsPosts = document.getElementsByClassName('dt');
-					if ( vTagsPosts )
-					{
-						var vTagsH3;
-						var vTagsIMG;	
-						for(var i=0; i < vTagsPosts.length; i++)
-						{	
-							vTagsH3 = vTagsPosts[i].getElementsByTagName('h3');
-							vTagsIMG = vTagsPosts[i].getElementsByTagName('img');
-							if (( vTagsH3.length > 0 ) && ( vTagsIMG.length > 0 )) 
-							{	
-								vTagsIMG[0].setAttribute('style', 'display: none;');
-							}
-						}
-					}
-				}
-			} // Jovan premium
-		} // Jovan premium and write buttons
-		else
-		{  // Everything else
-
 			// add script to the page
 			var vTagsScr=document.createElement("script");
 			vTagsScr.type="application/javascript";
@@ -3720,7 +3692,6 @@ if(_$.settings.dirty_tags=='1'){
 				// load options
 				vTagsFloatCloud = vHtfGetItemLocalStore('vTagsFloatCloud', 1 );
 				vTagsAutoSetGold = vHtfGetItemLocalStore('vTagsAutoSetGold', 1 );
-				vTagsJovanPremium = vHtfGetItemLocalStore('vTagsJovanPremium', 0 );
 
 				// create options to edit
 				newdiv = document.createElement('div');
@@ -3738,19 +3709,10 @@ if(_$.settings.dirty_tags=='1'){
 				{
 					vTagsSettings += " checked";
 				}
-				vTagsSettings += ">автоматически ставить 'Золотой пост'</form><br>";
-
-				vTagsSettings += "<input type=\"checkbox\" id=\"vtags-jovan-premium\" name=\"vtags-jovan-premium\" onchange=\" var e = document.getElementById('vtags-jovan-premium'); if ( e.checked == true ) { localStorage.setItem('vTagsJovanPremium', 1 ); } else {  localStorage.setItem('vTagsJovanPremium', 0 ); return false; } \"";
-				if ( vTagsJovanPremium == 1 )
-				{
-					vTagsSettings += " checked";
-				}
-				vTagsSettings += ">опция 'Йован-Премиум'</form><br><br>";
-
+				vTagsSettings += ">автоматически ставить 'Золотой пост'</form><br><br>";
 
 				newdiv.innerHTML = vTagsSettings;
 				vTagsDiv.appendChild(newdiv);
-
 
 				// create list of tags to edit
 				newdiv = document.createElement('div');
@@ -3802,7 +3764,6 @@ if(_$.settings.dirty_tags=='1'){
 			// fast tags part
 			// regexp based on http://leprosorium.ru/users/antyrat script
 			var vTagPattern = /([^:\s\.\>\<][\wа-яёЁ\-\–\—\s\!\?,]+)(\[x\]|\s\[x\]|\s\[х\]|\[х\])+/gi;
-		//	var vTagReplacement = "$1 [<a href=\"#\" onclick=\"if ( this.innerHTML == 'x' ) { this.innerHTML = '-'; $('js-new_tag_input').value = '$1'; tagsHandler.submitTag(); } else { this.innerHTML = 'x' ; tagsHandler.deleteTag( $('js-tags_private'), '$1'); }  return false;\" title=\"$1\" style=\"color: red;\">x</a>]";
 			var vTagReplacement = "$1 [<a href=\"#\" onclick=\"return vTagsManage(this);\" title=\"$1\" style=\"color: red;\">x</a>]";
 
 			var vTagStr;
@@ -3831,13 +3792,6 @@ if(_$.settings.dirty_tags=='1'){
 						vTagComments[i].innerHTML = vTagStr.replace(vTagPattern, vTagReplacement);
 					}
 			}
-
-			
-
-
-
-
-
 
 			if ( vTagsAutoSetGold == 1 )
 			{
