@@ -92,21 +92,17 @@ var _$ = {
 		return obj.getElementsByTagName(name);
 	},
 
-	$c: function(name,obj,tagName){
-		if(tagName==null){tagName='*'};
-		var obj = obj||document;
-
-		var Array = [];
-		var checkArray = obj.getElementsByTagName(tagName);
-
-		for(var i=0; i<checkArray.length; i++){
-
-			if((' '+checkArray[i].className+' ').indexOf(' '+name+' ')>-1){
-				Array[Array.length] = checkArray[i];
-			}
+	$c: function(name,obj,tagName)
+	{
+	    var obj = obj||document;
+		if( tagName==null )
+		{
+    		return obj.querySelectorAll( '*.' + name );
 		}
-
-		return Array;
+		else
+		{
+    		return obj.querySelectorAll( tagName + '.' + name );
+   		}
 	},
 
 	$f: function(name,element,val){
