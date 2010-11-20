@@ -4873,31 +4873,24 @@ if(_$.settings.dirty_tags=='1')
 		}
 		
 		//quotes
-		if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1){
-			var gAll = _$.$c('comment_inner');
-			for (var key in gAll)
+		if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1)
+		{
+			var commentsHolder = document.getElementById('js-commentsHolder');
+			var allBodies = commentsHolder.querySelectorAll('div.c_body');
+			var allUsers = commentsHolder.querySelectorAll('a.c_user');
+			for (var key = 0; key < allBodies.length; key++)
 			{
-				var val = gAll[key];
-				var t_inner = _$.$c('c_body',val);
-				var t_inner = _$.$c('c_body', val);
-				var c_inner = t_inner[0].innerHTML;
+				var c_inner = allBodies[key].innerHTML;
 				c_inner = c_inner.replace('&','amp');
 				c_inner = c_inner.replace("'",'');
 				c_inner = c_inner.replace('"','');
-
-				var t_footer = _$.$c('c_footer', val);
-				var t_username = _$.$c('c_user', t_footer[0]);
-				var c_username =  t_username[0].innerHTML;
-				var prelink = document.createElement('span');
-				prelink.innerHTML = '&nbsp;&nbsp;';
-				t_footer[0].appendChild(prelink);
-
 				var link = document.createElement('a');
-				link.setAttribute('href', 'http://quotes-dirty.ru/write?username='+encodeURI(c_username)+'&text='+encodeURI(c_inner));
+				link.setAttribute('href', 'http://quotes-dirty.ru/write?username='+encodeURI( allUsers[key].innerHTML )+'&text='+encodeURI(c_inner));
 				link.setAttribute('target', '_blank');
 				link.setAttribute('class', 'c_answer');
+				link.setAttribute('style', 'margin-left: 10px;');
 				link.innerHTML = "в цитатник";
-				t_footer[0].appendChild(link);
+				allUsers[key].parentNode.appendChild(link);
 			}
 		}
 		
