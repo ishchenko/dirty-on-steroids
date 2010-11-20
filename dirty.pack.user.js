@@ -4834,31 +4834,33 @@ if(_$.settings.comments_threshold=='1'){
 			}
 			
 		}
-		
-		//quotes
-		if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1)
-		{
-			var commentsHolder = document.getElementById('js-commentsHolder');
-			var allBodies = commentsHolder.querySelectorAll('div.c_body');
-			var allUsers = commentsHolder.querySelectorAll('a.c_user');
-			for (var key = 0; key < allBodies.length; key++)
-			{
-				var c_inner = allBodies[key].innerHTML;
-				c_inner = c_inner.replace('&','amp');
-				c_inner = c_inner.replace("'",'');
-				c_inner = c_inner.replace('"','');
-				var link = document.createElement('a');
-				link.setAttribute('href', 'http://quotes-dirty.ru/write?username='+encodeURI( allUsers[key].innerHTML )+'&text='+encodeURI(c_inner));
-				link.setAttribute('target', '_blank');
-				link.setAttribute('class', 'c_answer');
-				link.setAttribute('style', 'margin-left: 10px;');
-				link.innerHTML = "в цитатник";
-				allUsers[key].parentNode.appendChild(link);
-			}
-		}
-		
 	}
-}
+	
+	//quotes
+	if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1)
+	{
+		var commentsHolder = document.getElementById('js-commentsHolder');
+//		var allBodies = commentsHolder.querySelectorAll('div.c_body');
+//		var allUsers = commentsHolder.querySelectorAll('a.c_user');
+		var allBodies = commentsHolder.getElementsByClassName('c_body');
+		var allUsers = commentsHolder.getElementsByClassName('c_user');
+		for (var key = 0; key < allBodies.length; key++)
+		{
+			var c_inner = allBodies[key].innerHTML;
+			c_inner = c_inner.replace('&','amp');
+			c_inner = c_inner.replace("'",'');
+			c_inner = c_inner.replace('"','');
+			var link = document.createElement('a');
+			link.setAttribute('href', 'http://quotes-dirty.ru/write?username='+encodeURI( allUsers[key].innerHTML )+'&text='+encodeURI(c_inner));
+			link.setAttribute('target', '_blank');
+			link.setAttribute('class', 'c_answer');
+			link.setAttribute('style', 'margin-left: 10px;');
+			link.innerHTML = "в цитатник";
+			allUsers[key].parentNode.appendChild(link);
+		}
+	}
+}	
+
 
 _$.tooltip.init();
 DSP_init();
