@@ -4876,8 +4876,8 @@ if(_$.settings.dirty_tags=='1')
 		if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1)
 		{
 			var commentsHolder = document.getElementById('js-commentsHolder');
-			var allBodies = commentsHolder.querySelectorAll('div.c_body');
-			var allUsers = commentsHolder.querySelectorAll('a.c_user');
+			var allBodies = commentsHolder.getElementsByClassName('div.c_body');
+			var allUsers = commentsHolder.getElementsByClassName('a.c_user');
 			for (var key = 0; key < allBodies.length; key++)
 			{
 				var c_inner = allBodies[key].innerHTML;
