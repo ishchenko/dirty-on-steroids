@@ -327,13 +327,14 @@ var _$ = {
 	getElementsByClassName: function(className, parentElement, tagName) {
 		if(tagName==null){tagName='*'};
 		if(parentElement==null){parentElement = document.body;}
-		var children = parentElement.getElementsByTagName(tagName);
-		var elements = [], child;
-		for (var i = 0, length = children.length; i < length; i++) {
-			child = children[i];
-			if (child.className == className || child.className.indexOf(className+" ") > -1 || child.className.indexOf(className+" ") < -1)
-				elements.push(child);
-		}
+//		var children = parentElement.getElementsByTagName(tagName);
+//		var elements = [], child;
+//		for (var i = 0, length = children.length; i < length; i++) {
+//			child = children[i];
+//			if (child.className == className || child.className.indexOf(className+" ") > -1 || child.className.indexOf(className+" ") < -1)
+//				elements.push(child);
+//		}
+		var elements = parentElement.querySelectorAll( tagName + '.' + className );
 		return elements;
 	},
 	
