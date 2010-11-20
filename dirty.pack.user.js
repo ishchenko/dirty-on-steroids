@@ -2225,6 +2225,27 @@ if ( _$.settings.grt_enabled =='1' )
 }
 // end of SCRIPTS-37 & SCRIPTS-29
 
+// made by crea7or
+// start of SCRIPTS-60
+var divRightCol = document.querySelector('div.content_right');
+var divTags = document.getElementById('js-tags');
+if ( divRightCol && divTags )
+{
+	var newsFromD3search = localStorage.getItem('vStickers');
+	if ( newsFromD3search != null )
+	{
+		var divAds = document.querySelector('div.b-ads');
+		divAds.setAttribute('style', 'height: 0px;');
+		var divForNews = document.createElement('div');
+		divForNews.setAttribute('style','clear: both; float: right; position: relative; width: 290px; margin: 5px 5px 5px 5px; background: #fff; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -khtml-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); z-index: 20; ');
+		var subDivForNews = document.createElement('div');
+		subDivForNews.setAttribute('style','padding: 5px 5px 5px 5px;');
+		subDivForNews.innerHTML = unescape( newsFromD3search );
+		divForNews.appendChild( subDivForNews );
+		divRightCol.insertBefore( divForNews, divTags );
+	}
+}
+// end of SCRIPTS-60
 
 // made by crea7or
 // start of SCRIPTS-26
@@ -3615,46 +3636,19 @@ if(_$.settings.dirty_tags=='1')
 				return vHtfTemp;    
 		}
 
+		// set gold tag
 		function checkGoldTag()
 		{
-
-			var vTagsSpan = document.querySelector('span.stars');
-			var vTagsStarFound = false;
-			if ( vTagsSpan )
-			{
-				vTagsStarFound = true; //gold	
-			}
-			else
-			{
-				vTagsSpan = document.querySelector('span.wasstars');
-				if ( vTagsSpan )
+			var postGoldTag = document.getElementsByClassName('stars');
+			var postSilverTag = document.getElementsByClassName('wasstars');
+			if ( postSilverTag.length > 0 || postGoldTag.length > 0 )
+			{   
+				if ( document.querySelector('li#js-personal_tag_72') == null )
 				{
-					vTagsStarFound = true; //silver
+					// add  gold
+					document.getElementById('js-new_tag_input').value = 'Золотой пост';
+					location.href="javascript:void( tagsHandler.submitTag());"
 				}
-			}
-
-			var vTagsStarTagAdded = false;
-			var vTagsDiv = document.querySelector('div#js-tags_private');
-			if ( vTagsDiv )
-			{
-				var vTagsPersonal = vTagsDiv.getElementsByClassName('tag');
-				if ( vTagsPersonal )
-				{
-					for ( i =0; i < vTagsPersonal.length; i++ )
-					{
-						if ( vTagsPersonal[i].text.search(/Золотой пост/i) >= 0 )
-						{
-							vTagsStarTagAdded = true;
-						}
-					}
-				}
-			}
-			if ( vTagsStarFound  == true && vTagsStarTagAdded  == false )
-			{
-				// add  gold
-				var vTagBox = document.getElementById('js-new_tag_input');
-				vTagBox.value = 'Золотой пост';
-				location.href="javascript:void( tagsHandler.submitTag());"				
 			}
 		}
 
