@@ -323,21 +323,7 @@ var _$ = {
 	insertAfter: function (referenceNode, node) {
 		referenceNode.parentNode.insertBefore(node, referenceNode.nextSibling);
 	},
-	
-	getElementsByClassName: function(className, parentElement, tagName) {
-		if(tagName==null){tagName='*'};
-		if(parentElement==null){parentElement = document.body;}
-//		var children = parentElement.getElementsByTagName(tagName);
-//		var elements = [], child;
-//		for (var i = 0, length = children.length; i < length; i++) {
-//			child = children[i];
-//			if (child.className == className || child.className.indexOf(className+" ") > -1 || child.className.indexOf(className+" ") < -1)
-//				elements.push(child);
-//		}
-		var elements = parentElement.querySelectorAll( tagName + '.' + className );
-		return elements;
-	},
-	
+		
 	$n: function(element){
 		return document.getElementsByName(element);
 	},
@@ -2862,7 +2848,7 @@ function addYoutube(){
 var youtube_id;
 
 //add link to textarea
-var youtube_textarea = _$.getElementsByClassName('textarea_editor')[0];
+var youtube_textarea = _$.$c('textarea_editor')[0];
 if(youtube_textarea!=null){
 	var link = document.createElement("a");
 	link.innerHTML = "<b>Youtube</b>";
@@ -2893,8 +2879,8 @@ if(youtube_textarea!=null){
 //END BIG BLOCK
 
 //click on ещё
-if(location.pathname.indexOf('/user/')==0 && _$.getElementsByClassName('usermorebutton').length > 0){
-	_$.getElementsByClassName('usermorebutton')[0].style.display = "none";
+if(location.pathname.indexOf('/user/')==0 && _$.$c('usermorebutton').length > 0){
+	_$.$c('usermorebutton')[0].style.display = "none";
 	_$.injectScript("$('js-user_page_more').toggleClass('hidden');");	
 }
 
@@ -3306,7 +3292,7 @@ if(_$.settings.youtube_preview=='1'){
 
 		//handle video-posts
 		//step 1: add youtube links to video posts
-		var video_posts = _$.getElementsByClassName('post_video');
+		var video_posts = _$.$c('post_video');
 		for(var i=0;i<video_posts.length;i++){
 			var post = video_posts[i];
 			var image_link = post.style.backgroundImage;
@@ -4841,10 +4827,10 @@ if(_$.settings.comments_threshold=='1'){
 	if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1)
 	{
 		var commentsHolder = document.getElementById('js-commentsHolder');
-//		var allBodies = commentsHolder.querySelectorAll('div.c_body');
-//		var allUsers = commentsHolder.querySelectorAll('a.c_user');
-		var allBodies = commentsHolder.getElementsByClassName('c_body');
-		var allUsers = commentsHolder.getElementsByClassName('c_user');
+		var allBodies = commentsHolder.querySelectorAll('div.c_body');
+		var allUsers = commentsHolder.querySelectorAll('a.c_user');
+//		var allBodies = commentsHolder.getElementsByClassName('c_body');
+//		var allUsers = commentsHolder.getElementsByClassName('c_user');
 		for (var key = 0; key < allBodies.length; key++)
 		{
 			var c_inner = allBodies[key].innerHTML;
