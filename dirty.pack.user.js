@@ -385,6 +385,7 @@ if(!_$.settings.colors){_$.set_save('colors','[]');}
 if(!_$.settings.grt_enabled) _$.set_save('grt_enabled',1);
 if(!_$.settings.grt_random) _$.set_save('grt_random',1);
 if(!_$.settings.online_enabled) _$.set_save('online_enabled',1);
+if(!_$.settings.instant_search) _$.set_save('instant_search',1);
 if(!_$.settings.inbox_text){_$.set_save('inbox_text',1);}
 if(!_$.settings.arrows_on){_$.set_save('arrows_on',1);}
 if(!_$.settings.inbox_recreate){_$.set_save('inbox_recreate',1);}
@@ -1749,7 +1750,8 @@ function dsp_posts_init(){
 
 	add_checkbox_event('dsp_c_read_button','read_button');
 	add_checkbox_event('dsp_c_dirty_tags','dirty_tags');
-
+	add_checkbox_event('dsp_c_instant_search','instant_search');
+	
 	_$.addEvent(_$.$('dsp_c_posts_average'),'click',
 	function(){
 		if(_$.$('dsp_c_posts_average').checked===true) _$.set_save('posts_average',1);
@@ -1895,6 +1897,7 @@ function DSP_make_content_settings(){
 		
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dirty_tags" type="checkbox" '+((_$.settings.dirty_tags=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dirty_tags">SP2: Dirty Tags</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_instant_search" type="checkbox" '+((_$.settings.instant_search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_instant_search">SP2: Поиск по комментариям в постах</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_read_button" type="checkbox" '+((_$.settings.read_button=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_read_button">SP2: Кнопка прочтения новых комментариев</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_average" type="checkbox" '+((_$.settings.posts_average=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_average">Показывать средние ID и оценку</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_youtube_fullscreen" type="checkbox" '+((_$.settings.youtube_fullscreen=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_fullscreen">Добавить кнопку "Fullscreen" в постах с видеороликами youtube</label></td></tr>';
@@ -3755,8 +3758,9 @@ if(_$.settings.dirty_tags=='1')
 	{
 		var time1 = new Date();
 		var loggedUser = document.querySelector('div.header_logout');
-		if ( loggedUser )
-		{   
+		var addFormDiv = document.querySelector('div.b-tag_add_form');
+		if ( loggedUser && addFormDiv )
+		{ 
 			// add script to the page
 			var tagsRelatedScripts = document.createElement("script");
 			tagsRelatedScripts.type="application/javascript";
@@ -3777,7 +3781,6 @@ if(_$.settings.dirty_tags=='1')
 				manageTagsList();
 			}
 			// create link to edit tags
-			var addFormDiv = document.querySelector('div.b-tag_add_form');
 			var tagForms = addFormDiv.getElementsByTagName('form');
 			newdiv = document.createElement('a');
 			newdiv.setAttribute('style', 'margin-left: 10px;');
@@ -4944,6 +4947,177 @@ if(_$.settings.dirty_tags=='1')
 		addBenchmark( time1, 'quotes' );
 	}
 	
+	// made by crea7or
+	// start of instant search in comments
+	if(_$.settings.instant_search == '1' )
+	{
+		function commentsFilter()
+		{
+			var inputBox = document.getElementById('js-search-in-comments');
+			var currentCommentId;
+			var currentCommentBody;
+			var currentCommentBodyText;
+			var currentCommentHeader;
+			var commentUserNameA;
+			var hideShowLink;
+			var newLinkToShowHide;
+			var spaceSpan;
+			var commentsHolder = document.getElementById('js-commentsHolder');
+			for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
+			{
+				if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
+				{
+					currentCommentId = commentsHolder.childNodes[indexOfComment].getAttribute('id');
+					currentCommentBody = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[1];
+					currentCommentBodyText = currentCommentBody.innerHTML;
+					currentCommentHeader = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[3];
+					commentUserNameA = currentCommentHeader.querySelector('a.c_user');
+					if ( commentUserNameA )
+					{
+						currentCommentBodyText += " " + commentUserNameA.innerHTML;
+					}	
+					currentCommentBody.setAttribute('id', currentCommentId + '-sh-body');
+					currentCommentHeader.setAttribute('id', currentCommentId + '-sh-header');
+					if ( currentCommentBodyText.search( new RegExp(( inputBox.value +'').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1"), 'ig' )) > -1 )
+					{                            
+						hideShowLink = currentCommentHeader.getElementById( currentCommentId + '-sh');
+						if ( hideShowLink )
+						{
+							commentShowHide( currentCommentId, true );
+						}
+					}
+					else
+					{
+						hideShowLink = currentCommentHeader.getElementById( currentCommentId + '-sh');
+						if ( hideShowLink == null )
+						{
+							spaceSpan = document.createElement('span');
+							spaceSpan.innerHTML = "&nbsp;&nbsp";
+							currentCommentHeader.appendChild( spaceSpan );
+							newLinkToShowHide = document.createElement('a');
+							newLinkToShowHide.setAttribute('href', '#');
+							newLinkToShowHide.setAttribute('id', currentCommentId + '-sh');
+							currentCommentHeader.appendChild( newLinkToShowHide );
+						}
+						commentShowHide( currentCommentId, false );
+					}
+					
+				}
+			}
+			return false;
+		}
+
+		function commentShowHide( commentId, showIfTrue )
+		{
+			var commentDiv = document.getElementById( commentId + '-sh-body');
+			var commentDivHeader = document.getElementById( commentId + '-sh-header');
+			if ( commentDiv )
+			{
+				if ( showIfTrue )
+				{
+					commentDiv.removeAttribute('style');
+					commentDivHeader.removeAttribute('style');
+					var commentAlink = document.getElementById( commentId + '-sh');
+					if ( commentAlink )
+					{
+						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', false );")
+						commentAlink.innerHTML = 'убрать это';
+					}
+					
+				}
+				else
+				{
+					commentDiv.setAttribute('style', 'display: none');
+					commentDivHeader.setAttribute('style', 'opacity: 0.5');
+					var commentAlink = document.getElementById( commentId + '-sh');
+					if ( commentAlink )
+					{
+						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', true );")
+						commentAlink.innerHTML = 'а что там?';
+					}
+				}
+			}
+			return false;
+		}	
+	
+		var time1 = new Date();
+		var headerDiv = null;
+		var insertOurHeaderAfter = null;
+		var postPage = false;
+		if ( document.location.href.indexOf("/comments/") >= 0 )
+		{
+			var commentsHolder = document.getElementById('js-comments');
+			if ( commentsHolder )
+			{
+				postPage = true;
+				headerDiv = document.querySelector('div.comments_header');	
+				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold');
+				if ( divToModifyStyle )
+				{
+					divToModifyStyle.setAttribute('style', 'width: 40%;');
+				}
+				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls');
+				if ( divToModifyStyle )
+				{
+					divToModifyStyle.setAttribute('style', 'width: 300px; min-width: 300px;');
+				}
+				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold_inner');
+				if ( divToModifyStyle )
+				{
+					divToModifyStyle.setAttribute('style', 'padding-left: 10px; padding-right: 10px;');
+				}
+				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls_inner');
+				if ( divToModifyStyle )
+				{
+					divToModifyStyle.setAttribute('style', 'padding-left: 10px; margin-right: 10px;');
+				}
+				insertOurHeaderAfter = headerDiv.firstChild;
+			}
+		}
+		else if (  document.location.href.indexOf("/inbox/") >= 0 )
+		{
+			 headerDiv = document.querySelector('div.inbox_header');
+			 insertOurHeaderAfter = headerDiv.lastChild;
+		}
+		
+		if ( headerDiv && insertOurHeaderAfter )
+		{
+			var inputElementDiv = document.createElement('div');
+			if ( postPage )
+			{
+				inputElementDiv.setAttribute('style', 'float: left; padding-left: 10px; padding-right: 5px;');
+				inputElementDiv.setAttribute('class', 'comments_header_threshhold_inner');
+			}
+			else
+			{
+				inputElementDiv.setAttribute('style', 'float: left;');
+			}
+			var formElement = document.createElement('form');
+			formElement.setAttribute('onsubmit', 'return commentsFilter();');
+			var inputElementA = document.createElement('a');
+			inputElementA.setAttribute('href', '#');
+			inputElementA.setAttribute('onclick', 'return commentsFilter();');
+			inputElementA.setAttribute('style', 'margin-left: 5px;');
+			inputElementA.setAttribute('class', 'dashed');
+			inputElementA.innerHTML = 'фас!';
+			var inputElement = document.createElement('input');
+			inputElement.setAttribute('type', 'text');
+			inputElement.setAttribute('id', 'js-search-in-comments');
+			inputElement.setAttribute('onchange', 'return commentsFilter();');
+			inputElement.setAttribute('name', 'js-search-in-comments');
+			inputElement.setAttribute('class', 'text_input js-input_default');
+			formElement.appendChild( inputElement );
+			formElement.appendChild( inputElementA );
+			inputElementDiv.appendChild( formElement );
+			headerDiv.insertBefore( inputElementDiv, insertOurHeaderAfter );
+			var inject = document.createElement("script");
+			inject.setAttribute("type", "text/javascript");
+			inject.textContent = commentsFilter + "\n" + commentShowHide;
+			document.body.appendChild( inject );
+		}
+		addBenchmark( time1, 'instant search' );
+	}
+	// end of instant search in comments
 
 }
 
