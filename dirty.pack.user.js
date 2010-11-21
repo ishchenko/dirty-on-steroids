@@ -2222,7 +2222,7 @@ if ( _$.settings.grt_enabled =='1' )
 
 
 	divs = document.querySelector('div.header_logout');
-	if ( divs )
+	if ( divs != null && document.location.href.indexOf("/banned/") == -1 )
 	{
 		divs = document.querySelector('div.header_tagline_inner');
 		var vGreetShow = true;
