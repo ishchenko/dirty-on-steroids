@@ -3100,11 +3100,15 @@ if(_$.settings.user_stats=='1')
 
 //Правим кодировку в бан бложике
 //Greetz to NickJr
-if(_$.settings.ban_encoding=='1'){
-	if(location.pathname.indexOf('/banned')==0 || document.referrer.indexOf('/banned')>-1 || (location.pathname.indexOf('/comments')>-1 && _$.$c('b-tag_add_form').length == 0)){
-		var posts = _$.$c("dt").concat(_$.$c("c_body"));
+if( _$.settings.ban_encoding == '1')
+{
+	if(location.pathname.indexOf('/banned')==0 || document.referrer.indexOf('/banned')>-1 || (location.pathname.indexOf('/comments')>-1 && _$.$c('b-tag_add_form').length == 0))
+	{
+		var posts = _$.$c("dt");
+		var comments = _$.$c("c_body");
 		//problem: the table has collisions
-		var table = {
+		var table = 
+		{
 			'Ð»Ð¾Ð¿Ð°ÑÐ¾Ð¹':'лопатой',
 			'Ð´Ð¾':'до',
 			'Ð·Ð°':'за',
@@ -3185,12 +3189,18 @@ if(_$.settings.ban_encoding=='1'){
 			//some more tries
 			'Ð':'В'
 		};
-
-		for(var i=0;i<posts.length;i++){
+		for( var i = 0; i < posts.length; i++)
+		{
 			txt_str = posts[i].innerHTML;
 			for(var index in table) txt_str = txt_str.split(index).join(table[index]);
 			posts[i].innerHTML = txt_str;
 		}
+		for( var i = 0; i < comments.length; i++)
+		{
+			txt_str = comments[i].innerHTML;
+			for(var index in table) txt_str = txt_str.split(index).join(table[index]);
+			comments[i].innerHTML = txt_str;
+		}		
 	}
 }
 
