@@ -16,7 +16,7 @@
 
 
 * * * * * * * * * * * * * * * * * * * * * * * * * */
-
+var dateToCheck1 = new Date();
 
 var _$ = { 
 
@@ -319,7 +319,7 @@ var _$ = {
 	insertAfter: function (referenceNode, node) {
 		referenceNode.parentNode.insertBefore(node, referenceNode.nextSibling);
 	},
-		
+	
 	$n: function(element){
 		return document.getElementsByName(element);
 	},
@@ -404,6 +404,7 @@ if(!_$.settings.smooth_scroll){
 	}
 }
 if(!_$.settings.dirty_tags){_$.set_save('dirty_tags',1);}
+if(!_$.settings.timings_display){_$.set_save('timings_display',0);}
 if(!_$.settings.comments_threshold){_$.set_save('comments_threshold',0);}
 if(!_$.settings.posts_threshold){_$.set_save('posts_threshold',0);}
 if(!_$.settings.post_content_filter_layout){_$.set_save('post_content_filter_layout',0);}
@@ -415,6 +416,33 @@ if(!_$.settings.new_window){_$.set_save('new_window',1);}
 
 if(!_$.settings.quotes){_$.set_save('quotes',1);}
 //END CONFIG
+
+
+
+if ( _$.settings.timings_display == 1 )
+{
+    var divWithBenchmark = document.createElement('div');
+    divWithBenchmark.setAttribute('id','js-benchmark');
+    divWithBenchmark.setAttribute('style','border: 1px dotted grey; padding: 5px 5px 5px 5px; font-family: verdana, sans-serif; font-size: 10px;');
+    divWithBenchmark.innerHTML = "<table cellspacing=1 cellpadding=1>";
+    document.body.insertBefore( divWithBenchmark, document.body.firstChild );
+}
+
+function addBenchmark( results, name )
+{
+    if ( _$.settings.timings_display == 1 )
+    {
+	    var time2 = new Date();
+        var divBench = document.getElementById('js-benchmark');
+        if ( divBench )
+        {
+            var divWithBenchmark = document.createElement('div');
+            divWithBenchmark.setAttribute('style','font-family: verdana, sans-serif; font-size: 10px;');
+            divWithBenchmark.innerHTML = ( time2 - results ) + " ms   : " + name;
+            divBench.appendChild( divWithBenchmark );
+        }
+    }
+}
 
 if(_$.location.indexOf('/off/')!=0){
 
@@ -431,6 +459,7 @@ if(_$.location.indexOf('/off/')!=0){
 
 	function DSP_make_General_Bar(){
 
+    var time1 = new Date();
 		var dsp_output = dsp_bars = dsp_params = '';
 		var dsp_left_panel = _$.$c('left_col_nav')[0];
 		for(var i=0; i<6; i++){
@@ -449,6 +478,8 @@ if(_$.location.indexOf('/off/')!=0){
 		_$.addEvent(_$.$('dsp_setting_close'),'click',function(){DSP_show_hide_window('_$.settings')});
 		dsp_general_bar = _$.$('dsp_settings_panels');
 		dsp_general_param = _$.$('dsp_settings_props');
+		
+	    addBenchmark( time1, 'setting bar' );		
 	}
 
 
@@ -1767,6 +1798,7 @@ function dsp_tooltip_init(){
 	add_checkbox_event('dsp_c_inbox_text','inbox_text');
 	add_checkbox_event('dsp_c_inbox_recreate','inbox_recreate');
 	add_checkbox_event('dsp_c_ban_encoding','ban_encoding');
+	add_checkbox_event('dsp_c_timings_display','timings_display');
 	
 	_$.addEvent(_$.$('dsp_c_use_picture'),'click',
 	function(){
@@ -1923,7 +1955,8 @@ function DSP_make_content_settings(){
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_tooltip_show_self" type="checkbox" '+((_$.settings.favicon_style=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_tooltip_show_self">Тултип на ссылке возле logout</label></td></tr>';
 		dsp_txt += '</table></div>';
-
+        dsp_txt += '<table><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2: Показывать время выполнения</label></td></tr></table>';
+		
 		DSP_make_Setting_Bar('Tooltip & Misc',dsp_txt,'dsp_tooltip_init()');
 
 	}
@@ -1943,6 +1976,8 @@ function DSP_init(){
 if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1'){
 
 	if(_$.location.indexOf('/user/')<0){
+
+    var time1 = new Date();
 
 		var dsp_elements = _$.$t('a',_$.$('content'));
 
@@ -1973,6 +2008,10 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1'){
 			}
 
 		}
+		
+		
+	addBenchmark( time1, 'favicons' );
+		
 	}
 }
 
@@ -1988,6 +2027,8 @@ if(_$.settings.posts_average=='1'){
 
 	if(_$.location.indexOf('/comments/')==0){
 
+        var time1 = new Date();
+        
 		var dsp_av_res = document.createElement('span');
 		dsp_av_res.id = 'dsp_layer_posts_average';
 		_$.$c('dd')[0].appendChild(dsp_av_res);
@@ -2021,7 +2062,8 @@ if(_$.settings.posts_average=='1'){
 		_$.$('dsp_layer_posts_average').innerHTML += ' | &#216;id '+dsp_ids_count+' | &#216;&#177; '+dsp_votes_count;
 		
 		if(dsp_temp_length>=0)_$.$('dsp_layer_posts_average').innerHTML += ' | '+dsp_average_votes.length+' комментариев'
-		
+
+	addBenchmark( time1, 'post average' );
 	}
 }
 
@@ -2030,7 +2072,11 @@ if(_$.settings.posts_average=='1'){
 
 if(_$.settings.username_replace=='1'){
 
+	var time1 = new Date();
+
 	DSP_replace_username(1);
+
+	addBenchmark( time1, '%username% replace' );
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -2044,6 +2090,8 @@ if(_$.settings.username_replace=='1'){
 if(_$.settings.youtube_fullscreen=='1'){
 
 	if(_$.location.indexOf('/comments/')==0){
+	
+		var time1 = new Date();
 
 		if(_$.$t('object').length>0&&_$.$c('dt')[0].innerHTML.indexOf('value="http://www.youtube.com')>0){
 
@@ -2062,6 +2110,9 @@ if(_$.settings.youtube_fullscreen=='1'){
 			dsp_video_html = dsp_video_html.split(dsp_video_link).join(dsp_video_link+'&hl=ru_RU&fs=1');
 			_$.$t('object')[0].parentNode.innerHTML = dsp_video_html;
 		}
+		
+		
+		addBenchmark( time1, 'youtube fullscreen' );
 	}
 }
 
@@ -2070,6 +2121,7 @@ if(_$.settings.youtube_fullscreen=='1'){
 
 if(_$.settings.colors_on=='1'){
 
+    var time1 = new Date();
 	if(_$.location.indexOf('/comments/')==0||_$.location.indexOf('/news/')==0||(_$.location.indexOf('/my/inbox/')==0&&_$.location!='/my/inbox/')){
 
 		dsp_all_comments = _$.$c('c_footer');
@@ -2077,6 +2129,8 @@ if(_$.settings.colors_on=='1'){
 		DSP_colorize_comments();
 		dsp_jscolor.init();
 	}
+		
+	addBenchmark( time1, 'comments colorizer' );
 }
 
 
@@ -2103,6 +2157,8 @@ var eventDispatcher = document.createElement('div');
 // should be launched as soon as possible after script start
 if ( _$.settings.grt_enabled =='1' )
 {
+	var time1 = new Date();
+    
 	var vGrtLastCheck = new Date();
 	var vGrtLastCheckMsec = localStorage.getItem('vGrtLastCheck' );
 	if ( vGrtLastCheckMsec == null )
@@ -2162,6 +2218,8 @@ if ( _$.settings.grt_enabled =='1' )
 			}
 		}
 	}
+	
+
 
 	divs = document.querySelector('div.header_logout');
 	if ( divs )
@@ -2205,8 +2263,10 @@ if ( _$.settings.grt_enabled =='1' )
 			}
 		}
 	}
+
+	addBenchmark( time1, 'gertrudes & greetings' );
 }
-// end of SCRIPTS-37 & SCRIPTS-29
+// end of SCRIPTS-37 & SCRIPTS-29 
 
 // made by crea7or
 // start of SCRIPTS-60
@@ -2229,6 +2289,7 @@ if ( divRightCol && divTags )
 	}
 }
 // end of SCRIPTS-60
+
 
 // made by crea7or
 // start of SCRIPTS-26
@@ -2356,6 +2417,7 @@ if ( vPrvDiv )
 // modifying inbox users list, inbox header, invites link
 // adding links to banned/music
 //
+    var time1 = new Date();
 	var vTortDupDetected = 0;
 	var vTortAddLinks = document.querySelector('div.header_logout');
 	if ( vTortAddLinks )
@@ -2436,8 +2498,7 @@ if ( vPrvDiv )
 		}
 	}
 // end - part of dirtytort script
-
-
+	addBenchmark( time1, 'dirty tort' );
 //
 // start of the dirty ranks script
 function vRanksGetRankFromNote()
@@ -2634,6 +2695,8 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 }
 else
 {
+    var time1 = new Date();
+    
 	var vRanksArrLocalStore = localStorage.getItem('vRanksStore' );
 	var vRanksLocalStoreArray = new Array;
 	if ( vRanksArrLocalStore )
@@ -2679,6 +2742,9 @@ else
 			}
 		}
 	}
+	
+	addBenchmark( time1, 'dirty ranks' );
+	
 }
 // end of the dirty ranks script
 
@@ -2903,6 +2969,9 @@ if(_$.settings.inbox_text=='1'){
 //make arrows bigger
 if(_$.settings.arrows_on=='1'){
 
+	var time1 = new Date();
+
+
 	function apply_links(element){
 		var array = _$.$c('c_parent',element);
 		for(var i=0; i<array.length; i++){
@@ -2933,6 +3002,9 @@ if(_$.settings.arrows_on=='1'){
 	
 	apply_links(document);
 	_$.addEvent(document,"DOMNodeInserted", documentChanged);
+	
+	addBenchmark( time1, 'triple arrows in comments' );
+	
 }
 
 //recreate inbox link
@@ -3231,6 +3303,7 @@ if(_$.settings.karma_log=='1'){
 	
 //Youtube preview
 if(_$.settings.youtube_preview=='1'){
+        var time1 = new Date();
 		function addPreview(comments){
 			var comment_links = comments.getElementsByTagName('a');
 			var youtube_links = new Array();
@@ -3312,6 +3385,9 @@ if(_$.settings.youtube_preview=='1'){
 
 		//handle new ajax-generated content
 		_$.addEvent(document,"DOMNodeInserted", documentChanged);
+	
+	    addBenchmark( time1, 'youtube preview' );
+	
 	}
 
 
@@ -3444,7 +3520,7 @@ if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.lo
 		}
 	}
 } 	
-// end of formatting buttons	
+// end of formatting buttons
 	
 	
 //dirty tags
@@ -3667,9 +3743,10 @@ if(_$.settings.dirty_tags=='1')
 
 	if( document.location.href.indexOf("comments") > -1 && document.location.href.indexOf("inbox") == -1 )
 	{
+		var time1 = new Date();
 		var loggedUser = document.querySelector('div.header_logout');
 		if ( loggedUser )
-		{
+		{   
 			// add script to the page
 			var tagsRelatedScripts = document.createElement("script");
 			tagsRelatedScripts.type="application/javascript";
@@ -3707,12 +3784,15 @@ if(_$.settings.dirty_tags=='1')
 			newdiv.setAttribute('onclick', "manageTagsOptions()");
 			tagForms[0].appendChild(newdiv);
 
+		    addBenchmark( time1, 'dirtytags settings' );
+		    var time1 = new Date();
+
 			// fast tags part
 			// regexp based on http://leprosorium.ru/users/antyrat script
 			var vTagPattern = /([^:\s\.\>\<][\wа-яёЁ\-\–\—\s\!\?,]+)(\[x\]|\s\[x\]|\s\[х\]|\[х\])+/gi;
 			var vTagReplacement = "$1 [<a href=\"#\" onclick=\"return manageTag(this);\" title=\"$1\" style=\"color: red;\">x</a>]";
 			var vTagStr;
-			var vTagComments = document.getElementsByClassName('c_body');
+			var vTagComments = document.querySelectorAll('div.c_body');
 			var vTagsXPos;
 			var vTagStr;
 			for( var i=0; i < vTagComments.length; i++)
@@ -3737,18 +3817,20 @@ if(_$.settings.dirty_tags=='1')
 					vTagComments[i].innerHTML = vTagStr.replace(vTagPattern, vTagReplacement);
 				}
 			}
+
 			var vTagsAutoSetGold = getItemFromLocalStore('vTagsAutoSetGold', 1 );
 			if ( vTagsAutoSetGold == 1 )
 			{
 				document.onLoad = checkGoldTag();
 			}
+			
+            addBenchmark( time1, 'dirtytags replace' );
 		}
 	}
 }
 
-
-//comment threshold
-if(_$.settings.comments_threshold=='1'){
+	//comment threshold
+	if(_$.settings.comments_threshold=='1'){
 		var _dct = {
 				comments : {},
 				settings : {},
@@ -4478,7 +4560,10 @@ if(_$.settings.comments_threshold=='1'){
 	}
 	
 	//SHARED PART of read-button and new comment scroller
-	if(_$.settings.read_button=='1' || _$.settings.comment_scorller=='1'){
+	if(_$.settings.read_button=='1' || _$.settings.comment_scorller=='1')
+	{
+	    var time1 = new Date();
+	    
 		function removeFromArray(arr, elem){
 			var re = Array();
 			for(var i=0;i<arr.length;i++){
@@ -4817,16 +4902,20 @@ if(_$.settings.comments_threshold=='1'){
 			}
 			
 		}
-	}
+		
+		addBenchmark( time1, 'comments scroll & read button' );
+		
+	}	
 	
 	//quotes
 	if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1)
 	{
+	    var time1 = new Date();
 		var commentsHolder = document.getElementById('js-commentsHolder');
-		var allBodies = commentsHolder.querySelectorAll('div.c_body');
-		var allUsers = commentsHolder.querySelectorAll('a.c_user');
 //		var allBodies = commentsHolder.getElementsByClassName('c_body');
 //		var allUsers = commentsHolder.getElementsByClassName('c_user');
+		var allBodies = commentsHolder.querySelectorAll('div.c_body');
+		var allUsers = commentsHolder.querySelectorAll('a.c_user');
 		for (var key = 0; key < allBodies.length; key++)
 		{
 			var c_inner = allBodies[key].innerHTML;
@@ -4841,9 +4930,12 @@ if(_$.settings.comments_threshold=='1'){
 			link.innerHTML = "в цитатник";
 			allUsers[key].parentNode.appendChild(link);
 		}
+   					
+		addBenchmark( time1, 'quotes' );
 	}
-}	
+	
 
+}
 
 _$.tooltip.init();
 DSP_init();
@@ -4851,3 +4943,5 @@ DSP_init();
 supressEvents = false;
 
 }
+    
+addBenchmark( dateToCheck1, 'grand total' );
