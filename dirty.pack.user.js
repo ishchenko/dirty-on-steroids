@@ -23,6 +23,7 @@ var _$ = {
 	settings: {},
 	location: window.location.href.split(window.location.host)[1],
 
+    // start of SCRIPTS-71
 	set_save: function(name,option)
 	{
 		var settingsString = '[';
@@ -52,6 +53,7 @@ var _$ = {
 			{
 				document.cookie = document.cookie.substr( 0, dspSettings ) + "; domain=.dirty.ru; path=/; expires=Thu, 20-Apr-2023 00:34:13 GMT";
 			}
+			_$.set_save( 0, 0 );
 		}
 		else
 		{
@@ -62,7 +64,8 @@ var _$ = {
 			}
 		}
 	},
-
+    // end of SCRIPTS-71 
+    
 	browser: function(){
 
 		var string = navigator.userAgent.toLowerCase();
