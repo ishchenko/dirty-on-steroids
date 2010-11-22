@@ -31,14 +31,7 @@ var _$ = {
 		{
 			_$.settings[name] = option;
 		}
-		if ( typeof JSON.stringify !== "undefined" )
-		{
-			localStorage.setItem('dirtySp', JSON.stringify(_$.settings));
-		}
-		else
-		{
-			localStorage.setItem('dirtySp', JSON.encode(_$.settings));
-		}
+		localStorage.setItem('dirtySp', _$.jsonStringify(_$.settings));
 		localStorage.setItem('dirtySpClr', escape(_$.settings_colors));
 	},
 	set_get: function()
@@ -55,25 +48,32 @@ var _$ = {
 		}
 		else
 		{
-			var optionsSp2 = localStorage.getItem('dirtySp');
-			if ( optionsSp2 != null )
-			{
-				if ( typeof JSON.parse !== "undefined" )
-				{
-					_$.settings = JSON.parse( optionsSp2 );
-				}
-				else
-				{
-					_$.settings = JSON.decode( optionsSp2 );
-				}
-			}
-			var optionsSp2Clr = localStorage.getItem('dirtySpClr');
-			if ( optionsSp2Clr != null )
-			{
-		    		_$.settings_colors = unescape( optionsSp2Clr );
-			}
+			_$.settings = _$.jsonParse( _$.localStorGetItem('dirtySp', "{}"));
+			var optionsSp2Clr = unescape( _$.localStorGetItem('dirtySpClr', ""));
 	    }
 	},
+	jsonParse: function( valueToParse )
+	{
+		if ( typeof JSON.parse !== "undefined" )
+		{
+			return JSON.parse( valueToParse );
+		}
+		else
+		{
+			return JSON.decode( valueToParse );
+		}
+    },
+	jsonStringify: function( valueToStringify )
+	{
+		if ( typeof JSON.stringify !== "undefined" )
+		{
+			return JSON.stringify( valueToStringify );
+		}
+		else
+		{
+			return JSON.encode( valueToStringify );
+		}
+    },
 	// end of SCRIPTS-71
 	
 	// made by crea7or
@@ -81,10 +81,11 @@ var _$ = {
 	localStorGetItem: function( itemName, defaultValue )
 	{
         var loadedValue = localStorage.getItem( itemName );
-		if ( loadedValue != null )
+		if ( loadedValue == null )
 		{
             loadedValue = defaultValue;
 		}
+		return loadedValue;
 	},
 	
 	browser: function(){
