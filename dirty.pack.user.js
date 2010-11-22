@@ -23,36 +23,48 @@ var _$ = {
 	settings: {},
 	location: window.location.href.split(window.location.host)[1],
 
-	set_save: function(name,option){
-
-		if(option.toString().indexOf('"')>-1){
-			option = option.toString().replace(/"/g,'\\"');
-		}
-
-		if(document.cookie.indexOf('dsp.settings=')>-1){
-			var param = unescape(document.cookie.split('dsp.settings=')[1].split(";")[0]);
-
-			if(param.indexOf(name+':')>0){
-			eval("var temp_name = name+':\"'+_$.settings."+name+".split('\"').join('\\\\\"')+'\"';");
-				param = param.split(temp_name).join(name+':"'+option+'"');
+    // start of SCRIPTS-71
+	set_save: function(name,option)
+	{
+		var settingsString = '[';
+		for(var propertyName in _$.settings ) 
+		{
+			if ( settingsString.length > 1 )
+			{
+				settingsString += ',';
 			}
-			else param = param.split('}').join(','+name+':"'+option+'"}');
-
-			document.cookie = "dsp.settings="+escape(param)+"; domain=.dirty.ru; path=/; expires=Thu, 20-Apr-2023 00:34:13 GMT";
-			eval("_$.settings="+unescape(param));
+			settingsString += '{"';
+			settingsString += propertyName;
+			settingsString += '":"';
+			settingsString += _$.settings[propertyName];
+			settingsString += '"}';
 		}
-		else{
-			document.cookie = "dsp.settings="+escape('{'+name+':"'+option+'"}')+"; domain=.dirty.ru; path=/; expires=Thu, 20-Apr-2023 00:34:13 GMT";
+		settingsString += ']';
+		localStorage.setItem('dirtySp2Settings', settingsString );
+	},
+	set_get: function()
+	{
+		if(document.cookie.indexOf('dsp.settings=')>-1)
+		{
+			var param = unescape( document.cookie.split('dsp.settings=')[1].split(";")[0]);
+			eval("_$.settings="+unescape(param));
+			var dspSettings = document.cookie.indexOf('dsp.settings=');
+			if ( dspSettings > -1 )
+			{
+				document.cookie = document.cookie.substr( 0, dspSettings ) + "; domain=.dirty.ru; path=/; expires=Thu, 20-Apr-2023 00:34:13 GMT";
+			}
+			_$.set_save( 0, 0 );
+		}
+		else
+		{
+			var optionsSp2 = localStorage.getItem('dirtySp2Settings');
+			if ( optionsSp2 != null )
+			{
+				_$.settings = eval( optionsSp2 );
+			}
 		}
 	},
-
-	set_get: function(){
-
-		if(document.cookie.indexOf('dsp.settings=')>-1){
-			var param = unescape(document.cookie.split('dsp.settings=')[1].split(";")[0]);
-			eval("_$.settings="+unescape(param));
-		}
-	},
+    // end of SCRIPTS-71 
     
 	browser: function(){
 
@@ -4722,7 +4734,7 @@ if(_$.settings.dirty_tags=='1')
 					window.setTimeout("var el = document.getElementById('"+getId(recolor)+"'); el.style.backgroundColor = el.getAttribute('oldColor'); el.setAttribute('oldColor', '');", 650);
 					recolor.style.backgroundColor = "#fff48d";
 				}
-				var middle = _$.element_position(elem).y - Math.round(_$.viewarea_size().y/2);
+				var middle = _$.element_position(elem).y + Math.round(elem.clientHeight/2) - Math.round(_$.viewarea_size().y/2);
 				//
 				if(_$.settings.smooth_scroll=='1'){
 					smoothScroll(middle);
