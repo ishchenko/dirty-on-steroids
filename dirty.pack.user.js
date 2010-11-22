@@ -8,7 +8,6 @@
 // @include       http://dirty.ru/*
 // @include       http://*.dirty.ru/*
 // ==/UserScript==
-
  
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -18,7 +17,7 @@
 var dateToCheck1 = new Date();
 
 var _$ = { 
-	buildtime: 1290462986,
+	buildtime: 1290469174,
 	settings: {},
 	settings_colors: "",
 	location: window.location.href.split(window.location.host)[1],
