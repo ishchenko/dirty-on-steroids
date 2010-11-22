@@ -2330,20 +2330,20 @@ if ( _$.settings.grt_enabled =='1' )
 // start of SCRIPTS-60
 var divRightCol = document.querySelector('div.content_right');
 var divTags = document.getElementById('js-tags');
-if ( divRightCol && divTags )
+var divAds = divRightCol.querySelector('div.b-ads');
+if ( divRightCol && divTags && divAds)
 {
 	var newsFromD3search = localStorage.getItem('vStickers');
 	if ( newsFromD3search != null )
 	{
-		var divAds = document.querySelector('div.b-ads');
-		divAds.setAttribute('style', 'height: 0px;');
+		divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 		var divForNews = document.createElement('div');
 		divForNews.setAttribute('style','clear: both; float: right; position: relative; width: 290px; margin: 5px 5px 5px 5px; background: #fff; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -khtml-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); z-index: 20; ');
 		var subDivForNews = document.createElement('div');
 		subDivForNews.setAttribute('style','padding: 5px 5px 5px 5px;');
-		subDivForNews.innerHTML = unescape( newsFromD3search );
+		subDivForNews.innerHTML = newsFromD3search;
 		divForNews.appendChild( subDivForNews );
-		divRightCol.insertBefore( divForNews, divTags );
+		divRightCol.insertBefore( divForNews, divAds );
 	}
 }
 // end of SCRIPTS-60
