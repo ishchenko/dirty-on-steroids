@@ -1,14 +1,14 @@
 #!/usr/bin/perl
-
+print("Starting pre-commit hook\n");
 $filename = "dirty.pack.user.js";
 open ( FILE, $filename) or die "Cannot open file: $!";
 
 $found = 0;
 while ( $line = <FILE> ) {
-    if ($linea =~ m/	buildtime:(.+)/) {
+    if ($line =~ m/	buildtime:(.+)/) {
 			$time = time();
 			$found = 1;
-			push(@outLines, "	buildtime: ".$time.",");
+			push(@outLines, "	buildtime: ".$time.",\n");
 			print("Set buildtime to " . $time . ".\n");
 		}else{
 			push(@outLines, $line);
