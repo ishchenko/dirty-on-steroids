@@ -2207,7 +2207,6 @@ if(_$.settings.colors_on=='1'){
 
 		Service Pack 2
 
-
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 //SP 2, NEW SCRIPTS START HERE
 //STEP FOUR
@@ -2223,11 +2222,11 @@ var eventDispatcher = document.createElement('div');
 // made by crea7or
 // fetching data from d3search - every 12 hours
 var d3sCurDate = new Date();
-if (( d3sCurDate.getTime() - _$.localStorGetItem('d3sLastLoadTime', 0 )) > 1000 * 60 * 60 * 12 )
+if (( d3sCurDate.getTime() - _$.localStorGetItem('lastD3sFetchTimestamp', 0 )) > 1000 * 60 * 60 * 12 )
 {
 	// add script to the page and fetch new gertrudas
 	_$.injectScriptUrl('http://api.d3search.ru/gertrudas');
-	localStorage.setItem('d3sLastLoadTime', d3sCurDate.getTime());
+	localStorage.setItem('lastD3sFetchTimestamp', d3sCurDate.getTime());
 }	
 // end of loading data
 
