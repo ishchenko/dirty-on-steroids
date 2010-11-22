@@ -440,6 +440,8 @@ if( typeof _$.settings.smooth_scroll == "undefined")
 	}
 }
 if( typeof _$.settings.dirty_tags == "undefined") { _$.settings.dirty_tags = 1; settingsSave = true; }
+if( typeof _$.settings.dirty_tags_autogold == "undefined") { _$.settings.dirty_tags_autogold = 1; settingsSave = true; }
+if( typeof _$.settings.dirty_tags_hidetags == "undefined") { _$.settings.dirty_tags_hidetags = 1; settingsSave = true; }
 if( typeof _$.settings.timings_display == "undefined") { _$.settings.timings_display = 0; settingsSave = true; }
 if( typeof _$.settings.comments_threshold == "undefined") { _$.settings.comments_threshold = 0; settingsSave = true; }
 if( typeof _$.settings.posts_threshold == "undefined") { _$.settings.posts_threshold = 0; settingsSave = true; }
@@ -1812,7 +1814,16 @@ function dsp_posts_init(){
 	add_checkbox_event('dsp_c_posts_threshold_use_or','posts_threshold_use_or');
 
 	add_checkbox_event('dsp_c_read_button','read_button');
-	add_checkbox_event('dsp_c_dirty_tags','dirty_tags');
+//	add_checkbox_event('dsp_c_dirty_tags','dirty_tags');
+    _$.addEvent(_$.$('dsp_c_dirty_tags'),'click',
+	function(){
+		DSP_show_hide_menu('dsp_l_dirty_tags');
+		if(_$.$('dsp_c_dirty_tags').checked===true) _$.set_save('dirty_tags',1);
+		else _$.set_save('dirty_tags',0);
+	});	
+	add_checkbox_event('dsp_c_dirty_tags_hidetags','dirty_tags_hidetags');
+	add_checkbox_event('dsp_c_dirty_tags_autogold','dirty_tags_autogold');
+	
 	add_checkbox_event('dsp_c_instant_search','instant_search');	
 
 	_$.addEvent(_$.$('dsp_c_posts_average'),'click',
@@ -1960,6 +1971,12 @@ function DSP_make_content_settings(){
 		
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dirty_tags" type="checkbox" '+((_$.settings.dirty_tags=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dirty_tags">SP2: Dirty Tags</label></td></tr>';
+		dsp_txt += '</table>';	
+		dsp_txt += '<div id="dsp_l_dirty_tags" style="display:'+((_$.settings.dirty_tags=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left: 25px;">';
+		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_dirty_tags_autogold" type="checkbox" '+((_$.settings.dirty_tags_autogold=='1')?'checked="checked"':'')+'></td><td><label for="dsp_c_dirty_tags_autogold">Ставить автоматически "Золотой пост"</label></td></tr>';
+		dsp_txt += '<tr><td align="right"><input id="dsp_c_dirty_tags_hidetags" type="checkbox" '+((_$.settings.dirty_tags_hidetags=='1')?'checked="checked"':'')+'></td><td><label for="dsp_c_dirty_tags_hidetags">Прятать список тегов под ссылку</label></td></tr>';
+		dsp_txt += '</table></div>';
+		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_instant_search" type="checkbox" '+((_$.settings.instant_search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_instant_search">SP2: Поиск по комментариям в постах</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_read_button" type="checkbox" '+((_$.settings.read_button=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_read_button">SP2: Кнопка прочтения новых комментариев</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_average" type="checkbox" '+((_$.settings.posts_average=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_average">Показывать средние ID и оценку</label></td></tr>';
@@ -3611,45 +3628,7 @@ if(_$.settings.dirty_tags=='1')
 		}
 		return false;
 	}
-	function manageTagsOptions()
-	{
-		var ourTagsDivCheck = document.getElementById('js-vtags-settings');
-		if (ourTagsDivCheck == null )
-		{
-			var tagsDivAtDirty = document.querySelector('div.b-i-tags_comments_page');
-			if ( tagsDivAtDirty )
-			{
-				// load options
-				var vTagsFloatCloud = getItemFromLocalStore('vTagsFloatCloud', 1 );
-				var vTagsAutoSetGold = getItemFromLocalStore('vTagsAutoSetGold', 1 );
-				// create options to edit
-				newdiv = document.createElement('div');
-				newdiv.setAttribute('style', 'font-size: 12px;');
-				newdiv.setAttribute('id','js-vtags-settings');
-				var vTagsSettings = "<form><label><input type=\"checkbox\" id=\"vtags-float-cloud\" onchange=\" var e = document.getElementById('vtags-float-cloud'); if ( e.checked == true ) { localStorage.setItem('vTagsFloatCloud', 1 ); } else {  localStorage.setItem('vTagsFloatCloud', 0 ); return false; } \"";
-				if ( vTagsFloatCloud == 1 )
-				{
-					vTagsSettings += " checked";
-				}
-				vTagsSettings += ">скрывать теги под ссылкой</label></form>";
 		
-				vTagsSettings += "<form><label><input type=\"checkbox\" id=\"vtags-autoset-gold\" onchange=\" var e = document.getElementById('vtags-autoset-gold'); if ( e.checked == true ) { localStorage.setItem('vTagsAutoSetGold', 1 ); } else {  localStorage.setItem('vTagsAutoSetGold', 0 ); return false; } \"";
-				if ( vTagsAutoSetGold == 1 )
-				{
-					vTagsSettings += " checked";
-				}
-				vTagsSettings += ">автоматически ставить 'Золотой пост'</label></form><br><br>";
-				newdiv.innerHTML = vTagsSettings;
-				tagsDivAtDirty.appendChild(newdiv);
-			}
-		}
-		else
-		{
-			ourTagsDivCheck.parentNode.removeChild( ourTagsDivCheck );
-		}
-		return false;
-	}
-	
 	function manageOwnTags()
 	{
 		var ourTagsDivCheck = document.getElementById('js-vtags-textarea');
@@ -3783,15 +3762,6 @@ if(_$.settings.dirty_tags=='1')
 		}
 		return false;
 	}
-	function getItemFromLocalStore( itemName, defaultValue )
-	{
-		var tempValue = localStorage.getItem( itemName );
-		if ( tempValue == null )
-		{
-			tempValue = defaultValue;
-		}
-		return tempValue;
-	}
 
 	// set gold tag
 	function checkGoldTag()
@@ -3819,10 +3789,9 @@ if(_$.settings.dirty_tags=='1')
 			// add script to the page
 			var tagsRelatedScripts = document.createElement("script");
 			tagsRelatedScripts.type="application/javascript";
-			tagsRelatedScripts.textContent = manageTag + "\n" + manageTagsList + "\n" + getItemFromLocalStore + "\n" + manageTagsOptions + "\n" + manageOwnTags;
+			tagsRelatedScripts.textContent = manageTag + "\n" + manageTagsList + "\n" + manageOwnTags;
 			document.body.appendChild( tagsRelatedScripts );
-			var vTagsFloatCloud = getItemFromLocalStore('vTagsFloatCloud', 1 );
-			if ( vTagsFloatCloud == 1 )
+			if ( _$.settings.dirty_tags_hidetags == 1 )
 			{
 				var tagsDivAtDirty = document.querySelector('div.b-i-tags_comments_page');
 				var divWithLinkToTags = document.createElement('div');
@@ -3843,13 +3812,6 @@ if(_$.settings.dirty_tags=='1')
 			newdiv.setAttribute('href', '#');
 			newdiv.innerHTML = "<img src=\"http://pit.dirty.ru/dirty/1/2010/07/18/28284-162705-21ac0118341f8bfd711a91b3a893af67.png\" width=\"16\" height=\"16\" border=\"0\">";
 			newdiv.setAttribute('onclick', "manageOwnTags()");
-			tagForms[0].appendChild(newdiv);
-			newdiv = document.createElement('a');
-			newdiv.setAttribute('style', 'margin-left: 10px;');
-			newdiv.setAttribute('class', 'dashed');
-			newdiv.setAttribute('href', '#');
-			newdiv.innerHTML = "<img src=\"http://pit.dirty.ru/dirty/1/2010/07/18/28284-165149-fb96462198f99265989370ce36a58246.png\" width=\"16\" height=\"16\" border=\"0\">";
-			newdiv.setAttribute('onclick', "manageTagsOptions()");
 			tagForms[0].appendChild(newdiv);
 
 		    addBenchmark( time1, 'dirtytags settings' );
@@ -3886,8 +3848,7 @@ if(_$.settings.dirty_tags=='1')
 				}
 			}
 
-			var vTagsAutoSetGold = getItemFromLocalStore('vTagsAutoSetGold', 1 );
-			if ( vTagsAutoSetGold == 1 )
+			if ( _$.settings.dirty_tags_autogold == 1 )
 			{
 				document.onLoad = checkGoldTag();
 			}
