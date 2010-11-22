@@ -4259,7 +4259,7 @@ if(_$.settings.dirty_tags=='1')
 				
 				getElementsByClassAndTag : function(name, tag, obj) {
 						var obj = obj||document;
-						var result = "[]";						
+						var result = new Array();					
 						var allElements = obj.getElementsByTagName(tag);
 						for(var i=0; i<allElements.length; i++){
 								if(allElements[i].className && allElements[i].className==name){
