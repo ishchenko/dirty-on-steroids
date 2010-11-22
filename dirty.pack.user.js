@@ -20,18 +20,25 @@ var dateToCheck1 = new Date();
 var _$ = { 
 
 	settings: {},
-	settings_colors: "[]",
+	settings_colors: "",
 	location: window.location.href.split(window.location.host)[1],
 
-  // made by crea7or
-  // start of SCRIPTS-71
+    // made by crea7or
+    // start of SCRIPTS-71
 	set_save: function(name,option)
 	{
-        if ( name != null )
-        {
-            _$.settings[name] = option;
-        }
-		localStorage.setItem('dirtySp', JSON.stringify(_$.settings));
+		if ( name != null )
+		{
+			_$.settings[name] = option;
+		}
+		if ( typeof JSON.stringify !== "undefined" )
+		{
+			localStorage.setItem('dirtySp', JSON.stringify(_$.settings));
+		}
+		else
+		{
+			localStorage.setItem('dirtySp', JSON.encode(_$.settings));
+		}
 		localStorage.setItem('dirtySpClr', escape(_$.settings_colors));
 	},
 	set_get: function()
@@ -51,16 +58,23 @@ var _$ = {
 			var optionsSp2 = localStorage.getItem('dirtySp');
 			if ( optionsSp2 != null )
 			{
-				_$.settings = JSON.parse( optionsSp2 );
+				if ( typeof JSON.parse !== "undefined" )
+				{
+					_$.settings = JSON.parse( optionsSp2 );
+				}
+				else
+				{
+					_$.settings = JSON.decode( optionsSp2 );
+				}
 			}
 			var optionsSp2Clr = localStorage.getItem('dirtySpClr');
 			if ( optionsSp2Clr != null )
 			{
-		    	_$.settings_colors = unescape( optionsSp2Clr );
-		    }			
+		    		_$.settings_colors = unescape( optionsSp2Clr );
+			}			
 		}
-	},
-    // end of SCRIPTS-71 
+	}, 
+	// end of SCRIPTS-71 
 
 	browser: function(){
 
@@ -1994,10 +2008,11 @@ function DSP_make_content_settings(){
 		dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_tooltip_on" type="checkbox" '+((_$.settings.tooltip_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_tooltip_on">Включить Dirty Tooltip</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_tooltip" style="display:'+((_$.settings.tooltip_on=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left: 25px;">';
-		dsp_txt += '<input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
-		dsp_txt += '<tr><td valign="top"><input id="dsp_c_tooltip_show_self" type="checkbox" '+((_$.settings.favicon_style=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_tooltip_show_self">Тултип на ссылке возле logout</label></td></tr>';
+		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
+		dsp_txt += '<tr><td align="right"><input id="dsp_c_tooltip_show_self" type="checkbox" '+((_$.settings.favicon_style=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_tooltip_show_self">Тултип на ссылке возле logout</label></td></tr>';
 		dsp_txt += '</table></div>';
-        dsp_txt += '<table><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2: Показывать время выполнения</label></td></tr></table>';
+        dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2: Показывать время выполнения</label></td></tr>';
+		dsp_txt += '</table>';
 		
 		DSP_make_Setting_Bar('Tooltip & Misc',dsp_txt,'dsp_tooltip_init()');
 
