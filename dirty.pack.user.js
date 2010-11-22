@@ -2342,7 +2342,8 @@ if ( divRightCol && divTags)
 		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
 		var subDivForNews = document.createElement('div');
 		//subDivForNews.setAttribute('style','padding: 5px 5px 5px 5px;');
-		subDivForNews.innerHTML = '<div class="subs_ads"><div class="subs_ads_inner"><div class="subs_block">'+newsFromD3search+'</div></div><div class="subs_ads_bottom_bg"></div></div>';
+		subDivForNews.innerHTML = '<a class="vote_details_close" style="top: 10px;" href="#"></a>';
+		subDivForNews.innerHTML += '<div class="subs_ads"><div class="subs_ads_inner" style="margin-top: -10px;"><div class="subs_block">'+newsFromD3search+'</div></div><div class="subs_ads_bottom_bg"></div></div>';
 		divForNews.appendChild( subDivForNews );
 		divRightCol.insertBefore( divForNews, divAds );
 	}
