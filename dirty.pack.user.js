@@ -2338,10 +2338,11 @@ if ( divRightCol && divTags && divAds)
 	{
 		divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 		var divForNews = document.createElement('div');
-		divForNews.setAttribute('style','clear: both; float: right; position: relative; width: 290px; margin: 5px 5px 5px 5px; background: #fff; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -khtml-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); z-index: 20; ');
+		//divForNews.setAttribute('style','float: right; width: 290px; margin: 5px 5px 5px 5px; background: #fff; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -khtml-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); z-index: 20; ');
+		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-105px;');
 		var subDivForNews = document.createElement('div');
-		subDivForNews.setAttribute('style','padding: 5px 5px 5px 5px;');
-		subDivForNews.innerHTML = newsFromD3search;
+		//subDivForNews.setAttribute('style','padding: 5px 5px 5px 5px;');
+		subDivForNews.innerHTML = '<div class="subs_ads"><div class="subs_ads_inner"><div class="subs_block">'+newsFromD3search+'</div></div><div class="subs_ads_bottom_bg"></div></div>';
 		divForNews.appendChild( subDivForNews );
 		divRightCol.insertBefore( divForNews, divAds );
 	}
