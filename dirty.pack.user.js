@@ -71,11 +71,22 @@ var _$ = {
 			if ( optionsSp2Clr != null )
 			{
 		    		_$.settings_colors = unescape( optionsSp2Clr );
-			}			
+			}
+	    }
+	},
+	// end of SCRIPTS-71
+	
+	// made by crea7or
+	//loading from a localStorage with default value instead of null
+	localStorGetItem: function( itemName, defaultValue )
+	{
+        var loadedValue = localStorage.getItem( itemName );
+		if ( loadedValue != null )
+		{
+            loadedValue = defaultValue;
 		}
-	}, 
-	// end of SCRIPTS-71 
-
+	},
+	
 	browser: function(){
 
 		var string = navigator.userAgent.toLowerCase();
@@ -2210,37 +2221,27 @@ if(_$.settings.colors_on=='1'){
 var eventDispatcher = document.createElement('div');
 
 // made by crea7or
+// fetching data from d3search - every 12 hours
+var d3sCurDate = new Date();
+if (( d3sCurDate.getTime() - _$.localStorGetItem('d3sLastLoadTime', 0 )) > 1000 * 60 * 60 * 12 )
+{
+	// add script to the page and fetch new gertrudas
+	_$.injectScriptUrl('http://api.d3search.ru/gertrudas');
+	localStorage.setItem('d3sLastLoadTime', d3sCurDate.getTime());
+}	
+// end of loading data
+
+// made by crea7or
 // start of SCRIPTS-37 & SCRIPTS-29
 // should be launched as soon as possible after script start
 if ( _$.settings.grt_enabled =='1' )
 {
 	var time1 = new Date();
-    
-	var vGrtLastCheck = new Date();
-	var vGrtLastCheckMsec = localStorage.getItem('vGrtLastCheck' );
-	if ( vGrtLastCheckMsec == null )
-	{
-		localStorage.setItem('vGrtLastCheck', vGrtLastCheck.getTime());
-		vGrtLastCheck.setTime( 0 );
-	}
-	else
-	{	
-		vGrtLastCheck.setTime( vGrtLastCheckMsec );
-	}
 
-	var vGrtCurDate = new Date();
-	if (( vGrtCurDate.getTime() - vGrtLastCheck.getTime()) > 1000 * 60 * 60 * 6 )
-	{
-		// add script to the page and fetch new gertrudes
-		_$.injectScriptUrl('http://api.d3search.ru/gertrudas');
-		localStorage.setItem('vGrtLastCheck', vGrtCurDate.getTime());
-	}
-	
 	var divs = document.querySelector('div.gertruda');
 	if ( divs )
 	{
-		var vGrtShow = true;
-	
+		var vGrtShow = true;	
 		// random or only new
 		if ( _$.settings.grt_random == '1' )
 		{
@@ -2276,8 +2277,6 @@ if ( _$.settings.grt_enabled =='1' )
 			}
 		}
 	}
-	
-
 
 	divs = document.querySelector('div.header_logout');
 	if ( divs != null && document.location.href.indexOf("/banned/") == -1 )
@@ -2292,7 +2291,6 @@ if ( _$.settings.grt_enabled =='1' )
 				vGreetShow = false;
 			}
 		}
-
 		if ( vGreetShow )
 		{
 			var vGreets = localStorage.getItem('vHellos');
