@@ -8,7 +8,7 @@ while ( $line = <FILE> ) {
     if ($line =~ m/	buildtime:(.+)/) {
 			$time = time();
 			$found = 1;
-			push(@outLines, "	buildtime: ".$time.",\n");
+			push(@outLines, "	buildtime: ".$time.",\r\n");
 			print("Set buildtime to " . $time . ".\n");
 		}else{
 			push(@outLines, $line);
@@ -21,3 +21,5 @@ if($found == 0){die "Buildtime marker not found in js file";}
 open ( OUTFILE, ">$filename" );
 print ( OUTFILE @outLines );
 close ( OUTFILE );
+
+exec ('git add dirty.pack.user.js')
