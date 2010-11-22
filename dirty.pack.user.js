@@ -2120,7 +2120,7 @@ if(_$.settings.posts_average=='1'){
 		
 		if(dsp_temp_length>=0)_$.$('dsp_layer_posts_average').innerHTML += ' | '+dsp_average_votes.length+' комментариев'
 
-	addBenchmark( time1, 'post average' );
+	    addBenchmark( time1, 'post average' );
 	}
 }
 
