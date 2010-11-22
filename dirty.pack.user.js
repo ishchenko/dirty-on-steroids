@@ -14,58 +14,54 @@
 
 		Funtions and Params
 
-
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 var dateToCheck1 = new Date();
 
 var _$ = { 
 
 	settings: {},
+	settings_colors: "[]",
 	location: window.location.href.split(window.location.host)[1],
 
-    // start of SCRIPTS-71
+  // made by crea7or
+  // start of SCRIPTS-71
 	set_save: function(name,option)
 	{
-		var settingsString = '[';
-		for(var propertyName in _$.settings ) 
-		{
-			if ( settingsString.length > 1 )
-			{
-				settingsString += ',';
-			}
-			settingsString += '{"';
-			settingsString += propertyName;
-			settingsString += '":"';
-			settingsString += _$.settings[propertyName];
-			settingsString += '"}';
-		}
-		settingsString += ']';
-		localStorage.setItem('dirtySp2Settings', settingsString );
+        if ( name != null )
+        {
+            _$.settings[name] = option;
+        }
+		localStorage.setItem('dirtySp', JSON.stringify(_$.settings));
+		localStorage.setItem('dirtySpClr', escape(_$.settings_colors));
 	},
 	set_get: function()
 	{
-		if(document.cookie.indexOf('dsp.settings=')>-1)
+		if( document.cookie.indexOf('dsp.settings=')>-1)
 		{
 			var param = unescape( document.cookie.split('dsp.settings=')[1].split(";")[0]);
 			eval("_$.settings="+unescape(param));
-			var dspSettings = document.cookie.indexOf('dsp.settings=');
-			if ( dspSettings > -1 )
-			{
-				document.cookie = document.cookie.substr( 0, dspSettings ) + "; domain=.dirty.ru; path=/; expires=Thu, 20-Apr-2023 00:34:13 GMT";
-			}
-			_$.set_save( 0, 0 );
+			document.cookie = "dsp.settings=1; domain=.dirty.ru; path=/; expires=Thu, 01-Jan-1970 00:34:13 GMT";
+			document.cookie = "posts_thresh.settings=1; domain=.dirty.ru; path=/; expires=Thu, 01-Jan-1970 00:34:13 GMT";
+			document.cookie = "comm_thresh.settings=1; domain=.dirty.ru; path=/; expires=Thu, 01-Jan-1970 00:34:13 GMT";
+			_$.settings_colors = _$.settings.colors;
+			delete _$.settings.colors['colors'];
 		}
 		else
 		{
-			var optionsSp2 = localStorage.getItem('dirtySp2Settings');
+			var optionsSp2 = localStorage.getItem('dirtySp');
 			if ( optionsSp2 != null )
 			{
-				_$.settings = eval( optionsSp2 );
+				_$.settings = JSON.parse( optionsSp2 );
 			}
+			var optionsSp2Clr = localStorage.getItem('dirtySpClr');
+			if ( optionsSp2Clr != null )
+			{
+		    	_$.settings_colors = unescape( optionsSp2Clr );
+		    }			
 		}
 	},
     // end of SCRIPTS-71 
-    
+
 	browser: function(){
 
 		var string = navigator.userAgent.toLowerCase();
@@ -382,51 +378,75 @@ var _$ = {
 //BEGIN CONFIG
 _$.set_get();
 
-if(!_$.settings.use_pictures) _$.set_save('use_pictures',1);
-if(!_$.settings.username_replace) _$.set_save('username_replace',0);
-if(!_$.settings.posts_average) _$.set_save('posts_average',0);
-if(!_$.settings.youtube_fullscreen) _$.set_save('youtube_fullscreen',1);
-if(!_$.settings.tooltip_on) _$.set_save('tooltip_on',1);
-if(!_$.settings.tooltip_show_self) _$.set_save('tooltip_show_self',1);
-if(!_$.settings.favicon_on){_$.set_save('favicon_on',1);_$.set_save('favicon_style',0);}
-if(!_$.settings.colors_on) _$.set_save('colors_on',0);
-if(!_$.settings.colors_border) _$.set_save('colors_border',1);
-if(!_$.settings.colors){_$.set_save('colors','[]');}
+var settingsSave = false;
+if( typeof _$.settings.use_pictures == "undefined") { _$.settings.use_pictures = 1; settingsSave = true; }
+if( typeof _$.settings.username_replace == "undefined") { _$.settings.username_replace = 0; settingsSave = true; }
+if( typeof _$.settings.posts_average == "undefined") { _$.settings.posts_average = 0; settingsSave = true; }
+if( typeof _$.settings.youtube_fullscreen == "undefined") { _$.settings.youtube_fullscreen = 1; settingsSave = true; }
+if( typeof _$.settings.tooltip_on == "undefined") { _$.settings.tooltip_on = 1; settingsSave = true; };
+if( typeof _$.settings.tooltip_show_self == "undefined") { _$.settings.tooltip_show_self = 1; settingsSave = true; }
+if( typeof _$.settings.favicon_on == "undefined") { _$.settings.favicon_on = 1; _$.settings.favicon_style = 0; settingsSave = true; }
+if( typeof _$.settings.colors_on == "undefined") { _$.settings.colors_on = 0; settingsSave = true; }
+if( typeof _$.settings.colors_border == "undefined") { _$.settings.colors_border = 1; settingsSave = true; }
+//if( typeof _$.settings_colors.length < 1 ) { _$.settings_colors = '[]'; settingsSave = true; }
 //SP2 adding scripts - STEP ONE
-if(!_$.settings.grt_enabled) _$.set_save('grt_enabled',1);
-if(!_$.settings.grt_random) _$.set_save('grt_random',1);
-if(!_$.settings.online_enabled) _$.set_save('online_enabled',1);
-if(!_$.settings.instant_search) _$.set_save('instant_search',1);
-if(!_$.settings.inbox_text){_$.set_save('inbox_text',1);}
-if(!_$.settings.arrows_on){_$.set_save('arrows_on',1);}
-if(!_$.settings.inbox_recreate){_$.set_save('inbox_recreate',1);}
-if(!_$.settings.user_stats){_$.set_save('user_stats',1);}
-if(!_$.settings.ban_encoding){_$.set_save('ban_encoding',1);}
-if(!_$.settings.links_test){_$.set_save('links_test',1);}
-if(!_$.settings.d3search){_$.set_save('d3search',1);}
-if(!_$.settings.karma_log){_$.set_save('karma_log',1);}
-if(!_$.settings.youtube_preview){_$.set_save('youtube_preview',1);}
-if(!_$.settings.read_button){_$.set_save('read_button',1);}
-if(!_$.settings.comment_scroller){_$.set_save('comment_scroller',1);}
-if(!_$.settings.smooth_scroll){
+if( typeof _$.settings.grt_enabled == "undefined") { _$.settings.grt_enabled = 1; settingsSave = true; }
+if( typeof _$.settings.grt_random == "undefined") { _$.settings.grt_random = 1; settingsSave = true; }
+if( typeof _$.settings.online_enabled == "undefined") { _$.settings.online_enabled = 1; settingsSave = true; }
+if( typeof _$.settings.instant_search == "undefined") { _$.settings.instant_search = 1; settingsSave = true; }
+if( typeof _$.settings.inbox_text == "undefined") { _$.settings.inbox_text = 1; settingsSave = true; }
+if( typeof _$.settings.arrows_on == "undefined") { _$.settings.arrows_on = 1; settingsSave = true; }
+if( typeof _$.settings.inbox_recreate == "undefined") { _$.settings.inbox_recreate = 1; settingsSave = true; }
+if( typeof _$.settings.user_stats == "undefined") { _$.settings.user_stats = 1; settingsSave = true; }
+if( typeof _$.settings.ban_encoding == "undefined") { _$.settings.ban_encoding = 1; settingsSave = true; }
+if( typeof _$.settings.links_test == "undefined") { _$.settings.links_test = 1; settingsSave = true; }
+if( typeof _$.settings.d3search == "undefined") { _$.settings.d3search = 1; settingsSave = true; }
+if( typeof _$.settings.karma_log == "undefined") { _$.settings.karma_log = 1; settingsSave = true; }
+if( typeof _$.settings.youtube_preview == "undefined") { _$.settings.youtube_preview = 1; settingsSave = true; }
+if( typeof _$.settings.read_button == "undefined") { _$.settings.read_button = 1; settingsSave = true; }
+if( typeof _$.settings.comment_scroller == "undefined") { _$.settings.comment_scroller = 1; settingsSave = true; }
+							
+if( typeof _$.settings.smooth_scroll == "undefined")
+{
 	if(_$.browser().name == "chrome"){
-		_$.set_save('smooth_scroll',0);
+		{ _$.settings.smooth_scroll = 0; settingsSave = true; };
 	}else{
-		_$.set_save('smooth_scroll',1);
+		{ _$.settings.smooth_scroll = 1; settingsSave = true; };
 	}
 }
-if(!_$.settings.dirty_tags){_$.set_save('dirty_tags',1);}
-if(!_$.settings.timings_display){_$.set_save('timings_display',0);}
-if(!_$.settings.comments_threshold){_$.set_save('comments_threshold',0);}
-if(!_$.settings.posts_threshold){_$.set_save('posts_threshold',0);}
-if(!_$.settings.post_content_filter_layout){_$.set_save('post_content_filter_layout',0);}
-if(!_$.settings.posts_threshold_use_or){_$.set_save('posts_threshold_use_or',0);}
-if(!_$.settings.allow_reverse_list){_$.set_save('allow_reverse_list',1);}
+if( typeof _$.settings.dirty_tags == "undefined") { _$.settings.dirty_tags = 1; settingsSave = true; }
+if( typeof _$.settings.timings_display == "undefined") { _$.settings.timings_display = 0; settingsSave = true; }
+if( typeof _$.settings.comments_threshold == "undefined") { _$.settings.comments_threshold = 0; settingsSave = true; }
+if( typeof _$.settings.posts_threshold == "undefined") { _$.settings.posts_threshold = 0; settingsSave = true; }
+if( typeof _$.settings.post_content_filter_layout == "undefined") { _$.settings.post_content_filter_layout = 0; settingsSave = true; }
+if( typeof _$.settings.posts_threshold_use_or == "undefined") { _$.settings.posts_threshold_use_or = 0; settingsSave = true; }
+if( typeof _$.settings.allow_reverse_list == "undefined") { _$.settings.allow_reverse_list = 1; settingsSave = true; }
+//posts & comments threshold
+if( typeof _$.settings.threshold == "undefined") { _$.settings.threshold = 0; settingsSave = true; }
+if( typeof _$.settings.thresh_comm_count == "undefined") { _$.settings.thresh_comm_count = 0; settingsSave = true; }
+if( typeof _$.settings.thresh_step == "undefined") { _$.settings.thresh_step = 100; settingsSave = true; }
+if( typeof _$.settings.opt_count == "undefined") { _$.settings.opt_count = 4; settingsSave = true; }
+if( typeof _$.settings.show_posts == "undefined") { _$.settings.show_posts = 1; settingsSave = true; }
+if( typeof _$.settings.show_video == "undefined") { _$.settings.show_video = 1; settingsSave = true; }
+if( typeof _$.settings.show_photo == "undefined") { _$.settings.show_photo = 1; settingsSave = true; }
+if( typeof _$.settings.show_audio == "undefined") { _$.settings.show_audio = 1; settingsSave = true; }
+if( typeof _$.settings.cmnt_threshold == "undefined") { _$.settings.cmnt_threshold = -1000; settingsSave = true; }
+if( typeof _$.settings.cmnt_thresh_type == "undefined") { _$.settings.cmnt_thresh_type = 1; settingsSave = true; }
+if( typeof _$.settings.cmnt_thresh_step == "undefined") { _$.settings.cmnt_thresh_step = 10; settingsSave = true; }
+if( typeof _$.settings.cmnt_opt_count == "undefined") { _$.settings.cmnt_opt_count = 4; settingsSave = true; }
+if( typeof _$.settings.cmnt_picts_always == "undefined") { _$.settings.cmnt_picts_always = 0; settingsSave = true; }
+//posts & comments tresh
 
-if(!_$.settings.own_threshold){_$.set_save('own_threshold',0);}
-if(!_$.settings.new_window){_$.set_save('new_window',1);}
+if( typeof _$.settings.own_threshold == "undefined"){ _$.settings.own_threshold = 0; settingsSave = true; }
+if( typeof _$.settings.new_window == "undefined"){ _$.settings.new_window = 1; settingsSave = true; }
 
-if(!_$.settings.quotes){_$.set_save('quotes',1);}
+if( typeof _$.settings.quotes == "undefined") { _$.settings.quotes = 1; settingsSave = true; }
+
+if ( settingsSave )
+{
+    _$.set_save( null , 0);
+}
+
 //END CONFIG
 
 
@@ -671,15 +691,22 @@ function DSP_color_remove(obj){
 
 	var user = _$.$t('a',obj.parentNode.parentNode.parentNode)[1].innerHTML;
 
-	eval('var temp_array='+_$.settings.colors);
-
-	for(var i=0; i<temp_array.length; i++){
-		if(temp_array[i].indexOf(user+',')>-1){
-			delete temp_array[i];
+	eval('var temp_array='+_$.settings_colors);
+	for(var i=0; i< temp_array.length; i++){
+		if( temp_array[i].indexOf(user+',')>-1){
+			//delete  temp_array[i];
+			temp_array.splice(i,1);
 		}
 	}
-
-	_$.set_save('colors','["'+temp_array.join('","')+'"]');
+    if ( temp_array.length > 0 )
+    {
+	    _$.settings_colors = '["'+temp_array.join('","')+'"]';
+	}
+	else
+	{
+	    _$.settings_colors = '[]';
+	}
+	_$.set_save( null, 0 );
 	DSP_paint_comment(user,'transparent','');
 }
 
@@ -690,11 +717,10 @@ function DSP_save_color(){
 	var font = dsp_color_user.name;
 	var checker = 0;
 
-	eval('var temp_array='+_$.settings.colors);
+	eval('var temp_array='+_$.settings_colors);
 
 	for(var i=0; i<temp_array.length; i++){
 		if(temp_array[i].indexOf(user+',')>-1){
-
 			temp_array[i] = user+','+color+','+font;
 			checker = 1;
 			break;
@@ -703,7 +729,8 @@ function DSP_save_color(){
 
 	if(checker==0) temp_array.push(user+','+color+','+font);
 
-	_$.set_save('colors','["'+temp_array.join('","')+'"]');
+	_$.settings_colors = '["'+temp_array.join('","')+'"]';
+	_$.set_save( null, 0 );
 }
 
 var dsp_jscolor = {
@@ -1280,7 +1307,7 @@ var dsp_jscolor = {
 
 function DSP_colorize_comments(){
 
-	eval('var temp_array='+_$.settings.colors);
+	eval('var temp_array='+_$.settings_colors);
 
 	for(var i=0; i<dsp_all_comments.length; i++){
 		var temp_name = _$.$t('a',dsp_all_comments[i])[1].innerHTML;
@@ -1761,8 +1788,8 @@ function dsp_posts_init(){
 
 	add_checkbox_event('dsp_c_read_button','read_button');
 	add_checkbox_event('dsp_c_dirty_tags','dirty_tags');
-	add_checkbox_event('dsp_c_instant_search','instant_search');
-	
+	add_checkbox_event('dsp_c_instant_search','instant_search');	
+
 	_$.addEvent(_$.$('dsp_c_posts_average'),'click',
 	function(){
 		if(_$.$('dsp_c_posts_average').checked===true) _$.set_save('posts_average',1);
@@ -1925,7 +1952,8 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_allow_reverse_list" type="checkbox" '+((_$.settings.allow_reverse_list=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_allow_reverse_list">SP2: Списком->Деревом->Реверс</label></td></tr>';
-		dsp_txt += '</table>';dsp_txt += '</table>';
+		dsp_txt += '</table>';
+		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_arrows_on" type="checkbox" '+((_$.settings.arrows_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_arrows_on">SP2: Увеличить стрелочки под комментарием</label></td></tr>';
 
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_colors_on" type="checkbox" '+((_$.settings.colors_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_colors_on">Изменять цвет комментариев пользователей</label></td></tr>';
@@ -1963,10 +1991,10 @@ function DSP_make_content_settings(){
 		dsp_txt += '<tr><td align="right"><input name="dsp_grt_random_s" value="0" id="dsp_c_grt_random_off" type="radio" '+((_$.settings.grt_random=='0')?'checked="checked"':'')+'></td><td style=";color:#777"><label for="dsp_c_grt_random_off">Только новые</label></td></tr>';
 		dsp_txt += '</table></form></div>';
 		// end gertrudes options
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_tooltip_on" type="checkbox" '+((_$.settings.tooltip_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_tooltip_on">Включить Dirty Tooltip</label></td></tr>';
+		dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_tooltip_on" type="checkbox" '+((_$.settings.tooltip_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_tooltip_on">Включить Dirty Tooltip</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_tooltip" style="display:'+((_$.settings.tooltip_on=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left: 25px;">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
+		dsp_txt += '<input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_tooltip_show_self" type="checkbox" '+((_$.settings.favicon_style=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_tooltip_show_self">Тултип на ссылке возле logout</label></td></tr>';
 		dsp_txt += '</table></div>';
         dsp_txt += '<table><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2: Показывать время выполнения</label></td></tr></table>';
@@ -2219,6 +2247,7 @@ if ( _$.settings.grt_enabled =='1' )
 				//Stasik0: hack to remove flicker
 				vImgs[1].setAttribute('src', "");
 				vImgs[1].setAttribute('height', "262");
+				vImgs[1].setAttribute('width', "149");
 				vImgs[1].setAttribute('src', vRandomGrt.path );
 				if (vRandomGrt.fixMargins) 
 				{
@@ -3203,6 +3232,7 @@ if( _$.settings.ban_encoding == '1')
 			//some more tries
 			'Ð':'В'
 		};
+
 		for( var i = 0; i < posts.length; i++)
 		{
 			txt_str = posts[i].innerHTML;
@@ -3771,7 +3801,7 @@ if(_$.settings.dirty_tags=='1')
 		var loggedUser = document.querySelector('div.header_logout');
 		var addFormDiv = document.querySelector('div.b-tag_add_form');
 		if ( loggedUser && addFormDiv )
-		{ 
+		{   
 			// add script to the page
 			var tagsRelatedScripts = document.createElement("script");
 			tagsRelatedScripts.type="application/javascript";
@@ -3854,10 +3884,11 @@ if(_$.settings.dirty_tags=='1')
 }
 
 	//comment threshold
-	if(_$.settings.comments_threshold=='1'){
+	if(_$.settings.comments_threshold=='1')
+	{
+	    var time1 = new Date();
 		var _dct = {
 				comments : {},
-				settings : {},
 				curr_select_numb : 0,
 				comm_order : 1, // 1 for tree, 2 for linear, 3 for back-ordered linear
 				tree_order : [],
@@ -3865,7 +3896,7 @@ if(_$.settings.dirty_tags=='1')
 				list_reverse : [],
 				isPostPage : false,
 				isInboxPage : false,
-
+                /*
 				set_save : function (){
 						var params = '';
 						var not_first = '';
@@ -3882,14 +3913,15 @@ if(_$.settings.dirty_tags=='1')
 								eval("_dct.settings="+unescape(param));
 
 						} else {
-								_dct.settings.threshold = -1000;
+								_dct.settings.cmnt_threshold = -1000;
 								// 1 - by votes, 2 - by percents
-								_dct.settings.thresh_type = 1;
-								_dct.settings.thresh_step = 10;
-								_dct.settings.opt_count = 4;
-								_dct.settings.picts_always = 0;
+								_dct.settings.cmnt_thresh_type = 1;
+								_dct.settings.cmnt_thresh_step = 10;
+								_dct.settings.cmnt_opt_count = 4;
+								_dct.settings.cmnt_picts_always = 0;
 						}
 				},
+				*/
 
 				toggle_div : function (name,param){
 						if(param) document.getElementById(name).style.display = (param==1)?'block':'none';
@@ -3941,32 +3973,32 @@ if(_$.settings.dirty_tags=='1')
 						var new_sel = document.getElementById('thres_select_'+_dct.curr_select_numb);
 
 						if (new_sel.value == 'set_step') {
-								var result = _dct.getIntFromPrompt("Новое значение шага:", _dct.settings.thresh_step)
+								var result = _dct.getIntFromPrompt("Новое значение шага:", _$.settings.cmnt_thresh_step)
 								if (result) {
-										_dct.settings.thresh_step = result;
+										_$.settings.cmnt_thresh_step = result;
 								}
 								new_sel.options[0].selected = true;
 								_dct.replaceSelect();
 						} else if (new_sel.value == 'set_type') {
-								_dct.settings.thresh_type = (_dct.settings.thresh_type==1) ? 2:1;
+								_$.settings.cmnt_thresh_type = (_$.settings.cmnt_thresh_type==1) ? 2:1;
 								_dct.replaceSelect();
 						} else if (new_sel.value == 'set_opt_count') {
-								var result = _dct.getIntFromPrompt("Количество опций:", _dct.settings.opt_count)
+								var result = _dct.getIntFromPrompt("Количество опций:", _$.settings.cmnt_opt_count)
 								if (result) {
 										if (result<=0) {
 												result = 1;
 										}
-										_dct.settings.opt_count = result;
+										_$.settings.cmnt_opt_count = result;
 								}
 								new_sel.options[0].selected = true;
 								_dct.replaceSelect();
 						} else if (new_sel.value == 'set_pict_filter') {
-								_dct.settings.picts_always = (_dct.settings.picts_always==0) ? 1:0;
+								_$.settings.cmnt_picts_always = (_$.settings.cmnt_picts_always==0) ? 1:0;
 								_dct.replaceSelect();
 						}else {
-								_dct.settings.threshold = new_sel.value;
+								_$.settings.cmnt_threshold = new_sel.value;
 						}
-						_dct.set_save();
+						_$.set_save( null, 0 );
 						_dct.refreshComments();
 				},
 
@@ -3974,12 +4006,12 @@ if(_$.settings.dirty_tags=='1')
 						var toggle_type_to = "В процентах от среднего!";
 						var picts_filtering = "Фильтровать картинки!";
 						var thresh_suffix = " голосов";
-						if (_dct.settings.thresh_type==2) {
+						if (_$.settings.cmnt_thresh_type==2) {
 								toggle_type_to = "В голосах!";
 								thresh_suffix = "%";
 						}
 
-						if (_dct.settings.picts_always==0) {
+						if (_$.settings.cmnt_picts_always==0) {
 								picts_filtering = "Показать картинки!";
 						}
 
@@ -4000,18 +4032,18 @@ if(_$.settings.dirty_tags=='1')
 								new_sel.addEventListener('change', _dct.onChangeThreshold, false);
 						}
 
-						new_sel.length = 5+_dct.settings.opt_count;
+						new_sel.length = 5+_$.settings.cmnt_opt_count;
 						new_sel.name='thres_select_'+_dct.curr_select_numb;
 						new_sel.id='thres_select_'+_dct.curr_select_numb;
 						new_sel.options[0].text = "Все";
 						new_sel.options[0].value = "-1000";
 
 						var selected = false;
-						for (var i=1; i<=_dct.settings.opt_count; i++) {
-								new_sel.options[i].text = "Больше "+(_dct.settings.thresh_step*i)+thresh_suffix;
-								new_sel.options[i].value = _dct.settings.thresh_step*i;
+						for (var i=1; i<=_$.settings.cmnt_opt_count; i++) {
+								new_sel.options[i].text = "Больше "+(_$.settings.cmnt_thresh_step*i)+thresh_suffix;
+								new_sel.options[i].value = _$.settings.cmnt_thresh_step*i;
 
-								if (_dct.settings.threshold == _dct.settings.thresh_step*i) {
+								if (_$.settings.cmnt_threshold == _$.settings.cmnt_thresh_step*i) {
 										new_sel.options[i].selected = true;
 										selected = true;
 								}
@@ -4019,14 +4051,14 @@ if(_$.settings.dirty_tags=='1')
 						if (!selected) {
 								new_sel.options[0].selected = true;
 						}
-						new_sel.options[_dct.settings.opt_count+1].text = toggle_type_to;
-						new_sel.options[_dct.settings.opt_count+1].value = 'set_type';
-						new_sel.options[_dct.settings.opt_count+2].text = "Сменить шаг...";
-						new_sel.options[_dct.settings.opt_count+2].value = "set_step";
-						new_sel.options[_dct.settings.opt_count+3].text = "Число опций...";
-						new_sel.options[_dct.settings.opt_count+3].value = "set_opt_count";
-						new_sel.options[_dct.settings.opt_count+4].text = picts_filtering;
-						new_sel.options[_dct.settings.opt_count+4].value = "set_pict_filter";
+						new_sel.options[_$.settings.cmnt_opt_count+1].text = toggle_type_to;
+						new_sel.options[_$.settings.cmnt_opt_count+1].value = 'set_type';
+						new_sel.options[_$.settings.cmnt_opt_count+2].text = "Сменить шаг...";
+						new_sel.options[_$.settings.cmnt_opt_count+2].value = "set_step";
+						new_sel.options[_$.settings.cmnt_opt_count+3].text = "Число опций...";
+						new_sel.options[_$.settings.cmnt_opt_count+3].value = "set_opt_count";
+						new_sel.options[_$.settings.cmnt_opt_count+4].text = picts_filtering;
+						new_sel.options[_$.settings.cmnt_opt_count+4].value = "set_pict_filter";
 
 						var new_div = document.createElement("FORM");
 						new_div.name='div_select_'+_dct.curr_select_numb;
@@ -4056,14 +4088,14 @@ if(_$.settings.dirty_tags=='1')
 				},
 
 				refreshComments : function () {
-						var curr_threshold = _dct.settings.threshold;
-						if (_dct.settings.thresh_type==2) {
+						var curr_threshold = _$.settings.cmnt_threshold;
+						if (_$.settings.cmnt_thresh_type==2) {
 								var average = _dct.getPositiveAverage();
-								curr_threshold = average*_dct.settings.threshold/100;
+								curr_threshold = average*_$.settings.cmnt_threshold/100;
 						}
 
 						for (var i=0; i<_dct.comments.length; i++) {
-								if (_dct.comments[i].vote >= curr_threshold || (_dct.comments[i].has_img && _dct.settings.picts_always==1) ) {
+								if (_dct.comments[i].vote >= curr_threshold || (_dct.comments[i].has_img && _$.settings.cmnt_picts_always==1) ) {
 										_dct.toggle_div(_dct.comments[i].parent_id, 1);
 								} else {
 										_dct.toggle_div(_dct.comments[i].parent_id, 22);
@@ -4194,7 +4226,7 @@ if(_$.settings.dirty_tags=='1')
 						if (!_dct.isPostPage) {
 								_dct.isInboxPage = _dct.isInboxCommentsPage();
 						}
-						_dct.set_get();
+						//_dct.set_get();
 
 						if (_dct.isPostPage || _dct.isInboxPage) {
 								_dct.initCommentsArray();
@@ -4209,42 +4241,16 @@ if(_$.settings.dirty_tags=='1')
 		}
 
 		_dct.workPlease();
+		addBenchmark( time1, 'comments threshhold' );
 	}
 	
 	//post threshold
-	if(_$.settings.posts_threshold=='1'){
-
+	if(_$.settings.posts_threshold=='1')
+	{
+        var time1 = new Date();
 		var _dpt = {
 				posts : [],
-				settings : {},
 				curr_select_numb : 0,
-				set_save : function (){
-						var params = '';
-						var not_first = '';
-						for (i in _dpt.settings) {
-								params = params + not_first+i+":"+_dpt.settings[i];
-								not_first = ',';
-						}
-						document.cookie = "posts_thresh.settings="+escape('{'+params+'}')+"; domain=.dirty.ru; path=/; expires=Thu, 20-Apr-2023 00:34:13 GMT";
-				},
-				
-				set_get : function (){
-						if(document.cookie.indexOf('posts_thresh.settings=')>-1){
-								var param = unescape(document.cookie.split('posts_thresh.settings=')[1].split(";")[0]);
-								eval("_dpt.settings="+unescape(param));
-						} else {
-								_dpt.settings.threshold = 100;
-								_dpt.settings.thresh_comm_count = 0;
-								_dpt.settings.thresh_step = 100;
-								_dpt.settings.opt_count = 4;
-
-								// what types to show
-								_dpt.settings.show_posts = 1;
-								_dpt.settings.show_video = 1;
-								_dpt.settings.show_photo = 1;
-								_dpt.settings.show_audio = 1;
-						}
-				},
 				
 				toggle_div  : function(name,param){
 						if(param) document.getElementById(name).style.display = (param==1)?'block':'none';
@@ -4253,15 +4259,16 @@ if(_$.settings.dirty_tags=='1')
 				
 				getElementsByClassAndTag : function(name, tag, obj) {
 						var obj = obj||document;
-						var result = [];
+						var result = "[]";						
 						var allElements = obj.getElementsByTagName(tag);
 						for(var i=0; i<allElements.length; i++){
 								if(allElements[i].className && allElements[i].className==name){
 										result[result.length] = allElements[i];
 								}
-						}
+						}						
 						return result;
 				},
+				
 				
 				getIntFromPrompt : function(msg, curr_val, allow_0) {
 					 var result = prompt(msg, curr_val)
@@ -4286,36 +4293,36 @@ if(_$.settings.dirty_tags=='1')
 						var new_sel = document.getElementById('thres_select_'+_dpt.curr_select_numb);
 				
 						if (new_sel.value == 'set_step') {
-								var result = _dpt.getIntFromPrompt("Новое значение шага:", _dpt.settings.thresh_step)
+								var result = _dpt.getIntFromPrompt("Новое значение шага:", _$.settings.thresh_step)
 								if (result) {
-										_dpt.settings.thresh_step = result;
+										_$.settings.thresh_step = result;
 								}
 								new_sel.options[0].selected = true;
 								_dpt.replaceSelect();        
 						} else if (new_sel.value == 'set_comm_tresh') {
-								var result = _dpt.getIntFromPrompt("Минимальное количество комментариев\n(ноль для выключения этой опции):", _dpt.settings.thresh_comm_count)
+								var result = _dpt.getIntFromPrompt("Минимальное количество комментариев\n(ноль для выключения этой опции):", _$.settings.thresh_comm_count)
 								if (result!==false) {
 										if (result<0) {
 												result = 0;
 										}
-										_dpt.settings.thresh_comm_count = result;
+										_$.settings.thresh_comm_count = result;
 								}
 								new_sel.options[0].selected = true;
 								_dpt.replaceSelect();        
 						} else if (new_sel.value == 'set_opt_count') {
-								var result = _dpt.getIntFromPrompt("Количество опций:", _dpt.settings.opt_count)
+								var result = _dpt.getIntFromPrompt("Количество опций:", _$.settings.opt_count)
 								if (result!==false) {
 										if (result<=0) {
 												result = 1;
 										}
-										_dpt.settings.opt_count = result;
+										_$.settings.opt_count = result;
 								}
 								new_sel.options[0].selected = true;
 								_dpt.replaceSelect();
 						} else {
-								_dpt.settings.threshold = new_sel.value;
+								_$.settings.threshold = new_sel.value;
 						}
-						_dpt.set_save();
+						_$.set_save( null, 0);
 						_dpt.refreshPosts();
 				},
 
@@ -4323,18 +4330,24 @@ if(_$.settings.dirty_tags=='1')
 						if (navigator.appName != "Opera") {
 								check = this;
 						}
-						if (_$.settings.post_content_filter_layout!='1') {
-							eval("_dpt.settings."+check.id+" = (check.checked?1:0);");
-						} else {
-							if (eval("_dpt.settings."+check.id) == 1) {
-								eval("_dpt.settings."+check.id+"=0;");
+						if (_$.settings.post_content_filter_layout!='1') 
+						{
+							eval("_$.settings."+check.id+" = (check.checked?1:0);");
+						} 
+						else 
+						{
+							if (eval("_$.settings."+check.id) == 1) 
+							{
+								eval("_$.settings."+check.id+"=0;");
 								check.style.fontWeight = "normal";
-							} else {
-								eval("_dpt.settings."+check.id+"=1;");
+							} 
+							else 
+							{
+								eval("_$.settings."+check.id+"=1;");
 								check.style.fontWeight = "bold";
 							}
 						}
-						_dpt.set_save();
+						_$.set_save( null, 0);
 						_dpt.refreshPosts();
 				},
 
@@ -4354,7 +4367,7 @@ if(_$.settings.dirty_tags=='1')
 										temp_chk.addEventListener('click', _dpt.onSortChks, false);
 								}
 
-								temp_chk.checked = (eval("_dpt.settings."+chcks[i]) == 1);
+								temp_chk.checked = (eval("_$.settings."+chcks[i]) == 1);
 								var temp_link = document.createElement("a");
 								temp_link.innerHTML ='<label for="'+chcks[i]+'">'+names[i]+'</label>';
 								div_to_insert.appendChild(temp_chk);
@@ -4372,7 +4385,7 @@ if(_$.settings.dirty_tags=='1')
 
 								temp_link.href ="javascript:void(0)";
 								temp_link.innerHTML = names[i];
-								if (eval("_dpt.settings."+chcks[i]) == 1) {
+								if (eval("_$.settings."+chcks[i]) == 1) {
 									temp_link.style.fontWeight = "bold"
 								}
 
@@ -4388,13 +4401,15 @@ if(_$.settings.dirty_tags=='1')
 						var thresh_suffix = " голосов";
 						var all_posts_title = "Все посты";
 						var operand_name = " и ";
-						if (_$.settings.posts_threshold_use_or=='1') {
+						if (_$.settings.posts_threshold_use_or=='1') 
+						{
 							operand_name = " или ";
 						}
 
-						if (_dpt.settings.thresh_comm_count>0) {
-								thresh_suffix += operand_name+_dpt.settings.thresh_comm_count+" комментариев";
-								all_posts_title += ", у которых >"+_dpt.settings.thresh_comm_count+" комментариев"; 
+						if (_$.settings.thresh_comm_count > 0 ) 
+						{
+								thresh_suffix += operand_name+_$.settings.thresh_comm_count+" комментариев";
+								all_posts_title += ", у которых >"+_$.settings.thresh_comm_count+" комментариев"; 
 						}
 						
 						if (_dpt.curr_select_numb==0) {
@@ -4412,17 +4427,17 @@ if(_$.settings.dirty_tags=='1')
 						} else {
 								new_sel.addEventListener('change', _dpt.onChangeThreshold, false);
 						}
-						new_sel.length = 4+_dpt.settings.opt_count;
+						new_sel.length = 4+_$.settings.opt_count;
 						new_sel.name='thres_select_'+_dpt.curr_select_numb;
 						new_sel.id='thres_select_'+_dpt.curr_select_numb;
 						new_sel.options[0].text = all_posts_title;
 						new_sel.options[0].value = "-1000";
 						var selected = false;
-						for (var i=1; i<=_dpt.settings.opt_count; i++) {
-								new_sel.options[i].text = "Больше "+(_dpt.settings.thresh_step*i)+thresh_suffix;
-								new_sel.options[i].value = _dpt.settings.thresh_step*i;
+						for (var i=1; i<=_$.settings.opt_count; i++) {
+								new_sel.options[i].text = "Больше "+(_$.settings.thresh_step*i)+thresh_suffix;
+								new_sel.options[i].value = _$.settings.thresh_step*i;
 				
-								if (_dpt.settings.threshold == _dpt.settings.thresh_step*i) {
+								if (_$.settings.threshold == _$.settings.thresh_step*i) {
 										new_sel.options[i].selected = true;
 										selected = true;
 								}
@@ -4431,12 +4446,12 @@ if(_$.settings.dirty_tags=='1')
 						if (!selected) {
 								new_sel.options[0].selected = true;
 						}
-						new_sel.options[_dpt.settings.opt_count+1].text = 'Число комментариев...';
-						new_sel.options[_dpt.settings.opt_count+1].value = 'set_comm_tresh';
-						new_sel.options[_dpt.settings.opt_count+2].text = "Сменить шаг...";
-						new_sel.options[_dpt.settings.opt_count+2].value = "set_step";
-						new_sel.options[_dpt.settings.opt_count+3].text = "Число опций...";
-						new_sel.options[_dpt.settings.opt_count+3].value = "set_opt_count";
+						new_sel.options[_$.settings.opt_count+1].text = 'Число комментариев...';
+						new_sel.options[_$.settings.opt_count+1].value = 'set_comm_tresh';
+						new_sel.options[_$.settings.opt_count+2].text = "Сменить шаг...";
+						new_sel.options[_$.settings.opt_count+2].value = "set_step";
+						new_sel.options[_$.settings.opt_count+3].text = "Число опций...";
+						new_sel.options[_$.settings.opt_count+3].value = "set_opt_count";
 						
 						var new_div = document.createElement("FORM");
 						new_div.name='div_select_'+_dpt.curr_select_numb;
@@ -4452,10 +4467,10 @@ if(_$.settings.dirty_tags=='1')
 				refreshPosts : function() {
 						for (var i=0; i<_dpt.posts.length; i++) {
 								// pre-filtering by type
-								if ( (_dpt.posts[i].is_post && _dpt.settings.show_posts=='0')
-										|| (_dpt.posts[i].is_video && _dpt.settings.show_video=='0')
-										|| (_dpt.posts[i].is_img && _dpt.settings.show_photo=='0')
-										|| (_dpt.posts[i].is_audio && _dpt.settings.show_audio=='0')
+								if ( (_dpt.posts[i].is_post && _$.settings.show_posts=='0')
+										|| (_dpt.posts[i].is_video && _$.settings.show_video=='0')
+										|| (_dpt.posts[i].is_img && _$.settings.show_photo=='0')
+										|| (_dpt.posts[i].is_audio && _$.settings.show_audio=='0')
 										)
 								{
 										_dpt.toggle_div(_dpt.posts[i].id, 2);
@@ -4463,17 +4478,17 @@ if(_$.settings.dirty_tags=='1')
 								}
 
 								if (_$.settings.posts_threshold_use_or=='1') {
-									if ( (_dpt.settings.thresh_comm_count>0 && _dpt.posts[i].comm_count>=_dpt.settings.thresh_comm_count)
-										|| _dpt.posts[i].vote >= _dpt.settings.threshold)
+									if ( (_$.settings.thresh_comm_count>0 && _dpt.posts[i].comm_count>=_$.settings.thresh_comm_count)
+										|| _dpt.posts[i].vote >= _$.settings.threshold)
 									{
 										_dpt.toggle_div(_dpt.posts[i].id, 1);
 									} else {
 										_dpt.toggle_div(_dpt.posts[i].id, 2);
 									}
 								} else {
-									if (_dpt.posts[i].vote < _dpt.settings.threshold) {
+									if (_dpt.posts[i].vote < _$.settings.threshold) {
 											_dpt.toggle_div(_dpt.posts[i].id, 2);
-									} else if (_dpt.settings.thresh_comm_count>0 && _dpt.posts[i].comm_count<_dpt.settings.thresh_comm_count) {
+									} else if (_$.settings.thresh_comm_count>0 && _dpt.posts[i].comm_count<_$.settings.thresh_comm_count) {
 											_dpt.toggle_div(_dpt.posts[i].id, 2);
 									} else {
 											_dpt.toggle_div(_dpt.posts[i].id, 1);
@@ -4547,18 +4562,18 @@ if(_$.settings.dirty_tags=='1')
 
 				workPlease : function () {
 						if (_dpt.checkMainPage()) {
-								_dpt.set_get();
+								//_dpt.set_get();
 								
 								if(_$.settings.own_threshold=='1'){
 									//part from Stasik0
 									//set default selector to show needed posts
 									if(_$.getUsername()!="" && _$.$('js-select_threshold_posts_rate')){
-										if(_dpt.settings.threshold >= 250){
+										if(_$.settings.threshold >= 250){
 											if(_$.$('js-select_threshold_posts_rate').value != "best"){
 												_$.$('js-select_threshold_posts_rate').value = "best";
 												_$.$('posts-threshold').submit();
 											}
-										}else if(_dpt.settings.threshold >= 25){
+										}else if(_$.settings.threshold >= 25){
 											if(_$.$('js-select_threshold_posts_rate').value != "good"){
 												_$.$('js-select_threshold_posts_rate').value = "good";
 												_$.$('posts-threshold').submit();
@@ -4581,6 +4596,7 @@ if(_$.settings.dirty_tags=='1')
 		}
 
 		_dpt.workPlease();
+		addBenchmark( time1, 'posts threshhold' );
 	}
 	
 	//SHARED PART of read-button and new comment scroller
@@ -4929,12 +4945,12 @@ if(_$.settings.dirty_tags=='1')
 		
 		addBenchmark( time1, 'comments scroll & read button' );
 		
-	}	
+	}
 	
 	//quotes
 	if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1)
 	{
-	    var time1 = new Date();
+		var time1 = new Date();
 		var commentsHolder = document.getElementById('js-commentsHolder');
 //		var allBodies = commentsHolder.getElementsByClassName('c_body');
 //		var allUsers = commentsHolder.getElementsByClassName('c_user');
@@ -4954,7 +4970,7 @@ if(_$.settings.dirty_tags=='1')
 			link.innerHTML = "в цитатник";
 			allUsers[key].parentNode.appendChild(link);
 		}
-   					
+					
 		addBenchmark( time1, 'quotes' );
 	}
 	
@@ -5088,9 +5104,12 @@ if(_$.settings.dirty_tags=='1')
 		else if (  document.location.href.indexOf("/inbox/") >= 0 )
 		{
 			 headerDiv = document.querySelector('div.inbox_header');
-			 insertOurHeaderAfter = headerDiv.lastChild;
+			 if ( headerDiv )
+			 {
+    			 insertOurHeaderAfter = headerDiv.lastChild;
+			 }
 		}
-		
+
 		if ( headerDiv && insertOurHeaderAfter )
 		{
 			var inputElementDiv = document.createElement('div');
