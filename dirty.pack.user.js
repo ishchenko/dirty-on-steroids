@@ -2330,11 +2330,11 @@ if ( _$.settings.grt_enabled =='1' )
 // start of SCRIPTS-60
 var divRightCol = document.querySelector('div.content_right');
 var divTags = document.getElementById('js-tags');
-var divAds = divRightCol.querySelector('div.b-ads');
-if ( divRightCol && divTags && divAds)
+if ( divRightCol && divTags)
 {
+	var divAds = divRightCol.querySelector('div.b-ads');
 	var newsFromD3search = localStorage.getItem('vStickers');
-	if ( newsFromD3search != null )
+	if ( newsFromD3search != null  && divAds)
 	{
 		divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 		var divForNews = document.createElement('div');
