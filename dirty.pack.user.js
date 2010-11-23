@@ -2335,7 +2335,6 @@ if ( _$.settings.grt_enabled =='1' )
 			}
 		}
 	}
-
 	addBenchmark( time1, 'gertrudes & greetings' );
 }
 // end of SCRIPTS-37 & SCRIPTS-29 
@@ -2343,6 +2342,23 @@ if ( _$.settings.grt_enabled =='1' )
 // made by crea7or
 // start of SCRIPTS-60
 var time1 = new Date();
+
+function hideSticker( stickerDiv )
+{
+    var hiddenStickers = _$.jsonParse( _$.localStorageGetItem('d3sHiddenStickers',"[]"));
+    var stickerId = stickerDiv.getAttribute('id');
+    if ( stickerId )
+    {
+        hiddenStickers.push( stickerId );
+        while ( hiddenStickers.length > 5 )
+        {
+            hiddenStickers.shift();
+        };
+        localStorage.setItem('d3sHiddenStickers', _$.jsonStringify( hiddenStickers ));
+        stickerDiv.setAttribute('style', 'display: none;');
+    }
+}
+
 var divRightCol = document.querySelector('div.content_right');
 var divTags = document.getElementById('js-tags');
 if ( divRightCol && divTags)
@@ -2351,17 +2367,16 @@ if ( divRightCol && divTags)
 	var newsFromD3search = localStorage.getItem('vStickers');
 	if ( newsFromD3search != null  && divAds)
 	{
+	    var hiddenStickers = _$.jsonParse( _$.localStorGetItem('d3sHiddenStickers',"[]"));
 		divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 		var divForNews = document.createElement('div');
-		//divForNews.setAttribute('style','float: right; width: 290px; margin: 5px 5px 5px 5px; background: #fff; -moz-border-radius: 10px; -khtml-border-radius: 10px; -webkit-border-radius: 10px; -moz-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -khtml-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); -webkit-box-shadow: 0px 0px 8px rgba(0,0,0,0.3); z-index: 20; ');
 		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
 		var subDivForNews = document.createElement('div');
-		//subDivForNews.setAttribute('style','padding: 5px 5px 5px 5px;');
 		subDivForNews.innerHTML = '<a class="vote_details_close" style="top: 10px;" href="#"></a>';
 		subDivForNews.innerHTML += '<div class="subs_ads"><div class="subs_ads_inner" style="margin-top: -10px;"><div class="subs_block">'+newsFromD3search+'</div></div><div class="subs_ads_bottom_bg"></div></div>';
 		divForNews.appendChild( subDivForNews );
 		divRightCol.insertBefore( divForNews, divAds );
-	}	
+	}
 }
 addBenchmark( time1, 'd3s news' );
 // end of SCRIPTS-60
