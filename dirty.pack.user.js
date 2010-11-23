@@ -17,7 +17,7 @@
 var dateToCheck1 = new Date();
 
 var _$ = { 
-	buildtime: 1290480277,
+	buildtime: 1290506742,
 	settings: {},
 	settings_colors: "[]",
 	location: window.location.href.split(window.location.host)[1],
@@ -2007,7 +2007,7 @@ function DSP_make_content_settings(){
 
 		DSP_make_Setting_Bar('Комментарии',dsp_txt,'dsp_comments_init()');
 		var dsp_txt = '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_d3search" type="checkbox" '+((_$.settings.d3search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_d3search">SP2: Замена поиска на d3search.ru</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_d3search" type="checkbox" '+((_$.settings.d3search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_d3search">SP2: Замена поиска на <a href="http://d3search.ru" target="_blank">d3search.ru</a></label></td></tr>';
 		dsp_txt += '</table>';
 
 		dsp_txt += '<div id="dsp_l_new_window" style="display:'+((_$.settings.d3search=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
