@@ -4627,7 +4627,6 @@ if(_$.settings.dirty_tags=='1')
 			//inner = _$.$c('dd',allPostsArr[i],'div')[0];
 			//opts by Stasik upper path is now hard-coded
 			inner = allPostsArr[i].childNodes[3];
-			break;
 			if(inner == null)continue;
 			ownComment = false;
 			var html = inner.innerHTML;
