@@ -3913,14 +3913,22 @@ if(_$.settings.dirty_tags=='1')
 
 				getElementsByClassAndTag : function(name, tag, obj) {
 						var obj = obj||document;
-						var result = [];
-						var allElements = obj.getElementsByTagName(tag);
-						for(var i=0; i<allElements.length; i++){
-								if(allElements[i].className && allElements[i].className==name){
-										result[result.length] = allElements[i];
-								}
+						//opts by stasik
+						//var result = [];
+						//var allElements = obj.getElementsByTagName(tag);
+						//for(var i=0; i<allElements.length; i++){
+						//		if(allElements[i].className && allElements[i].className==name){
+						//				result[result.length] = allElements[i];
+						//		}
+						//}
+						var string = "";
+						var classes = name.split(" ");
+						for(i in classes){
+							string += tag+"."+classes[i];
+							if(i< classes.length-1)string+=",";
 						}
-						return result;
+						var result = obj.querySelectorAll(string);
+						return Array.prototype.slice.call(result);
 				},
 
 				getPositiveAverage : function () {
@@ -4090,9 +4098,11 @@ if(_$.settings.dirty_tags=='1')
 				},
 				initCommentsArray : function () {
 						_dct.comments = _dct.getElementsByClassAndTag('comment_inner', 'div');
+						var vote_arr;
+						_$.$c('comment', document, 'div');
 						for (var i=0; i<_dct.comments.length;i++) {
 								_dct.comments[i].parent_id = _dct.comments[i].parentNode.id
-								var vote_arr = _dct.getElementsByClassAndTag('vote_result', 'strong', _dct.comments[i]);
+								vote_arr = _dct.getElementsByClassAndTag('vote_result', 'strong', _dct.comments[i]);
 								if (vote_arr && vote_arr.length==1) {
 										_dct.comments[i].vote = parseInt(vote_arr[0].innerHTML);
 								} else {
