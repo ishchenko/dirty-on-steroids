@@ -2256,7 +2256,6 @@ if (( d3sCurDate.getTime() - _$.localStorGetItem('lastD3sFetchTimestamp', 0 )) >
 if ( _$.settings.grt_enabled =='1' )
 {
 	var time1 = new Date();
-
 	var divs = document.querySelector('div.gertruda');
 	if ( divs )
 	{
@@ -2268,14 +2267,12 @@ if ( _$.settings.grt_enabled =='1' )
 			{
 				vGrtShow = false;
 			}
-		}
-	
+		}	
 		if ( vGrtShow )
-		{
-			var vGrt = localStorage.getItem('vGertrudes' );
-			if ( vGrt != null )
+		{			
+			var vImgsArr = _$.jsonParse( _$.localStorGetItem( "vGertrudes", "[]" ));
+			if ( vImgsArr.length > 0 )
 			{
-				var vImgsArr = eval(vGrt);
 				var vImgsArrIndex = Math.floor( Math.random() * vImgsArr.length );
 				var vImgs = divs.getElementsByTagName('img');
 				var vRandomGrt = vImgsArr[ vImgsArrIndex ];
@@ -2312,10 +2309,9 @@ if ( _$.settings.grt_enabled =='1' )
 		}
 		if ( vGreetShow )
 		{
-			var vGreets = localStorage.getItem('vHellos');
-			if ( vGreets != null )
-			{
-				var vTxtsArr = eval(vGreets);
+			var vTxtsArr = _$.jsonParse( _$.localStorGetItem("vHellos", "[]" ));
+			if ( vTxtsArr.length > 0 )
+			{				
 				var vTxtsArrIndex = Math.floor( Math.random() * vTxtsArr.length );
 				var vGreetName;
 				var vGreetLink;
@@ -5327,14 +5323,7 @@ if(_$.settings.dirty_tags=='1')
 	        else
 	        {
 	            // post were not loaded
-	            if ( postId == NaN)
-	            {
-                    _$.injectScript(" futu_alert( 'Список инбоксов похоже не догрузился :( Подожди 3-5 секунд и попробуй обновить страницу.', false, 'red');");	            	            
-	            }
-	            else
-	            {
-	                _$.injectScript(" futu_alert( 'Пост похоже не догрузился :( Подожди 3-5 секунд и попробуй обновить страницу, а я восстановлю новые комментарии.', false, 'red');");	            
-	            }
+                _$.injectScript(" futu_alert( 'Страница похоже не догрузилась :( Подожди 3-5 секунд и попробуй обновить её, а я восстановлю новые комментарии.', false, 'red');");	            
 	        }
         }
         addBenchmark( time1, 'new comment saver' );	
