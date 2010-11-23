@@ -1,4 +1,4 @@
-﻿//
+//
 // ==UserScript==
 // @name          Dirty Service Pack 2
 // @author        Stasik0, BearOff, crea7or, flashface, slavka123
