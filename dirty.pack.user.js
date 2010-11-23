@@ -1415,7 +1415,8 @@ _$.tooltip = {
 		if(dup_an.indexOf('/user/')>0&&
 		   dup_an.indexOf('/posts/')<0 &&
 			 dup_an.indexOf('/comments/')<0 &&
-			 dup_an.indexOf('/favs/')<0
+			 dup_an.indexOf('/favs/')<0 &&
+			 linkes[i].className == ""
 //					dup_an.indexOf('/'+dsp_self_name)<0 &&
 //				dup_an[dup_an.length-2]!='/' &&
 //				dup_an.indexOf('#')<0
