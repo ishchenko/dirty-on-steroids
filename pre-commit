@@ -24,6 +24,6 @@ close ( OUTFILE );
 
 exec ('mv dirty.pack.user.js dirty.pack.user.js.old');
 exec ('awk \'{if(NR==1)sub(/^\xef\xbb\xbf/,"");print}\' dirty.pack.user.js.old > dirty.pack.user.js');
-exec ('rm dirty.pack.user.js');
+exec ('rm dirty.pack.user.js.old');
 
 exec ('git add dirty.pack.user.js');
