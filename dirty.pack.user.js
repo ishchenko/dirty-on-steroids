@@ -2372,7 +2372,7 @@ if ( divRightCol && divTags)
 // start of SCRIPTS-26
 if ( _$.settings.online_enabled =='1' )
 {
-    var time1 = new Date();
+  var time1 = new Date();
     
 	var vUserName = _$.getUsername();
 	if( vUserName.length > 0 )
