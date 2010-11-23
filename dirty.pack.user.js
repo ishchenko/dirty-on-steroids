@@ -3867,7 +3867,7 @@ if(_$.settings.dirty_tags=='1')
 }
 
 	//comment threshold
-	if(_$.settings.comments_threshold=='1')
+		if(_$.settings.comments_threshold=='1')
 	{
 	    var time1 = new Date();
 		var _dct = {
@@ -3921,13 +3921,13 @@ if(_$.settings.dirty_tags=='1')
 						//				result[result.length] = allElements[i];
 						//		}
 						//}
-						var string = "";
-						var classes = name.split(" ");
-						for(i in classes){
-							string += tag+"."+classes[i];
-							if(i< classes.length-1)string+=",";
+						var str = "";
+						var clas = name.split(" ");
+						for(var i=0;i<clas.length;i++){
+							str += tag+"."+clas[i];
+							if(i< clas.length-1)str+=",";
 						}
-						var result = obj.querySelectorAll(string);
+						var result = obj.querySelectorAll(str);
 						return Array.prototype.slice.call(result);
 				},
 
@@ -4220,7 +4220,6 @@ if(_$.settings.dirty_tags=='1')
 								_dct.isInboxPage = _dct.isInboxCommentsPage();
 						}
 						//_dct.set_get();
-
 						if (_dct.isPostPage || _dct.isInboxPage) {
 								_dct.initCommentsArray();
 								_dct.addTreeLinearLink();
@@ -4232,7 +4231,6 @@ if(_$.settings.dirty_tags=='1')
 						}
 				}
 		}
-
 		_dct.workPlease();
 		addBenchmark( time1, 'comments threshhold' );
 	}
