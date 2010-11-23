@@ -4614,11 +4614,15 @@ if(_$.settings.dirty_tags=='1')
 		}
 		//add read button and populate mine and newPosts
 		for(var i=0;i<allPostsArr.length;i++){
-			inner = _$.$c('dd',allPostsArr[i],'div')[0];
+			//inner = _$.$c('dd',allPostsArr[i],'div')[0];
+			//opts by Stasik upper path is now hard-coded
+			inner = allPostsArr[i].childNodes[3];
+			break;
 			if(inner == null)continue;
 			ownComment = false;
-			if(inner.innerHTML.indexOf('Написал '+suffix) > -1 || inner.innerHTML.indexOf('Написала '+suffix) > -1 || inner.innerHTML.indexOf('Забанил '+suffix) > -1 || inner.innerHTML.indexOf('Забанила '+suffix) > -1)ownComment = true;
-			if(inner.innerHTML.match(/href="\/(comments|my\/inbox)\/([0-9]+)#new">/g) != null){
+			var html = inner.innerHTML;
+			if(html.indexOf('Написал '+suffix) > -1 || html.indexOf('Написала '+suffix) > -1 || html.indexOf('Забанил '+suffix) > -1 || html.indexOf('Забанила '+suffix) > -1)ownComment = true;
+			if(html.match(/href="\/(comments|my\/inbox)\/([0-9]+)#new">/g) != null){
 				newPosts.push(allPostsArr[i]);
 				//Add read comments - button
 				if(_$.settings.read_button=='1'){
