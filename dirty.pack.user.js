@@ -2404,11 +2404,13 @@ if ( _$.settings.online_enabled =='1' )
 		var now = new Date().getTime();		
 		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 		{
-			var checkinScript = document.createElement("script");
-			checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
-			document.body.appendChild(checkinScript);
-			localStorage.setItem('lastCheckinTimestamp', now);
-			_$.addEvent(checkinScript, 'load', drawStuff);
+			_$.addEvent(window, 'load', function(){
+				var checkinScript = document.createElement("script");
+				checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
+				document.body.appendChild(checkinScript);
+				localStorage.setItem('lastCheckinTimestamp', now);
+				_$.addEvent(checkinScript, 'load', drawStuff);
+			});
 		}else{
 			drawStuff();
 		}
