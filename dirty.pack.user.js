@@ -2278,9 +2278,9 @@ if ( _$.settings.grt_enabled =='1' )
 				var vImgs = divs.getElementsByTagName('img');
 				var vRandomGrt = vImgsArr[ vImgsArrIndex ];
 				//Stasik0: hack to remove flicker
-				vImgs[1].setAttribute('src', "");
 				vImgs[1].setAttribute('height', "262");
 				vImgs[1].setAttribute('width', "149");
+				vImgs[1].setAttribute('src', "");
 				vImgs[1].setAttribute('src', vRandomGrt.path );
 				if (vRandomGrt.fixMargins) 
 				{
@@ -2342,10 +2342,11 @@ if ( _$.settings.grt_enabled =='1' )
 
 // made by crea7or
 // start of SCRIPTS-60
+var time1 = new Date();
 var divRightCol = document.querySelector('div.content_right');
 var divTags = document.getElementById('js-tags');
 if ( divRightCol && divTags)
-{
+{    
 	var divAds = divRightCol.querySelector('div.b-ads');
 	var newsFromD3search = localStorage.getItem('vStickers');
 	if ( newsFromD3search != null  && divAds)
@@ -2360,8 +2361,9 @@ if ( divRightCol && divTags)
 		subDivForNews.innerHTML += '<div class="subs_ads"><div class="subs_ads_inner" style="margin-top: -10px;"><div class="subs_block">'+newsFromD3search+'</div></div><div class="subs_ads_bottom_bg"></div></div>';
 		divForNews.appendChild( subDivForNews );
 		divRightCol.insertBefore( divForNews, divAds );
-	}
+	}	
 }
+addBenchmark( time1, 'd3s news' );
 // end of SCRIPTS-60
 
 
