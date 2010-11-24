@@ -21,15 +21,15 @@ var _$ = {
 	settings_colors: "[]",
 	location: window.location.href.split(window.location.host)[1],
 
-	// made by crea7or
-	// start of SCRIPTS-71
+    // made by crea7or
+    // start of SCRIPTS-71
 	set_save: function(name,option)
 	{
 		if ( name != null )
 		{
 			_$.settings[name] = option;
 		}
-		localStorage.setItem('dirtySp', jsonStringify(_$.settings));
+		localStorage.setItem('dirtySp', _$.jsonStringify(_$.settings));
 		localStorage.setItem('dirtySpClr', escape(_$.settings_colors));
 	},
 	set_get: function()
@@ -46,10 +46,46 @@ var _$ = {
 		}
 		else
 		{
-			_$.settings = jsonParse( localStorGetItem('dirtySp', "{}"));
-			_$.settings_colors = unescape( localStorGetItem('dirtySpClr', "[]"));
-		}
+			_$.settings = _$.jsonParse( _$.localStorGetItem('dirtySp', "{}"));
+			_$.settings_colors = unescape( _$.localStorGetItem('dirtySpClr', "[]"));
+	    }
 	},
+	jsonParse: function( valueToParse )
+	{
+		if ( typeof JSON.parse !== "undefined" )
+		{
+			return JSON.parse( valueToParse );
+		}
+		else
+		{
+			return JSON.decode( valueToParse );
+		}
+    },
+	jsonStringify: function( valueToStringify )
+	{
+		if ( typeof JSON.stringify !== "undefined" )
+		{
+			return JSON.stringify( valueToStringify );
+		}
+		else
+		{
+			return JSON.encode( valueToStringify );
+		}
+    },
+	// end of SCRIPTS-71
+	
+	// made by crea7or
+	//loading from a localStorage with default value instead of null
+	localStorGetItem: function( itemName, defaultValue )
+	{
+        var loadedValue = localStorage.getItem( itemName );
+		if ( loadedValue == null )
+		{
+            loadedValue = defaultValue;
+		}
+		return loadedValue;
+	},
+	
 	browser: function(){
 
 		var string = navigator.userAgent.toLowerCase();
@@ -89,15 +125,15 @@ var _$ = {
 
 	$c: function(name,obj,tagName)
 	{
-		var obj = obj||document;
+	    var obj = obj||document;
 		if( tagName==null )
 		{
-			return obj.querySelectorAll( '*.' + name );
+    		return obj.querySelectorAll( '*.' + name );
 		}
 		else
 		{
-			return obj.querySelectorAll( tagName + '.' + name );
-		}
+    		return obj.querySelectorAll( tagName + '.' + name );
+   		}
 	},
 
 	$f: function(name,element,val){
@@ -363,42 +399,7 @@ var _$ = {
 	//}
 }
 
-// BEGIN CONFIG
-// made by crea7or
-// loading from a localStorage with default value instead of null, json wrappers
-// should be available for the injected scripts
-function jsonParse( valueToParse )
-{
-	if ( typeof JSON.parse !== "undefined" )
-	{
-		return JSON.parse( valueToParse );
-	}
-	else
-	{
-		return JSON.decode( valueToParse );
-	}
-}
-function jsonStringify( valueToStringify )
-{
-	if ( typeof JSON.stringify !== "undefined" )
-	{
-		return JSON.stringify( valueToStringify );
-	}
-	else
-	{
-		return JSON.encode( valueToStringify );
-	}
-}
-function localStorGetItem( itemName, defaultValue )
-{
-	var loadedValue = localStorage.getItem( itemName );
-	if ( loadedValue == null )
-	{
-		loadedValue = defaultValue;
-	}
-	return loadedValue;		
-}
-_$.injectScript( jsonParse + "\n" + jsonStringify  + "\n" +  localStorGetItem );// 
+//BEGIN CONFIG
 _$.set_get();
 
 var settingsSave = false;
@@ -537,6 +538,8 @@ if(_$.location.indexOf('/off/')!=0){
 	    //addBenchmark( time1, 'general bar' );		
 	}
 
+
+
 	function DSP_make_Setting_Bar(title,params,init){
         
         //var time1 = new Date();
@@ -581,6 +584,7 @@ if(_$.location.indexOf('/off/')!=0){
 		else dsp_layer.style.display = 'block';
 	}
 
+
 	function DSP_show_hide_setting(num){
 
 		var dsp_setting_id = 0;
@@ -614,11 +618,14 @@ if(_$.location.indexOf('/off/')!=0){
 		if(num<5) _$.$('dsp_setting_button_'+(num+1)).style.borderTop = '1px solid #b6b6b6';
 	}
 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Favicons
 
+
 * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 
 	function DSP_show_favicon(obj,show){
 	if(show==1){
@@ -629,10 +636,13 @@ if(_$.location.indexOf('/off/')!=0){
 		}
 		else obj.style.backgroundImage = 'none';
 	}
+
+
 	
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Username Replace
+
 
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -657,6 +667,7 @@ function DSP_replace_username(option){
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Color Picker + User Skiper
+
 
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 
@@ -2232,7 +2243,7 @@ var eventDispatcher = document.createElement('div');
 // made by crea7or
 // fetching data from d3search - every 12 hours
 var d3sCurDate = new Date();
-if (( d3sCurDate.getTime() - localStorGetItem('lastD3sFetchTimestamp', 0 )) > 1000 * 60 * 60 * 12 )
+if (( d3sCurDate.getTime() - _$.localStorGetItem('lastD3sFetchTimestamp', 0 )) > 1000 * 60 * 60 * 12 )
 {
 	// add script to the page and fetch new gertrudas
 	_$.injectScriptUrl('http://api.d3search.ru/gertrudas');
@@ -2260,7 +2271,7 @@ if ( _$.settings.grt_enabled =='1' )
 		}	
 		if ( vGrtShow )
 		{			
-			var vImgsArr = jsonParse( localStorGetItem( "vGertrudes", "[]" ));
+			var vImgsArr = _$.jsonParse( _$.localStorGetItem( "vGertrudes", "[]" ));
 			if ( vImgsArr.length > 0 )
 			{
 				var vImgsArrIndex = Math.floor( Math.random() * vImgsArr.length );
@@ -2299,7 +2310,7 @@ if ( _$.settings.grt_enabled =='1' )
 		}
 		if ( vGreetShow )
 		{
-			var vTxtsArr = jsonParse( localStorGetItem("vHellos", "[]" ));
+			var vTxtsArr = _$.jsonParse( _$.localStorGetItem("vHellos", "[]" ));
 			if ( vTxtsArr.length > 0 )
 			{				
 				var vTxtsArrIndex = Math.floor( Math.random() * vTxtsArr.length );
@@ -2333,17 +2344,19 @@ if ( _$.settings.grt_enabled =='1' )
 var time1 = new Date();
 
 function hideSticker( stickerDiv )
-{   
-    var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
-    var divWithId = stickerDiv.parentNode.parentNode;
-    var stickerId = divWithId.getAttribute('id');
+{
+    var hiddenStickers = _$.jsonParse( _$.localStorageGetItem('d3sHiddenStickers',"[]"));
+    var stickerId = stickerDiv.getAttribute('id');
     if ( stickerId )
     {
         hiddenStickers.push( stickerId );
-        localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
-        divWithId.setAttribute('style', 'display: none;');
-    }    
-    return false;
+        while ( hiddenStickers.length > 5 )
+        {
+            hiddenStickers.shift();
+        };
+        localStorage.setItem('d3sHiddenStickers', _$.jsonStringify( hiddenStickers ));
+        stickerDiv.setAttribute('style', 'display: none;');
+    }
 }
 
 var divRightCol = document.querySelector('div.content_right');
@@ -2354,55 +2367,20 @@ if ( divRightCol && divTags)
 	var newsFromD3search = localStorage.getItem('vStickers');
 	if ( newsFromD3search != null  && divAds)
 	{
-	    var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
+	    var hiddenStickers = _$.jsonParse( _$.localStorGetItem('d3sHiddenStickers',"[]"));
 		divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 		var divForNews = document.createElement('div');
 		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
-		var subDivForNewsHead = document.createElement('div');
-		subDivForNewsHead.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://crea7or.spb.ru/note-head.png") no-repeat left top;');
-		var subDivForNewsFoot = document.createElement('div');
-		subDivForNewsFoot.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://crea7or.spb.ru/note-foot.png") no-repeat left bottom;');
-		var subDivForNewsBody = document.createElement('div');
-		subDivForNewsBody.setAttribute('style', 'background:#ffffff url("http://crea7or.spb.ru/note-body.png") repeat-y left top; padding: 10px 10px 10px 10px;');
-		//newsFromD3search = '<div id="sticker-4ce47a88a3e7cf84081c2566" class="sticker"><div class="sticker-hide">[<a href="#" onclick="return hideSticker( this );" title="Не хочу это больше видеть!">x</a>]</div><div class="sticker-header">Новость дня 6!</div><div class="sticker-body">crea7or написал <a href="https://github.com/ishchenko/dirty-on-steroids/raw/master/dirty.pack.user.js">скрипт</a> для вставки новостей в правую панель! Фантастика!</div></div>';
-		//newsFromD3search += '<div id="sticker-4ce47a88a3e7cf84081c2567" class="sticker"><div class="sticker-hide">[<a href="#" onclick="return hideSticker( this );" title="Не хочу это больше видеть!">x</a>]</div><div class="sticker-header">Новость дня 7!</div><div class="sticker-body">crea7or написал <a href="https://github.com/ishchenko/dirty-on-steroids/raw/master/dirty.pack.user.js">скрипт</a> для вставки новостей в правую панель! Фантастика!</div></div>';
-		//newsFromD3search += '<div id="sticker-4ce47a88a3e7cf84081c2568" class="sticker"><div class="sticker-hide">[<a href="#" onclick="return hideSticker( this );" title="Не хочу это больше видеть!">x</a>]</div><div class="sticker-header">Новость дня 8!</div><div class="sticker-body">crea7or написал <a href="https://github.com/ishchenko/dirty-on-steroids/raw/master/dirty.pack.user.js">скрипт</a> для вставки новостей в правую панель! Фантастика!</div></div>';
-	    divForNews.appendChild( subDivForNewsHead );
-	    subDivForNewsBody.innerHTML = newsFromD3search;
-	    divForNews.appendChild( subDivForNewsBody );
-	    divForNews.appendChild( subDivForNewsFoot );
-		var divId;
-		var hiddenNews = 0;
-		var saveHiddenStickers = false;
-		for ( var stickerIndex = 0; stickerIndex < hiddenStickers.length; stickerIndex++)
-		{
-		    divId = subDivForNewsBody.querySelector('div#' + hiddenStickers[stickerIndex] );
-		    if ( divId )
-		    {
-		        divId.setAttribute('style', 'display: none;');
-		        hiddenNews++;
-		    }
-		    else
-		    {
-		        hiddenStickers.slice( stickerIndex );
-		        saveHiddenStickers = true;
-		        stickerIndex--;
-		    }
-		}
-		if ( saveHiddenStickers )
-        {
-    		localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
-        }
-        var newsArray = subDivForNewsBody.querySelectorAll('div.sticker');
-		if ( hiddenNews != newsArray.length )
-		{
-    		divRightCol.insertBefore( divForNews, divAds );
-		    _$.injectScript( hideSticker );
-		}
+		var subDivForNews = document.createElement('div');
+		subDivForNews.innerHTML = '<a class="vote_details_close" style="top: 10px;" href="#"></a>';
+		subDivForNews.innerHTML += '<div class="subs_ads"><div class="subs_ads_inner" style="margin-top: -10px;"><div class="subs_block">'+newsFromD3search+'</div></div><div class="subs_ads_bottom_bg"></div></div>';
+		divForNews.appendChild( subDivForNews );
+		divRightCol.insertBefore( divForNews, divAds );
 	}
 }
 addBenchmark( time1, 'd3s news' );
 // end of SCRIPTS-60
+
 
 // made by crea7or
 // start of SCRIPTS-26
@@ -2413,10 +2391,14 @@ if ( _$.settings.online_enabled =='1' )
 	var vUserName = _$.getUsername();
 	if( vUserName.length > 0 )
 	{
-		var lastCheckinTimestamp = localStorGetItem('lastCheckinTimestamp', 0 );
-		var drawStuff = function()
+		var lastCheckinTimestamp = localStorage.getItem('lastCheckinTimestamp');
+		if (lastCheckinTimestamp == null) 
 		{
-		    var divContentLeft = document.querySelector("div.content_left");
+			lastCheckinTimestamp = 0;
+		}
+	
+		var drawStuff = function(){
+			var divContentLeft = document.querySelector("div.content_left");
 			if ( divContentLeft )
 			{
 				var checkinsMarkup = localStorage.getItem('checkinsMarkup');
@@ -2425,14 +2407,15 @@ if ( _$.settings.online_enabled =='1' )
 				divContentLeft.appendChild( newdiv );
 				_$.tooltip.processLinks(divContentLeft);
 			}
+			
 			var highlightsStyles = localStorage.getItem('checkinsHighlights');
-			if (highlightsStyles != null)
-			{
+			if (highlightsStyles != null) {
 				var highlightsDiv = document.createElement('div');
 				highlightsDiv.innerHTML = highlightsStyles;
 				document.body.appendChild(highlightsDiv);
 			}
 		};
+
 		var now = new Date().getTime();		
 		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 		{
@@ -2446,6 +2429,7 @@ if ( _$.settings.online_enabled =='1' )
 		}else{
 			drawStuff();
 		}
+
 	}
 	addBenchmark( time1, 'online users' );
 }
@@ -5179,192 +5163,192 @@ if(_$.settings.dirty_tags=='1')
 	// start - new comments saver for posts which were not loaded completely.
 	if(_$.settings.newcomments_saver == '1' )
 	{
-		function sortArrayNumbers(a,b)
-		{
-			return a < b;
-		}
-		function removePostIdItem( commentsArray, postId )
-		{
-			for ( var arrayIndex = 0; arrayIndex < commentsArray.length; arrayIndex++)
-			{
-				if ( commentsArray[ arrayIndex ].pid == postId )
-				{
-					commentsArray.splice( arrayIndex, 1 );
-					break;
-				}
-			}	
-		}
-		function setNewCommentsValue( postId, newMessages)
-		{
-			var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
-			removePostIdItem( newCommentsArray, postId );
-			var newEntry = new Object();
-			newEntry.pid = postId;
-			newEntry.mid = newMessages;
-			newCommentsArray.push( newEntry );
-			while ( newCommentsArray.length > 30 )
-			{
-				newCommentsArray.shift();
-			};
-			localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
-			return true;
-		}        
-			
-		var time1 = new Date();
-		var divPostHolder = document.getElementById('js-posts_holder');
-		if ( divPostHolder == null )
-		{
-			divPostHolder = document.getElementById('content_left');
-		}
-		if ( divPostHolder )
-		{	
-			var postHeaderLinks;
-			var postNewMesssages;
-			var postId;
-			var postsArray = divPostHolder.querySelectorAll('div.dd');
-			for ( var postIndex = 0; postIndex < postsArray.length; postIndex++ )
-			{
-				postHeaderLinks = postsArray[postIndex].getElementsByTagName('a');
-				var indexOfHref = 0;
-				if ( document.location.href.indexOf("/banned/") >= 0 )
-				{
-					if ( postHeaderLinks.length > 2 )
-					{
-						indexOfHref = 2;
-					}
-				}
-				else
-				{
-					if ( postHeaderLinks.length > 3 )
-					{
-						indexOfHref = 3;
-					}
-				}
-				if ( indexOfHref > 0 )
-				{
-					postId = postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/);
-					postNewMesssages = postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/);
-					
-					var postLinks = postsArray[postIndex].parentNode.getElementsByTagName('a');
-					for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
-					{
-						if ( postLinks[ postLinksIndex ].getAttribute('href').indexOf( postId ) > -1 )
-						{
-							postLinks[ postLinksIndex ].setAttribute('onclick', 'return setNewCommentsValue(' + postId +',' + postNewMesssages + ');');
-						}
-					}
-				}
-			}
-			_$.injectScript( setNewCommentsValue + "\n" + removePostIdItem );
-		}
+        function sortArrayNumbers(a,b)
+        {
+	        return a < b;
+        }
+        function removePostIdItem( commentsArray, postId )
+        {
+	        for ( var arrayIndex = 0; arrayIndex < commentsArray.length; arrayIndex++)
+	        {
+		        if ( commentsArray[ arrayIndex ].pid == postId )
+		        {
+			        commentsArray.splice( arrayIndex, 1 );
+			        break;
+		        }
+	        }	
+        }
+        function setNewCommentsValue( postId, newMessages)
+        {
+	        var newCommentsArray = _$.jsonParse( _$.localStorGetItem( 'postNewMessagesArray',"[]"));
+	        removePostIdItem( newCommentsArray, postId );
+	        var newEntry = new Object();
+	        newEntry.pid = postId;
+	        newEntry.mid = newMessages;
+	        newCommentsArray.push( newEntry );
+	        while ( newCommentsArray.length > 30 )
+	        {
+		        newCommentsArray.shift();
+	        };
+	        localStorage.setItem( 'postNewMessagesArray', _$.jsonStringify( newCommentsArray ));
+	        return true;
+        }        
+        	
+	    var time1 = new Date();
+        var divPostHolder = document.getElementById('js-posts_holder');
+        if ( divPostHolder == null )
+        {
+	        divPostHolder = document.getElementById('content_left');
+        }
+        if ( divPostHolder )
+        {	
+	        var postHeaderLinks;
+	        var postNewMesssages;
+	        var postId;
+	        var postsArray = divPostHolder.querySelectorAll('div.dd');
+	        for ( var postIndex = 0; postIndex < postsArray.length; postIndex++ )
+	        {
+		        postHeaderLinks = postsArray[postIndex].getElementsByTagName('a');
+		        var indexOfHref = 0;
+		        if ( document.location.href.indexOf("/banned/") >= 0 )
+		        {
+			        if ( postHeaderLinks.length > 2 )
+			        {
+				        indexOfHref = 2;
+			        }
+		        }
+		        else
+		        {
+			        if ( postHeaderLinks.length > 3 )
+			        {
+				        indexOfHref = 3;
+			        }
+		        }
+		        if ( indexOfHref > 0 )
+		        {
+			        postId = postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/);
+			        postNewMesssages = postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/);
+        			
+			        var postLinks = postsArray[postIndex].parentNode.getElementsByTagName('a');
+			        for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
+			        {
+				        if ( postLinks[ postLinksIndex ].getAttribute('href').indexOf( postId ) > -1 )
+				        {
+					        postLinks[ postLinksIndex ].setAttribute('onclick', 'return setNewCommentsValue(' + postId +',' + postNewMesssages + ');');
+				        }
+			        }
+		        }
+	        }
+	        _$.injectScript( setNewCommentsValue + "\n" + removePostIdItem );
+        }
 
-		if ( document.location.href.indexOf("/comments/") > -1 || document.location.href.indexOf("/inbox/") > -1  )
-		{
-			var postId = Number( document.location.href.match(/[\d]+/));
-			if ( document.getElementById('js-footer') != null )
-			{	            
-				// part 1
-				var newCommentsInPost = 0;
-				var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
-				for ( var arrayIndex = 0; arrayIndex < newCommentsArray.length; arrayIndex++)
-				{
-					if ( newCommentsArray[ arrayIndex ].pid == postId )
-					{
-						newCommentsInPost = newCommentsArray[ arrayIndex ].mid;
-						break;
-					}
-				}
-				// part 1
-				// part 2
-				var oldMessageId = 0;
-				var oldestMessageIdInPost = 0;
-				var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
-				for ( var arrayIndex = 0; arrayIndex < oldCommentsArray.length; arrayIndex++)
-				{
-					if ( oldCommentsArray[ arrayIndex ].pid == postId )
-					{
-						oldMessageId = oldCommentsArray[ arrayIndex ].mid;
-						break;
-					}
-				}
-				// part 2
+        if ( document.location.href.indexOf("/comments/") > -1 || document.location.href.indexOf("/inbox/") > -1  )
+        {
+            var postId = Number( document.location.href.match(/[\d]+/));
+            if ( document.getElementById('js-footer') != null )
+            {	            
+	            // part 1
+	            var newCommentsInPost = 0;
+	            var newCommentsArray = _$.jsonParse( _$.localStorGetItem( 'postNewMessagesArray',"[]"));
+	            for ( var arrayIndex = 0; arrayIndex < newCommentsArray.length; arrayIndex++)
+	            {
+		            if ( newCommentsArray[ arrayIndex ].pid == postId )
+		            {
+			            newCommentsInPost = newCommentsArray[ arrayIndex ].mid;
+			            break;
+		            }
+	            }
+	            // part 1
+	            // part 2
+	            var oldMessageId = 0;
+	            var oldestMessageIdInPost = 0;
+	            var oldCommentsArray = _$.jsonParse( _$.localStorGetItem( 'postLastCommentsArray',"[]"));
+	            for ( var arrayIndex = 0; arrayIndex < oldCommentsArray.length; arrayIndex++)
+	            {
+		            if ( oldCommentsArray[ arrayIndex ].pid == postId )
+		            {
+			            oldMessageId = oldCommentsArray[ arrayIndex ].mid;
+			            break;
+		            }
+	            }
+	            // part 2
 
-				var currentCommentId;
-				var oldestMessageIdInPost = 0;
-				var commentsIdArray = new Array();			
-				var commentsHolder = document.getElementById('js-commentsHolder');
-				if ( commentsHolder )
-				{
-					for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
-					{
-						if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
-						{
-							currentCommentId = commentsHolder.childNodes[indexOfComment].getAttribute('id');
-							if ( currentCommentId > oldestMessageIdInPost )
-							{
-								oldestMessageIdInPost = currentCommentId;
-							}
-							if ( oldMessageId > 0 )
-							{
-								if ( currentCommentId > oldMessageId )				
-								{
-									commentsHolder.childNodes[indexOfComment].setAttribute('class', commentsHolder.childNodes[indexOfComment].getAttribute('class') + " new");
-								}
-							}
-							if ( newCommentsInPost > 0 )
-							{
-								commentsIdArray.push( commentsHolder.childNodes[indexOfComment].getAttribute('id'));
-							}
-						}
-					}
-					// part 1
-					if ( newCommentsInPost > 0 )
-					{
-						commentsIdArray.sort( sortArrayNumbers());
-						
-						var indexOfArray = commentsIdArray.length - 1;
-						var commentToBeNew;
-						for ( var commentIndex = 0; commentIndex < newCommentsInPost; commentIndex++)
-						{
-							commentToBeNew = document.getElementById( commentsIdArray[indexOfArray ]);
-							if ( commentToBeNew )
-							{
-								commentToBeNew.setAttribute('class', commentToBeNew.getAttribute('class') + " new");
-							}
-							indexOfArray--;
-						}
-					}
-					// part 1
-					
+	            var currentCommentId;
+	            var oldestMessageIdInPost = 0;
+	            var commentsIdArray = new Array();			
+	            var commentsHolder = document.getElementById('js-commentsHolder');
+	            if ( commentsHolder )
+	            {
+	                for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
+	                {
+		                if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
+		                {
+			                currentCommentId = commentsHolder.childNodes[indexOfComment].getAttribute('id');
+			                if ( currentCommentId > oldestMessageIdInPost )
+			                {
+				                oldestMessageIdInPost = currentCommentId;
+			                }
+			                if ( oldMessageId > 0 )
+			                {
+				                if ( currentCommentId > oldMessageId )				
+				                {
+					                commentsHolder.childNodes[indexOfComment].setAttribute('class', commentsHolder.childNodes[indexOfComment].getAttribute('class') + " new");
+				                }
+			                }
+			                if ( newCommentsInPost > 0 )
+			                {
+				                commentsIdArray.push( commentsHolder.childNodes[indexOfComment].getAttribute('id'));
+			                }
+		                }
+	                }
+	                // part 1
+	                if ( newCommentsInPost > 0 )
+	                {
+		                commentsIdArray.sort( sortArrayNumbers());
+                		
+		                var indexOfArray = commentsIdArray.length - 1;
+		                var commentToBeNew;
+		                for ( var commentIndex = 0; commentIndex < newCommentsInPost; commentIndex++)
+		                {
+			                commentToBeNew = document.getElementById( commentsIdArray[indexOfArray ]);
+			                if ( commentToBeNew )
+			                {
+				                commentToBeNew.setAttribute('class', commentToBeNew.getAttribute('class') + " new");
+			                }
+			                indexOfArray--;
+		                }
+	                }
+	                // part 1
+                	
 
-					// part 1
-					removePostIdItem( newCommentsArray, postId );
-					localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
-					// part 1
+	                // part 1
+	                removePostIdItem( newCommentsArray, postId );
+       	            localStorage.setItem( 'postNewMessagesArray', _$.jsonStringify( newCommentsArray ));
+	                // part 1
 
-					// part 2
-					removePostIdItem( oldCommentsArray, postId );
-					var newEntry = new Object();
-					newEntry.pid = postId;
-					newEntry.mid = oldestMessageIdInPost;
-					oldCommentsArray.push( newEntry );
-					while ( oldCommentsArray.length > 100 )
-					{
-						oldCommentsArray.shift();
-					};
-					localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
-					// part 2
-				}
-			}
-			else
-			{
-				// post were not loaded
-				_$.injectScript(" futu_alert( 'Страница похоже не догрузилась :( Подожди 3-5 секунд и попробуй обновить её, а я восстановлю новые комментарии.', false, 'red');");	            
-			}
-		}
-		addBenchmark( time1, 'new comment saver' );	
-	}
-	// end - new comments saver for posts which were not loaded completely.
+	                // part 2
+                    removePostIdItem( oldCommentsArray, postId );
+	                var newEntry = new Object();
+	                newEntry.pid = postId;
+	                newEntry.mid = oldestMessageIdInPost;
+	                oldCommentsArray.push( newEntry );
+	                while ( oldCommentsArray.length > 100 )
+	                {
+		                oldCommentsArray.shift();
+	                };
+       	            localStorage.setItem( 'postLastCommentsArray', _$.jsonStringify( oldCommentsArray ));
+	                // part 2
+	            }
+	        }
+	        else
+	        {
+	            // post were not loaded
+                _$.injectScript(" futu_alert( 'Страница похоже не догрузилась :( Подожди 3-5 секунд и попробуй обновить её, а я восстановлю новые комментарии.', false, 'red');");	            
+	        }
+        }
+        addBenchmark( time1, 'new comment saver' );	
+    }
+    // end - new comments saver for posts which were not loaded completely.
 }
 
 var time1 = new Date();
@@ -5376,5 +5360,5 @@ DSP_init();
 supressEvents = false;
 
 }
-	
+    
 addBenchmark( dateToCheck1, 'grand total' );
