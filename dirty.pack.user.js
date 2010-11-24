@@ -2361,11 +2361,11 @@ if ( divRightCol && divTags)
 		var divForNews = document.createElement('div');
 		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
 		var subDivForNewsHead = document.createElement('div');
-		subDivForNewsHead.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://crea7or.spb.ru/note-head.png") no-repeat left top;');
+		subDivForNewsHead.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-104005-55b4940527da0df7322a922f8c150ce5.png") no-repeat left top;');
 		var subDivForNewsFoot = document.createElement('div');
-		subDivForNewsFoot.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://crea7or.spb.ru/note-foot.png") no-repeat left bottom;');
+		subDivForNewsFoot.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-103959-db4cb380e01c78e5836a1e90676d9e49.png") no-repeat left bottom;');
 		var subDivForNewsBody = document.createElement('div');
-		subDivForNewsBody.setAttribute('style', 'background:#ffffff url("http://crea7or.spb.ru/note-body.png") repeat-y left top; padding: 10px 10px 10px 10px;');
+		subDivForNewsBody.setAttribute('style', 'background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-103951-5976a23425e0befd977387a11a65665a.png") repeat-y left top; padding: 10px 10px 10px 10px;');
 	    divForNews.appendChild( subDivForNewsHead );
 	    subDivForNewsBody.innerHTML = newsFromD3search;
 	    divForNews.appendChild( subDivForNewsBody );
@@ -2393,7 +2393,7 @@ if ( divRightCol && divTags)
     		localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
         }
         var newsArray = subDivForNewsBody.querySelectorAll('div.sticker');
-		if ( hiddenNews != newsArray.length )
+    	if ( hiddenNews != newsArray.length )
 		{
     		divRightCol.insertBefore( divForNews, divAds );
 		    _$.injectScript( hideSticker );
