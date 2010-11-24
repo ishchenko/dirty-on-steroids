@@ -2262,7 +2262,7 @@ if ( _$.settings.grt_enabled =='1' )
 		}	
 		if ( vGrtShow )
 		{			
-			var vImgsArr = jsonParse( localStorGetItem( "vGertrudes", "[]" ));
+			var vImgsArr = jsonParse( localStorGetItem( "gertrudasJson", "[]" ));
 			if ( vImgsArr.length > 0 )
 			{
 				var vImgsArrIndex = Math.floor( Math.random() * vImgsArr.length );
@@ -2301,7 +2301,7 @@ if ( _$.settings.grt_enabled =='1' )
 		}
 		if ( vGreetShow )
 		{
-			var vTxtsArr = jsonParse( localStorGetItem("vHellos", "[]" ));
+			var vTxtsArr = jsonParse( localStorGetItem("greetingsJson", "[]" ));
 			if ( vTxtsArr.length > 0 )
 			{				
 				var vTxtsArrIndex = Math.floor( Math.random() * vTxtsArr.length );
@@ -2326,7 +2326,7 @@ if ( _$.settings.grt_enabled =='1' )
 			}
 		}
 	}
-	addBenchmark( time1, 'gertrudes & greetings' );
+	addBenchmark( time1, 'gertrudas & greetings' );
 }
 // end of SCRIPTS-37 & SCRIPTS-29 
 
@@ -2353,7 +2353,7 @@ var divTags = document.getElementById('js-tags');
 if ( divRightCol && divTags)
 {    
 	var divAds = divRightCol.querySelector('div.b-ads');
-	var newsFromD3search = localStorage.getItem('vStickers');
+	var newsFromD3search = localStorage.getItem('stickersMarkup');
 	if ( newsFromD3search != null  && divAds)
 	{
 	    var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
@@ -2366,9 +2366,6 @@ if ( divRightCol && divTags)
 		subDivForNewsFoot.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://crea7or.spb.ru/note-foot.png") no-repeat left bottom;');
 		var subDivForNewsBody = document.createElement('div');
 		subDivForNewsBody.setAttribute('style', 'background:#ffffff url("http://crea7or.spb.ru/note-body.png") repeat-y left top; padding: 10px 10px 10px 10px;');
-		//newsFromD3search = '<div id="sticker-4ce47a88a3e7cf84081c2566" class="sticker"><div class="sticker-hide">[<a href="#" onclick="return hideSticker( this );" title="Не хочу это больше видеть!">x</a>]</div><div class="sticker-header">Новость дня 6!</div><div class="sticker-body">crea7or написал <a href="https://github.com/ishchenko/dirty-on-steroids/raw/master/dirty.pack.user.js">скрипт</a> для вставки новостей в правую панель! Фантастика!</div></div>';
-		//newsFromD3search += '<div id="sticker-4ce47a88a3e7cf84081c2567" class="sticker"><div class="sticker-hide">[<a href="#" onclick="return hideSticker( this );" title="Не хочу это больше видеть!">x</a>]</div><div class="sticker-header">Новость дня 7!</div><div class="sticker-body">crea7or написал <a href="https://github.com/ishchenko/dirty-on-steroids/raw/master/dirty.pack.user.js">скрипт</a> для вставки новостей в правую панель! Фантастика!</div></div>';
-		//newsFromD3search += '<div id="sticker-4ce47a88a3e7cf84081c2568" class="sticker"><div class="sticker-hide">[<a href="#" onclick="return hideSticker( this );" title="Не хочу это больше видеть!">x</a>]</div><div class="sticker-header">Новость дня 8!</div><div class="sticker-body">crea7or написал <a href="https://github.com/ishchenko/dirty-on-steroids/raw/master/dirty.pack.user.js">скрипт</a> для вставки новостей в правую панель! Фантастика!</div></div>';
 	    divForNews.appendChild( subDivForNewsHead );
 	    subDivForNewsBody.innerHTML = newsFromD3search;
 	    divForNews.appendChild( subDivForNewsBody );
