@@ -8,7 +8,7 @@
 // @include       http://dirty.ru/*
 // @include       http://*.dirty.ru/*
 // ==/UserScript==
- 
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Funtions and Params
@@ -16,7 +16,7 @@
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 var dateToCheck1 = new Date();
 
-var _$ = { 
+var _$ = {
 	settings: {},
 	settings_colors: "[]",
 	location: window.location.href.split(window.location.host)[1],
@@ -399,7 +399,7 @@ function localStorGetItem( itemName, defaultValue )
 	return loadedValue;		
 }
 _$.injectScript( jsonParse + "\n" + jsonStringify  + "\n" +  localStorGetItem );
-// 
+//
 
 _$.set_get();
 
@@ -472,33 +472,33 @@ if( typeof _$.settings.quotes == "undefined") { _$.settings.quotes = 1; settings
 
 if ( settingsSave )
 {
-    _$.set_save( null , 0);
+	_$.set_save( null , 0);
 }
 //END CONFIG
 
 if ( _$.settings.timings_display == 1 )
 {
-    var divWithBenchmark = document.createElement('div');
-    divWithBenchmark.setAttribute('id','js-benchmark');
-    divWithBenchmark.setAttribute('style','border: 1px dotted grey; padding: 5px 5px 5px 5px; font-family: verdana, sans-serif; font-size: 10px;');
-    divWithBenchmark.innerHTML = "<table cellspacing=1 cellpadding=1>";
-    document.body.insertBefore( divWithBenchmark, document.body.firstChild );
+	var divWithBenchmark = document.createElement('div');
+	divWithBenchmark.setAttribute('id','js-benchmark');
+	divWithBenchmark.setAttribute('style','border: 1px dotted grey; padding: 5px 5px 5px 5px; font-family: verdana, sans-serif; font-size: 10px;');
+	divWithBenchmark.innerHTML = "<table cellspacing=1 cellpadding=1>";
+	document.body.insertBefore( divWithBenchmark, document.body.firstChild );
 }
 
 function addBenchmark( results, name )
 {
-    if ( _$.settings.timings_display == 1 )
-    {
-	    var time2 = new Date();
-        var divBench = document.getElementById('js-benchmark');
-        if ( divBench )
-        {
-            var divWithBenchmark = document.createElement('div');
-            divWithBenchmark.setAttribute('style','font-family: verdana, sans-serif; font-size: 10px;');
-            divWithBenchmark.innerHTML = ( time2 - results ) + " ms   : " + name;
-            divBench.appendChild( divWithBenchmark );
-        }
-    }
+	if ( _$.settings.timings_display == 1 )
+	{
+		var time2 = new Date();
+		var divBench = document.getElementById('js-benchmark');
+		if ( divBench )
+		{
+			var divWithBenchmark = document.createElement('div');
+			divWithBenchmark.setAttribute('style','font-family: verdana, sans-serif; font-size: 10px;');
+			divWithBenchmark.innerHTML = ( time2 - results ) + " ms   : " + name;
+			divBench.appendChild( divWithBenchmark );
+		}
+	}
 }
 
 if(_$.location.indexOf('/off/')!=0){
@@ -516,7 +516,7 @@ if(_$.location.indexOf('/off/')!=0){
 
 	function DSP_make_General_Bar(){
 
-        //var time1 = new Date();
+		//var time1 = new Date();
 		var dsp_output = dsp_bars = dsp_params = '';
 		var dsp_left_panel = _$.$c('left_col_nav')[0];
 		for(var i=0; i<6; i++){
@@ -536,12 +536,12 @@ if(_$.location.indexOf('/off/')!=0){
 		dsp_general_bar = _$.$('dsp_settings_panels');
 		dsp_general_param = _$.$('dsp_settings_props');
 		
-	    //addBenchmark( time1, 'general bar' );		
+		//addBenchmark( time1, 'general bar' );		
 	}
 
 	function DSP_make_Setting_Bar(title,params,init){
-        
-        //var time1 = new Date();
+		
+		//var time1 = new Date();
 		var dsp_setting_id = 0;
 
 		while(dsp_setting_id<6){
@@ -556,7 +556,7 @@ if(_$.location.indexOf('/off/')!=0){
 
 		_$.$('dsp_setting_button_'+dsp_setting_id).style.cursor="pointer";
 		_$.addEvent(_$.$('dsp_setting_button_'+dsp_setting_id),'click',function(){DSP_show_hide_setting(dsp_setting_id)});
-	    //addBenchmark( time1, 'settings bar' );
+		//addBenchmark( time1, 'settings bar' );
 	}
 
 	function DSP_show_hide_window(name){
@@ -715,13 +715,13 @@ function DSP_color_remove(obj){
 			temp_array.splice(i,1);
 		}
 	}
-    if ( temp_array.length > 0 )
-    {
-	    _$.settings_colors = '["'+temp_array.join('","')+'"]';
+	if ( temp_array.length > 0 )
+	{
+		_$.settings_colors = '["'+temp_array.join('","')+'"]';
 	}
 	else
 	{
-	    _$.settings_colors = '[]';
+		_$.settings_colors = '[]';
 	}
 	_$.set_save( null, 0 );
 	DSP_paint_comment(user,'transparent','');
@@ -1448,7 +1448,7 @@ _$.tooltip = {
 					_$.tooltip.processLinks.processLinks(event.target);
 				}
 				
-				if(event.target !== null && typeof(event.target) !== 'undefined' && typeof(event.target.tagName) !== 'undefined' && 
+				if(event.target !== null && typeof(event.target) !== 'undefined' && typeof(event.target.tagName) !== 'undefined' &&
 					event.target.parentNode !== null
 					&& event.target.parentNode.parentNode !== null
 					&& event.target.parentNode.parentNode.parentNode !== null
@@ -1806,7 +1806,7 @@ function dsp_posts_init(){
 
 	add_checkbox_event('dsp_c_read_button','read_button');
 //	add_checkbox_event('dsp_c_dirty_tags','dirty_tags');
-    _$.addEvent(_$.$('dsp_c_dirty_tags'),'click',
+	_$.addEvent(_$.$('dsp_c_dirty_tags'),'click',
 	function(){
 		DSP_show_hide_menu('dsp_l_dirty_tags');
 		if(_$.$('dsp_c_dirty_tags').checked===true) _$.set_save('dirty_tags',1);
@@ -1989,7 +1989,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_arrows_on" type="checkbox" '+((_$.settings.arrows_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_arrows_on">SP2: Увеличить стрелочки под комментарием</label></td></tr>';
-        dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_newcomments_saver" type="checkbox" '+((_$.settings.newcomments_saver=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_newcomments_saver">SP2: Восстанавливать новые комментарии после недогруза</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_newcomments_saver" type="checkbox" '+((_$.settings.newcomments_saver=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_newcomments_saver">SP2: Восстанавливать новые комментарии после недогруза</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_colors_on" type="checkbox" '+((_$.settings.colors_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_colors_on">Изменять цвет комментариев пользователей</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_colors" style="display:'+((_$.settings.colors_on=='1')?'block':'none')+'"><table cellspacing="0" border="0">';
@@ -2031,7 +2031,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
 		dsp_txt += '<tr><td align="right"><input id="dsp_c_tooltip_show_self" type="checkbox" '+((_$.settings.favicon_style=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_tooltip_show_self">Тултип на ссылке возле logout</label></td></tr>';
 		dsp_txt += '</table></div>';
-        dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2: Показывать время выполнения</label></td></tr>';
+		dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2: Показывать время выполнения</label></td></tr>';
 		dsp_txt += '</table>';
 		
 		DSP_make_Setting_Bar('Tooltip & Misc',dsp_txt,'dsp_tooltip_init()');
@@ -2045,7 +2045,7 @@ function DSP_init()
 {
 	if ( document.querySelector('div.content_left') != null )
 	{
-	    var time1 = new Date();
+		var time1 = new Date();
 		DSP_make_General_Bar();
 		DSP_show_hide_setting(0);
 		addBenchmark( time1, 'dsp init' );
@@ -2057,7 +2057,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1'){
 
 	if(_$.location.indexOf('/user/')<0){
 
-    var time1 = new Date();
+	var time1 = new Date();
 
 		var dsp_elements = _$.$t('a',_$.$('content'));
 
@@ -2107,8 +2107,8 @@ if(_$.settings.posts_average=='1'){
 
 	if(_$.location.indexOf('/comments/')==0){
 
-        var time1 = new Date();
-        
+		var time1 = new Date();
+
 		var dsp_av_res = document.createElement('span');
 		dsp_av_res.id = 'dsp_layer_posts_average';
 		_$.$c('dd')[0].appendChild(dsp_av_res);
@@ -2143,7 +2143,7 @@ if(_$.settings.posts_average=='1'){
 		
 		if(dsp_temp_length>=0)_$.$('dsp_layer_posts_average').innerHTML += ' | '+dsp_average_votes.length+' комментариев'
 
-	    addBenchmark( time1, 'post average' );
+		addBenchmark( time1, 'post average' );
 	}
 }
 
@@ -2201,7 +2201,7 @@ if(_$.settings.youtube_fullscreen=='1'){
 
 if(_$.settings.colors_on=='1'){
 
-    var time1 = new Date();
+	var time1 = new Date();
 	if(_$.location.indexOf('/comments/')==0||_$.location.indexOf('/news/')==0||(_$.location.indexOf('/my/inbox/')==0&&_$.location!='/my/inbox/')){
 
 		dsp_all_comments = _$.$c('c_footer');
@@ -2222,7 +2222,7 @@ if(_$.settings.colors_on=='1'){
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 //SP 2, NEW SCRIPTS START HERE
 //STEP FOUR
-//GENERAL FUNCTIONS 
+//GENERAL FUNCTIONS
 //show new comments correctly -- in the new comment scroller section
 //if(document.location.href.indexOf('#new')>-1){
 //	document.location.href = document.location.href;
@@ -2273,7 +2273,7 @@ if ( _$.settings.grt_enabled =='1' )
 				vImgs[1].setAttribute('width', "149");
 				vImgs[1].setAttribute('src', "");
 				vImgs[1].setAttribute('src', vRandomGrt.path );
-				if (vRandomGrt.fixMargins) 
+				if (vRandomGrt.fixMargins)
 				{
 					//Stasik0: hack to remove flicker
 					vImgs[0].setAttribute('src', "");
@@ -2328,35 +2328,35 @@ if ( _$.settings.grt_enabled =='1' )
 	}
 	addBenchmark( time1, 'gertrudas & greetings' );
 }
-// end of SCRIPTS-37 & SCRIPTS-29 
+// end of SCRIPTS-37 & SCRIPTS-29
 
 // made by crea7or
 // start of SCRIPTS-60
 var time1 = new Date();
 
 function hideSticker( stickerDiv )
-{   
-    var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
-    var divWithId = stickerDiv.parentNode.parentNode;
-    var stickerId = divWithId.getAttribute('id');
-    if ( stickerId )
-    {
-        hiddenStickers.push( stickerId );
-        localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
-        divWithId.setAttribute('style', 'display: none;');
-    }    
-    return false;
+{  
+	var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
+	var divWithId = stickerDiv.parentNode.parentNode;
+	var stickerId = divWithId.getAttribute('id');
+	if ( stickerId )
+	{
+		hiddenStickers.push( stickerId );
+		localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
+		divWithId.setAttribute('style', 'display: none;');
+	}
+	return false;
 }
 
 var divRightCol = document.querySelector('div.content_right');
 var divTags = document.getElementById('js-tags');
 if ( divRightCol && divTags)
-{    
+{
 	var divAds = divRightCol.querySelector('div.b-ads');
 	var newsFromD3search = localStorage.getItem('stickersMarkup');
 	if ( newsFromD3search != null  && divAds)
 	{
-	    var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
+		var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
 		divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 		var divForNews = document.createElement('div');
 		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
@@ -2366,37 +2366,37 @@ if ( divRightCol && divTags)
 		subDivForNewsFoot.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-103959-db4cb380e01c78e5836a1e90676d9e49.png") no-repeat left bottom;');
 		var subDivForNewsBody = document.createElement('div');
 		subDivForNewsBody.setAttribute('style', 'background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-103951-5976a23425e0befd977387a11a65665a.png") repeat-y left top; padding: 10px 10px 10px 10px;');
-	    divForNews.appendChild( subDivForNewsHead );
-	    subDivForNewsBody.innerHTML = newsFromD3search;
-	    divForNews.appendChild( subDivForNewsBody );
-	    divForNews.appendChild( subDivForNewsFoot );
+		divForNews.appendChild( subDivForNewsHead );
+		subDivForNewsBody.innerHTML = newsFromD3search;
+		divForNews.appendChild( subDivForNewsBody );
+		divForNews.appendChild( subDivForNewsFoot );
 		var divId;
 		var hiddenNews = 0;
 		var saveHiddenStickers = false;
 		for ( var stickerIndex = 0; stickerIndex < hiddenStickers.length; stickerIndex++)
 		{
-		    divId = subDivForNewsBody.querySelector('div#' + hiddenStickers[stickerIndex] );
-		    if ( divId )
-		    {
-		        divId.setAttribute('style', 'display: none;');
-		        hiddenNews++;
-		    }
-		    else
-		    {
-		        hiddenStickers.slice( stickerIndex );
-		        saveHiddenStickers = true;
-		        stickerIndex--;
-		    }
+			divId = subDivForNewsBody.querySelector('div#' + hiddenStickers[stickerIndex] );
+			if ( divId )
+			{
+				divId.setAttribute('style', 'display: none;');
+				hiddenNews++;
+			}
+			else
+			{
+				hiddenStickers.slice( stickerIndex );
+				saveHiddenStickers = true;
+				stickerIndex--;
+			}
 		}
 		if ( saveHiddenStickers )
-        {
-    		localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
-        }
-        var newsArray = subDivForNewsBody.querySelectorAll('div.sticker');
-    	if ( hiddenNews != newsArray.length )
 		{
-    		divRightCol.insertBefore( divForNews, divAds );
-		    _$.injectScript( hideSticker );
+			localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
+		}
+		var newsArray = subDivForNewsBody.querySelectorAll('div.sticker');
+		if ( hiddenNews != newsArray.length )
+		{
+			divRightCol.insertBefore( divForNews, divAds );
+			_$.injectScript( hideSticker );
 		}
 	}
 }
@@ -2408,14 +2408,14 @@ addBenchmark( time1, 'd3s news' );
 if ( _$.settings.online_enabled =='1' )
 {
   var time1 = new Date();
-    
+
 	var vUserName = _$.getUsername();
 	if( vUserName.length > 0 )
 	{
 		var lastCheckinTimestamp = localStorGetItem('lastCheckinTimestamp', 0 );
 		var drawStuff = function()
 		{
-		    var divContentLeft = document.querySelector("div.content_left");
+			var divContentLeft = document.querySelector("div.content_left");
 			if ( divContentLeft )
 			{
 				var checkinsMarkup = localStorage.getItem('checkinsMarkup');
@@ -2455,7 +2455,7 @@ if ( _$.settings.online_enabled =='1' )
 // start of SCRIPTS-58
 if ( document.location.href.indexOf("/my/inbox/") >= 0 )
 {
-    var time1 = new Date();
+	var time1 = new Date();
 	// user page
 	var vS58links = document.querySelectorAll('a.c_icon');
 	if ( vS58links )
@@ -2530,7 +2530,7 @@ if ( vPrvDiv )
 // modifying inbox users list, inbox header, invites link
 // adding links to banned/music
 //
-    var time1 = new Date();
+	var time1 = new Date();
 	var vTortDupDetected = 0;
 	var vTortAddLinks = document.querySelector('div.header_logout');
 	if ( vTortAddLinks )
@@ -2614,40 +2614,40 @@ if ( vPrvDiv )
 	addBenchmark( time1, 'dirty tort' );
 //
 // start of the dirty ranks script
-function vRanksGetRankFromNote()
+function ranksGetRankFromNote()
 {
-	vRankUserNote = document.getElementById('js-usernote');
-	if ( vRankUserNote && vRankUserNote.children.length == 0 )
+	ranksUserNote = document.getElementById('js-usernote');
+	if ( ranksUserNote && ranksUserNote.children.length == 0 )
 	{
-		vRanksNote = vRankUserNote.innerHTML;
-		vRanksIndex = vRanksNote.lastIndexOf('#');
-		if ( vRanksIndex > -1 )
+		ranksNote = ranksUserNote.innerHTML;
+		ranksIndex = ranksNote.lastIndexOf('#');
+		if ( ranksIndex > -1 )
 		{
-			return  vRanksNote.substring( vRanksIndex + 1 , vRanksNote.length );
+			return  ranksNote.substring( ranksIndex + 1 , ranksNote.length );
 		}
 	}
 	return null;
 }
 
 
-function vRanksSetRankNote( vRanksName )
+function ranksSetRankNote( ranksName )
 {
-	vRankUserNote = document.getElementById('js-usernote');
-	if ( vRankUserNote && vRankUserNote.children.length == 0 )
+	ranksUserNote = document.getElementById('js-usernote');
+	if ( ranksUserNote && ranksUserNote.children.length == 0 )
 	{
-		vRanksNote = vRankUserNote.innerHTML;
-		vRanksIndex = vRanksNote.lastIndexOf('#');
-		if ( vRanksIndex > -1 )
+		ranksNote = ranksUserNote.innerHTML;
+		ranksIndex = ranksNote.lastIndexOf('#');
+		if ( ranksIndex > -1 )
 		{
 			// some name already in the note
-			vRanksNote = vRanksNote.substring( 0, vRanksIndex );
-			if ( vRanksName != null )
+			ranksNote = ranksNote.substring( 0, ranksIndex );
+			if ( ranksName != null )
 			{
-				document.getElementById('js-usernote').innerHTML = vRanksNote + " #" + vRanksName;
+				document.getElementById('js-usernote').innerHTML = ranksNote + " #" + ranksName;
 			}
 			else
 			{
-				document.getElementById('js-usernote').innerHTML = vRanksNote;
+				document.getElementById('js-usernote').innerHTML = ranksNote;
 			}
 			_$.fireEvent(document.getElementById('js-usernote'), 'click');
 			_$.fireEvent(document, 'click');
@@ -2655,34 +2655,34 @@ function vRanksSetRankNote( vRanksName )
 		else
 		{
 			// no name at all
-			if ( vRanksName != null )
+			if ( ranksName != null )
 			{
-				document.getElementById('js-usernote').innerHTML = vRanksNote + " #" + vRanksName;
+				document.getElementById('js-usernote').innerHTML = ranksNote + " #" + ranksName;
 			}
 		}
 	}
 }
 
-function vRanksSetRank( e )
+function ranksSetRank( e )
 {
-	var vRanksDivUser = document.querySelector('div.user_name_inner');
-	if ( vRanksDivUser )
+	var ranksDivUser = document.querySelector('div.user_name_inner');
+	if ( ranksDivUser )
 	{
-		vRanksA = vRanksDivUser.getElementsByTagName('a');
-		vRanksUserName = vRanksA[0].innerHTML;
+		ranksA = ranksDivUser.getElementsByTagName('a');
+		ranksUserName = ranksA[0].innerHTML;
 
-		vRanksName = prompt('Как назовём?', vRanksGetRankFromLocStor( vRanksUserName ));
-		if( vRanksName )
+		ranksName = prompt('Как назовём?', ranksGetRankFromLocStor( ranksUserName ));
+		if( ranksName )
 		{	
-			var vRanksDivUser = document.querySelector('div.user_name_inner');
-			if ( vRanksDivUser )
+			var ranksDivUser = document.querySelector('div.user_name_inner');
+			if ( ranksDivUser )
 			{
-				if ( vRanksName.indexOf('#') > -1 )
+				if ( ranksName.indexOf('#') > -1 )
 				{
-					vRanksName = null;
+					ranksName = null;
 				}
-				vRanksSetNameLocStor( vRanksUserName, vRanksName );
-				vRanksSetRankNote( vRanksName );
+				ranksSetNameLocStor( ranksUserName, ranksName );
+				ranksSetRankNote( ranksName );
 			}
 		}
 	}
@@ -2690,30 +2690,30 @@ function vRanksSetRank( e )
 	return false;
 }
 
-function vRanksGetNameIndexInLocStor( vRanksArray, vRanksUserName )
+function ranksGetNameIndexInLocStor( ranksArray, ranksUserName )
 {
-	for ( vRanksIndex = 0; vRanksIndex < vRanksArray.length; vRanksIndex+= 2 )
+	for ( ranksIndex = 0; ranksIndex < ranksArray.length; ranksIndex+= 2 )
 	{
-		if ( vRanksArray[vRanksIndex] == vRanksUserName )
+		if ( ranksArray[ranksIndex] == ranksUserName )
 		{
-			return vRanksIndex;
+			return ranksIndex;
 		}	
 	}
 	return -1;
 }
 
-function vRanksGetRankFromLocStor( vRanksUserName )
+function ranksGetRankFromLocStor( ranksUserName )
 {
-	var vRanksArrLocalStore = localStorage.getItem('vRanksStore' );
-	var vRanksLocalStoreArray = new Array;
-	if ( vRanksArrLocalStore )
+	var ranksArrLocalStore = localStorage.getItem('ranksStore' );
+	var ranksLocalStoreArray = new Array;
+	if ( ranksArrLocalStore )
 	{
-		vRanksLocalStoreArray = vRanksArrLocalStore.split("#");
+		ranksLocalStoreArray = ranksArrLocalStore.split("#");
 	}
-	vRanksNameIndex = vRanksGetNameIndexInLocStor( vRanksLocalStoreArray, vRanksUserName );
-	if ( vRanksNameIndex > -1 )
+	ranksNameIndex = ranksGetNameIndexInLocStor( ranksLocalStoreArray, ranksUserName );
+	if ( ranksNameIndex > -1 )
 	{
-		return vRanksLocalStoreArray[ vRanksNameIndex + 1 ];
+		return ranksLocalStoreArray[ ranksNameIndex + 1 ];
 	}
 	else
 	{
@@ -2721,74 +2721,78 @@ function vRanksGetRankFromLocStor( vRanksUserName )
 	}
 }
 
-function vRanksSetNameLocStor( vRanksUserName, vRanksRank )
+function ranksSetNameLocStor( ranksUserName, ranksRank )
 {
-	var vRanksArrLocalStore = localStorage.getItem('vRanksStore' );
-	var vRanksLocalStoreArray = new Array;
-	if ( vRanksArrLocalStore )
+	var ranksArrLocalStore = localStorage.getItem('ranksStore' );
+	var ranksLocalStoreArray = new Array;
+	if ( ranksArrLocalStore )
 	{
-		vRanksLocalStoreArray = vRanksArrLocalStore.split("#");
+		ranksLocalStoreArray = ranksArrLocalStore.split("#");
 	}
-	vRanksNameIndex = vRanksGetNameIndexInLocStor( vRanksLocalStoreArray, vRanksUserName );
-	if ( vRanksNameIndex > -1 )
+	else
 	{
-		if ( vRanksRank != null )
+	
+	}
+	ranksNameIndex = ranksGetNameIndexInLocStor( ranksLocalStoreArray, ranksUserName );
+	if ( ranksNameIndex > -1 )
+	{
+		if ( ranksRank != null )
 		{
-			vRanksLocalStoreArray[ vRanksNameIndex + 1 ] = vRanksRank;
+			ranksLocalStoreArray[ ranksNameIndex + 1 ] = ranksRank;
 		}
 		else
 		{
-			vRanksLocalStoreArray.pop( vRanksNameIndex );
-			vRanksLocalStoreArray.pop( vRanksNameIndex + 1 );
+			ranksLocalStoreArray.pop( ranksNameIndex );
+			ranksLocalStoreArray.pop( ranksNameIndex + 1 );
 		}
 	}
 	else
 	{
-		if ( vRanksRank != null )
+		if ( ranksRank != null )
 		{
-			vRanksLocalStoreArray.push( vRanksUserName );
-			vRanksLocalStoreArray.push( vRanksRank );
+			ranksLocalStoreArray.push( ranksUserName );
+			ranksLocalStoreArray.push( ranksRank );
 		}
 	}
 
-	var vRanksArrToStr = new String; 
-	for ( vRanksInd = 0; vRanksInd < vRanksLocalStoreArray.length; vRanksInd++ )
+	var ranksArrToStr = new String;
+	for ( ranksInd = 0; ranksInd < ranksLocalStoreArray.length; ranksInd++ )
 	{
-		if ( vRanksArrToStr.length > 0 )
+		if ( ranksArrToStr.length > 0 )
 		{
-			vRanksArrToStr += "#";
+			ranksArrToStr += "#";
 		}
-		vRanksArrToStr += vRanksLocalStoreArray[ vRanksInd ];
+		ranksArrToStr += ranksLocalStoreArray[ ranksInd ];
 	}
-	localStorage.setItem('vRanksStore', vRanksArrToStr );
+	localStorage.setItem('ranksStore', ranksArrToStr );
 }
 
 
 if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 {
 	// user page
-	var vRanksUserName;
-	var vRanksDivUser = document.querySelector('div.user_name_inner');
-	if ( vRanksDivUser )
+	var ranksUserName;
+	var ranksDivUser = document.querySelector('div.user_name_inner');
+	if ( ranksDivUser )
 	{
-		vRanksA = vRanksDivUser.getElementsByTagName('a');
-		vRanksA[0].setAttribute('href', '#');
-		vRanksUserName = vRanksA[0].innerHTML;
-		_$.addEvent( vRanksA[0], "click", vRanksSetRank );
+		ranksA = ranksDivUser.getElementsByTagName('a');
+		ranksA[0].setAttribute('href', '#');
+		ranksUserName = ranksA[0].innerHTML;
+		_$.addEvent( ranksA[0], "click", ranksSetRank );
 
-		vRanksNoteRank = vRanksGetRankFromNote();
-		vRanksLocStorRank = vRanksGetRankFromLocStor( vRanksUserName );
-		if ( vRanksLocStorRank == null && vRanksNoteRank != null )
+		ranksNoteRank = ranksGetRankFromNote();
+		ranksLocStorRank = ranksGetRankFromLocStor( ranksUserName );
+		if ( ranksLocStorRank == null && ranksNoteRank != null )
 		{
-			vRanksSetNameLocStor( vRanksUserName, vRanksNoteRank );
+			ranksSetNameLocStor( ranksUserName, ranksNoteRank );
 		}
-		else if ( vRanksLocStorRank != null && vRanksNoteRank == null )
+		else if ( ranksLocStorRank != null && ranksNoteRank == null )
 		{
-			vRanksSetRankNote( vRanksLocStorRank );
+			ranksSetRankNote( ranksLocStorRank );
 		}
-		else if ( vRanksLocStorRank != vRanksNoteRank )
+		else if ( ranksLocStorRank != ranksNoteRank )
 		{
-			vRanksSetRankNote( vRanksLocStorRank );			
+			ranksSetRankNote( ranksLocStorRank );			
 		}
 
 		// made by crea7or
@@ -2800,7 +2804,7 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 			vUserIdJs = vUserIdVote.getAttribute('onclick');
 			vUserIdJsInd = vUserIdJs.indexOf('id:') + 4;
 			vUserIdTxt = vUserIdJs.substring(vUserIdJsInd, vUserIdJs.indexOf("'", vUserIdJsInd ));
-			vRanksDivUser.childNodes[6].innerHTML = 'User ID: ' +  vUserIdTxt + ', ' + vRanksDivUser.childNodes[6].innerHTML;
+			ranksDivUser.childNodes[6].innerHTML = 'User ID: ' +  vUserIdTxt + ', ' + ranksDivUser.childNodes[6].innerHTML;
 		}
 		// end of SCRIPTS-65
 
@@ -2808,48 +2812,48 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 }
 else
 {
-    var time1 = new Date();
-    
-	var vRanksArrLocalStore = localStorage.getItem('vRanksStore' );
-	var vRanksLocalStoreArray = new Array;
-	if ( vRanksArrLocalStore )
+	var time1 = new Date();
+
+	var ranksArrLocalStore = localStorage.getItem('ranksStore' );
+	var ranksLocalStoreArray = new Array;
+	if ( ranksArrLocalStore )
 	{
-		vRanksLocalStoreArray = vRanksArrLocalStore.split("#");
+		ranksLocalStoreArray = ranksArrLocalStore.split("#");
 	}
 
-	if ( vRanksLocalStoreArray.length > 0 )
+	if ( ranksLocalStoreArray.length > 0 )
 	{
 		// other pages
-		var vRanksDivDD = document.querySelectorAll('div.dd');
-		if ( vRanksDivDD )
+		var ranksDivDD = document.querySelectorAll('div.dd');
+		if ( ranksDivDD )
 		{
-			for ( vRanksInd = 0; vRanksInd < vRanksDivDD.length; vRanksInd++ )
+			for ( ranksInd = 0; ranksInd < ranksDivDD.length; ranksInd++ )
 			{	
-				if ( vRanksDivDD[vRanksInd].children.length > 2 )
+				if ( ranksDivDD[ranksInd].children.length > 2 )
 				{
-					vRanksUserName = vRanksDivDD[vRanksInd].childNodes[3].innerHTML;
-					vRanksNameInd = vRanksGetNameIndexInLocStor( vRanksLocalStoreArray, vRanksUserName );
-					if ( vRanksNameInd > -1 )
+					ranksUserName = ranksDivDD[ranksInd].childNodes[3].innerHTML;
+					ranksNameInd = ranksGetNameIndexInLocStor( ranksLocalStoreArray, ranksUserName );
+					if ( ranksNameInd > -1 )
 					{
-						var vRanksTxt =  document.createTextNode(" " + vRanksLocalStoreArray[ vRanksNameInd + 1 ] + " ");
-						vRanksDivDD[vRanksInd].insertBefore( vRanksTxt, vRanksDivDD[vRanksInd].childNodes[3]);
+						var ranksTxt =  document.createTextNode(" " + ranksLocalStoreArray[ ranksNameInd + 1 ] + " ");
+						ranksDivDD[ranksInd].insertBefore( ranksTxt, ranksDivDD[ranksInd].childNodes[3]);
 					}
 				}		
 			}
 		}
-		var vRanksDivFooter = document.querySelectorAll('div.c_footer');
-		if ( vRanksDivFooter )
+		var ranksDivFooter = document.querySelectorAll('div.c_footer');
+		if ( ranksDivFooter )
 		{
-			for ( vRanksInd = 0; vRanksInd < vRanksDivFooter.length; vRanksInd++ )
+			for ( ranksInd = 0; ranksInd < ranksDivFooter.length; ranksInd++ )
 			{	
-				if ( vRanksDivFooter[vRanksInd].children.length > 2 )
+				if ( ranksDivFooter[ranksInd].children.length > 2 )
 				{
-					vRanksUserName = vRanksDivFooter[vRanksInd].childNodes[3].innerHTML;
-					vRanksNameInd = vRanksGetNameIndexInLocStor( vRanksLocalStoreArray, vRanksUserName );
-					if ( vRanksNameInd > -1 )
+					ranksUserName = ranksDivFooter[ranksInd].childNodes[3].innerHTML;
+					ranksNameInd = ranksGetNameIndexInLocStor( ranksLocalStoreArray, ranksUserName );
+					if ( ranksNameInd > -1 )
 					{
-						var vRanksTxt =  document.createTextNode(" " + vRanksLocalStoreArray[ vRanksNameInd + 1 ] + " ");
-						vRanksDivFooter[vRanksInd].insertBefore( vRanksTxt, vRanksDivFooter[vRanksInd].childNodes[3]);
+						var ranksTxt =  document.createTextNode(" " + ranksLocalStoreArray[ ranksNameInd + 1 ] + " ");
+						ranksDivFooter[ranksInd].insertBefore( ranksTxt, ranksDivFooter[ranksInd].childNodes[3]);
 					}
 				}		
 			}
@@ -2913,7 +2917,7 @@ function processUrl(url){
 
 function close(){
 	_$.injectScript("if(interval){window.clearInterval(interval);}");
-	_$.$('youtube_embed').innerHTML = ""; 
+	_$.$('youtube_embed').innerHTML = "";
 	_$.toggle_div('youtube_preview',0);
 }
 
@@ -2922,7 +2926,7 @@ function yarr(){
 	for (var i=0; i < radios.length; i++){
 		if (radios[i].checked){
 			var val = radios[i].value;
-    }
+	}
   }
 	tagpref = "<a href=\"http://www.youtube.com/watch?v="+youtube_id+"&t='+seconds+'\">";
 	taginf = "<img src=\"http://img.youtube.com/vi/"+youtube_id+"/"+val+".jpg\" width=\"120\">";
@@ -3195,7 +3199,6 @@ if(_$.settings.user_stats=='1')
 				{
 					var vS61div = document.createElement('div');
 					vS61div.setAttribute("class", "userinboxwrite");
-					//vS61div.innerHTML = userInboxLink.firstChild.innerHTML;
 					vS61div.innerHTML = userStatsInfo.parentNode.childNodes[5].innerHTML;
 					userStatsInfo.parentNode.childNodes[1].appendChild( vS61div );
 				}
@@ -3204,7 +3207,6 @@ if(_$.settings.user_stats=='1')
 				var div = document.createElement('div');
 				div.setAttribute("id", "d3search-userinfo");
 				div.setAttribute("class", "userstat");
-				//_$.$c("userstats")[0].appendChild(div);
 				userStatsInfo.appendChild(div);
 				_$.injectScriptUrl("http://d3search.ru/wazzup?username=" + encodeURI(username) + "&ownUsername=" + encodeURI(ownUsername)+"&container=d3search-userinfo");
 			}
@@ -3221,7 +3223,7 @@ if( _$.settings.ban_encoding == '1')
 		var posts = _$.$c("dt");
 		var comments = _$.$c("c_body");
 		//problem: the table has collisions
-		var table = 
+		var table =
 		{
 			'Ð»Ð¾Ð¿Ð°ÑÐ¾Ð¹':'лопатой',
 			'Ð´Ð¾':'до',
@@ -3428,7 +3430,7 @@ if(_$.settings.karma_log=='1'){
 	
 //Youtube preview
 if(_$.settings.youtube_preview=='1'){
-        var time1 = new Date();
+		var time1 = new Date();
 		function addPreview(comments){
 			var comment_links = comments.getElementsByTagName('a');
 			var youtube_links = new Array();
@@ -3511,7 +3513,7 @@ if(_$.settings.youtube_preview=='1'){
 		//handle new ajax-generated content
 		_$.addEvent(document,"DOMNodeInserted", documentChanged);
 	
-	    addBenchmark( time1, 'youtube preview' );
+		addBenchmark( time1, 'youtube preview' );
 	
 	}
 
@@ -3524,10 +3526,10 @@ function postBoxGetCursor(input)
 	{
 		result.start= input.selectionStart;
 		result.end = input.selectionEnd;
-	} else if (!document.selection) 
+	} else if (!document.selection)
 	{
 		return false;
-	} else if (document.selection && document.selection.createRange) 
+	} else if (document.selection && document.selection.createRange)
 	{
 		var range = document.selection.createRange();
 		var stored_range = range.duplicate();
@@ -3541,13 +3543,13 @@ function postBoxGetCursor(input)
 
 function postBoxSetCursor(txtarea, start, end)
 {
-	if(txtarea.createTextRange) 
+	if(txtarea.createTextRange)
 	{
 		var range = txtarea.createTextRange();
 		range.move("character", start);
 		range.select();
-	} 
-	else if (txtarea.selectionStart) 
+	}
+	else if (txtarea.selectionStart)
 	{
 		txtarea.setSelectionRange(start, end);
 	}
@@ -3604,50 +3606,49 @@ function postBoxInsLink( elementId)
 	return false;
 }
 
-//write buttons
-if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.location.href.indexOf("write") > 0 )  
-{ 
+// Format buttons for posts and comments (at music.dirty.ru)
+if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.location.href.indexOf("write") > 0 ) 
+{
 	// add script to the page
 	var postBoxScr=document.createElement("script");
 	postBoxScr.type="application/javascript";
 	postBoxScr.textContent = postBoxGetCursor + "\n" + postBoxSetCursor + "\n" + postBoxInsTag + "\n" + postBoxInsText + "\n" + postBoxInsImage + "\n" + postBoxInsLink;
 	document.body.appendChild( postBoxScr );
-	var vTagsInputs =  document.getElementsByTagName('form');
-	var vTagID;
-	if ( vTagsInputs )
+	var formatButtonsInputs =  document.getElementsByTagName('form');
+	var fbID;
+	if ( formatButtonsInputs )
 	{
-		for ( i =0; i < vTagsInputs.length; i++ )
+		for ( i =0; i < formatButtonsInputs.length; i++ )
 		{
-			vTagID = 'cmnt_' + vTagsInputs[i].getAttribute('id');
-			vTagsTextAreaDiv = vTagsInputs[i].querySelector('textarea');
-			if ( vTagsTextAreaDiv )
+			fbID = 'cmnt_' + formatButtonsInputs[i].getAttribute('id');
+			formatButtonsTextAreaDiv = formatButtonsInputs[i].querySelector('textarea');
+			if ( formatButtonsTextAreaDiv )
 			{
-				vTagsTextAreaDiv.setAttribute('id',vTagID);
+				formatButtonsTextAreaDiv.setAttribute('id',fbID);
 				if ( document.location.href.indexOf("music") >= 0 )
-				{ 
-					vTagTab1 = vTagsInputs[i].querySelector('table');
+				{
+					vTagTab1 = formatButtonsInputs[i].querySelector('table');
 					vTagTab2 = vTagTab1.querySelector('table');
-					vTagsTextAreaWriteHdr = vTagTab2.querySelector('td');
+					formatButtonsTextAreaWriteHdr = vTagTab2.querySelector('td');
 				}
 				else
 				{
-					vTagsTextAreaWriteHdr = vTagsInputs[i].querySelector('div.write_page_header_right');
+					formatButtonsTextAreaWriteHdr = formatButtonsInputs[i].querySelector('div.write_page_header_right');
 				}
-				if (vTagsTextAreaWriteHdr )
+				if (formatButtonsTextAreaWriteHdr )
 				{
 					var newdiv = document.createElement('div');
 					newdiv.setAttribute('class', 'textarea_editor');
 					newdiv.setAttribute('style', 'textarea_editor');
-					newdiv.innerHTML = "<br><a onclick=\"return postBoxInsText('b', '" + vTagID + "');\" href=\"#\"><b>Bold</b></a>&nbsp;<a onclick=\"return postBoxInsText('i', '" + vTagID + "');\" href=\"#\"><i>Italic</i></a>&nbsp;<a onclick=\"return postBoxInsText('u', '" + vTagID + "');\" href=\"#\"><u>Underline</u></a>&nbsp;<a onclick=\"return postBoxInsText('sup', '" + vTagID + "');\" href=\"#\">x<sup>2</sup></a>&nbsp;<a onclick=\"return postBoxInsText('sub', '" + vTagID + "');\" href=\"#\">x<sub>2</sub></a>&nbsp;<a onclick=\"return postBoxInsText('irony', '" + vTagID + "');\" href=\"#\"><span class=\"irony\">Irony</span></a><span class=\"textarea_editor_divider\">&nbsp;</span><a onclick=\"return postBoxInsLink('" + vTagID + "');\" href=\"#\"><b>Link</b></a>&nbsp;<a onclick=\"return postBoxInsImage('" + vTagID + "');\" href=\"#\"><b>Image</b></a>";
-					vTagsTextAreaWriteHdr.appendChild( newdiv );
+					newdiv.innerHTML = "<br><a onclick=\"return postBoxInsText('b', '" + fbID + "');\" href=\"#\"><b>Bold</b></a>&nbsp;<a onclick=\"return postBoxInsText('i', '" + fbID + "');\" href=\"#\"><i>Italic</i></a>&nbsp;<a onclick=\"return postBoxInsText('u', '" + fbID + "');\" href=\"#\"><u>Underline</u></a>&nbsp;<a onclick=\"return postBoxInsText('sup', '" + fbID + "');\" href=\"#\">x<sup>2</sup></a>&nbsp;<a onclick=\"return postBoxInsText('sub', '" + fbID + "');\" href=\"#\">x<sub>2</sub></a>&nbsp;<a onclick=\"return postBoxInsText('irony', '" + fbID + "');\" href=\"#\"><span class=\"irony\">Irony</span></a><span class=\"textarea_editor_divider\">&nbsp;</span><a onclick=\"return postBoxInsLink('" + fbID + "');\" href=\"#\"><b>Link</b></a>&nbsp;<a onclick=\"return postBoxInsImage('" + fbID + "');\" href=\"#\"><b>Image</b></a>";
+					formatButtonsTextAreaWriteHdr.appendChild( newdiv );
 				}
 			}
 		}
 	}
 } 	
 // end of formatting buttons
-	
-	
+
 //dirty tags
 if(_$.settings.dirty_tags=='1')
 {
@@ -3656,14 +3657,14 @@ if(_$.settings.dirty_tags=='1')
 		var tagText = tagAnchor.title.replace( /(,\s)/ig, ' ');
 		tagText = tagText.replace( /,/ig, ' ');
 		if (tagAnchor.innerHTML == 'x' )
-		{ 
-			tagAnchor.innerHTML = '-'; 
+		{
+			tagAnchor.innerHTML = '-';
 			$('js-new_tag_input').value = tagText;
-			tagsHandler.submitTag(); 
-		} 
-		else 
+			tagsHandler.submitTag();
+		}
+		else
 		{ 	
-			tagAnchor.innerHTML = 'x' ; 
+			tagAnchor.innerHTML = 'x' ;
 			tagsHandler.deleteTag( $('js-tags_private'), tagText );
 		}
 		return false;
@@ -3678,17 +3679,16 @@ if(_$.settings.dirty_tags=='1')
 			if ( tagsDivAtDirty )
 			{
 				// create list of tags to edit
-				//var tagsArray = getOurTagsArray();
 				var divEditor = document.createElement('div');
 				divEditor.setAttribute('style', 'font-size: 12px;');
 				divEditor.setAttribute('id','js-vtags-textarea');
 				divEditor.innerHTML = "<textarea rows=\"32\" cols=\"40\" id=\"vtags-own-tags\" style=\"font-size: 12px;\"></textarea><br><br>";
-				divEditor.innerHTML += "<a href=\"#\" onclick=\"var a = document.getElementById('vtags-own-tags'); localStorage.setItem('vTagsStore', a.value ); manageOwnTags(); return false;\" class=\"dashed\"><img src=\"http://pit.dirty.ru/dirty/1/2010/07/18/28284-165319-dab6dbe746b938b30cc807225bee1e65.png\" width=\"16\" height=\"16\" hspace=\"5\" vspace=\"3\" border=\"0\" align=\"top\">сохранить мой список</a><br><br>";
+				divEditor.innerHTML += "<a href=\"#\" onclick=\"return saveTagsList();\" class=\"dashed\"><img src=\"http://pit.dirty.ru/dirty/1/2010/07/18/28284-165319-dab6dbe746b938b30cc807225bee1e65.png\" width=\"16\" height=\"16\" hspace=\"5\" vspace=\"3\" border=\"0\" align=\"top\">сохранить мой список</a><br><br>";
 				tagsDivAtDirty.appendChild(divEditor);
 				var vTagsTextArea = document.getElementById('vtags-own-tags');
 				if ( vTagsTextArea )
 				{
-					var tagsArray = localStorage.getItem('vTagsStore');
+					var tagsArray = loadTagsList();
 					var tagsInString = tagsArray.toString();
 					vTagsTextArea.value = tagsInString.replace(/,/gi,'\n');
 				}
@@ -3700,38 +3700,39 @@ if(_$.settings.dirty_tags=='1')
 		}
 		return false;
 	}
-	
+	function saveTagsList()
+	{
+		//workaround for opera with 0x10 code at the end of stings
+		var nrm = document.getElementById('vtags-own-tags').value.replace(/\r/g,'');
+		localStorage.setItem('dirtyTags', jsonStringify( nrm.split('\n')));
+		manageOwnTags();
+		return false;
+	}
+	function loadTagsList()
+	{
+		// load values
+		var tagsArrayFromLocalStore = localStorage.getItem('vTagsStore');
+		var tagsArray = new Array();
+		if ( tagsArrayFromLocalStore == null )
+		{
+			tagsArray = jsonParse( localStorGetItem( 'dirtyTags', '["Тупая фигня", "Это же реклама" , "Это неправда", "Об этом уже писали", "Ctrl-C Ctrl-V", "Свежак", "КДПВ", "Скандалы интриги расследования", "Все правильно сделал", "Фишкинет", "Господи какая красота111", "британские учёные", "Чиновники", "Милиция","Оборотни","Беспредел","Наука","Космос","Искусство","История","Авто","Авиация","Армия","РПЦ","Маразм","Кругом враги","Животные","fapfapfap","боже он умер","Вавилонская библиотека","вирусняк","Гурусик нямка","Думаем о России","пост проклят","еще один все понял","и снова о Главном","Зачем моё измождённое тело","слава богу родился","лепрозорий на выезде","нафталин","ожируй клюв","он же упоротый","политический кружок при сельском клубе","слава России","Творчество душевнобольных","понаехали","Я маленькая лошадка","Я открыл для себя википедию"]'));
+		}
+		else
+		{
+			//workaround for opera with 0x10 code at the end of stings
+			tagsArrayFromLocalStore = tagsArrayFromLocalStore.replace(/\r/g,'');
+			tagsArray = tagsArrayFromLocalStore.split("\n");
+			localStorage.removeItem('vTagsStore');
+			localStorage.setItem('dirtyTags', jsonStringify( tagsArray ));
+		}
+		return tagsArray;
+	}	
 	function manageTagsList()
 	{
 		var ourTagsDivCheck = document.getElementById('js-tags-script-predefines');
 		if (ourTagsDivCheck == null )
 		{
-			// load values
-			var tagsArrayFromLocalStore = localStorage.getItem('vTagsStore');
-			var tagsArray = new Array();
-			if ( tagsArrayFromLocalStore == null )
-			{
-				tagsArray = ["Тупая фигня", "Это же реклама" , "Это неправда", "Об этом уже писали", "Ctrl-C Ctrl-V", "Свежак", "КДПВ", "Скандалы интриги расследования", "Все правильно сделал", "Фишкинет", "Господи какая красота111", "британские учёные", "Чиновники", "Милиция","Оборотни","Беспредел","Наука","Космос","Искусство","История","Авто","Авиация","Армия","РПЦ","Маразм","Кругом враги","Животные","fapfapfap","боже он умер","Вавилонская библиотека","вирусняк","Гурусик нямка","Думаем о России","пост проклят","еще один все понял","и снова о Главном","Зачем моё измождённое тело","слава богу родился","лепрозорий на выезде","нафталин","ожируй клюв","он же упоротый","политический кружок при сельском клубе","слава России","Творчество душевнобольных","понаехали","Я маленькая лошадка","Я открыл для себя википедию" ];
-			}
-			else
-			{
-				tagsArray = tagsArrayFromLocalStore.split("\n");
-			}
-			//workaround for opera with 0x10 code at the end of stings
-			if ( tagsArray.length > 0 )
-			{
-				if ( tagsArray[0].charAt( tagsArray[0].length - 1 ) == "\r" )
-				{
-					for ( i = 0; i < tagsArray.length; i++ )
-					{
-						if ( tagsArray[i].charAt( tagsArray[i].length -1 ) == "\r" )
-						{
-							var r = tagsArray[i].replace(/\r/g,'');
-							tagsArray[i] = r;
-						}
-					}
-				}
-			}
+			var tagsArray = loadTagsList();
 			// add popular tags from the post to our list
 			// get my user name
 			var myUserName;
@@ -3740,7 +3741,7 @@ if(_$.settings.dirty_tags=='1')
 			if ( dlinks.length > 0 )
 			{
 				myUserName = dlinks[0].text;
-			}			
+			}	
 			// get list of public tags
 			var publicTagsDiv = document.getElementById('js-tags_public');
 			var ourTagsList = tagsArray.toString();
@@ -3766,7 +3767,7 @@ if(_$.settings.dirty_tags=='1')
 				var postUserName;
 				var postFooter = document.querySelector('div.dd');
 				if ( postFooter )
-				{ 
+				{
 					var linksFromPostHrd = postFooter.querySelectorAll('a');
 					for ( i = 0; i < linksFromPostHrd.length; i++ )
 					{
@@ -3775,9 +3776,9 @@ if(_$.settings.dirty_tags=='1')
 							postUserName = linksFromPostHrd[i].text + " молодец!";
 							break;
 						}
-					} 
+					}
 				}
-				if ( postUserName.length > 0 ) 
+				if ( postUserName.length > 0 )
 				{
 					tagsArray.push( postUserName );
 				}
@@ -3809,7 +3810,7 @@ if(_$.settings.dirty_tags=='1')
 		var postGoldTag = document.getElementsByClassName('stars');
 		var postSilverTag = document.getElementsByClassName('wasstars');
 		if ( postSilverTag.length > 0 || postGoldTag.length > 0 )
-		{   
+		{  
 			if ( document.querySelector('li#js-personal_tag_72') == null )
 			{
 				// add  gold
@@ -3825,19 +3826,16 @@ if(_$.settings.dirty_tags=='1')
 		var loggedUser = document.querySelector('div.header_logout');
 		var addFormDiv = document.querySelector('div.b-tag_add_form');
 		if ( loggedUser && addFormDiv )
-		{   
-			// add script to the page
-			var tagsRelatedScripts = document.createElement("script");
-			tagsRelatedScripts.type="application/javascript";
-			tagsRelatedScripts.textContent = manageTag + "\n" + manageTagsList + "\n" + manageOwnTags;
-			document.body.appendChild( tagsRelatedScripts );
+		{  
+			// add script to the page			
+			_$.injectScript( manageTag + "\n" + manageTagsList + "\n" + manageOwnTags + "\n"+ loadTagsList + "\n" + saveTagsList );
 			if ( _$.settings.dirty_tags_hidetags == 1 )
 			{
 				var tagsDivAtDirty = document.querySelector('div.b-i-tags_comments_page');
 				var divWithLinkToTags = document.createElement('div');
 				divWithLinkToTags.setAttribute('id','js-tags-script-floatlink');
 				divWithLinkToTags.setAttribute('style', 'font-size: 12px; display: block;');
-				divWithLinkToTags.innerHTML = "<a href=\"#\" onclick=\"return manageTagsList();\" class=\"dashed\">список тегов</a><br><br>";
+				divWithLinkToTags.innerHTML = "<a href=\"#\" onclick=\"return manageTagsList();\" class=\"dashed\">ваш список меток</a><br><br>";
 				tagsDivAtDirty.appendChild( divWithLinkToTags );
 			}
 			else
@@ -3854,8 +3852,8 @@ if(_$.settings.dirty_tags=='1')
 			newdiv.setAttribute('onclick', "manageOwnTags()");
 			tagForms[0].appendChild(newdiv);
 
-		    addBenchmark( time1, 'dirtytags settings' );
-		    var time1 = new Date();
+			addBenchmark( time1, 'dirtytags settings' );
+			var time1 = new Date();
 
 			// fast tags part
 			// regexp based on http://leprosorium.ru/users/antyrat script
@@ -3869,19 +3867,19 @@ if(_$.settings.dirty_tags=='1')
 			{
 				vTagStr = vTagComments[i].innerHTML;
 				vTagsXPos = vTagStr.indexOf('[x]');
-				if ( vTagsXPos < 0 ) 
+				if ( vTagsXPos < 0 )
 				{
 					vTagsXPos = vTagStr.indexOf('[X]');
 				}
-				if ( vTagsXPos < 0 ) 
+				if ( vTagsXPos < 0 )
 				{
 					vTagsXPos = vTagStr.indexOf('[х]');
 				}
-				if ( vTagsXPos < 0 ) 
+				if ( vTagsXPos < 0 )
 				{
 					vTagsXPos = vTagStr.indexOf('[Х]');
 				}
-				if ( vTagsXPos > 0 ) 
+				if ( vTagsXPos > 0 )
 				{
 					vTagStr = vTagStr.replace( /(\&nbsp\;)+/gi,' ');
 					vTagComments[i].innerHTML = vTagStr.replace(vTagPattern, vTagReplacement);
@@ -3893,15 +3891,15 @@ if(_$.settings.dirty_tags=='1')
 				document.onLoad = checkGoldTag();
 			}
 			
-            addBenchmark( time1, 'dirtytags replace' );
+			addBenchmark( time1, 'dirtytags replace' );
 		}
 	}
 }
 
 	//comment threshold
-		if(_$.settings.comments_threshold=='1')
+	if(_$.settings.comments_threshold=='1')
 	{
-	    var time1 = new Date();
+		var time1 = new Date();
 		var _dct = {
 				comments : {},
 				curr_select_numb : 0,
@@ -3911,7 +3909,7 @@ if(_$.settings.dirty_tags=='1')
 				list_reverse : [],
 				isPostPage : false,
 				isInboxPage : false,
-                /*
+				/*
 				set_save : function (){
 						var params = '';
 						var not_first = '';
@@ -4270,7 +4268,7 @@ if(_$.settings.dirty_tags=='1')
 	//post threshold
 	if(_$.settings.posts_threshold=='1')
 	{
-        var time1 = new Date();
+		var time1 = new Date();
 		var _dpt = {
 				posts : [],
 				curr_select_numb : 0,
@@ -4321,7 +4319,7 @@ if(_$.settings.dirty_tags=='1')
 										_$.settings.thresh_step = result;
 								}
 								new_sel.options[0].selected = true;
-								_dpt.replaceSelect();        
+								_dpt.replaceSelect();		
 						} else if (new_sel.value == 'set_comm_tresh') {
 								var result = _dpt.getIntFromPrompt("Минимальное количество комментариев\n(ноль для выключения этой опции):", _$.settings.thresh_comm_count)
 								if (result!==false) {
@@ -4331,7 +4329,7 @@ if(_$.settings.dirty_tags=='1')
 										_$.settings.thresh_comm_count = result;
 								}
 								new_sel.options[0].selected = true;
-								_dpt.replaceSelect();        
+								_dpt.replaceSelect();		
 						} else if (new_sel.value == 'set_opt_count') {
 								var result = _dpt.getIntFromPrompt("Количество опций:", _$.settings.opt_count)
 								if (result!==false) {
@@ -4353,18 +4351,18 @@ if(_$.settings.dirty_tags=='1')
 						if (navigator.appName != "Opera") {
 								check = this;
 						}
-						if (_$.settings.post_content_filter_layout!='1') 
+						if (_$.settings.post_content_filter_layout!='1')
 						{
 							eval("_$.settings."+check.id+" = (check.checked?1:0);");
-						} 
-						else 
+						}
+						else
 						{
-							if (eval("_$.settings."+check.id) == 1) 
+							if (eval("_$.settings."+check.id) == 1)
 							{
 								eval("_$.settings."+check.id+"=0;");
 								check.style.fontWeight = "normal";
-							} 
-							else 
+							}
+							else
 							{
 								eval("_$.settings."+check.id+"=1;");
 								check.style.fontWeight = "bold";
@@ -4424,15 +4422,15 @@ if(_$.settings.dirty_tags=='1')
 						var thresh_suffix = " голосов";
 						var all_posts_title = "Все посты";
 						var operand_name = " и ";
-						if (_$.settings.posts_threshold_use_or=='1') 
+						if (_$.settings.posts_threshold_use_or=='1')
 						{
 							operand_name = " или ";
 						}
 
-						if (_$.settings.thresh_comm_count > 0 ) 
+						if (_$.settings.thresh_comm_count > 0 )
 						{
 								thresh_suffix += operand_name+_$.settings.thresh_comm_count+" комментариев";
-								all_posts_title += ", у которых >"+_$.settings.thresh_comm_count+" комментариев"; 
+								all_posts_title += ", у которых >"+_$.settings.thresh_comm_count+" комментариев";
 						}
 						
 						if (_dpt.curr_select_numb==0) {
@@ -4440,7 +4438,7 @@ if(_$.settings.dirty_tags=='1')
 						} else {
 								curr_select_node_id = 'div_select_'+_dpt.curr_select_numb;
 						}
-						_dpt.curr_select_numb++;    
+						_dpt.curr_select_numb++;	
 						var curr_sel_node = document.getElementById(curr_select_node_id);
 						var new_sel = document.createElement("SELECT");
 				
@@ -4625,8 +4623,8 @@ if(_$.settings.dirty_tags=='1')
 	//SHARED PART of read-button and new comment scroller
 	if(_$.settings.read_button=='1' || _$.settings.comment_scorller=='1')
 	{
-	    var time1 = new Date();
-	    
+		var time1 = new Date();
+		
 		function removeFromArray(arr, elem){
 			var re = Array();
 			for(var i=0;i<arr.length;i++){
@@ -4729,14 +4727,14 @@ if(_$.settings.dirty_tags=='1')
 				return re;
 			}
 
-			function my(){ 
+			function my(){
 				if(mine.length > 0){
 					scrollToMiddle(mine[minePos]);
 					minePos = (minePos+1)%mine.length;
 				}
-			} 
+			}
 
-			function next(){ 
+			function next(){
 				if(newPosts.length > 0 && newPos < newPosts.length-1 && autoScroll){
 					newPos++;
 				}
@@ -4744,15 +4742,15 @@ if(_$.settings.dirty_tags=='1')
 				//if(_$.$('down').innerHTML=="0" && _$.$('js-footer')!==null){
 				//	smoothScroll(_$.element_position(_$.$('js-footer')).y);
 				//};
-			} 
+			}
 
-			function prev(){ 
+			function prev(){
 				if(newPosts.length > 0 && newPos > 0){
 					if(newPos > 1 && !autoScroll)newPos--;
 					newPos--;
 				}
 				if(newPosts.length > 0 )scrollToMiddle(newPosts[newPos]);
-			} 
+			}
 
 			function getId(elem) {
 				prefix = "omgwtf";
@@ -4913,7 +4911,7 @@ if(_$.settings.dirty_tags=='1')
 			var backup_newPosts = newPosts;
 			var backup_mine = mine;		
 			
-			var newPos = 0; 
+			var newPos = 0;
 			var newCount = newPosts.length;
 
 			var autoScroll = false;
@@ -5032,7 +5030,7 @@ if(_$.settings.dirty_tags=='1')
 					currentCommentBody.setAttribute('id', currentCommentId + '-sh-body');
 					currentCommentHeader.setAttribute('id', currentCommentId + '-sh-header');
 					if ( currentCommentBodyText.search( new RegExp(( inputBox.value +'').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1"), 'ig' )) > -1 )
-					{                            
+					{
 						hideShowLink = currentCommentHeader.getElementById( currentCommentId + '-sh');
 						if ( hideShowLink )
 						{
@@ -5132,7 +5130,7 @@ if(_$.settings.dirty_tags=='1')
 			 headerDiv = document.querySelector('div.inbox_header');
 			 if ( headerDiv )
 			 {
-    			 insertOurHeaderAfter = headerDiv.lastChild;
+				 insertOurHeaderAfter = headerDiv.lastChild;
 			 }
 		}
 
@@ -5208,7 +5206,7 @@ if(_$.settings.dirty_tags=='1')
 			};
 			localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
 			return true;
-		}        
+		}
 			
 		var time1 = new Date();
 		var divPostHolder = document.getElementById('js-posts_holder');
@@ -5262,7 +5260,7 @@ if(_$.settings.dirty_tags=='1')
 		{
 			var postId = Number( document.location.href.match(/[\d]+/));
 			if ( document.getElementById('js-footer') != null )
-			{	            
+			{
 				// part 1
 				var newCommentsInPost = 0;
 				var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
@@ -5359,7 +5357,7 @@ if(_$.settings.dirty_tags=='1')
 			else
 			{
 				// post were not loaded
-				_$.injectScript(" futu_alert( 'Страница похоже не догрузилась :( Подожди 3-5 секунд и попробуй обновить её, а я восстановлю новые комментарии.', false, 'red');");	            
+				_$.injectScript(" futu_alert( 'Страница похоже не догрузилась :( Подожди 3-5 секунд и попробуй обновить её, а я восстановлю новые комментарии.', false, 'red');");
 			}
 		}
 		addBenchmark( time1, 'new comment saver' );	
