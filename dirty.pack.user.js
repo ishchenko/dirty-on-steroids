@@ -18,7 +18,7 @@ var dateToCheck1 = new Date();
 
 var _$ = {
 	settings: {},
-	settings_colors: "[]",
+	settings_colors: [],
 	location: window.location.href.split(window.location.host)[1],
 
 	// made by crea7or
@@ -30,7 +30,7 @@ var _$ = {
 			_$.settings[name] = option;
 		}
 		localStorage.setItem('dirtySp', jsonStringify(_$.settings));
-		localStorage.setItem('dirtySpClr', escape(_$.settings_colors));
+		localStorage.setItem('dirtyCommentsColors', jsonStringify(_$.settings_colors));
 	},
 	set_get: function()
 	{
@@ -47,7 +47,7 @@ var _$ = {
 		else
 		{
 			_$.settings = jsonParse( localStorGetItem('dirtySp', "{}"));
-			_$.settings_colors = unescape( localStorGetItem('dirtySpClr', "[]"));
+			_$.settings_colors = jsonParse( localStorGetItem('dirtyCommentsColors', "[]"));
 		}
 	},
 	browser: function(){
@@ -704,49 +704,37 @@ function DSP_paint_comment(name,color,font){
 	}
 }
 
-function DSP_color_remove(obj){
-
+function DSP_color_remove(obj)
+{
 	var user = _$.$t('a',obj.parentNode.parentNode.parentNode)[1].innerHTML;
-
-	eval('var temp_array='+_$.settings_colors);
-	for(var i=0; i< temp_array.length; i++){
-		if( temp_array[i].indexOf(user+',')>-1){
+	for(var i=0; i< _$.settings_colors.length; i++)
+	{
+		if( _$.settings_colors[i].indexOf(user+',')>-1)
+		{
 			//delete  temp_array[i];
-			temp_array.splice(i,1);
+			_$.settings_colors.splice(i,1);
 		}
-	}
-	if ( temp_array.length > 0 )
-	{
-		_$.settings_colors = '["'+temp_array.join('","')+'"]';
-	}
-	else
-	{
-		_$.settings_colors = '[]';
 	}
 	_$.set_save( null, 0 );
 	DSP_paint_comment(user,'transparent','');
 }
 
-function DSP_save_color(){
-
+function DSP_save_color()
+{
 	var color = dsp_color_user.title.split('#').join('');
 	var user = _$.$t('a',dsp_color_user.parentNode.parentNode)[1].innerHTML;
 	var font = dsp_color_user.name;
 	var checker = 0;
-
-	eval('var temp_array='+_$.settings_colors);
-
-	for(var i=0; i<temp_array.length; i++){
-		if(temp_array[i].indexOf(user+',')>-1){
-			temp_array[i] = user+','+color+','+font;
+	for(var i=0; i < _$.settings_colors.length; i++)
+	{
+		if(_$.settings_colors[i].indexOf(user+',')>-1)
+		{
+			_$.settings_colors[i] = user+','+color+','+font;
 			checker = 1;
 			break;
 		}
 	}
-
-	if(checker==0) temp_array.push(user+','+color+','+font);
-
-	_$.settings_colors = '["'+temp_array.join('","')+'"]';
+	if(checker==0) _$.settings_colors.push(user+','+color+','+font);
 	_$.set_save( null, 0 );
 }
 
@@ -1322,20 +1310,19 @@ var dsp_jscolor = {
 }
 
 
-function DSP_colorize_comments(){
-
-	eval('var temp_array='+_$.settings_colors);
-
-	for(var i=0; i<dsp_all_comments.length; i++){
+function DSP_colorize_comments()
+{
+	for(var i=0; i<dsp_all_comments.length; i++)
+	{
 		var temp_name = _$.$t('a',dsp_all_comments[i])[1].innerHTML;
-
 		var temp_color = '';
 		var temp_font = '';
-
-		for(var j=0; j<temp_array.length; j++){
-			if(temp_array[j].split(',')[0]==temp_name){
-				temp_color = temp_array[j].split(',')[1];
-				temp_font = temp_array[j].split(',')[2];
+		for(var j=0; j < _$.settings_colors.length; j++)
+		{
+			if(_$.settings_colors[j].split(',')[0]==temp_name)
+			{
+				temp_color = _$.settings_colors[j].split(',')[1];
+				temp_font = _$.settings_colors[j].split(',')[2];
 				break;
 			}
 		}
@@ -2614,23 +2601,7 @@ if ( vPrvDiv )
 	addBenchmark( time1, 'dirty tort' );
 //
 // start of the dirty ranks script
-function ranksGetRankFromNote()
-{
-	ranksUserNote = document.getElementById('js-usernote');
-	if ( ranksUserNote && ranksUserNote.children.length == 0 )
-	{
-		ranksNote = ranksUserNote.innerHTML;
-		ranksIndex = ranksNote.lastIndexOf('#');
-		if ( ranksIndex > -1 )
-		{
-			return  ranksNote.substring( ranksIndex + 1 , ranksNote.length );
-		}
-	}
-	return null;
-}
-
-
-function ranksSetRankNote( ranksName )
+function setRankToNote( ranksName )
 {
 	ranksUserNote = document.getElementById('js-usernote');
 	if ( ranksUserNote && ranksUserNote.children.length == 0 )
@@ -2663,7 +2634,7 @@ function ranksSetRankNote( ranksName )
 	}
 }
 
-function ranksSetRank( e )
+function setNewRank( e )
 {
 	var ranksDivUser = document.querySelector('div.user_name_inner');
 	if ( ranksDivUser )
@@ -2671,7 +2642,7 @@ function ranksSetRank( e )
 		ranksA = ranksDivUser.getElementsByTagName('a');
 		ranksUserName = ranksA[0].innerHTML;
 
-		ranksName = prompt('Как назовём?', ranksGetRankFromLocStor( ranksUserName ));
+		ranksName = prompt('Как назовём?', getRankByUsername( ranksUserName ));
 		if( ranksName )
 		{	
 			var ranksDivUser = document.querySelector('div.user_name_inner');
@@ -2681,8 +2652,8 @@ function ranksSetRank( e )
 				{
 					ranksName = null;
 				}
-				ranksSetNameLocStor( ranksUserName, ranksName );
-				ranksSetRankNote( ranksName );
+				saveRanks( ranksUserName, ranksName );
+				setRankToNote( ranksName );
 			}
 		}
 	}
@@ -2690,11 +2661,11 @@ function ranksSetRank( e )
 	return false;
 }
 
-function ranksGetNameIndexInLocStor( ranksArray, ranksUserName )
+function getRankIndex( ranksArray, ranksUserName )
 {
-	for ( ranksIndex = 0; ranksIndex < ranksArray.length; ranksIndex+= 2 )
+	for ( var ranksIndex = 0; ranksIndex < ranksArray.length; ranksIndex++ )
 	{
-		if ( ranksArray[ranksIndex] == ranksUserName )
+		if ( ranksArray[ranksIndex].name == ranksUserName )
 		{
 			return ranksIndex;
 		}	
@@ -2702,18 +2673,39 @@ function ranksGetNameIndexInLocStor( ranksArray, ranksUserName )
 	return -1;
 }
 
-function ranksGetRankFromLocStor( ranksUserName )
+function loadRanks()
 {
-	var ranksArrLocalStore = localStorage.getItem('ranksStore' );
-	var ranksLocalStoreArray = new Array;
-	if ( ranksArrLocalStore )
-	{
-		ranksLocalStoreArray = ranksArrLocalStore.split("#");
+	var ranksOldItem = localStorage.getItem('vRanksStore' );
+	var ranksOldArray;
+	var usersRanksArray = [];
+	if ( ranksOldItem )
+	{	
+		// remove in 2.6
+		ranksOldArray = ranksOldItem.split("#");
+		for ( var index = 0; index < ranksOldArray.length; index += 2 )
+		{
+			var rankObject = new Object();
+			rankObject.name = ranksOldArray[index];
+			rankObject.rank = ranksOldArray[index +1 ];
+			usersRanksArray.push( rankObject );
+		}
+		localStorage.setItem('dirtyRanks', jsonStringify( usersRanksArray ));
+		localStorage.removeItem('vRanksStore' );
 	}
-	ranksNameIndex = ranksGetNameIndexInLocStor( ranksLocalStoreArray, ranksUserName );
+	else
+	{
+		usersRanksArray = jsonParse( localStorGetItem('dirtyRanks', "[]"));	
+	}
+	return usersRanksArray;
+}
+
+function getRankByUsername( ranksUserName )
+{
+	var usersRanksArray = loadRanks();
+	var ranksNameIndex = getRankIndex( usersRanksArray, ranksUserName );
 	if ( ranksNameIndex > -1 )
 	{
-		return ranksLocalStoreArray[ ranksNameIndex + 1 ];
+		return usersRanksArray[ ranksNameIndex ].rank;
 	}
 	else
 	{
@@ -2721,56 +2713,38 @@ function ranksGetRankFromLocStor( ranksUserName )
 	}
 }
 
-function ranksSetNameLocStor( ranksUserName, ranksRank )
+function saveRanks( ranksUserName, ranksRank )
 {
-	var ranksArrLocalStore = localStorage.getItem('ranksStore' );
-	var ranksLocalStoreArray = new Array;
-	if ( ranksArrLocalStore )
-	{
-		ranksLocalStoreArray = ranksArrLocalStore.split("#");
-	}
-	else
-	{
-	
-	}
-	ranksNameIndex = ranksGetNameIndexInLocStor( ranksLocalStoreArray, ranksUserName );
+	var usersRanksArray = loadRanks();
+	var ranksNameIndex = getRankIndex( usersRanksArray, ranksUserName );
 	if ( ranksNameIndex > -1 )
 	{
 		if ( ranksRank != null )
 		{
-			ranksLocalStoreArray[ ranksNameIndex + 1 ] = ranksRank;
+			usersRanksArray[ ranksNameIndex ].rank = ranksRank;
 		}
 		else
 		{
-			ranksLocalStoreArray.pop( ranksNameIndex );
-			ranksLocalStoreArray.pop( ranksNameIndex + 1 );
+			usersRanksArray.splice( ranksNameIndex , 1 );
 		}
 	}
 	else
 	{
 		if ( ranksRank != null )
 		{
-			ranksLocalStoreArray.push( ranksUserName );
-			ranksLocalStoreArray.push( ranksRank );
+			var rankObject = new Object();
+			rankObject.name = ranksUserName;
+			rankObject.rank = ranksRank;
+			usersRanksArray.push( rankObject );		
 		}
 	}
-
-	var ranksArrToStr = new String;
-	for ( ranksInd = 0; ranksInd < ranksLocalStoreArray.length; ranksInd++ )
-	{
-		if ( ranksArrToStr.length > 0 )
-		{
-			ranksArrToStr += "#";
-		}
-		ranksArrToStr += ranksLocalStoreArray[ ranksInd ];
-	}
-	localStorage.setItem('ranksStore', ranksArrToStr );
+	localStorage.setItem('dirtyRanks', jsonStringify( usersRanksArray ));
 }
-
 
 if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 {
 	// user page
+	var time1 = new Date();
 	var ranksUserName;
 	var ranksDivUser = document.querySelector('div.user_name_inner');
 	if ( ranksDivUser )
@@ -2778,21 +2752,30 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 		ranksA = ranksDivUser.getElementsByTagName('a');
 		ranksA[0].setAttribute('href', '#');
 		ranksUserName = ranksA[0].innerHTML;
-		_$.addEvent( ranksA[0], "click", ranksSetRank );
+		_$.addEvent( ranksA[0], "click", setNewRank );
 
-		ranksNoteRank = ranksGetRankFromNote();
-		ranksLocStorRank = ranksGetRankFromLocStor( ranksUserName );
+		ranksNoteRank = null;
+		ranksUserNote = document.getElementById('js-usernote');
+		if ( ranksUserNote && ranksUserNote.children.length == 0 )
+		{
+			ranksIndex = ranksUserNote.innerHTML.lastIndexOf('#');
+			if ( ranksIndex > -1 )
+			{
+				ranksNoteRank = ranksUserNote.innerHTML.substring( ranksIndex + 1 , ranksUserNote.innerHTML.length );
+			}
+		}		
+		ranksLocStorRank = getRankByUsername( ranksUserName );
 		if ( ranksLocStorRank == null && ranksNoteRank != null )
 		{
-			ranksSetNameLocStor( ranksUserName, ranksNoteRank );
+			saveRanks( ranksUserName, ranksNoteRank );
 		}
 		else if ( ranksLocStorRank != null && ranksNoteRank == null )
 		{
-			ranksSetRankNote( ranksLocStorRank );
+			setRankToNote( ranksLocStorRank );
 		}
 		else if ( ranksLocStorRank != ranksNoteRank )
 		{
-			ranksSetRankNote( ranksLocStorRank );			
+			setRankToNote( ranksLocStorRank );			
 		}
 
 		// made by crea7or
@@ -2807,21 +2790,14 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 			ranksDivUser.childNodes[6].innerHTML = 'User ID: ' +  vUserIdTxt + ', ' + ranksDivUser.childNodes[6].innerHTML;
 		}
 		// end of SCRIPTS-65
-
 	}
+	addBenchmark( time1, 'dirty ranks' );
 }
 else
 {
 	var time1 = new Date();
-
-	var ranksArrLocalStore = localStorage.getItem('ranksStore' );
-	var ranksLocalStoreArray = new Array;
-	if ( ranksArrLocalStore )
-	{
-		ranksLocalStoreArray = ranksArrLocalStore.split("#");
-	}
-
-	if ( ranksLocalStoreArray.length > 0 )
+	var usersRanksArray = loadRanks();
+	if ( usersRanksArray.length > 0 )
 	{
 		// other pages
 		var ranksDivDD = document.querySelectorAll('div.dd');
@@ -2832,10 +2808,10 @@ else
 				if ( ranksDivDD[ranksInd].children.length > 2 )
 				{
 					ranksUserName = ranksDivDD[ranksInd].childNodes[3].innerHTML;
-					ranksNameInd = ranksGetNameIndexInLocStor( ranksLocalStoreArray, ranksUserName );
+					ranksNameInd = getRankIndex( usersRanksArray, ranksUserName );
 					if ( ranksNameInd > -1 )
 					{
-						var ranksTxt =  document.createTextNode(" " + ranksLocalStoreArray[ ranksNameInd + 1 ] + " ");
+						var ranksTxt =  document.createTextNode(" " + usersRanksArray[ ranksNameInd ].rank + " ");
 						ranksDivDD[ranksInd].insertBefore( ranksTxt, ranksDivDD[ranksInd].childNodes[3]);
 					}
 				}		
@@ -2849,22 +2825,19 @@ else
 				if ( ranksDivFooter[ranksInd].children.length > 2 )
 				{
 					ranksUserName = ranksDivFooter[ranksInd].childNodes[3].innerHTML;
-					ranksNameInd = ranksGetNameIndexInLocStor( ranksLocalStoreArray, ranksUserName );
+					ranksNameInd = getRankIndex( usersRanksArray, ranksUserName );
 					if ( ranksNameInd > -1 )
 					{
-						var ranksTxt =  document.createTextNode(" " + ranksLocalStoreArray[ ranksNameInd + 1 ] + " ");
+						var ranksTxt =  document.createTextNode(" " + usersRanksArray[ ranksNameInd ].rank + " ");
 						ranksDivFooter[ranksInd].insertBefore( ranksTxt, ranksDivFooter[ranksInd].childNodes[3]);
 					}
 				}		
 			}
 		}
 	}
-	
 	addBenchmark( time1, 'dirty ranks' );
-	
 }
 // end of the dirty ranks script
-
 
 // begin - add logout link listener
 if(_$.$('js-header_logout_link')){
@@ -3711,6 +3684,7 @@ if(_$.settings.dirty_tags=='1')
 	function loadTagsList()
 	{
 		// load values
+		// remove in 2.6
 		var tagsArrayFromLocalStore = localStorage.getItem('vTagsStore');
 		var tagsArray = new Array();
 		if ( tagsArrayFromLocalStore == null )
