@@ -2370,7 +2370,7 @@ if ( divRightCol && divTags)
 			}
 			else
 			{
-				hiddenStickers.slice( stickerIndex );
+				hiddenStickers.splice( stickerIndex, 1 );
 				saveHiddenStickers = true;
 				stickerIndex--;
 			}
