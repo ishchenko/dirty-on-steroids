@@ -2344,7 +2344,7 @@ if ( divRightCol && divTags)
 	if ( newsFromD3search != null  && divAds)
 	{
 		var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
-		var divForNews = document.createElement('div');
+		/*var divForNews = document.createElement('div');
 		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
 		var subDivForNewsHead = document.createElement('div');
 		subDivForNewsHead.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-104005-55b4940527da0df7322a922f8c150ce5.png") no-repeat left top;');
@@ -2384,6 +2384,85 @@ if ( divRightCol && divTags)
 			divRightCol.insertBefore( divForNews, divAds );
 			_$.injectScript( hideSticker );
 			divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
+		}*/
+		
+		//find out whether there are some news items to present
+		var tempDiv = document.createElement('div');
+		tempDiv.innerHTML = newsFromD3search;
+		var saveHiddenStickers = false;
+		//remove hidden elements
+		for ( var stickerIndex = 0; stickerIndex < hiddenStickers.length; stickerIndex++){
+			divId = tempDiv.querySelector('div#' + hiddenStickers[stickerIndex] );
+			if ( divId ){
+				tempDiv.removeChild(divId);
+			}else{
+				hiddenStickers.splice( stickerIndex, 1 );
+				saveHiddenStickers = true;
+				stickerIndex--;
+			}
+		}
+		//update if changed
+		if ( saveHiddenStickers ) localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
+		
+		//do we have some items to show?
+		newsArray = tempDiv.querySelectorAll('div.sticker');
+		if( newsArray.length > 0 ){
+			//only if new news are present
+			divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
+			var divForNews = document.createElement('div');
+			var subDivForNews = document.createElement('div');
+			divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-105px;');
+			var subDivForNews = document.createElement('div');
+			
+			for(var i=0;i<newsArray.length;i++){
+				//remove original hide link
+				var hide = newsArray[i].querySelector('div.sticker-hide');
+				if(hide)newsArray[i].removeChild(hide);
+				//frame sticker into layout
+				subDivForNews.innerHTML += '<div class="subs_ads" style="position: relative;"><a class="vote_details_close" style="top: 10px;" href=""></a><div class="subs_ads_inner">\
+																		<div class="subs_block"><div class="sticker" id="'+newsArray[i].getAttribute("id")+'">'+newsArray[i].innerHTML+'</div></div></div><div class="subs_ads_bottom_bg"></div></div>';
+				//remove the sticker from tempDiv
+				tempDiv.removeChild(newsArray[i]);
+			}
+			
+			//now append some events
+			var linksArray = subDivForNews.querySelectorAll("a.vote_details_close");
+			for(var i=0;i<linksArray.length;i++){
+				_$.addEvent(linksArray[i], 'click', function(e){
+				  var parentDiv = e.target.parentNode;
+					if(parentDiv.parentNode.querySelectorAll("div.subs_ads").length <=1){
+						//removing last news element
+						//put ads on the right place
+						var divRightCol = document.querySelector('div.content_right');
+						var divTags = document.getElementById('js-tags');
+						if ( divRightCol && divTags)
+						{
+							var divAds = divRightCol.querySelector('div.b-ads');
+							if(divAds) divAds.setAttribute('style', 'margin-top: -105px;');
+						}
+					}
+					//mark sticker as read
+					var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
+					var sticker = parentDiv.querySelector("div.sticker");
+					if(sticker){
+						var stickerId = sticker.getAttribute('id');
+						if ( stickerId ){
+							hiddenStickers.push( stickerId );
+							localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
+						}
+					}
+					
+					//finally, remove sticker
+					parentDiv.parentNode.removeChild(parentDiv);
+					e.preventDefault();
+				});
+			}
+			
+			//in tempDiv there are some remainders like <style> tags etc
+			divForNews.appendChild(tempDiv);
+			divForNews.appendChild( subDivForNews );
+			divRightCol.insertBefore( divForNews, divAds );
+			
 		}
 	}
 }
