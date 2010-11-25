@@ -2344,7 +2344,6 @@ if ( divRightCol && divTags)
 	if ( newsFromD3search != null  && divAds)
 	{
 		var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
-		divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 		var divForNews = document.createElement('div');
 		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
 		var subDivForNewsHead = document.createElement('div');
@@ -2384,6 +2383,7 @@ if ( divRightCol && divTags)
 		{
 			divRightCol.insertBefore( divForNews, divAds );
 			_$.injectScript( hideSticker );
+			divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 		}
 	}
 }
