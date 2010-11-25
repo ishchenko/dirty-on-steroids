@@ -5229,7 +5229,39 @@ if(_$.settings.dirty_tags=='1')
 			}
 			_$.injectScript( setNewCommentsValue + "\n" + removePostIdItem );
 		}
-
+		function documentChangedCmnt( event )
+		{
+			if (supressEvents) 
+			{
+				return;
+			}
+			if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
+			{
+				var newCommentId = event.target.getAttribute('id');
+				if ( newCommentId != null )
+				{
+					var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
+					var postId = Number( document.location.href.match(/[\d]+/));
+					addLastCommentId( oldCommentsArray, postId, newCommentId );
+				}
+			}
+		}
+		function addLastCommentId( oldCommentsArray, postId, newId )
+		{
+			// part 2
+			removePostIdItem( oldCommentsArray, postId );
+			var newEntry = new Object();
+			newEntry.pid = postId;
+			newEntry.mid = newId;
+			oldCommentsArray.push( newEntry );
+			while ( oldCommentsArray.length > 100 )
+			{
+				oldCommentsArray.shift();
+			};
+			localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
+			// part 2	
+		}
+		
 		if ( document.location.href.indexOf("/comments/") > -1 || document.location.href.indexOf("/inbox/") > -1  )
 		{
 			var postId = Number( document.location.href.match(/[\d]+/));
@@ -5315,18 +5347,10 @@ if(_$.settings.dirty_tags=='1')
 					// part 1
 
 					// part 2
-					removePostIdItem( oldCommentsArray, postId );
-					var newEntry = new Object();
-					newEntry.pid = postId;
-					newEntry.mid = oldestMessageIdInPost;
-					oldCommentsArray.push( newEntry );
-					while ( oldCommentsArray.length > 100 )
-					{
-						oldCommentsArray.shift();
-					};
-					localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
+					addLastCommentId( oldCommentsArray, postId, oldestMessageIdInPost );
 					// part 2
 				}
+				_$.addEvent(document,"DOMNodeInserted", documentChangedCmnt);
 			}
 			else
 			{
