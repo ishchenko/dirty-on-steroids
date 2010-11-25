@@ -2321,20 +2321,6 @@ if ( _$.settings.grt_enabled =='1' )
 // start of SCRIPTS-60
 var time1 = new Date();
 
-function hideSticker( stickerDiv )
-{  
-	var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
-	var divWithId = stickerDiv.parentNode.parentNode;
-	var stickerId = divWithId.getAttribute('id');
-	if ( stickerId )
-	{
-		hiddenStickers.push( stickerId );
-		localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
-		divWithId.setAttribute('style', 'display: none;');
-	}
-	return false;
-}
-
 var divRightCol = document.querySelector('div.content_right');
 var divTags = document.getElementById('js-tags');
 if ( divRightCol && divTags)
@@ -2344,48 +2330,7 @@ if ( divRightCol && divTags)
 	if ( newsFromD3search != null  && divAds)
 	{
 		var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
-		/*var divForNews = document.createElement('div');
-		divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
-		var subDivForNewsHead = document.createElement('div');
-		subDivForNewsHead.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-104005-55b4940527da0df7322a922f8c150ce5.png") no-repeat left top;');
-		var subDivForNewsFoot = document.createElement('div');
-		subDivForNewsFoot.setAttribute('style', 'width: 314px; height: 10px; background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-103959-db4cb380e01c78e5836a1e90676d9e49.png") no-repeat left bottom;');
-		var subDivForNewsBody = document.createElement('div');
-		subDivForNewsBody.setAttribute('style', 'background:#ffffff url("http://pit.dirty.ru/dirty/1/2010/11/24/28284-103951-5976a23425e0befd977387a11a65665a.png") repeat-y left top; padding: 10px 10px 10px 10px;');
-		divForNews.appendChild( subDivForNewsHead );
-		subDivForNewsBody.innerHTML = newsFromD3search;
-		divForNews.appendChild( subDivForNewsBody );
-		divForNews.appendChild( subDivForNewsFoot );
-		var divId;
-		var hiddenNews = 0;
-		var saveHiddenStickers = false;
-		for ( var stickerIndex = 0; stickerIndex < hiddenStickers.length; stickerIndex++)
-		{
-			divId = subDivForNewsBody.querySelector('div#' + hiddenStickers[stickerIndex] );
-			if ( divId )
-			{
-				divId.setAttribute('style', 'display: none;');
-				hiddenNews++;
-			}
-			else
-			{
-				hiddenStickers.splice( stickerIndex, 1 );
-				saveHiddenStickers = true;
-				stickerIndex--;
-			}
-		}
-		if ( saveHiddenStickers )
-		{
-			localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
-		}
-		var newsArray = subDivForNewsBody.querySelectorAll('div.sticker');
-		if ( hiddenNews != newsArray.length )
-		{
-			divRightCol.insertBefore( divForNews, divAds );
-			_$.injectScript( hideSticker );
-			divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
-		}*/
-		
+	
 		//find out whether there are some news items to present
 		var tempDiv = document.createElement('div');
 		tempDiv.innerHTML = newsFromD3search;
