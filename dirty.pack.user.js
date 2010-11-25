@@ -1916,7 +1916,7 @@ function DSP_make_content_settings(){
 
 		var dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2 adding scripts - STEP TWO
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comment_scroller" type="checkbox" '+((_$.settings.comment_scroller=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comment_scroller">SP2: Навигация по комментариям и постам</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comment_scroller" type="checkbox" '+((_$.settings.comment_scroller=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comment_scroller">SP2.0: Навигация по комментариям и постам</label></td></tr>';
 		dsp_txt += '</table>';
 		if(_$.browser().name != "chrome"){
 		dsp_txt += '<div id="dsp_l_scroll" style="display:'+((_$.settings.comment_scroller=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
@@ -1924,8 +1924,8 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table></div>';
 		}
 		dsp_txt += '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_youtube_preview" type="checkbox" '+((_$.settings.youtube_preview=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_preview">SP2: Предпросмотр youtube видео</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_online_enabled" type="checkbox" '+((_$.settings.online_enabled=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_online_enabled">SP2: Показывать кто на сайте</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_youtube_preview" type="checkbox" '+((_$.settings.youtube_preview=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_preview">SP2.0: Предпросмотр youtube видео</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_online_enabled" type="checkbox" '+((_$.settings.online_enabled=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_online_enabled">SP2.5: Показывать кто на сайте</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_username_replace" type="checkbox" '+((_$.settings.username_replace=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_username_replace">Заменять %username% на ваше имя</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_favicon_on" type="checkbox" '+((_$.settings.favicon_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_favicon_on">Показывать иконку сайта ссылки:</label></td></tr>';
 		dsp_txt += '</table>';
@@ -1939,7 +1939,7 @@ function DSP_make_content_settings(){
 
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold" type="checkbox" '+((_$.settings.posts_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold">SP2: Фильтр по рейтингу постов</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold" type="checkbox" '+((_$.settings.posts_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold">SP2.0: Фильтр по рейтингу постов</label></td></tr>';
 		dsp_txt += '</table>';
 		
 		dsp_txt += '<div id="dsp_l_threshold" style="display:'+((_$.settings.posts_threshold=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
@@ -1948,15 +1948,15 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table></div>';
 		
 		dsp_txt += '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dirty_tags" type="checkbox" '+((_$.settings.dirty_tags=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dirty_tags">SP2: Dirty Tags</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dirty_tags" type="checkbox" '+((_$.settings.dirty_tags=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dirty_tags">SP2.0: Dirty Tags</label></td></tr>';
 		dsp_txt += '</table>';	
 		dsp_txt += '<div id="dsp_l_dirty_tags" style="display:'+((_$.settings.dirty_tags=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left: 25px;">';
 		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_dirty_tags_autogold" type="checkbox" '+((_$.settings.dirty_tags_autogold=='1')?'checked="checked"':'')+'></td><td><label for="dsp_c_dirty_tags_autogold">Ставить автоматически "Золотой пост"</label></td></tr>';
 		dsp_txt += '<tr><td align="right"><input id="dsp_c_dirty_tags_hidetags" type="checkbox" '+((_$.settings.dirty_tags_hidetags=='1')?'checked="checked"':'')+'></td><td><label for="dsp_c_dirty_tags_hidetags">Прятать список тегов под ссылку</label></td></tr>';
 		dsp_txt += '</table></div>';
 		dsp_txt += '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_instant_search" type="checkbox" '+((_$.settings.instant_search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_instant_search">SP2: Поиск по комментариям в постах</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_read_button" type="checkbox" '+((_$.settings.read_button=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_read_button">SP2: Кнопка прочтения новых комментариев</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_instant_search" type="checkbox" '+((_$.settings.instant_search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_instant_search">SP2.5: Поиск по комментариям в постах</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_read_button" type="checkbox" '+((_$.settings.read_button=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_read_button">SP2.0: Кнопка прочтения новых комментариев</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_average" type="checkbox" '+((_$.settings.posts_average=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_average">Показывать средние ID и оценку</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_youtube_fullscreen" type="checkbox" '+((_$.settings.youtube_fullscreen=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_fullscreen">Добавить кнопку "Fullscreen" в постах с видеороликами youtube</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_post_content_filter_layout" type="checkbox" '+((_$.settings.post_content_filter_layout=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_post_content_filter_layout">Фильтр контента без чекбоксов</label></td></tr>';
@@ -1967,15 +1967,15 @@ function DSP_make_content_settings(){
 
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_quotes" type="checkbox" '+((_$.settings.quotes=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_quotes">SP2: Цитатник</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comments_threshold" type="checkbox" '+((_$.settings.comments_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comments_threshold">SP2: Фильтр по рейтингу комментариев</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_quotes" type="checkbox" '+((_$.settings.quotes=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_quotes">SP2.0: Цитатник</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comments_threshold" type="checkbox" '+((_$.settings.comments_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comments_threshold">SP2.0: Фильтр по рейтингу комментариев</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_allow_reverse_list" type="checkbox" '+((_$.settings.allow_reverse_list=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_allow_reverse_list">SP2: Списком->Деревом->Реверс</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_allow_reverse_list" type="checkbox" '+((_$.settings.allow_reverse_list=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_allow_reverse_list">SP2.0: Списком->Деревом->Реверс</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_arrows_on" type="checkbox" '+((_$.settings.arrows_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_arrows_on">SP2: Увеличить стрелочки под комментарием</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_newcomments_saver" type="checkbox" '+((_$.settings.newcomments_saver=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_newcomments_saver">SP2: Восстанавливать новые комментарии после недогруза</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_arrows_on" type="checkbox" '+((_$.settings.arrows_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_arrows_on">SP2.0: Увеличить стрелочки под комментарием</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_newcomments_saver" type="checkbox" '+((_$.settings.newcomments_saver=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_newcomments_saver">SP2.5: Восстанавливать новые комментарии после недогруза</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_colors_on" type="checkbox" '+((_$.settings.colors_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_colors_on">Изменять цвет комментариев пользователей</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_colors" style="display:'+((_$.settings.colors_on=='1')?'block':'none')+'"><table cellspacing="0" border="0">';
@@ -1984,7 +1984,7 @@ function DSP_make_content_settings(){
 
 		DSP_make_Setting_Bar('Комментарии',dsp_txt,'dsp_comments_init()');
 		var dsp_txt = '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_d3search" type="checkbox" '+((_$.settings.d3search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_d3search">SP2: Замена поиска на <a href="http://d3search.ru" target="_blank">d3search.ru</a></label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_d3search" type="checkbox" '+((_$.settings.d3search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_d3search">SP2.0: Замена поиска на <a href="http://d3search.ru" target="_blank">d3search.ru</a></label></td></tr>';
 		dsp_txt += '</table>';
 
 		dsp_txt += '<div id="dsp_l_new_window" style="display:'+((_$.settings.d3search=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
@@ -1992,19 +1992,19 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table></div>';		
 
 		dsp_txt += '<table cellspacing="0" border="0">';		
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_links_test" type="checkbox" '+((_$.settings.links_test=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_links_test">SP2: Проверка ссылок при написании поста на d3search</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_user_stats" type="checkbox" '+((_$.settings.user_stats=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_user_stats">SP2: Статистика в профилях</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_links_test" type="checkbox" '+((_$.settings.links_test=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_links_test">SP2.0: Проверка ссылок при написании поста на d3search</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_user_stats" type="checkbox" '+((_$.settings.user_stats=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_user_stats">SP2.0: Статистика в профилях</label></td></tr>';
 		dsp_txt += '</table>';
 		DSP_make_Setting_Bar('d3search',dsp_txt,'dsp_d3search_init()');
 
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_karma_log" type="checkbox" '+((_$.settings.karma_log=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_karma_log">SP2: Комментарии к карме</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_ban_encoding" type="checkbox" '+((_$.settings.ban_encoding=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_ban_encoding">SP2: Править кодировку в бан-блогах</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_inbox_recreate" type="checkbox" '+((_$.settings.inbox_recreate=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_inbox_recreate">SP2: Кнопка пересоздания инбокса</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_inbox_text" type="checkbox" '+((_$.settings.inbox_text=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_inbox_text">SP2: Добавлять "Инбокс" к конверту</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_karma_log" type="checkbox" '+((_$.settings.karma_log=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_karma_log">SP2.0: Комментарии к карме</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_ban_encoding" type="checkbox" '+((_$.settings.ban_encoding=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_ban_encoding">SP2.0: Править кодировку в бан-блогах</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_inbox_recreate" type="checkbox" '+((_$.settings.inbox_recreate=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_inbox_recreate">SP2.0: Кнопка пересоздания инбокса</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_inbox_text" type="checkbox" '+((_$.settings.inbox_text=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_inbox_text">SP2.5: Добавлять "Инбокс" к конверту</label></td></tr>';
 		// start gertrudes options
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_grt_enabled" type="checkbox" '+((_$.settings.grt_enabled=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_grt_enabled">SP2: Показывать новые гертруды</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_grt_enabled" type="checkbox" '+((_$.settings.grt_enabled=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_grt_enabled">SP2.5: Показывать новые гертруды и приветствия</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_grt_enabled" style="display:'+((_$.settings.grt_enabled=='1')?'block':'none')+'"><form style="margin:0"><table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td align="right" width="45"><input name="dsp_grt_random_s" value="1" id="dsp_c_grt_random_on" type="radio" '+((_$.settings.grt_random=='1')?'checked="checked"':'')+'></td><td style=";color:#777"><label for="dsp_c_grt_random_on">Смешивать со старыми случайно</label></td></tr>';
@@ -2017,7 +2017,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
 		dsp_txt += '<tr><td align="right"><input id="dsp_c_tooltip_show_self" type="checkbox" '+((_$.settings.favicon_style=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_tooltip_show_self">Тултип на ссылке возле logout</label></td></tr>';
 		dsp_txt += '</table></div>';
-		dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2: Показывать время выполнения</label></td></tr>';
+		dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2.5: Показывать время выполнения</label></td></tr>';
 		dsp_txt += '</table>';
 		
 		DSP_make_Setting_Bar('Tooltip & Misc',dsp_txt,'dsp_tooltip_init()');
