@@ -2343,7 +2343,6 @@ if ( divRightCol && divTags)
 			}else{
 				hiddenStickers.splice( stickerIndex, 1 );
 				saveHiddenStickers = true;
-				stickerIndex--;
 			}
 		}
 		//update if changed
