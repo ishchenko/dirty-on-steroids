@@ -1792,7 +1792,6 @@ function dsp_posts_init(){
 	add_checkbox_event('dsp_c_posts_threshold_use_or','posts_threshold_use_or');
 
 	add_checkbox_event('dsp_c_read_button','read_button');
-//	add_checkbox_event('dsp_c_dirty_tags','dirty_tags');
 	_$.addEvent(_$.$('dsp_c_dirty_tags'),'click',
 	function(){
 		DSP_show_hide_menu('dsp_l_dirty_tags');
@@ -3627,8 +3626,8 @@ if(_$.settings.dirty_tags=='1')
 {
 	function manageTag( tagAnchor )
 	{
-		var tagText = tagAnchor.title.replace( /(,\s)/ig, ' ');
-		tagText = tagText.replace( /,/ig, ' ');
+		var tagText = tagAnchor.title.replace( /([\&nbsp\;\,])/ig, ' ');
+		tagText = tagText.replace( /([\&nbsp\;\,])/ig, ' ');
 		if (tagAnchor.innerHTML == 'x' )
 		{
 			tagAnchor.innerHTML = '-';
@@ -3793,7 +3792,17 @@ if(_$.settings.dirty_tags=='1')
 			}
 		}
 	}
-
+	function documentChangedTags( event )
+	{
+		if (supressEvents) 
+		{
+			return;
+		}
+		if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
+		{	
+			// process tags from the new message
+		}
+	}
 	if( document.location.href.indexOf("comments") > -1 && document.location.href.indexOf("inbox") == -1 )
 	{
 		var time1 = new Date();
@@ -3855,15 +3864,15 @@ if(_$.settings.dirty_tags=='1')
 				}
 				if ( vTagsXPos > 0 )
 				{
-					vTagStr = vTagStr.replace( /(\&nbsp\;)+/gi,' ');
+					vTagStr = vTagStr.replace( /([\&nbsp\;\,])+/gi,' ');
 					vTagComments[i].innerHTML = vTagStr.replace(vTagPattern, vTagReplacement);
 				}
 			}
-
 			if ( _$.settings.dirty_tags_autogold == 1 )
 			{
 				document.onLoad = checkGoldTag();
 			}
+			_$.addEvent(document,"DOMNodeInserted", documentChangedTags);
 			
 			addBenchmark( time1, 'dirtytags replace' );
 		}
