@@ -5147,7 +5147,7 @@ if(_$.settings.dirty_tags=='1')
 	{
 		function sortArrayNumbers(a,b)
 		{
-			return ( a - b );
+			return ( b - a );
 		}
 		function removePostIdItem( commentsArray, postId )
 		{
@@ -5317,12 +5317,14 @@ if(_$.settings.dirty_tags=='1')
 					if ( newCommentsInPost > 0 )
 					{
 						commentsIdArray.sort( sortArrayNumbers);
-						
-						var indexOfArray = commentsIdArray.length - 1;
 						var commentToBeNew;
 						for ( var commentIndex = 0; commentIndex < newCommentsInPost; commentIndex++)
 						{
-							commentToBeNew = document.getElementById( commentsIdArray[indexOfArray ]);
+							commentToBeNew = document.getElementById( commentsIdArray[ commentIndex ]);
+							if( oldMessageId > commentsIdArray[ commentIndex ] )
+							{
+								commentToBeNew = null;
+							}
 							if ( commentToBeNew )
 							{
 								commentToBeNew.setAttribute('class', commentToBeNew.getAttribute('class') + " new");
