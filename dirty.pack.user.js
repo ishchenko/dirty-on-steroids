@@ -1,12 +1,13 @@
 //
 // ==UserScript==
-// @name          Dirty Service Pack 2
-// @author        Stasik0, BearOff, crea7or, flashface, slavka123
-// @namespace     http://dirty.ru/
-// @description   Dirty Service Pack 2
-// @require       http://crea7or.spb.ru/scripts/user.js.updater.php?id=88906&days=1
-// @include       http://dirty.ru/*
-// @include       http://*.dirty.ru/*
+// @name			Dirty Service Pack 2
+// @author			Stasik0, BearOff, crea7or, flashface, slavka123
+// @namespace		http://dirty.ru/
+// @description		Dirty Service Pack 2
+// @require			http://crea7or.spb.ru/scripts/user.js.updater.php?id=88906&days=1
+// @include			http://dirty.ru/*
+// @include			http://*.dirty.ru/*
+// @run-at			document-end
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -3083,7 +3084,6 @@ if(_$.settings.arrows_on=='1'){
 
 	var time1 = new Date();
 
-
 	function apply_links(element){
 		var array = _$.$c('c_parent',element);
 		for(var i=0; i<array.length; i++){
@@ -3116,7 +3116,6 @@ if(_$.settings.arrows_on=='1'){
 	_$.addEvent(document,"DOMNodeInserted", documentChanged);
 	
 	addBenchmark( time1, 'triple arrows in comments' );
-	
 }
 
 //recreate inbox link
@@ -3142,11 +3141,7 @@ if(_$.settings.inbox_recreate=='1')
 		vS57own = document.getElementById('js-inboxUserAddInput');
 		if ( vS57own )
 		{
-			var vS57Scr = document.createElement("script");
-			vS57Scr.type = "application/javascript";
-			vS57Scr.textContent =  s57inboxBanAll;
-			document.body.appendChild( vS57Scr );	
-			var elemz = document.createElement("div");
+			_$.injectScript( s57inboxBanAll );
 			elemz.innerHTML = '[<a href="#" onclick="s57inboxBanAll(); return false;">забанить всех</a>]';
 			_$.insertAfter(form, elemz);
 		}
@@ -3471,7 +3466,6 @@ if(_$.settings.youtube_preview=='1'){
 		}
 	}
 
-
 		function documentChanged(event) {
 			if (supressEvents) {
 				return;
@@ -3509,9 +3503,7 @@ if(_$.settings.youtube_preview=='1'){
 		_$.addEvent(document,"DOMNodeInserted", documentChanged);
 	
 		addBenchmark( time1, 'youtube preview' );
-	
 	}
-
 
 // formatting buttons for post and music.dirty
 function postBoxGetCursor(input)
@@ -3920,33 +3912,7 @@ if(_$.settings.dirty_tags=='1')
 				list_reverse : [],
 				isPostPage : false,
 				isInboxPage : false,
-				/*
-				set_save : function (){
-						var params = '';
-						var not_first = '';
-						for (i in _dct.settings) {
-								params = params + not_first+i+":"+_dct.settings[i];
-								not_first = ',';
-						}
-						document.cookie = "comm_thresh.settings_nd="+escape('{'+params+'}')+"; domain=.dirty.ru; path=/; expires=Thu, 20-Apr-2023 00:34:13 GMT";
-				},
-
-				set_get : function (){
-						if(document.cookie.indexOf('comm_thresh.settings_nd=')>-1){
-								var param = unescape(document.cookie.split('comm_thresh.settings_nd=')[1].split(";")[0]);
-								eval("_dct.settings="+unescape(param));
-
-						} else {
-								_dct.settings.cmnt_threshold = -1000;
-								// 1 - by votes, 2 - by percents
-								_dct.settings.cmnt_thresh_type = 1;
-								_dct.settings.cmnt_thresh_step = 10;
-								_dct.settings.cmnt_opt_count = 4;
-								_dct.settings.cmnt_picts_always = 0;
-						}
-				},
-				*/
-
+				
 				toggle_div : function (name,param){
 						if(param) document.getElementById(name).style.display = (param==1)?'block':'none';
 						else document.getElementById(name).style.display = (document.getElementById(name).style.display=='none')?'block':'none';
@@ -4921,14 +4887,10 @@ if(_$.settings.dirty_tags=='1')
 			var backup_allPostsArr = allPostsArr;
 			var backup_newPosts = newPosts;
 			var backup_mine = mine;		
-			
 			var newPos = 0;
 			var newCount = newPosts.length;
-
 			var autoScroll = false;
-			
 			var minePos = 0;
-
 			var tempId = 0;
 			var gScrollDestination = 0;
 			var lastDistance = "none";
@@ -4977,9 +4939,7 @@ if(_$.settings.dirty_tags=='1')
 			}
 			
 		}
-		
 		addBenchmark( time1, 'comments scroll & read button' );
-		
 	}
 	
 	//quotes
@@ -4987,8 +4947,6 @@ if(_$.settings.dirty_tags=='1')
 	{
 		var time1 = new Date();
 		var commentsHolder = document.getElementById('js-commentsHolder');
-//		var allBodies = commentsHolder.getElementsByClassName('c_body');
-//		var allUsers = commentsHolder.getElementsByClassName('c_user');
 		var allBodies = commentsHolder.querySelectorAll('div.c_body');
 		var allUsers = commentsHolder.querySelectorAll('a.c_user');
 		for (var key = 0; key < allBodies.length; key++)
@@ -5005,7 +4963,6 @@ if(_$.settings.dirty_tags=='1')
 			link.innerHTML = "в цитатник";
 			allUsers[key].parentNode.appendChild(link);
 		}
-					
 		addBenchmark( time1, 'quotes' );
 	}
 	
@@ -5218,7 +5175,6 @@ if(_$.settings.dirty_tags=='1')
 			localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
 			return true;
 		}
-			
 		var time1 = new Date();
 		var divPostHolder = document.getElementById('js-posts_holder');
 		if ( divPostHolder == null )
@@ -5329,7 +5285,6 @@ if(_$.settings.dirty_tags=='1')
 					}
 				}
 				// part 2
-
 				var currentCommentId;
 				var oldestMessageIdInPost = 0;
 				var commentsIdArray = new Array();			
@@ -5376,13 +5331,10 @@ if(_$.settings.dirty_tags=='1')
 						}
 					}
 					// part 1
-					
-
 					// part 1
 					removePostIdItem( newCommentsArray, postId );
 					localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
 					// part 1
-
 					// part 2
 					addLastCommentId( oldCommentsArray, postId, oldestMessageIdInPost );
 					// part 2
