@@ -5329,7 +5329,6 @@ if(_$.settings.dirty_tags=='1')
 							{
 								commentToBeNew.setAttribute('class', commentToBeNew.getAttribute('class') + " new");
 							}
-							indexOfArray--;
 						}
 					}
 					// part 1
