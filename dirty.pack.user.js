@@ -5148,7 +5148,7 @@ if(_$.settings.dirty_tags=='1')
 	{
 		function sortArrayNumbers(a,b)
 		{
-			return a < b;
+			return ( a - b );
 		}
 		function removePostIdItem( commentsArray, postId )
 		{
@@ -5286,7 +5286,7 @@ if(_$.settings.dirty_tags=='1')
 					}
 				}
 				// part 2
-				var currentCommentId;
+				var currentCommentId = 0;
 				var oldestMessageIdInPost = 0;
 				var commentsIdArray = new Array();			
 				var commentsHolder = document.getElementById('js-commentsHolder');
