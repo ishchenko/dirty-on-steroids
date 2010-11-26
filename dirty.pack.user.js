@@ -2352,7 +2352,7 @@ if ( divRightCol && divTags)
 			divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 			var divForNews = document.createElement('div');
 			var subDivForNews = document.createElement('div');
-			divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-105px;');
+			divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
 			var subDivForNews = document.createElement('div');
 			
 			for(var i=0;i<newsArray.length;i++){
