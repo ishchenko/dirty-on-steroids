@@ -43,7 +43,6 @@ var _$ = {
 			document.cookie = "posts_thresh.settings=1; domain=.dirty.ru; path=/; expires=Thu, 01-Jan-1970 00:34:13 GMT";
 			document.cookie = "comm_thresh.settings=1; domain=.dirty.ru; path=/; expires=Thu, 01-Jan-1970 00:34:13 GMT";
 			_$.settings_colors = _$.settings.colors;
-			delete _$.settings.colors['colors'];
 		}
 		else
 		{
@@ -432,7 +431,6 @@ if( typeof _$.settings.karma_log == "undefined") { _$.settings.karma_log = 1; se
 if( typeof _$.settings.youtube_preview == "undefined") { _$.settings.youtube_preview = 1; settingsSave = true; }
 if( typeof _$.settings.read_button == "undefined") { _$.settings.read_button = 1; settingsSave = true; }
 if( typeof _$.settings.comment_scroller == "undefined") { _$.settings.comment_scroller = 1; settingsSave = true; }
-							
 if( typeof _$.settings.smooth_scroll == "undefined")
 {
 	if(_$.browser().name == "chrome"){
@@ -468,7 +466,6 @@ if( typeof _$.settings.cmnt_picts_always == "undefined") { _$.settings.cmnt_pict
 
 if( typeof _$.settings.own_threshold == "undefined"){ _$.settings.own_threshold = 0; settingsSave = true; }
 if( typeof _$.settings.new_window == "undefined"){ _$.settings.new_window = 1; settingsSave = true; }
-
 if( typeof _$.settings.quotes == "undefined") { _$.settings.quotes = 1; settingsSave = true; }
 
 if ( settingsSave )
@@ -3901,7 +3898,7 @@ if(_$.settings.dirty_tags=='1')
 }
 
 	//comment threshold
-	if(_$.settings.comments_threshold=='1')
+	if( _$.settings.comments_threshold == 1 )
 	{
 		var time1 = new Date();
 		var _dct = {
@@ -4159,13 +4156,13 @@ if(_$.settings.dirty_tags=='1')
 						if (_dct.comm_order==1) {
 								_dct.comm_order=2;
 								_dct.doOrder(_dct.list_order);
-								if (_$.settings.allow_reverse_list=='1') {
+								if (_$.settings.allow_reverse_list== 1 ) {
 									tree_link.innerHTML = "реверс!";
 								} else {
 									tree_link.innerHTML = "деревом!";
 								}
 						}
-						else if(_$.settings.allow_reverse_list=='1' && _dct.comm_order==2) {
+						else if(_$.settings.allow_reverse_list == 1 && _dct.comm_order==2) {
 								_dct.comm_order=3;
 								_dct.doOrder(_dct.list_reverse);
 								tree_link.innerHTML = "деревом!";
@@ -4228,11 +4225,13 @@ if(_$.settings.dirty_tags=='1')
 								_dct.isInboxPage = _dct.isInboxCommentsPage();
 						}
 						//_dct.set_get();
-						if (_dct.isPostPage || _dct.isInboxPage) {
+						if (_dct.isPostPage || _dct.isInboxPage) 
+						{
 								_dct.initCommentsArray();
 								_dct.addTreeLinearLink();
 						}
-						if (_dct.isPostPage) {
+						if (_dct.isPostPage ) 
+						{
 								_dct.replaceSelect();
 								_dct.replaceParentLinks();
 								_dct.onChangeThreshold();
@@ -5074,7 +5073,7 @@ if(_$.settings.dirty_tags=='1')
 				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold');
 				if ( divToModifyStyle )
 				{
-					divToModifyStyle.setAttribute('style', 'width: 40%;');
+					divToModifyStyle.setAttribute('style', 'width: 280px;');
 				}
 				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls');
 				if ( divToModifyStyle )
@@ -5084,12 +5083,12 @@ if(_$.settings.dirty_tags=='1')
 				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold_inner');
 				if ( divToModifyStyle )
 				{
-					divToModifyStyle.setAttribute('style', 'padding-left: 10px; padding-right: 10px;');
+					divToModifyStyle.setAttribute('style', 'padding-left: 5px; padding-right: 5px;');
 				}
 				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls_inner');
 				if ( divToModifyStyle )
 				{
-					divToModifyStyle.setAttribute('style', 'padding-left: 10px; margin-right: 10px;');
+					divToModifyStyle.setAttribute('style', 'padding-left: 50px; margin-right: 0px;');
 				}
 				insertOurHeaderAfter = headerDiv.firstChild;
 			}
@@ -5345,7 +5344,10 @@ if(_$.settings.dirty_tags=='1')
 			else
 			{
 				// post were not loaded
-				_$.injectScript(" futu_alert( 'Страница похоже не догрузилась :( Подожди 3-5 секунд и попробуй обновить её, а я восстановлю новые комментарии.', false, 'red');");
+				if ( postId > 0 )
+				{
+					_$.injectScript(" futu_alert( 'Страница похоже не догрузилась :( Подожди 3-5 секунд и попробуй обновить её, а я восстановлю новые комментарии.', false, 'red');");
+				}
 			}
 		}
 		addBenchmark( time1, 'new comment saver' );	
