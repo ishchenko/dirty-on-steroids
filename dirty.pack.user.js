@@ -3142,6 +3142,7 @@ if(_$.settings.inbox_recreate=='1')
 		if ( vS57own )
 		{
 			_$.injectScript( s57inboxBanAll );
+			var elemz = document.createElement("div");
 			elemz.innerHTML = '[<a href="#" onclick="s57inboxBanAll(); return false;">забанить всех</a>]';
 			_$.insertAfter(form, elemz);
 		}
