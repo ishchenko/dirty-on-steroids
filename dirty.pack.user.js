@@ -5356,7 +5356,7 @@ if(_$.settings.dirty_tags=='1')
 					// part 1
 					if ( newCommentsInPost > 0 )
 					{
-						commentsIdArray.sort( sortArrayNumbers());
+						commentsIdArray.sort( sortArrayNumbers);
 						
 						var indexOfArray = commentsIdArray.length - 1;
 						var commentToBeNew;
