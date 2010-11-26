@@ -2360,7 +2360,7 @@ if ( divRightCol && divTags)
 				var hide = newsArray[i].querySelector('div.sticker-hide');
 				if(hide)newsArray[i].removeChild(hide);
 				//frame sticker into layout
-				subDivForNews.innerHTML += '<div class="subs_ads" style="position: relative;"><a class="vote_details_close" style="top: 10px;" href=""></a><div class="subs_ads_inner">\
+				subDivForNews.innerHTML += '<div class="subs_ads" style="position: relative;"><a class="vote_details_close" style="top: 10px;" href="" title="Убрать это объявление"></a><div class="subs_ads_inner">\
 																		<div class="subs_block"><div class="sticker" id="'+newsArray[i].getAttribute("id")+'">'+newsArray[i].innerHTML+'</div></div></div><div class="subs_ads_bottom_bg"></div></div>';
 				//remove the sticker from tempDiv
 				tempDiv.removeChild(newsArray[i]);
