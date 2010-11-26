@@ -3649,8 +3649,7 @@ if(_$.settings.dirty_tags=='1')
 {
 	function manageTag( tagAnchor )
 	{
-		var tagText = tagAnchor.title.replace( /([\&nbsp\;\,])/ig, ' ');
-		tagText = tagText.replace( /([\&nbsp\;\,])/ig, ' ');
+		var tagText = tagAnchor.title.replace( /,/ig, ' ');
 		if (tagAnchor.innerHTML == 'x' )
 		{
 			tagAnchor.innerHTML = '-';
@@ -3711,7 +3710,7 @@ if(_$.settings.dirty_tags=='1')
 		var tagsArray = new Array();
 		if ( tagsArrayFromLocalStore == null )
 		{
-			tagsArray = jsonParse( localStorGetItem( 'dirtyTags', '["Тупая фигня", "Это же реклама" , "Это неправда", "Об этом уже писали", "Ctrl-C Ctrl-V", "Свежак", "КДПВ", "Скандалы интриги расследования", "Все правильно сделал", "Фишкинет", "Господи какая красота111", "британские учёные", "Чиновники", "Милиция","Оборотни","Беспредел","Наука","Космос","Искусство","История","Авто","Авиация","Армия","РПЦ","Маразм","Кругом враги","Животные","fapfapfap","боже он умер","Вавилонская библиотека","вирусняк","Гурусик нямка","Думаем о России","пост проклят","еще один все понял","и снова о Главном","Зачем моё измождённое тело","слава богу родился","лепрозорий на выезде","нафталин","ожируй клюв","он же упоротый","политический кружок при сельском клубе","слава России","Творчество душевнобольных","понаехали","Я маленькая лошадка","Я открыл для себя википедию"]'));
+			tagsArray = jsonParse( localStorGetItem( 'dirtyTags', '["Тупая фигня", "Это же реклама" , "Это неправда", "Об этом уже писали", "Ctrl-C Ctrl-V", "Свежак", "КДПВ", "Скандалы интриги расследования", "Все правильно сделал", "Фишкинет", "Господи какая красота111", "британские учёные", "Чиновники", "Милиция","Оборотни","Беспредел","Наука","Космос","Искусство","История","Авто","Авиация","Армия","РПЦ","Маразм","Кругом враги","Животные","fapfapfap","боже он умер","Вавилонская библиотека","вирусняк","Гурусик нямка","Думаем о России","пост проклят","еще один все понял","и снова о Главном","Зачем моё измождённое тело","слава богу родился","лепрозорий на выезде","нафталин","ожируй клюв","он же упоротый","политический кружок при сельском клубе","слава России","Творчество душевнобольных","понаехали","Я маленькая лошадка","Я открыл для себя википедию"]'));			
 		}
 		else
 		{
@@ -3719,6 +3718,9 @@ if(_$.settings.dirty_tags=='1')
 			tagsArrayFromLocalStore = tagsArrayFromLocalStore.replace(/\r/g,'');
 			tagsArray = tagsArrayFromLocalStore.split("\n");
 			localStorage.removeItem('vTagsStore');
+			localStorage.removeItem('vTagsFloatCloud');
+			localStorage.removeItem('vTagsAutoSetGold');			
+			localStorage.removeItem('vTagsJovanPremium');
 			localStorage.setItem('dirtyTags', jsonStringify( tagsArray ));
 		}
 		return tagsArray;
@@ -3815,6 +3817,12 @@ if(_$.settings.dirty_tags=='1')
 			}
 		}
 	}
+	function processCommentTags( commentDiv )
+	{
+		var vTagStr = commentDiv.innerHTML.replace( /(\&nbsp;)/gi,' ');
+		// regexp based on http://leprosorium.ru/users/antyrat script
+		commentDiv.innerHTML = vTagStr.replace( /([^:\s\.\>\<][\wа-яёЁ\-\–\—\s\!\?,]+)(\[x\]|\s\[x\]|\s\[х\]|\[х\])+/gi, "$1 [<a href=\"#\" onclick=\"return manageTag(this);\" title=\"$1\" style=\"color: red;\">x</a>]");
+	}
 	function documentChangedTags( event )
 	{
 		if (supressEvents) 
@@ -3823,10 +3831,14 @@ if(_$.settings.dirty_tags=='1')
 		}
 		if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
 		{	
-			// process tags from the new message
+			var tagComment = event.target.querySelector('div.c_body');
+			if ( tagComment != null )
+			{
+				processCommentTags( tagComment );
+			}
 		}
 	}
-	if( document.location.href.indexOf("comments") > -1 && document.location.href.indexOf("inbox") == -1 )
+	if( document.location.href.indexOf("comments") > -1 )
 	{
 		var time1 = new Date();
 		var loggedUser = document.querySelector('div.header_logout');
@@ -3862,33 +3874,26 @@ if(_$.settings.dirty_tags=='1')
 			var time1 = new Date();
 
 			// fast tags part
-			// regexp based on http://leprosorium.ru/users/antyrat script
-			var vTagPattern = /([^:\s\.\>\<][\wа-яёЁ\-\–\—\s\!\?,]+)(\[x\]|\s\[x\]|\s\[х\]|\[х\])+/gi;
-			var vTagReplacement = "$1 [<a href=\"#\" onclick=\"return manageTag(this);\" title=\"$1\" style=\"color: red;\">x</a>]";
-			var vTagStr;
-			var vTagComments = document.querySelectorAll('div.c_body');
-			var vTagsXPos;
-			var vTagStr;
-			for( var i=0; i < vTagComments.length; i++)
+			var tagComments = document.querySelectorAll('div.c_body');
+			var xPosition;
+			for( var i=0; i < tagComments.length; i++)
 			{
-				vTagStr = vTagComments[i].innerHTML;
-				vTagsXPos = vTagStr.indexOf('[x]');
-				if ( vTagsXPos < 0 )
+				xPosition = tagComments[i].innerHTML.indexOf('[x]');
+				if ( xPosition < 0 )
 				{
-					vTagsXPos = vTagStr.indexOf('[X]');
+					xPosition = tagComments[i].innerHTML.indexOf('[X]');
 				}
-				if ( vTagsXPos < 0 )
+				if ( xPosition < 0 )
 				{
-					vTagsXPos = vTagStr.indexOf('[х]');
+					xPosition = tagComments[i].innerHTML.indexOf('[х]');
 				}
-				if ( vTagsXPos < 0 )
+				if ( xPosition < 0 )
 				{
-					vTagsXPos = vTagStr.indexOf('[Х]');
+					xPosition = tagComments[i].innerHTML.indexOf('[Х]');
 				}
-				if ( vTagsXPos > 0 )
+				if ( xPosition > 0 )
 				{
-					vTagStr = vTagStr.replace( /([\&nbsp\;\,])+/gi,' ');
-					vTagComments[i].innerHTML = vTagStr.replace(vTagPattern, vTagReplacement);
+					processCommentTags( tagComments[i]);
 				}
 			}
 			if ( _$.settings.dirty_tags_autogold == 1 )
