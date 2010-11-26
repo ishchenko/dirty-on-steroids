@@ -5310,7 +5310,7 @@ if(_$.settings.dirty_tags=='1')
 							}
 							if ( newCommentsInPost > 0 )
 							{
-								commentsIdArray.push( commentsHolder.childNodes[indexOfComment].getAttribute('id'));
+								commentsIdArray.push( Number( currentCommentId ));
 							}
 						}
 					}
