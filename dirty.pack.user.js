@@ -4210,6 +4210,7 @@ if(_$.settings.dirty_tags=='1')
 				},
 
 				toggleCommentsOrder : function() {
+						var time1 = new Date();
 						var allow_reverse_list = 1;
 						if (_dct.tree_order.length==0) {
 								for (var i=0; i<_dct.comments.length;i++) {
@@ -4243,6 +4244,7 @@ if(_$.settings.dirty_tags=='1')
 						}
 						//fire event for comment scroller
 						_$.fireEvent(eventDispatcher, 'mousedown');
+						addBenchmark( time1, 'Comments order changed');
 				},
 
 				addTreeLinearLink : function() {
