@@ -1430,7 +1430,7 @@ _$.tooltip = {
 					return;
 				}
 				if(typeof(event.target) !== 'undefined' && typeof(event.target.className) !== 'undefined'  && event.target.className.indexOf("comment")>-1){
-					_$.tooltip.processLinks.processLinks(event.target);
+					_$.tooltip.processLinks(event.target);
 				}
 
 				if(event.target !== null && typeof(event.target) !== 'undefined' && typeof(event.target.tagName) !== 'undefined' &&
