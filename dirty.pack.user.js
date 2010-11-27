@@ -447,7 +447,7 @@ if( typeof _$.settings.comments_threshold == "undefined") { _$.settings.comments
 if( typeof _$.settings.posts_threshold == "undefined") { _$.settings.posts_threshold = 0; settingsSave = true; }
 if( typeof _$.settings.post_content_filter_layout == "undefined") { _$.settings.post_content_filter_layout = 0; settingsSave = true; }
 if( typeof _$.settings.posts_threshold_use_or == "undefined") { _$.settings.posts_threshold_use_or = 0; settingsSave = true; }
-if( typeof _$.settings.allow_reverse_list == "undefined") { _$.settings.allow_reverse_list = 1; settingsSave = true; }
+if( typeof _$.settings.comments_order == "undefined") { _$.settings.comments_order = 1; settingsSave = true; }
 //posts & comments threshold
 if( typeof _$.settings.threshold == "undefined") { _$.settings.threshold = 0; settingsSave = true; }
 if( typeof _$.settings.thresh_comm_count == "undefined") { _$.settings.thresh_comm_count = 0; settingsSave = true; }
@@ -1822,7 +1822,7 @@ function dsp_comments_init(){
 	add_checkbox_event('dsp_c_quotes','quotes');
 	add_checkbox_event('dsp_c_arrows_on','arrows_on');
 	add_checkbox_event('dsp_c_comments_threshold','comments_threshold');
-	add_checkbox_event('dsp_c_allow_reverse_list','allow_reverse_list');
+	add_checkbox_event('dsp_c_comments_order','comments_order');
 	add_checkbox_event('dsp_c_newcomments_saver','newcomments_saver');
 
 	_$.addEvent(_$.$('dsp_c_colors_on'),'click',
@@ -1966,10 +1966,10 @@ function DSP_make_content_settings(){
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_quotes" type="checkbox" '+((_$.settings.quotes=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_quotes">SP2.0: Цитатник</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comments_threshold" type="checkbox" '+((_$.settings.comments_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comments_threshold">SP2.0: Фильтр по рейтингу комментариев</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comments_threshold" type="checkbox" '+((_$.settings.comments_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comments_threshold">SP2.0: Продвинутый фильтр по рейтингу</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_allow_reverse_list" type="checkbox" '+((_$.settings.allow_reverse_list=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_allow_reverse_list">SP2.0: Списком->Деревом->Реверс</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_comments_order" type="checkbox" '+((_$.settings.comments_order=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_comments_order">SP2.0: Списком->Деревом->Реверс</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_arrows_on" type="checkbox" '+((_$.settings.arrows_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_arrows_on">SP2.0: Увеличить стрелочки под комментарием</label></td></tr>';
@@ -3966,7 +3966,7 @@ if(_$.settings.dirty_tags=='1')
 }
 
 	//comment threshold
-	if( _$.settings.comments_threshold == 1 )
+	if( _$.settings.comments_threshold == 1 || _$.settings.comments_order == 1 )
 	{
 		var time1 = new Date();
 		var _dct = {
@@ -4209,6 +4209,8 @@ if(_$.settings.dirty_tags=='1')
 				},
 
 				toggleCommentsOrder : function() {
+						var time1 = new Date();
+						var allow_reverse_list = 1;
 						if (_dct.tree_order.length==0) {
 								for (var i=0; i<_dct.comments.length;i++) {
 										_dct.tree_order.push(_dct.comments[i].parent_id);
@@ -4224,13 +4226,13 @@ if(_$.settings.dirty_tags=='1')
 						if (_dct.comm_order==1) {
 								_dct.comm_order=2;
 								_dct.doOrder(_dct.list_order);
-								if (_$.settings.allow_reverse_list== 1 ) {
+								if (allow_reverse_list == 1) {
 									tree_link.innerHTML = "реверс!";
 								} else {
 									tree_link.innerHTML = "деревом!";
 								}
 						}
-						else if(_$.settings.allow_reverse_list == 1 && _dct.comm_order==2) {
+						else if(allow_reverse_list == 1 && _dct.comm_order==2) {
 								_dct.comm_order=3;
 								_dct.doOrder(_dct.list_reverse);
 								tree_link.innerHTML = "деревом!";
@@ -4241,6 +4243,7 @@ if(_$.settings.dirty_tags=='1')
 						}
 						//fire event for comment scroller
 						_$.fireEvent(eventDispatcher, 'mousedown');
+						addBenchmark( time1, 'Comments order changed');
 				},
 
 				addTreeLinearLink : function() {
@@ -4288,18 +4291,15 @@ if(_$.settings.dirty_tags=='1')
 				},
 
 				workPlease : function () {
+						_dct.isInboxPage = _dct.isInboxCommentsPage();
+						if (_dct.isInboxPage && _$.settings.comments_order!='1') return;
 						_dct.isPostPage = _dct.isPostCommentsPage();
-						if (!_dct.isPostPage) {
-								_dct.isInboxPage = _dct.isInboxCommentsPage();
-						}
-						//_dct.set_get();
-						if (_dct.isPostPage || _dct.isInboxPage)
-						{
-								_dct.initCommentsArray();
-								_dct.addTreeLinearLink();
-						}
-						if (_dct.isPostPage )
-						{
+						if (!_dct.isInboxPage && !_dct.isPostPage) return;
+
+						_dct.initCommentsArray();
+						if (_$.settings.comments_order=='1') _dct.addTreeLinearLink();
+
+						if (_dct.isPostPage && _$.settings.comments_threshold=='1') {
 								_dct.replaceSelect();
 								_dct.replaceParentLinks();
 								_dct.onChangeThreshold();
@@ -4628,8 +4628,6 @@ if(_$.settings.dirty_tags=='1')
 
 				workPlease : function () {
 						if (_dpt.checkMainPage()) {
-								//_dpt.set_get();
-
 								if(_$.settings.own_threshold=='1'){
 									//part from Stasik0
 									//set default selector to show needed posts
@@ -5141,12 +5139,12 @@ if(_$.settings.dirty_tags=='1')
 				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold');
 				if ( divToModifyStyle )
 				{
-					divToModifyStyle.setAttribute('style', 'width: 280px;');
+					divToModifyStyle.setAttribute('style', 'width: 330px;');
 				}
 				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls');
 				if ( divToModifyStyle )
 				{
-					divToModifyStyle.setAttribute('style', 'width: 300px; min-width: 300px;');
+					divToModifyStyle.setAttribute('style', 'width: 350px; min-width: 350px;');
 				}
 				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold_inner');
 				if ( divToModifyStyle )
