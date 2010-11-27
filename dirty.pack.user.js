@@ -220,7 +220,7 @@ var _$ = {
 	ajaxLoadPost: function(url, data, ajaxCallBackFunction, callObject, params, ajaxCallBackErrorFunction) {
 
 		var ajaxObject = null;
-	
+
 		if(window.XMLHttpRequest) ajaxObject = new XMLHttpRequest();
 		else if(window.ActiveXObject) ajaxObject = new ActiveXObject('Microsoft.XMLHTTP');
 
@@ -233,7 +233,7 @@ var _$ = {
 			ajaxObject.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 			ajaxObject.setRequestHeader('Content-length',data.length);
 			ajaxObject.setRequestHeader('Connection','close');
-			ajaxObject.send(data);	
+			ajaxObject.send(data);
 		};
 	},
 
@@ -242,7 +242,7 @@ var _$ = {
 		if(ajaxObject.readyState==4){
 			if(ajaxObject.status==200) ajaxCallBackFunction.call(callObject, ajaxObject, params);
 			else{
-				if(ajaxCallBackErrorFunction) ajaxCallBackErrorFunction.call(callObject, ajaxObject);	
+				if(ajaxCallBackErrorFunction) ajaxCallBackErrorFunction.call(callObject, ajaxObject);
 //				else alert('There was a problem retrieving the XML data:\n'+ajaxObject.statusText);
 			}
 		}
@@ -268,7 +268,7 @@ var _$ = {
 			styleSheet.type = 'text/css';
 			head.appendChild(styleSheet);
 		}
-	
+
 		if(styleSheet.styleSheet) styleSheet.styleSheet.cssText += cssStr;
 		else styleSheet.appendChild(document.createTextNode(cssStr));
 	},
@@ -296,29 +296,29 @@ var _$ = {
 
 		return e;
 	},
-	
+
 	injectScript: function(source){
 		var inject = document.createElement("script");
 		inject.setAttribute("type", "text/javascript");
 		inject.textContent = source;
 		_$.$t('head')[0].appendChild(inject);
 	},
-	
+
 	injectScriptUrl: function(url){
 		var inject = document.createElement("script");
 		inject.setAttribute("type", "text/javascript");
 		inject.setAttribute("src", url);
 		_$.$t('head')[0].appendChild(inject);
 	},
-	
+
 	insertAfter: function (referenceNode, node) {
 		referenceNode.parentNode.insertBefore(node, referenceNode.nextSibling);
 	},
-	
+
 	$n: function(element){
 		return document.getElementsByName(element);
 	},
-	
+
 	getUsername: function(){
 		elem = _$.$c('header_tagline_inner');
 		if(elem.length == 1){
@@ -329,7 +329,7 @@ var _$ = {
 		}
 		return "";
 	},
-	
+
 	getNumber: function(){
 		elem = _$.$c('header_tagline_inner');
 		if(elem.length == 1){
@@ -338,7 +338,7 @@ var _$ = {
 		}
 		return "";
 	},
-	
+
 	fireEvent: function(element,event){
 		if (document.createEventObject){
 			// dispatch for IE
@@ -351,7 +351,7 @@ var _$ = {
 			return !element.dispatchEvent(evt);
 		}
 	}
-		
+
 	//,
 	//setInnerText: function(element, text){
 	//	var hasInnerText = (_$.$t('body')[0].innerText != undefined) ? true : false;
@@ -396,7 +396,7 @@ function localStorGetItem( itemName, defaultValue )
 	{
 		loadedValue = defaultValue;
 	}
-	return loadedValue;		
+	return loadedValue;
 }
 _$.injectScript( jsonParse + "\n" + jsonStringify  + "\n" +  localStorGetItem );
 //
@@ -499,8 +499,8 @@ function addBenchmark( results, name )
 	}
 }
 
-if(_$.location.indexOf('/off/')!=0){
-
+if(_$.location.indexOf('/off/')!=0)
+{
 	var dsp_general_bar = '';
 	var dsp_general_param = '';
 	var dsp_check_change_pictures = 1;
@@ -533,12 +533,12 @@ if(_$.location.indexOf('/off/')!=0){
 		_$.addEvent(_$.$('dsp_setting_close'),'click',function(){DSP_show_hide_window('_$.settings')});
 		dsp_general_bar = _$.$('dsp_settings_panels');
 		dsp_general_param = _$.$('dsp_settings_props');
-		
-		//addBenchmark( time1, 'general bar' );		
+
+		//addBenchmark( time1, 'general bar' );
 	}
 
 	function DSP_make_Setting_Bar(title,params,init){
-		
+
 		//var time1 = new Date();
 		var dsp_setting_id = 0;
 
@@ -572,7 +572,7 @@ if(_$.location.indexOf('/off/')!=0){
 			dsp_layer.style.display ="block";
 		}
 	}
-	
+
 	function DSP_show_hide_menu(name){
 
 		var dsp_layer = _$.$(name);
@@ -629,7 +629,7 @@ if(_$.location.indexOf('/off/')!=0){
 		}
 		else obj.style.backgroundImage = 'none';
 	}
-	
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Username Replace
@@ -1409,7 +1409,7 @@ _$.tooltip = {
 			}
 		}
 	},
-	
+
 	processGreeting: function(){
 		if(_$.settings.tooltip_show_self==1 && _$.settings.tooltip_on==1){
 			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseover',function(e){clearTimeout(dup_showing);dup_showBaloon(e.target)});
@@ -1423,16 +1423,16 @@ _$.tooltip = {
 
 			this.processLinks(document.body);
 			this.processGreeting();
-			
+
 			//SP2
 			function documentChanged(event) {
 				if (supressEvents) {
 					return;
-				}				
+				}
 				if(typeof(event.target) !== 'undefined' && typeof(event.target.className) !== 'undefined'  && event.target.className.indexOf("comment")>-1){
 					_$.tooltip.processLinks.processLinks(event.target);
 				}
-				
+
 				if(event.target !== null && typeof(event.target) !== 'undefined' && typeof(event.target.tagName) !== 'undefined' &&
 					event.target.parentNode !== null
 					&& event.target.parentNode.parentNode !== null
@@ -1540,7 +1540,7 @@ function dup_getData(obj){
 
 			dup_pluses = (dup_pluses>0)?'<span style="color:green;"><b>+'+dup_pluses+'</b></span>':0;
 			dup_minuses = (dup_minuses>0)?'<span style="color:red;"><b>-'+dup_minuses+'</b></span>':0;
-				
+
 			var dup_votes_him = '';
 			if(dup_minuses!==0) dup_votes_him += dup_minuses;
 			if(dup_minuses!==0&&dup_pluses!==0) dup_votes_him += ' <span style="color:#ccc">/</span> ';
@@ -1709,7 +1709,7 @@ function dsp_d3search_init(){
 		else _$.set_save('d3search',0);
 
 	});
-	
+
 	add_checkbox_event('dsp_c_new_window','new_window');
 	add_checkbox_event('dsp_c_user_stats','user_stats');
 	add_checkbox_event('dsp_c_links_test','links_test');
@@ -1730,7 +1730,7 @@ function dsp_general_init(){
 		else _$.set_save('comment_scroller',0);
 
 	});
-	
+
 
 	_$.addEvent(_$.$('dsp_c_favicon_on'),'click',
 	function(){
@@ -1795,11 +1795,11 @@ function dsp_posts_init(){
 		DSP_show_hide_menu('dsp_l_dirty_tags');
 		if(_$.$('dsp_c_dirty_tags').checked===true) _$.set_save('dirty_tags',1);
 		else _$.set_save('dirty_tags',0);
-	});	
+	});
 	add_checkbox_event('dsp_c_dirty_tags_hidetags','dirty_tags_hidetags');
 	add_checkbox_event('dsp_c_dirty_tags_autogold','dirty_tags_autogold');
-	
-	add_checkbox_event('dsp_c_instant_search','instant_search');	
+
+	add_checkbox_event('dsp_c_instant_search','instant_search');
 
 	_$.addEvent(_$.$('dsp_c_posts_average'),'click',
 	function(){
@@ -1823,8 +1823,8 @@ function dsp_comments_init(){
 	add_checkbox_event('dsp_c_arrows_on','arrows_on');
 	add_checkbox_event('dsp_c_comments_threshold','comments_threshold');
 	add_checkbox_event('dsp_c_allow_reverse_list','allow_reverse_list');
-	add_checkbox_event('dsp_c_newcomments_saver','newcomments_saver');	
-	
+	add_checkbox_event('dsp_c_newcomments_saver','newcomments_saver');
+
 	_$.addEvent(_$.$('dsp_c_colors_on'),'click',
 		function(){
 			DSP_show_hide_menu('dsp_l_colors');
@@ -1851,7 +1851,7 @@ function dsp_tooltip_init(){
 	add_checkbox_event('dsp_c_inbox_recreate','inbox_recreate');
 	add_checkbox_event('dsp_c_ban_encoding','ban_encoding');
 	add_checkbox_event('dsp_c_timings_display','timings_display');
-	
+
 	_$.addEvent(_$.$('dsp_c_use_picture'),'click',
 	function(){
 		dsp_check_change_pictures = 1;
@@ -1885,7 +1885,7 @@ function dsp_tooltip_init(){
 			else _$.set_save('tooltip_show_self',0);
 		});
 
-	
+
 	// start events for gertrudes options
 	_$.addEvent(_$.$('dsp_c_grt_enabled'),'click',
 	function(){
@@ -1939,15 +1939,15 @@ function DSP_make_content_settings(){
 		//SP2
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold" type="checkbox" '+((_$.settings.posts_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold">SP2.0: Фильтр по рейтингу постов</label></td></tr>';
 		dsp_txt += '</table>';
-		
+
 		dsp_txt += '<div id="dsp_l_threshold" style="display:'+((_$.settings.posts_threshold=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_own_threshold" type="checkbox" '+((_$.settings.own_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_own_threshold">Корректировать родной фильтр (см. FAQ)</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold_use_or" type="checkbox" '+((_$.settings.posts_threshold_use_or=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold_use_or">Использовать ИЛИ</label></td></tr>';
 		dsp_txt += '</table></div>';
-		
+
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dirty_tags" type="checkbox" '+((_$.settings.dirty_tags=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dirty_tags">SP2.0: Dirty Tags</label></td></tr>';
-		dsp_txt += '</table>';	
+		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_dirty_tags" style="display:'+((_$.settings.dirty_tags=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left: 25px;">';
 		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_dirty_tags_autogold" type="checkbox" '+((_$.settings.dirty_tags_autogold=='1')?'checked="checked"':'')+'></td><td><label for="dsp_c_dirty_tags_autogold">Ставить автоматически "Золотой пост"</label></td></tr>';
 		dsp_txt += '<tr><td align="right"><input id="dsp_c_dirty_tags_hidetags" type="checkbox" '+((_$.settings.dirty_tags_hidetags=='1')?'checked="checked"':'')+'></td><td><label for="dsp_c_dirty_tags_hidetags">Прятать список тегов под ссылку</label></td></tr>';
@@ -1987,9 +1987,9 @@ function DSP_make_content_settings(){
 
 		dsp_txt += '<div id="dsp_l_new_window" style="display:'+((_$.settings.d3search=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_new_window" type="checkbox" '+((_$.settings.new_window=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_new_window">Результаты поиска в новом окне</label></td></tr>';
-		dsp_txt += '</table></div>';		
+		dsp_txt += '</table></div>';
 
-		dsp_txt += '<table cellspacing="0" border="0">';		
+		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_links_test" type="checkbox" '+((_$.settings.links_test=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_links_test">SP2.0: Проверка ссылок при написании поста на d3search</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_user_stats" type="checkbox" '+((_$.settings.user_stats=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_user_stats">SP2.0: Статистика в профилях</label></td></tr>';
 		dsp_txt += '</table>';
@@ -2017,7 +2017,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table></div>';
 		dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2.5: Показывать время выполнения</label></td></tr>';
 		dsp_txt += '</table>';
-		
+
 		DSP_make_Setting_Bar('Tooltip & Misc',dsp_txt,'dsp_tooltip_init()');
 
 	}
@@ -2072,10 +2072,10 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1'){
 			}
 
 		}
-		
-		
+
+
 	addBenchmark( time1, 'favicons' );
-		
+
 	}
 }
 
@@ -2124,7 +2124,7 @@ if(_$.settings.posts_average=='1'){
 		if(isNaN(dsp_ids_count)) dsp_ids_count = 0;
 
 		_$.$('dsp_layer_posts_average').innerHTML += ' | &#216;id '+dsp_ids_count+' | &#216;&#177; '+dsp_votes_count;
-		
+
 		if(dsp_temp_length>=0)_$.$('dsp_layer_posts_average').innerHTML += ' | '+dsp_average_votes.length+' комментариев'
 
 		addBenchmark( time1, 'post average' );
@@ -2154,7 +2154,7 @@ if(_$.settings.username_replace=='1'){
 if(_$.settings.youtube_fullscreen=='1'){
 
 	if(_$.location.indexOf('/comments/')==0){
-	
+
 		var time1 = new Date();
 
 		if(_$.$t('object').length>0&&_$.$c('dt')[0].innerHTML.indexOf('value="http://www.youtube.com')>0){
@@ -2174,8 +2174,8 @@ if(_$.settings.youtube_fullscreen=='1'){
 			dsp_video_html = dsp_video_html.split(dsp_video_link).join(dsp_video_link+'&hl=ru_RU&fs=1');
 			_$.$t('object')[0].parentNode.innerHTML = dsp_video_html;
 		}
-		
-		
+
+
 		addBenchmark( time1, 'youtube fullscreen' );
 	}
 }
@@ -2193,7 +2193,7 @@ if(_$.settings.colors_on=='1'){
 		DSP_colorize_comments();
 		dsp_jscolor.init();
 	}
-		
+
 	addBenchmark( time1, 'comments colorizer' );
 }
 
@@ -2223,7 +2223,7 @@ if (( d3sCurDate.getTime() - localStorGetItem('lastD3sFetchTimestamp', 0 )) > 10
 	// add script to the page and fetch new gertrudas
 	_$.injectScriptUrl('http://api.d3search.ru/gertrudas');
 	localStorage.setItem('lastD3sFetchTimestamp', d3sCurDate.getTime());
-}	
+}
 // end of loading data
 
 // made by crea7or
@@ -2235,7 +2235,7 @@ if ( _$.settings.grt_enabled =='1' )
 	var divs = document.querySelector('div.gertruda');
 	if ( divs )
 	{
-		var vGrtShow = true;	
+		var vGrtShow = true;
 		// random or only new
 		if ( _$.settings.grt_random == '1' )
 		{
@@ -2243,9 +2243,9 @@ if ( _$.settings.grt_enabled =='1' )
 			{
 				vGrtShow = false;
 			}
-		}	
+		}
 		if ( vGrtShow )
-		{			
+		{
 			var vImgsArr = jsonParse( localStorGetItem( "gertrudasJson", "[]" ));
 			if ( vImgsArr.length > 0 )
 			{
@@ -2287,7 +2287,7 @@ if ( _$.settings.grt_enabled =='1' )
 		{
 			var vTxtsArr = jsonParse( localStorGetItem("greetingsJson", "[]" ));
 			if ( vTxtsArr.length > 0 )
-			{				
+			{
 				var vTxtsArrIndex = Math.floor( Math.random() * vTxtsArr.length );
 				var vGreetName;
 				var vGreetLink;
@@ -2327,7 +2327,7 @@ if ( divRightCol && divTags)
 	if ( newsFromD3search != null  && divAds)
 	{
 		var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
-	
+
 		//find out whether there are some news items to present
 		var tempDiv = document.createElement('div');
 		tempDiv.innerHTML = newsFromD3search;
@@ -2344,7 +2344,7 @@ if ( divRightCol && divTags)
 		}
 		//update if changed
 		if ( saveHiddenStickers ) localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
-		
+
 		//do we have some items to show?
 		newsArray = tempDiv.querySelectorAll('div.sticker');
 		if( newsArray.length > 0 ){
@@ -2354,7 +2354,7 @@ if ( divRightCol && divTags)
 			var subDivForNews = document.createElement('div');
 			divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
 			var subDivForNews = document.createElement('div');
-			
+
 			for(var i=0;i<newsArray.length;i++){
 				//remove original hide link
 				var hide = newsArray[i].querySelector('div.sticker-hide');
@@ -2365,7 +2365,7 @@ if ( divRightCol && divTags)
 				//remove the sticker from tempDiv
 				tempDiv.removeChild(newsArray[i]);
 			}
-			
+
 			//now append some events
 			var linksArray = subDivForNews.querySelectorAll("a.vote_details_close");
 			for(var i=0;i<linksArray.length;i++){
@@ -2392,23 +2392,91 @@ if ( divRightCol && divTags)
 							localStorage.setItem('dirtySpHiddenStickers', jsonStringify( hiddenStickers ));
 						}
 					}
-					
+
 					//finally, remove sticker
 					parentDiv.parentNode.removeChild(parentDiv);
 					e.preventDefault();
 				});
 			}
-			
+
 			//in tempDiv there are some remainders like <style> tags etc
 			divForNews.appendChild(tempDiv);
 			divForNews.appendChild( subDivForNews );
 			divRightCol.insertBefore( divForNews, divAds );
-			
+
 		}
 	}
 }
 addBenchmark( time1, 'd3s news' );
 // end of SCRIPTS-60
+
+// made by crea7or
+// socialism in user profile
+// start of SCRIPTS-35
+function socialAdd( userName )
+{
+	var parameters = "user=" + userName + "&wtf=101010"  + "&action=add";
+	var request = new XMLHttpRequest()
+	if(! request)
+	{
+		futu_alert( 'Что-то пошло не так...', false, 'red');
+		return false;
+	}
+	request.open("POST", "/socialism/", true);
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.setRequestHeader("Content-length", parameters.length);
+    request.setRequestHeader("Connection", "close");
+	request.onreadystatechange = function()
+	{
+		if (request.readyState == 4)
+		{
+			if (request.status == 200)
+			{
+				// от сервера приходит либо -1 (user не существует), либо 0 (если юзер уже был добавлен)
+				var responce = request.responseText;
+				if (responce != -1 && responce != 0)
+				{
+					futu_alert( 'Ура! Всё получилось!', false, 'red');
+				}
+				else
+				{
+					futu_alert( 'Что-то пошло не так...', false, 'red');
+				}
+				return;
+			}
+		}
+	};
+	try
+	{
+		request.send(parameters);
+	}
+	catch (err)
+	{
+		futu_alert( 'Что-то пошло не так...', false, 'red');
+	}
+	return false;
+}
+
+if ( document.location.href.indexOf("dirty.ru/user/") > -1 )
+{
+	var userBasicInfo = document.querySelector('div.userbasicinfo');
+	var divUser = document.querySelector('div.user_name_inner');
+	var userName = "";
+	if ( divUser )
+	{
+		userNameAnchors = divUser.getElementsByTagName('a');
+		userName = userNameAnchors[0].innerHTML;
+	}
+	if ( userBasicInfo && dsp_self_name.length > 0 && userName.length > 0 )
+	{
+		var newDiv = document.createElement('div');
+		newDiv.setAttribute('style', 'background: url(http://img.dirty.ru/d3/social-add-button.gif) no-repeat 1px 1px; padding-left: 22px; text-decoration: none;');
+		newDiv.innerHTML = "<a href=\"#\" onclick=\"return socialAdd('" + userName + "');\">Следить за пользователем</a>";
+		userBasicInfo.appendChild( newDiv );
+		_$.injectScript( socialAdd );
+	}
+}
+// end of SCRIPTS-35
 
 // made by crea7or
 // start of SCRIPTS-26
@@ -2439,7 +2507,7 @@ if ( _$.settings.online_enabled =='1' )
 				document.body.appendChild(highlightsDiv);
 			}
 		};
-		var now = new Date().getTime();		
+		var now = new Date().getTime();
 		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 		{
 			_$.addEvent(window, 'load', function(){
@@ -2460,23 +2528,24 @@ if ( _$.settings.online_enabled =='1' )
 
 // made by crea7or
 // start of SCRIPTS-58
+// comments fix in inboxes
 if ( document.location.href.indexOf("/my/inbox/") >= 0 )
 {
 	var time1 = new Date();
 	// user page
 	var vS58links = document.querySelectorAll('a.c_icon');
 	if ( vS58links )
-	{	
+	{
 		for( vS58ind = 0; vS58ind < vS58links.length; vS58ind++)
 		{
 			vS58href = vS58links[ vS58ind].getAttribute('href');
 			if ( vS58href.length > 10 )
 			{
 				vS58links[ vS58ind].setAttribute('href', "/my/inbox/" + vS58href.substring(10, vS58href.length ));
-			}			
+			}
 		}
 	}
-	addBenchmark( time1, 'inbox comments fix' );	
+	addBenchmark( time1, 'inbox comments fix' );
 }
 // end of SCRIPTS-58
 
@@ -2487,7 +2556,7 @@ function addEvent(obj,sEvent,sFunc)
 	if(obj.addEventListener) obj.addEventListener(sEvent,sFunc,false);
 	else if(obj.attachEvent) obj.attachEvent('on'+sEvent,sFunc);
 }
-	
+
 function vPreview(e)
 {
 	var vPrvDiv = document.getElementById( 'js-comments_reply_block' );
@@ -2576,7 +2645,7 @@ if ( vPrvDiv )
 		var vTortAddLinksInbox = document.querySelector('div.inbox_header');
 		// start fix for list of users (for banned users in the inbox)
 		if ( vTortAddLinksInbox == null )
-		{	
+		{
 			vTortInbMenu = document.querySelector('div.under_menu');
 			vTortInbPreHeader = document.querySelector('div.inbox_comments');
 			if ( vTortInbMenu && vTortInbPreHeader )
@@ -2585,7 +2654,7 @@ if ( vPrvDiv )
 				vTortAddLinksInbox.setAttribute('class', 'inbox_header');
 				vTortAddLinksInbox.innerHTML = '&nbsp;';
 				vTortInbMenu.insertBefore( vTortAddLinksInbox, vTortInbPreHeader );
-			}			
+			}
 		}
 		// end fix for list of users (for banned users in the inbox)
 		if ( vTortAddLinksInbox)
@@ -2596,20 +2665,20 @@ if ( vPrvDiv )
 			vTortNewa.innerHTML = "<a href=\"#\" class=\"dashed comments_header_new_comment\" onclick=\"var e = document.getElementById('js-inboxers-list');  if(e.style.display == 'block') e.style.display = 'none'; else e.style.display = 'block'; return false;\">список инбоксеров</a>&nbsp;&nbsp;";
 			vTortAddLinksInbox.appendChild( vTortNewa );
 		}
-	
+
 		var vTortHideInboxers = document.querySelector('div.inbox-tools-static');
 		if ( vTortHideInboxers )
 		{
 			vTortHideInboxers.setAttribute('id', 'js-inboxers-list');
 			vTortHideInboxers.style.display = 'none';
-	
+
 			vTortHideInboxers = document.querySelector('div.comments_holder_inner');
 			if ( vTortHideInboxers)
 			{
 				vTortHideInboxers.setAttribute('style', 'padding-right: 0px');
 			}
 		}
-	
+
 		var vTortFixInvitesNotice = document.querySelector('li.b-menu_invites_link');
 		if ( vTortFixInvitesNotice )
 		{
@@ -2619,7 +2688,7 @@ if ( vPrvDiv )
 	}
 // end - part of dirtytort script
 	addBenchmark( time1, 'dirty tort' );
-//
+
 // start of the dirty ranks script
 function setRankToNote( ranksName )
 {
@@ -2664,7 +2733,7 @@ function setNewRank( e )
 
 		ranksName = prompt('Как назовём?', getRankByUsername( ranksUserName ));
 		if( ranksName )
-		{	
+		{
 			var ranksDivUser = document.querySelector('div.user_name_inner');
 			if ( ranksDivUser )
 			{
@@ -2688,7 +2757,7 @@ function getRankIndex( ranksArray, ranksUserName )
 		if ( ranksArray[ranksIndex].name == ranksUserName )
 		{
 			return ranksIndex;
-		}	
+		}
 	}
 	return -1;
 }
@@ -2699,7 +2768,7 @@ function loadRanks()
 	var ranksOldArray;
 	var usersRanksArray = [];
 	if ( ranksOldItem )
-	{	
+	{
 		// remove in 2.6
 		ranksOldArray = ranksOldItem.split("#");
 		for ( var index = 0; index < ranksOldArray.length; index += 2 )
@@ -2714,7 +2783,7 @@ function loadRanks()
 	}
 	else
 	{
-		usersRanksArray = jsonParse( localStorGetItem('dirtyRanks', "[]"));	
+		usersRanksArray = jsonParse( localStorGetItem('dirtyRanks', "[]"));
 	}
 	return usersRanksArray;
 }
@@ -2755,7 +2824,7 @@ function saveRanks( ranksUserName, ranksRank )
 			var rankObject = new Object();
 			rankObject.name = ranksUserName;
 			rankObject.rank = ranksRank;
-			usersRanksArray.push( rankObject );		
+			usersRanksArray.push( rankObject );
 		}
 	}
 	localStorage.setItem('dirtyRanks', jsonStringify( usersRanksArray ));
@@ -2783,7 +2852,7 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 			{
 				ranksNoteRank = ranksUserNote.innerHTML.substring( ranksIndex + 1 , ranksUserNote.innerHTML.length );
 			}
-		}		
+		}
 		ranksLocStorRank = getRankByUsername( ranksUserName );
 		if ( ranksLocStorRank == null && ranksNoteRank != null )
 		{
@@ -2795,7 +2864,7 @@ if ( document.location.href.indexOf("dirty.ru/user/") >= 0 )
 		}
 		else if ( ranksLocStorRank != ranksNoteRank )
 		{
-			setRankToNote( ranksLocStorRank );			
+			setRankToNote( ranksLocStorRank );
 		}
 
 		// made by crea7or
@@ -2824,7 +2893,7 @@ else
 		if ( ranksDivDD )
 		{
 			for ( ranksInd = 0; ranksInd < ranksDivDD.length; ranksInd++ )
-			{	
+			{
 				if ( ranksDivDD[ranksInd].children.length > 2 )
 				{
 					ranksUserName = ranksDivDD[ranksInd].childNodes[3].innerHTML;
@@ -2834,14 +2903,14 @@ else
 						var ranksTxt =  document.createTextNode(" " + usersRanksArray[ ranksNameInd ].rank + " ");
 						ranksDivDD[ranksInd].insertBefore( ranksTxt, ranksDivDD[ranksInd].childNodes[3]);
 					}
-				}		
+				}
 			}
 		}
 		var ranksDivFooter = document.querySelectorAll('div.c_footer');
 		if ( ranksDivFooter )
 		{
 			for ( ranksInd = 0; ranksInd < ranksDivFooter.length; ranksInd++ )
-			{	
+			{
 				if ( ranksDivFooter[ranksInd].children.length > 2 )
 				{
 					ranksUserName = ranksDivFooter[ranksInd].childNodes[3].innerHTML;
@@ -2851,7 +2920,7 @@ else
 						var ranksTxt =  document.createTextNode(" " + usersRanksArray[ ranksNameInd ].rank + " ");
 						ranksDivFooter[ranksInd].insertBefore( ranksTxt, ranksDivFooter[ranksInd].childNodes[3]);
 					}
-				}		
+				}
 			}
 		}
 	}
@@ -2924,7 +2993,7 @@ function yarr(){
 	tagpref = "<a href=\"http://www.youtube.com/watch?v="+youtube_id+"&t='+seconds+'\">";
 	taginf = "<img src=\"http://img.youtube.com/vi/"+youtube_id+"/"+val+".jpg\" width=\"120\">";
 	tagpost = "</a>";
-		
+
 	if(val == 4){
 		_$.injectScript("insert_tag('"+tagpref+"','"+tagpost+"');");
 	}else{
@@ -2981,12 +3050,12 @@ function addYoutube(){
 		alert("В URL нет id ролика");
 		return false;
 	}
-	
+
 	//global
 	youtube_id = re.id;
 	var id = re.id
 	time = re.time;
-	
+
 	var inject = "";
 	inject += 'var player; var interval; var seconds = 0; ';
   if(_$.browser().name=='ie'){
@@ -3000,7 +3069,7 @@ function addYoutube(){
 	_$.injectScript(inject);
 
 	_$.$('youtube_embed').innerHTML = '<object width="311" height="200" id="yobject"><param name="movie" value="http://www.youtube.com/v/'+id+'?enablejsapi=1&playerapiid=player"></param><param name="allowFullScreen" value="true"></param><param name="allowScriptAccess" value="always"></param><embed id="yembed" src="http://www.youtube.com/v/'+id+'?enablejsapi=1&playerapiid=player" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="311" height="200"></embed></object>';
-	
+
 	temp = "<table><tr><td width=\"150\">";
 	temp += '<label><input type="radio" name="thumb" value="0" style="position:relative; top: -40px;" checked="checked"/><img src="http://img.youtube.com/vi/'+id+'/0.jpg" width="120" height="90"/></label>';
 	temp += "</td><td width=\"150\">";
@@ -3012,8 +3081,8 @@ function addYoutube(){
 	temp +=  '</td></tr><tr><td colspan="2"><label><input type="radio" name="thumb" value="4" />Без картинки</label></td></tr></table>';
 
 	_$.$('youtube_thumbs').innerHTML = temp;
-	
-	_$.toggle_div('youtube_preview',1);		
+
+	_$.toggle_div('youtube_preview',1);
 	return false;
 }
 //global holder
@@ -3029,7 +3098,7 @@ if(youtube_textarea!=null){
 	//link.onclick = "insert_youtube(); return false;";
 	youtube_textarea.appendChild(link);
 	_$.addEvent(_$.$('youtube_link'),'click',addYoutube);
-	
+
 	var preview_div = document.createElement("div");
 	var width = 720;
 	var height = 295;
@@ -3053,7 +3122,7 @@ if(youtube_textarea!=null){
 //click on ещё
 if(location.pathname.indexOf('/user/')==0 && _$.$c('usermorebutton').length > 0){
 	_$.$c('usermorebutton')[0].style.display = "none";
-	_$.injectScript("$('js-user_page_more').toggleClass('hidden');");	
+	_$.injectScript("$('js-user_page_more').toggleClass('hidden');");
 }
 
 //fix inbox link in profile + works for inbox recreation
@@ -3103,15 +3172,15 @@ if(_$.settings.arrows_on=='1'){
 	function documentChanged(event) {
 		if (supressEvents) {
 			return;
-		}		
+		}
 		if(event.target.className != null && event.target.className.indexOf("comment")>-1){
 			apply_links(event.target);
 		}
 	}
-	
+
 	apply_links(document);
 	_$.addEvent(document,"DOMNodeInserted", documentChanged);
-	
+
 	addBenchmark( time1, 'triple arrows in comments' );
 }
 
@@ -3153,7 +3222,7 @@ function s57inboxBanAll()
 	{
 		var vS57oncli;
 		var vS57inboxId;
-		var vS57userId;		
+		var vS57userId;
 		for ( var vS57i = 0; vS57i < vS57inbox.length; vS57i++)
 		{
 			vS57oncli = vS57inbox[ vS57i ].getAttribute('onclick').split(",");
@@ -3161,8 +3230,8 @@ function s57inboxBanAll()
 			{
 				vS57inboxId = vS57oncli[1].replace(/\'/g,"");
 				vS57userId = vS57oncli[2].replace(/\'/g,"");
-				inboxHandler.users('ban', vS57inboxId, vS57userId, vS57inbox[ vS57i ] );					
-			}		
+				inboxHandler.users('ban', vS57inboxId, vS57userId, vS57inbox[ vS57i ] );
+			}
 		}
 	}
 }
@@ -3181,7 +3250,7 @@ if(_$.settings.user_stats=='1')
 			if ( userStatsInfo )
 			{
 				// made by crea7or
-				// start SCRIPTS-61		
+				// start SCRIPTS-61
 				// isn't needed for non users
 				if ( ownUsername.length > 0 )
 				{
@@ -3191,7 +3260,7 @@ if(_$.settings.user_stats=='1')
 					userStatsInfo.parentNode.childNodes[1].appendChild( vS61div );
 				}
 				// end SCRIPTS-61
-				var username = elem[0].innerHTML.split('</a></h2>')[0].split('">')[1];			
+				var username = elem[0].innerHTML.split('</a></h2>')[0].split('">')[1];
 				var div = document.createElement('div');
 				div.setAttribute("id", "d3search-userinfo");
 				div.setAttribute("class", "userstat");
@@ -3305,7 +3374,7 @@ if( _$.settings.ban_encoding == '1')
 			txt_str = comments[i].innerHTML;
 			for(var index in table) txt_str = txt_str.split(index).join(table[index]);
 			comments[i].innerHTML = txt_str;
-		}		
+		}
 	}
 }
 
@@ -3315,28 +3384,28 @@ if(_$.settings.links_test=='1'){
 		function addIframe(e){
 			var form = _$.$(e.target.getAttribute('onclick').split("$('")[1].split("')")[0]);
 			var comment = _$.$t('textarea',form)[0].value;
-			
+
 			link = "";
 			var arr = _$.$t('input',form);
 			for(var i=0;i<arr.length;i++){
 				if(arr[i].name == "link")link = arr[i].value;
 			}
 			if(link == "http://")	link="";
-			
+
 			var div = document.createElement('div');
 			div.setAttribute("id", "d3search-postinfo");
 			div.setAttribute("class", "userstat");
 			if(_$.$('d3search-postinfo')!=null)_$.$('d3search-postinfo').parentNode.removeChild(_$.$('d3search-postinfo'));
 			form.insertBefore(div, _$.$c("submit_btn", form)[0]);
-			
+
 			_$.injectScriptUrl("http://d3search.ru/wazzup?post="+encodeURIComponent(comment)+"&link="+encodeURIComponent(link)+"&container=d3search-postinfo");
 		}
-		
+
 			for(var i=0;i<4;i++){
 				var prevButton = _$.$c('preview_btn')[i].getElementsByTagName('img')[0];
 				_$.addEvent(prevButton, 'click', addIframe);
 			}
-			
+
 			//hide preview if broken
 			window.setInterval(function(){
 				var pre = _$.$c('write_form_preview')[0];
@@ -3356,7 +3425,7 @@ if(_$.settings.d3search=='1'){
 					<div class="header_search_input"><input type="text" defaultValue="поиск на d3search.ru" id="js-header_search_input_new" value="поиск на d3search.ru" name="query" class="text_input"></div>\
 					<input class="header_search_submit" type="image" src="/i/header_search_icon.gif">\
 				</form>';
-			_$.injectScript("utils.focusText('js-header_search_input_new', 'поиск на d3search.ru');");	
+			_$.injectScript("utils.focusText('js-header_search_input_new', 'поиск на d3search.ru');");
 	}
 }
 
@@ -3412,10 +3481,10 @@ if(_$.settings.karma_log=='1'){
 		if(_$.$c("vote_button_minus_right")[0])_$.addEvent(_$.$c("vote_button_minus_right")[0], "click", carmaUpdate);
 
 		var updatesPending = 0;
-	
+
 	}
 }
-	
+
 //Youtube preview
 if(_$.settings.youtube_preview=='1'){
 		var time1 = new Date();
@@ -3467,7 +3536,7 @@ if(_$.settings.youtube_preview=='1'){
 		function documentChanged(event) {
 			if (supressEvents) {
 				return;
-			}			
+			}
 			if(event.target.className != null && event.target.className.indexOf("comment")>-1){
 				addPreview(event.target);
 			}
@@ -3487,7 +3556,7 @@ if(_$.settings.youtube_preview=='1'){
 				post.style.paddingLeft = 0;
 				post.innerHTML = '<table style="display: block;"><tr><td width="150"><a href="http://www.youtube.com/watch?v='+url+'"><img src="'+image_link+'"/></a></td><td>'+post.innerHTML+'</td></tr></table>';
 				//step 2: add previews
-				//addPreview(post);	
+				//addPreview(post);
 			}
 		}
 
@@ -3499,7 +3568,7 @@ if(_$.settings.youtube_preview=='1'){
 
 		//handle new ajax-generated content
 		_$.addEvent(document,"DOMNodeInserted", documentChanged);
-	
+
 		addBenchmark( time1, 'youtube preview' );
 	}
 
@@ -3592,7 +3661,7 @@ function postBoxInsLink( elementId)
 }
 
 // Format buttons for posts and comments (at music.dirty.ru)
-if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.location.href.indexOf("write") > 0 ) 
+if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.location.href.indexOf("write") > 0 )
 {
 	// add script to the page
 	var postBoxScr=document.createElement("script");
@@ -3631,7 +3700,7 @@ if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.lo
 			}
 		}
 	}
-} 	
+}
 // end of formatting buttons
 
 //dirty tags
@@ -3647,13 +3716,13 @@ if(_$.settings.dirty_tags=='1')
 			tagsHandler.submitTag();
 		}
 		else
-		{ 	
+		{
 			tagAnchor.innerHTML = 'x' ;
 			tagsHandler.deleteTag( $('js-tags_private'), tagText );
 		}
 		return false;
 	}
-		
+
 	function manageOwnTags()
 	{
 		var ourTagsDivCheck = document.getElementById('js-vtags-textarea');
@@ -3700,7 +3769,7 @@ if(_$.settings.dirty_tags=='1')
 		var tagsArray = new Array();
 		if ( tagsArrayFromLocalStore == null )
 		{
-			tagsArray = jsonParse( localStorGetItem( 'dirtyTags', '["Тупая фигня", "Это же реклама" , "Это неправда", "Об этом уже писали", "Ctrl-C Ctrl-V", "Свежак", "КДПВ", "Скандалы интриги расследования", "Все правильно сделал", "Фишкинет", "Господи какая красота111", "британские учёные", "Чиновники", "Милиция","Оборотни","Беспредел","Наука","Космос","Искусство","История","Авто","Авиация","Армия","РПЦ","Маразм","Кругом враги","Животные","fapfapfap","боже он умер","Вавилонская библиотека","вирусняк","Гурусик нямка","Думаем о России","пост проклят","еще один все понял","и снова о Главном","Зачем моё измождённое тело","слава богу родился","лепрозорий на выезде","нафталин","ожируй клюв","он же упоротый","политический кружок при сельском клубе","слава России","Творчество душевнобольных","понаехали","Я маленькая лошадка","Я открыл для себя википедию"]'));			
+			tagsArray = jsonParse( localStorGetItem( 'dirtyTags', '["Тупая фигня", "Это же реклама" , "Это неправда", "Об этом уже писали", "Ctrl-C Ctrl-V", "Свежак", "КДПВ", "Скандалы интриги расследования", "Все правильно сделал", "Фишкинет", "Господи какая красота111", "британские учёные", "Чиновники", "Милиция","Оборотни","Беспредел","Наука","Космос","Искусство","История","Авто","Авиация","Армия","РПЦ","Маразм","Кругом враги","Животные","fapfapfap","боже он умер","Вавилонская библиотека","вирусняк","Гурусик нямка","Думаем о России","пост проклят","еще один все понял","и снова о Главном","Зачем моё измождённое тело","слава богу родился","лепрозорий на выезде","нафталин","ожируй клюв","он же упоротый","политический кружок при сельском клубе","слава России","Творчество душевнобольных","понаехали","Я маленькая лошадка","Я открыл для себя википедию"]'));
 		}
 		else
 		{
@@ -3709,12 +3778,12 @@ if(_$.settings.dirty_tags=='1')
 			tagsArray = tagsArrayFromLocalStore.split("\n");
 			localStorage.removeItem('vTagsStore');
 			localStorage.removeItem('vTagsFloatCloud');
-			localStorage.removeItem('vTagsAutoSetGold');			
+			localStorage.removeItem('vTagsAutoSetGold');
 			localStorage.removeItem('vTagsJovanPremium');
 			localStorage.setItem('dirtyTags', jsonStringify( tagsArray ));
 		}
 		return tagsArray;
-	}	
+	}
 	function manageTagsList()
 	{
 		var ourTagsDivCheck = document.getElementById('js-tags-script-predefines');
@@ -3729,15 +3798,15 @@ if(_$.settings.dirty_tags=='1')
 			if ( dlinks.length > 0 )
 			{
 				myUserName = dlinks[0].text;
-			}	
+			}
 			// get list of public tags
 			var publicTagsDiv = document.getElementById('js-tags_public');
 			var ourTagsList = tagsArray.toString();
 			var publicTags = publicTagsDiv.querySelectorAll('a.tag');
 			for ( var i = 0; i < publicTags.length; i++ )
-			{				
+			{
 				if ( publicTags[i].title.indexOf( myUserName ) < 0 )
-				{	
+				{
 					if ( ourTagsList.search( new RegExp( publicTags[i].text,'i') ) < 0 )
 					{
 						tagsArray.unshift( publicTags[i].text );
@@ -3778,7 +3847,7 @@ if(_$.settings.dirty_tags=='1')
 						if (( tagsArray.length - 1 ) != i )
 						{
 							ourTagsDiv.innerHTML += " . ";
-						}			
+						}
 					}
 					ourTagsDiv.innerHTML += "<br><br>";
 				}
@@ -3798,7 +3867,7 @@ if(_$.settings.dirty_tags=='1')
 		var postGoldTag = document.getElementsByClassName('stars');
 		var postSilverTag = document.getElementsByClassName('wasstars');
 		if ( postSilverTag.length > 0 || postGoldTag.length > 0 )
-		{  
+		{
 			if ( document.querySelector('li#js-personal_tag_72') == null )
 			{
 				// add  gold
@@ -3815,12 +3884,12 @@ if(_$.settings.dirty_tags=='1')
 	}
 	function documentChangedTags( event )
 	{
-		if (supressEvents) 
+		if (supressEvents)
 		{
 			return;
 		}
 		if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
-		{	
+		{
 			var tagComment = event.target.querySelector('div.c_body');
 			if ( tagComment != null )
 			{
@@ -3834,8 +3903,8 @@ if(_$.settings.dirty_tags=='1')
 		var loggedUser = document.querySelector('div.header_logout');
 		var addFormDiv = document.querySelector('div.b-tag_add_form');
 		if ( loggedUser && addFormDiv )
-		{  
-			// add script to the page			
+		{
+			// add script to the page
 			_$.injectScript( manageTag + "\n" + manageTagsList + "\n" + manageOwnTags + "\n"+ loadTagsList + "\n" + saveTagsList );
 			if ( _$.settings.dirty_tags_hidetags == 1 )
 			{
@@ -3891,7 +3960,7 @@ if(_$.settings.dirty_tags=='1')
 				document.onLoad = checkGoldTag();
 			}
 			_$.addEvent(document,"DOMNodeInserted", documentChangedTags);
-			
+
 			addBenchmark( time1, 'dirtytags replace' );
 		}
 	}
@@ -3910,7 +3979,7 @@ if(_$.settings.dirty_tags=='1')
 				list_reverse : [],
 				isPostPage : false,
 				isInboxPage : false,
-				
+
 				toggle_div : function (name,param){
 						if(param) document.getElementById(name).style.display = (param==1)?'block':'none';
 						else document.getElementById(name).style.display = (document.getElementById(name).style.display=='none')?'block':'none';
@@ -4097,7 +4166,7 @@ if(_$.settings.dirty_tags=='1')
 										_dct.toggle_div(_dct.comments[i].parent_id, 22);
 								}
 						}
-						
+
 						//fire event for comment scroller
 						_$.fireEvent(eventDispatcher, 'mouseup');
 				},
@@ -4225,12 +4294,12 @@ if(_$.settings.dirty_tags=='1')
 								_dct.isInboxPage = _dct.isInboxCommentsPage();
 						}
 						//_dct.set_get();
-						if (_dct.isPostPage || _dct.isInboxPage) 
+						if (_dct.isPostPage || _dct.isInboxPage)
 						{
 								_dct.initCommentsArray();
 								_dct.addTreeLinearLink();
 						}
-						if (_dct.isPostPage ) 
+						if (_dct.isPostPage )
 						{
 								_dct.replaceSelect();
 								_dct.replaceParentLinks();
@@ -4241,7 +4310,7 @@ if(_$.settings.dirty_tags=='1')
 		_dct.workPlease();
 		addBenchmark( time1, 'comments threshhold' );
 	}
-	
+
 	//post threshold
 	if(_$.settings.posts_threshold=='1')
 	{
@@ -4249,25 +4318,25 @@ if(_$.settings.dirty_tags=='1')
 		var _dpt = {
 				posts : [],
 				curr_select_numb : 0,
-				
+
 				toggle_div  : function(name,param){
 						if(param) document.getElementById(name).style.display = (param==1)?'block':'none';
 						else document.getElementById(name).style.display = (document.getElementById(name).style.display=='none')?'block':'none';
 				},
-				
+
 				getElementsByClassAndTag : function(name, tag, obj) {
 						var obj = obj||document;
-						var result = new Array();					
+						var result = new Array();
 						var allElements = obj.getElementsByTagName(tag);
 						for(var i=0; i<allElements.length; i++){
 								if(allElements[i].className && allElements[i].className==name){
 										result[result.length] = allElements[i];
 								}
-						}						
+						}
 						return result;
 				},
-				
-				
+
+
 				getIntFromPrompt : function(msg, curr_val, allow_0) {
 					 var result = prompt(msg, curr_val)
 					 if (result==null) {
@@ -4278,7 +4347,7 @@ if(_$.settings.dirty_tags=='1')
 								alert('Имело смысл что-нибудь ввести!');
 								return false;
 					 }
-				
+
 					 result = parseInt(result);
 					 if (isNaN(result)) {
 								alert('Невнятное число!');
@@ -4286,17 +4355,17 @@ if(_$.settings.dirty_tags=='1')
 					 }
 					 return result;
 				},
-				
+
 				onChangeThreshold : function() {
 						var new_sel = document.getElementById('thres_select_'+_dpt.curr_select_numb);
-				
+
 						if (new_sel.value == 'set_step') {
 								var result = _dpt.getIntFromPrompt("Новое значение шага:", _$.settings.thresh_step)
 								if (result) {
 										_$.settings.thresh_step = result;
 								}
 								new_sel.options[0].selected = true;
-								_dpt.replaceSelect();		
+								_dpt.replaceSelect();
 						} else if (new_sel.value == 'set_comm_tresh') {
 								var result = _dpt.getIntFromPrompt("Минимальное количество комментариев\n(ноль для выключения этой опции):", _$.settings.thresh_comm_count)
 								if (result!==false) {
@@ -4306,7 +4375,7 @@ if(_$.settings.dirty_tags=='1')
 										_$.settings.thresh_comm_count = result;
 								}
 								new_sel.options[0].selected = true;
-								_dpt.replaceSelect();		
+								_dpt.replaceSelect();
 						} else if (new_sel.value == 'set_opt_count') {
 								var result = _dpt.getIntFromPrompt("Количество опций:", _$.settings.opt_count)
 								if (result!==false) {
@@ -4394,7 +4463,7 @@ if(_$.settings.dirty_tags=='1')
 							}
 						}
 				},
-				
+
 				replaceSelect : function () {
 						var thresh_suffix = " голосов";
 						var all_posts_title = "Все посты";
@@ -4409,16 +4478,16 @@ if(_$.settings.dirty_tags=='1')
 								thresh_suffix += operand_name+_$.settings.thresh_comm_count+" комментариев";
 								all_posts_title += ", у которых >"+_$.settings.thresh_comm_count+" комментариев";
 						}
-						
+
 						if (_dpt.curr_select_numb==0) {
 								curr_select_node_id = 'posts-threshold'
 						} else {
 								curr_select_node_id = 'div_select_'+_dpt.curr_select_numb;
 						}
-						_dpt.curr_select_numb++;	
+						_dpt.curr_select_numb++;
 						var curr_sel_node = document.getElementById(curr_select_node_id);
 						var new_sel = document.createElement("SELECT");
-				
+
 						if (navigator.appName == "Opera") {
 								new_sel.className = "hidden";
 								new_sel.onchange = function(){_dpt.onChangeThreshold()};
@@ -4434,13 +4503,13 @@ if(_$.settings.dirty_tags=='1')
 						for (var i=1; i<=_$.settings.opt_count; i++) {
 								new_sel.options[i].text = "Больше "+(_$.settings.thresh_step*i)+thresh_suffix;
 								new_sel.options[i].value = _$.settings.thresh_step*i;
-				
+
 								if (_$.settings.threshold == _$.settings.thresh_step*i) {
 										new_sel.options[i].selected = true;
 										selected = true;
 								}
 						}
-						
+
 						if (!selected) {
 								new_sel.options[0].selected = true;
 						}
@@ -4450,7 +4519,7 @@ if(_$.settings.dirty_tags=='1')
 						new_sel.options[_$.settings.opt_count+2].value = "set_step";
 						new_sel.options[_$.settings.opt_count+3].text = "Число опций...";
 						new_sel.options[_$.settings.opt_count+3].value = "set_opt_count";
-						
+
 						var new_div = document.createElement("FORM");
 						new_div.name='div_select_'+_dpt.curr_select_numb;
 						new_div.id='div_select_'+_dpt.curr_select_numb;
@@ -4461,7 +4530,7 @@ if(_$.settings.dirty_tags=='1')
 								new futuSelect('thres_select_'+_dpt.curr_select_numb);
 						}
 				},
-				
+
 				refreshPosts : function() {
 						for (var i=0; i<_dpt.posts.length; i++) {
 								// pre-filtering by type
@@ -4496,7 +4565,7 @@ if(_$.settings.dirty_tags=='1')
 						//fire event for comment scroller
 						_$.fireEvent(eventDispatcher, 'mouseup');
 				},
-				
+
 				checkMainPage : function () {
 						if (document.getElementById("posts-threshold")) {
 								return true;
@@ -4504,7 +4573,7 @@ if(_$.settings.dirty_tags=='1')
 								return false;
 						}
 				},
-				
+
 				initPostsArray : function () {
 						var status_div = null;
 						var post_links = null;
@@ -4531,7 +4600,7 @@ if(_$.settings.dirty_tags=='1')
 								_dpt.posts[i].is_video = false;
 								_dpt.posts[i].show_audio = false;
 								_dpt.posts[i].is_post = true;
-								
+
 								// is video
 								var videos = _dpt.getElementsByClassAndTag('post_video', 'div', _dpt.posts[i]);
 								if (videos && videos.length>0) {
@@ -4539,7 +4608,7 @@ if(_$.settings.dirty_tags=='1')
 										_dpt.posts[i].is_post = false;
 										continue;
 								}
-								
+
 								// is image
 								var images = _dpt.posts[i].getElementsByTagName('img');
 								if (images && images.length>0) {
@@ -4547,7 +4616,7 @@ if(_$.settings.dirty_tags=='1')
 										_dpt.posts[i].is_post = false;
 										continue;
 								}
-						
+
 								// is audio - not yet implemented
 								var audios = _dpt.posts[i].getElementsByTagName('embed');
 								if (audios && audios.length>0) {
@@ -4561,7 +4630,7 @@ if(_$.settings.dirty_tags=='1')
 				workPlease : function () {
 						if (_dpt.checkMainPage()) {
 								//_dpt.set_get();
-								
+
 								if(_$.settings.own_threshold=='1'){
 									//part from Stasik0
 									//set default selector to show needed posts
@@ -4584,7 +4653,7 @@ if(_$.settings.dirty_tags=='1')
 										}
 									}
 								}
-								
+
 								_dpt.replaceSelect();
 								_dpt.initPostsArray();
 								_dpt.addSortChks();
@@ -4596,12 +4665,12 @@ if(_$.settings.dirty_tags=='1')
 		_dpt.workPlease();
 		addBenchmark( time1, 'posts threshhold' );
 	}
-	
+
 	//SHARED PART of read-button and new comment scroller
 	if(_$.settings.read_button=='1' || _$.settings.comment_scorller=='1')
 	{
 		var time1 = new Date();
-		
+
 		function removeFromArray(arr, elem){
 			var re = Array();
 			for(var i=0;i<arr.length;i++){
@@ -4609,7 +4678,7 @@ if(_$.settings.dirty_tags=='1')
 			}
 			return re;
 		}
-		
+
 		//shared between read comments-button and scroller
 		var comments = _$.$c('comment', document, 'div');
 		var posts = _$.$c('post', document, 'div');
@@ -4651,14 +4720,14 @@ if(_$.settings.dirty_tags=='1')
 					link.setAttribute("posId", id);
 					link.innerHTML = "<strong>[x]</strong>";
 					_$.insertAfter(newLink, link);
-				
+
 					_$.addEvent(link, 'click', function(e){
 						if(this.getAttribute("href")==""){e.preventDefault();return false;}
 						pos = this.getAttribute('pos');
 						id = this.getAttribute('posId');
 						//
 						if(_$.settings.comment_scroller=='1'){
-							newPosts = removeFromArray(newPosts, allPostsArr[pos]);	
+							newPosts = removeFromArray(newPosts, allPostsArr[pos]);
 							if(this.getAttribute('own')=="true")mine = removeFromArray(mine, allPostsArr[pos]);
 							onScroll();
 						}
@@ -4674,7 +4743,7 @@ if(_$.settings.dirty_tags=='1')
 							//hide link
 							this.parentNode.innerHTML = this.parentNode.innerHTML.replace(/ \/ <a(.+)<\/a><a(.+)<\/a>/,"");
 						},this,this);
-						
+
 						e.preventDefault();
 						return false;
 					});
@@ -4690,7 +4759,7 @@ if(_$.settings.dirty_tags=='1')
 			function documentChanged(event) {
 				if (supressEvents) {
 					return;
-				}				
+				}
 				if(event.target.className != null && event.target.className.indexOf("comment")>-1){
 					recountComments();
 				}
@@ -4796,11 +4865,11 @@ if(_$.settings.dirty_tags=='1')
 					onScroll();
 					return;
 				}
-				
+
 				_$.scroll_position(this.start + Math.round(this.distance/4.5), x);
 				window.setTimeout(scrollDeamon, 30);
 			}
-				
+
 
 			function disableSelection(target){
 				if (typeof target.onselectstart!="undefined") //IE route
@@ -4836,7 +4905,7 @@ if(_$.settings.dirty_tags=='1')
 					elem.innerText = text;
 				}
 			}
-		
+
 			function onScroll(){
 				if(autoScroll)return '';
 				var current = _$.current_scroll();
@@ -4865,7 +4934,7 @@ if(_$.settings.dirty_tags=='1')
 					minePos = i%mine.length;
 					setInnerText(_$.$('mine'), mine.length-i);
 				}
-			}	
+			}
 			function recountComments(){
 				backup_allPostsArr = _$.$c('comment', document, 'div');
 				backup_newPosts = _$.$c('new', document, 'div');
@@ -4886,7 +4955,7 @@ if(_$.settings.dirty_tags=='1')
 			//do a backup
 			var backup_allPostsArr = allPostsArr;
 			var backup_newPosts = newPosts;
-			var backup_mine = mine;		
+			var backup_mine = mine;
 			var newPos = 0;
 			var newCount = newPosts.length;
 			var autoScroll = false;
@@ -4894,14 +4963,14 @@ if(_$.settings.dirty_tags=='1')
 			var tempId = 0;
 			var gScrollDestination = 0;
 			var lastDistance = "none";
-			
+
 			//controls
 			//consider visible stuff
 			recountVisible();
-			
+
 			//handle new ajax-generated content
 			_$.addEvent(document,"DOMNodeInserted", documentChanged);
-			
+
 			var newdiv = document.createElement('div');
 			newdiv.style.position = "fixed";
 			newdiv.style.top = "50%";
@@ -4915,33 +4984,33 @@ if(_$.settings.dirty_tags=='1')
 			temp += '<div id="down" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;">'+newPosts.length+'</div>';
 			newdiv.innerHTML = temp;
 			document.body.insertBefore(newdiv, document.body.firstChild);
-			
+
 			disableSelection(_$.$('mine'));
 			disableSelection(_$.$('up'));
 			disableSelection(_$.$('down'));
-				
+
 			_$.addEvent(_$.$('home'), 'click', function(){if(_$.settings.smooth_scroll=='1'){smoothScroll(0);}else{window.scrollTo(_$.current_scroll().x,0);}});
 			_$.addEvent(_$.$('up'), 'click', prev);
 			_$.addEvent(_$.$('down'), 'click', next);
 			_$.addEvent(_$.$('mine'), 'click', my);
 			_$.addEvent(window, 'scroll', onScroll);
 			onScroll();
-				
+
 			//stuff to make BearOff happy
 			_$.addEvent(eventDispatcher, 'mouseup', recountVisible);
 			_$.addEvent(eventDispatcher, 'mousedown', recountComments);
-			
+
 			//add onload event to show new comments correctly
 			if(document.location.href.indexOf('#new')>-1 && newPosts.length>0){
 				//scrollToMiddle(newPosts[0]);
 				//document.location.href = document.location.href;
 				_$.scroll_position(_$.element_position(newPosts[0]).y, _$.current_scroll().x);
 			}
-			
+
 		}
 		addBenchmark( time1, 'comments scroll & read button' );
 	}
-	
+
 	//quotes
 	if(_$.settings.quotes=='1' && location.pathname.indexOf('/comments')>-1)
 	{
@@ -4965,7 +5034,7 @@ if(_$.settings.dirty_tags=='1')
 		}
 		addBenchmark( time1, 'quotes' );
 	}
-	
+
 	// made by crea7or
 	// start of instant search in comments
 	if(_$.settings.instant_search == '1' )
@@ -4994,7 +5063,7 @@ if(_$.settings.dirty_tags=='1')
 					if ( commentUserNameA )
 					{
 						currentCommentBodyText += " " + commentUserNameA.innerHTML;
-					}	
+					}
 					currentCommentBody.setAttribute('id', currentCommentId + '-sh-body');
 					currentCommentHeader.setAttribute('id', currentCommentId + '-sh-header');
 					if ( currentCommentBodyText.search( new RegExp(( inputBox.value +'').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1"), 'ig' )) > -1 )
@@ -5020,7 +5089,7 @@ if(_$.settings.dirty_tags=='1')
 						}
 						commentShowHide( currentCommentId, false );
 					}
-					
+
 				}
 			}
 			return false;
@@ -5042,7 +5111,7 @@ if(_$.settings.dirty_tags=='1')
 						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', false );")
 						commentAlink.innerHTML = 'убрать это';
 					}
-					
+
 				}
 				else
 				{
@@ -5057,8 +5126,8 @@ if(_$.settings.dirty_tags=='1')
 				}
 			}
 			return false;
-		}	
-	
+		}
+
 		var time1 = new Date();
 		var headerDiv = null;
 		var insertOurHeaderAfter = null;
@@ -5069,7 +5138,7 @@ if(_$.settings.dirty_tags=='1')
 			if ( commentsHolder )
 			{
 				postPage = true;
-				headerDiv = document.querySelector('div.comments_header');	
+				headerDiv = document.querySelector('div.comments_header');
 				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold');
 				if ( divToModifyStyle )
 				{
@@ -5140,7 +5209,7 @@ if(_$.settings.dirty_tags=='1')
 		addBenchmark( time1, 'instant search' );
 	}
 	// end of instant search in comments
-	
+
 	// made by crea7or
 	// start - new comments saver for posts which were not loaded completely.
 	if(_$.settings.newcomments_saver == '1' )
@@ -5158,7 +5227,7 @@ if(_$.settings.dirty_tags=='1')
 					commentsArray.splice( arrayIndex, 1 );
 					break;
 				}
-			}	
+			}
 		}
 		function setNewCommentsValue( postId, newMessages)
 		{
@@ -5182,7 +5251,7 @@ if(_$.settings.dirty_tags=='1')
 			divPostHolder = document.getElementById('content_left');
 		}
 		if ( divPostHolder )
-		{	
+		{
 			var postHeaderLinks;
 			var postNewMesssages;
 			var postId;
@@ -5209,7 +5278,7 @@ if(_$.settings.dirty_tags=='1')
 				{
 					postId = postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/);
 					postNewMesssages = postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/);
-					
+
 					var postLinks = postsArray[postIndex].parentNode.getElementsByTagName('a');
 					for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
 					{
@@ -5224,7 +5293,7 @@ if(_$.settings.dirty_tags=='1')
 		}
 		function documentChangedCmnt( event )
 		{
-			if (supressEvents) 
+			if (supressEvents)
 			{
 				return;
 			}
@@ -5252,9 +5321,9 @@ if(_$.settings.dirty_tags=='1')
 				oldCommentsArray.shift();
 			};
 			localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
-			// part 2	
+			// part 2
 		}
-		
+
 		if ( document.location.href.indexOf("/comments/") > -1 || document.location.href.indexOf("/inbox/") > -1  )
 		{
 			var postId = Number( document.location.href.match(/[\d]+/));
@@ -5287,7 +5356,7 @@ if(_$.settings.dirty_tags=='1')
 				// part 2
 				var currentCommentId = 0;
 				var oldestMessageIdInPost = 0;
-				var commentsIdArray = new Array();			
+				var commentsIdArray = new Array();
 				var commentsHolder = document.getElementById('js-commentsHolder');
 				if ( commentsHolder )
 				{
@@ -5302,7 +5371,7 @@ if(_$.settings.dirty_tags=='1')
 							}
 							if ( oldMessageId > 0 )
 							{
-								if ( currentCommentId > oldMessageId )				
+								if ( currentCommentId > oldMessageId )
 								{
 									commentsHolder.childNodes[indexOfComment].setAttribute('class', commentsHolder.childNodes[indexOfComment].getAttribute('class') + " new");
 								}
@@ -5351,7 +5420,7 @@ if(_$.settings.dirty_tags=='1')
 				}
 			}
 		}
-		addBenchmark( time1, 'new comment saver' );	
+		addBenchmark( time1, 'new comment saver' );
 	}
 	// end - new comments saver for posts which were not loaded completely.
 }
@@ -5365,5 +5434,5 @@ DSP_init();
 supressEvents = false;
 
 }
-	
+
 addBenchmark( dateToCheck1, 'grand total' );
