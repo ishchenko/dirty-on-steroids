@@ -5241,6 +5241,7 @@ if(_$.settings.dirty_tags=='1')
 			localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
 			return true;
 		}
+		
 		var time1 = new Date();
 		var divPostHolder = document.getElementById('js-posts_holder');
 		if ( divPostHolder == null )
@@ -5273,8 +5274,8 @@ if(_$.settings.dirty_tags=='1')
 				}
 				if ( indexOfHref > 0 )
 				{
-					postId = postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/);
-					postNewMesssages = postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/);
+					postId = Number( postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/));
+					postNewMesssages = Number( postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/));
 
 					var postLinks = postsArray[postIndex].parentNode.getElementsByTagName('a');
 					for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
@@ -5296,8 +5297,8 @@ if(_$.settings.dirty_tags=='1')
 			}
 			if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
 			{
-				var newCommentId = event.target.getAttribute('id');
-				if ( newCommentId != null )
+				var newCommentId = Number( event.target.getAttribute('id'));
+				if ( newCommentId > 0 )
 				{
 					var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
 					var postId = Number( document.location.href.match(/[\d]+/));
@@ -5361,7 +5362,7 @@ if(_$.settings.dirty_tags=='1')
 					{
 						if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
 						{
-							currentCommentId = commentsHolder.childNodes[indexOfComment].getAttribute('id');
+							currentCommentId = Number( commentsHolder.childNodes[indexOfComment].getAttribute('id'));
 							if ( currentCommentId > oldestMessageIdInPost )
 							{
 								oldestMessageIdInPost = currentCommentId;
@@ -5375,7 +5376,7 @@ if(_$.settings.dirty_tags=='1')
 							}
 							if ( newCommentsInPost > 0 )
 							{
-								commentsIdArray.push( Number( currentCommentId ));
+								commentsIdArray.push( currentCommentId );
 							}
 						}
 					}
@@ -5387,7 +5388,7 @@ if(_$.settings.dirty_tags=='1')
 						for ( var commentIndex = 0; commentIndex < newCommentsInPost; commentIndex++)
 						{
 							commentToBeNew = document.getElementById( commentsIdArray[ commentIndex ]);
-							if( oldMessageId > commentsIdArray[ commentIndex ] )
+							if( oldMessageId >= commentsIdArray[ commentIndex ] )
 							{
 								commentToBeNew = null;
 							}
@@ -5413,7 +5414,7 @@ if(_$.settings.dirty_tags=='1')
 				// post were not loaded
 				if ( postId > 0 )
 				{
-					_$.injectScript(" futu_alert( 'Страница, похоже, не догрузилась :( Подожди 3-5 секунд и попробуй обновить её, а я восстановлю новые комментарии.', false, 'red');");
+					_$.injectScript(" futu_alert( 'К сожалению, роботы империи обрубили часть страницы. Чтобы их не дразнить, переходите между страницами Dirty не чаще, чем 1 раз в 5 секунд.', false, 'red');");
 				}
 			}
 		}
