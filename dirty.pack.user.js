@@ -419,6 +419,7 @@ if( typeof _$.settings.grt_enabled == "undefined") { _$.settings.grt_enabled = 1
 if( typeof _$.settings.grt_random == "undefined") { _$.settings.grt_random = 1; settingsSave = true; }
 if( typeof _$.settings.online_enabled == "undefined") { _$.settings.online_enabled = 1; settingsSave = true; }
 if( typeof _$.settings.instant_search == "undefined") { _$.settings.instant_search = 1; settingsSave = true; }
+if( typeof _$.settings.instant_search_hide == "undefined") { _$.settings.instant_search_hide = 0; settingsSave = true; }
 if( typeof _$.settings.newcomments_saver == "undefined") { _$.settings.newcomments_saver = 1; settingsSave = true; }
 if( typeof _$.settings.inbox_text == "undefined") { _$.settings.inbox_text = 1; settingsSave = true; }
 if( typeof _$.settings.arrows_on == "undefined") { _$.settings.arrows_on = 1; settingsSave = true; }
@@ -1790,16 +1791,24 @@ function dsp_posts_init(){
 	add_checkbox_event('dsp_c_posts_threshold_use_or','posts_threshold_use_or');
 
 	add_checkbox_event('dsp_c_read_button','read_button');
+	
 	_$.addEvent(_$.$('dsp_c_dirty_tags'),'click',
 	function(){
 		DSP_show_hide_menu('dsp_l_dirty_tags');
 		if(_$.$('dsp_c_dirty_tags').checked===true) _$.set_save('dirty_tags',1);
 		else _$.set_save('dirty_tags',0);
 	});
+	
 	add_checkbox_event('dsp_c_dirty_tags_hidetags','dirty_tags_hidetags');
 	add_checkbox_event('dsp_c_dirty_tags_autogold','dirty_tags_autogold');
 
-	add_checkbox_event('dsp_c_instant_search','instant_search');
+	_$.addEvent(_$.$('dsp_c_instant_search'),'click',
+	function(){
+		DSP_show_hide_menu('dsp_l_instant_search');
+		if(_$.$('dsp_c_instant_search').checked===true) _$.set_save('instant_search',1);
+		else _$.set_save('instant_search',0);
+	});
+	add_checkbox_event('dsp_c_instant_search_hide','instant_search_hide');
 
 	_$.addEvent(_$.$('dsp_c_posts_average'),'click',
 	function(){
@@ -1922,7 +1931,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table></div>';
 		}
 		dsp_txt += '<table cellspacing="0" border="0">';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_youtube_preview" type="checkbox" '+((_$.settings.youtube_preview=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_preview">SP2.0: Предпросмотр youtube видео</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_youtube_preview" type="checkbox" '+((_$.settings.youtube_preview=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_preview">SP2.0: Предпросмотр youtube видео в постах и комментариях</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_online_enabled" type="checkbox" '+((_$.settings.online_enabled=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_online_enabled">SP2.5: Показывать кто на сайте</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_username_replace" type="checkbox" '+((_$.settings.username_replace=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_username_replace">Заменять %username% на ваше имя</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_favicon_on" type="checkbox" '+((_$.settings.favicon_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_favicon_on">Показывать иконку сайта ссылки:</label></td></tr>';
@@ -1954,9 +1963,14 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table></div>';
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_instant_search" type="checkbox" '+((_$.settings.instant_search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_instant_search">SP2.5: Поиск по комментариям в постах</label></td></tr>';
+		dsp_txt += '</table>';		
+		dsp_txt += '<div id="dsp_l_instant_search" style="display:'+((_$.settings.instant_search=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left: 25px;">';
+		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_instant_search_hide" type="checkbox" '+((_$.settings.instant_search_hide=='1')?'checked="checked"':'')+'></td><td><label for="dsp_c_instant_search_hide">Прятать отфильтрованные комментарии совсем</label></td></tr>';
+		dsp_txt += '</table></div>';
+		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_read_button" type="checkbox" '+((_$.settings.read_button=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_read_button">SP2.0: Кнопка прочтения новых комментариев</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_average" type="checkbox" '+((_$.settings.posts_average=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_average">Показывать средние ID и оценку</label></td></tr>';
-		dsp_txt += '<tr><td valign="top"><input id="dsp_c_youtube_fullscreen" type="checkbox" '+((_$.settings.youtube_fullscreen=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_fullscreen">Добавить кнопку "Fullscreen" в постах с видеороликами youtube</label></td></tr>';
+		dsp_txt += '<tr><td valign="top"><input id="dsp_c_youtube_fullscreen" type="checkbox" '+((_$.settings.youtube_fullscreen=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_fullscreen">Кнопка "Fullscreen" в постах с видеороликами youtube</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_post_content_filter_layout" type="checkbox" '+((_$.settings.post_content_filter_layout=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_post_content_filter_layout">Фильтр контента без чекбоксов</label></td></tr>';
 		dsp_txt += '</table>';
 
@@ -5100,20 +5114,33 @@ if(_$.settings.dirty_tags=='1')
 			{
 				if ( showIfTrue )
 				{
-					commentDiv.removeAttribute('style');
-					commentDivHeader.removeAttribute('style');
+					if ( instant_search_hide )
+					{
+						commentDivHeader.parentNode.removeAttribute('style');
+					}
+					else
+					{
+						commentDiv.removeAttribute('style');
+						commentDivHeader.removeAttribute('style');
+					}
 					var commentAlink = document.getElementById( commentId + '-sh');
 					if ( commentAlink )
 					{
 						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', false );")
 						commentAlink.innerHTML = 'убрать это';
 					}
-
 				}
 				else
 				{
-					commentDiv.setAttribute('style', 'display: none');
-					commentDivHeader.setAttribute('style', 'opacity: 0.5');
+					if ( instant_search_hide )
+					{
+						commentDivHeader.parentNode.setAttribute('style', 'display: none');
+					}
+					else
+					{
+						commentDiv.setAttribute('style', 'display: none');
+						commentDivHeader.setAttribute('style', 'opacity: 0.5');					
+					}
 					var commentAlink = document.getElementById( commentId + '-sh');
 					if ( commentAlink )
 					{
@@ -5198,10 +5225,7 @@ if(_$.settings.dirty_tags=='1')
 			formElement.appendChild( inputElementA );
 			inputElementDiv.appendChild( formElement );
 			headerDiv.insertBefore( inputElementDiv, insertOurHeaderAfter );
-			var inject = document.createElement("script");
-			inject.setAttribute("type", "text/javascript");
-			inject.textContent = commentsFilter + "\n" + commentShowHide;
-			document.body.appendChild( inject );
+			_$.injectScript( commentsFilter + "\n" + "var instant_search_hide = " + _$.settings.instant_search_hide + ";" + "\n" + commentShowHide );
 		}
 		addBenchmark( time1, 'instant search' );
 	}
