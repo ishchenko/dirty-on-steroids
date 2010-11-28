@@ -5243,6 +5243,7 @@ if(_$.settings.dirty_tags=='1')
 		}
 		
 		var time1 = new Date();
+		var commentsMarked = 0;
 		var divPostHolder = document.getElementById('js-posts_holder');
 		if ( divPostHolder == null )
 		{
@@ -5356,6 +5357,7 @@ if(_$.settings.dirty_tags=='1')
 				var oldestMessageIdInPost = 0;
 				var commentsIdArray = new Array();
 				var commentsHolder = document.getElementById('js-commentsHolder');
+				var commentClass;
 				if ( commentsHolder )
 				{
 					for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
@@ -5371,7 +5373,12 @@ if(_$.settings.dirty_tags=='1')
 							{
 								if ( currentCommentId > oldMessageId )
 								{
-									commentsHolder.childNodes[indexOfComment].setAttribute('class', commentsHolder.childNodes[indexOfComment].getAttribute('class') + " new");
+									commentClass = commentsHolder.childNodes[indexOfComment].getAttribute('class');	
+									if ( commentClass.indexOf('new') == -1 )
+									{
+										commentsHolder.childNodes[indexOfComment].setAttribute('class', commentClass + " new");
+										commentsMarked++;
+									}
 								}
 							}
 							if ( newCommentsInPost > 0 )
@@ -5394,7 +5401,12 @@ if(_$.settings.dirty_tags=='1')
 							}
 							if ( commentToBeNew )
 							{
-								commentToBeNew.setAttribute('class', commentToBeNew.getAttribute('class') + " new");
+								commentClass = commentToBeNew.getAttribute('class').indexOf('new');
+								if ( commentClass.indexOf('new') == -1 )
+								{
+									commentToBeNew.setAttribute('class', commentClass + " new");
+									commentsMarked++;
+								}
 							}
 						}
 					}
@@ -5406,6 +5418,10 @@ if(_$.settings.dirty_tags=='1')
 					// part 2
 					addLastCommentId( oldCommentsArray, postId, oldestMessageIdInPost );
 					// part 2
+					if( _$.settings.comment_scroller == '1' && commentsMarked > 0 )
+					{
+						recountComments();
+					}
 				}
 				_$.addEvent(document,"DOMNodeInserted", documentChangedCmnt);
 			}
@@ -5418,7 +5434,14 @@ if(_$.settings.dirty_tags=='1')
 				}
 			}
 		}
-		addBenchmark( time1, 'new comment saver' );
+		if ( commentsMarked > 0 )
+		{
+			addBenchmark( time1, 'new comment saver, ' + commentsMarked + ' comments saved');
+		}
+		else
+		{
+			addBenchmark( time1, 'new comment saver' );
+		}
 	}
 	// end - new comments saver for posts which were not loaded completely.
 }
