@@ -10,10 +10,6 @@
 // @run-at			document-end
 // ==/UserScript==
 
-
-// @run-at		document-end
-// ==/UserScript==
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Funtions and Params
