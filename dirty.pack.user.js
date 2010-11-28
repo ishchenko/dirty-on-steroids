@@ -4754,6 +4754,11 @@ if(_$.settings.dirty_tags=='1')
 								var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
 								removePostIdItem( oldCommentsArray, postId );
 								localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
+								var postLinks = this.parentNode.parentNode.getElementsByTagName('a');
+								for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
+								{
+									postLinks[ postLinksIndex ].removeAttribute('onclick');
+								}
 							}
 							if(_$.$('inboxunread') != null && _$.$('inboxunread').checked){
 								this.parentNode.parentNode.parentNode.setAttribute("style","display:none;");
