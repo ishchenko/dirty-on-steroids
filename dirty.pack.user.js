@@ -10,6 +10,10 @@
 // @run-at			document-end
 // ==/UserScript==
 
+
+// @run-at		document-end
+// ==/UserScript==
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Funtions and Params
@@ -4742,12 +4746,19 @@ if(_$.settings.dirty_tags=='1')
 							if(this.getAttribute('own')=="true")mine = removeFromArray(mine, allPostsArr[pos]);
 							onScroll();
 						}
-						//
+						//												
 						this.setAttribute("href", "");
 						this.innerHTML = '<img src="http://pit.dirty.ru/dirty/1/2010/10/25/28281-184741-b29db745feb47786dade8a8e50c4f461.gif" style="border:0px;"/>';
 						//parent.innerHTML = parent.innerHTML.replace(/ \/ <a(.+)<\/a>/,"");
 						_$.ajaxLoad(id,function(){
 							//hide post
+							if ( _$.settings.newcomments_saver )
+							{
+								var postId = Number( id.match(/[\d]+/));
+								var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
+								removePostIdItem( oldCommentsArray, postId );
+								localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
+							}
 							if(_$.$('inboxunread') != null && _$.$('inboxunread').checked){
 								this.parentNode.parentNode.parentNode.setAttribute("style","display:none;");
 							}
@@ -5454,7 +5465,7 @@ if(_$.settings.dirty_tags=='1')
 				// post were not loaded
 				if ( postId > 0 )
 				{
-					_$.injectScript(" futu_alert( 'К сожалению, роботы империи обрубили часть страницы. Чтобы их не дразнить, переходите между страницами Dirty не чаще, чем 1 раз в 5 секунд.', false, 'red');");
+					_$.injectScript(" futu_alert( 'К сожалению, имперская ЭВМ перегрелась и часть страницы не догрузилась. Дайте ей отдохнуть секунд 5 и нажмите обновить страницу. А новые комментарии мы попробуем восстановить.', false, 'red');");
 				}
 			}
 		}
