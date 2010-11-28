@@ -5401,7 +5401,7 @@ if(_$.settings.dirty_tags=='1')
 							}
 							if ( commentToBeNew )
 							{
-								commentClass = commentToBeNew.getAttribute('class').indexOf('new');
+								commentClass = commentToBeNew.getAttribute('class');
 								if ( commentClass.indexOf('new') == -1 )
 								{
 									commentToBeNew.setAttribute('class', commentClass + " new");
