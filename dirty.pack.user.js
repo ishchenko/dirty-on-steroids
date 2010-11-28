@@ -1987,7 +1987,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '</table>';
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_arrows_on" type="checkbox" '+((_$.settings.arrows_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_arrows_on">SP2.0: Увеличить стрелочки под комментарием</label></td></tr>';
-		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_newcomments_saver" type="checkbox" '+((_$.settings.newcomments_saver=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_newcomments_saver">SP2.5: Восстанавливать новые комментарии после недогруза</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_newcomments_saver" type="checkbox" '+((_$.settings.newcomments_saver=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_newcomments_saver">SP2.5: Восстанавливать новые комментарии после недогрузки</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_colors_on" type="checkbox" '+((_$.settings.colors_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_colors_on">Изменять цвет комментариев пользователей</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_colors" style="display:'+((_$.settings.colors_on=='1')?'block':'none')+'"><table cellspacing="0" border="0">';
@@ -2235,7 +2235,7 @@ var d3sCurDate = new Date();
 if (( d3sCurDate.getTime() - localStorGetItem('lastD3sFetchTimestamp', 0 )) > 1000 * 60 * 60 * 12 )
 {
 	// add script to the page and fetch new gertrudas
-	_$.injectScriptUrl('http://api.d3search.ru/gertrudas');
+	_$.injectScriptUrl('http://api.d3search.ru/integration');
 	localStorage.setItem('lastD3sFetchTimestamp', d3sCurDate.getTime());
 }
 // end of loading data
