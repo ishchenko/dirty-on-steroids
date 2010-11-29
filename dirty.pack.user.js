@@ -48,6 +48,10 @@ var _$ = {
 		{
 			_$.settings = jsonParse( localStorGetItem('dirtySp', "{}"));
 			_$.settings_colors = jsonParse( localStorGetItem('dirtyCommentsColors', "[]"));
+			if ( _$.settings_colors == "[]" )
+			{
+				_$.settings_colors = new Array();
+			}			
 		}
 	},
 	browser: function(){
@@ -5466,7 +5470,7 @@ if(_$.settings.dirty_tags=='1')
 				// post were not loaded
 				if ( postId > 0 )
 				{
-					_$.injectScript(" futu_alert( 'К сожалению, имперская ЭВМ перегрелась и часть страницы не догрузилась. Дайте ей отдохнуть секунд 5 и нажмите обновить страницу. А новые комментарии мы попробуем восстановить.', false, 'red');");
+					_$.injectScript(" futu_alert( 'ЭВМ империи перегрелась и часть страницы не догрузилась. Дайте ей отдохнуть секунд 5 и обновите страницу. А новые комментарии мы попробуем восстановить.', false, 'red');");
 				}
 			}
 		}
