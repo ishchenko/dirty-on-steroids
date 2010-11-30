@@ -19,7 +19,7 @@ var dateToCheck1 = new Date();
 
 var _$ = {
 	settings: {},
-	settings_colors: [],
+	settings_colors: new Array(),
 	location: window.location.href.split(window.location.host)[1],
 
 	// made by crea7or
@@ -48,10 +48,10 @@ var _$ = {
 		{
 			_$.settings = jsonParse( localStorGetItem('dirtySp', "{}"));
 			_$.settings_colors = jsonParse( localStorGetItem('dirtyCommentsColors', "[]"));
-			if ( _$.settings_colors == "[]" )
+			if ( _$.settings_colors == "[]" || _$.settings_colors.constructor === undefined || _$.settings_colors.constructor != Array )
 			{
 				_$.settings_colors = new Array();
-			}			
+			}
 		}
 	},
 	browser: function(){
@@ -425,6 +425,7 @@ if( typeof _$.settings.online_enabled == "undefined") { _$.settings.online_enabl
 if( typeof _$.settings.instant_search == "undefined") { _$.settings.instant_search = 1; settingsSave = true; }
 if( typeof _$.settings.instant_search_hide == "undefined") { _$.settings.instant_search_hide = 0; settingsSave = true; }
 if( typeof _$.settings.newcomments_saver == "undefined") { _$.settings.newcomments_saver = 1; settingsSave = true; }
+if( typeof _$.settings.newcomments_saver_max == "undefined") { _$.settings.newcomments_saver_max = 0; settingsSave = true; }
 if( typeof _$.settings.inbox_text == "undefined") { _$.settings.inbox_text = 1; settingsSave = true; }
 if( typeof _$.settings.arrows_on == "undefined") { _$.settings.arrows_on = 1; settingsSave = true; }
 if( typeof _$.settings.inbox_recreate == "undefined") { _$.settings.inbox_recreate = 1; settingsSave = true; }
@@ -1290,7 +1291,6 @@ var dsp_jscolor = {
 			if(DSP_this.pickerOnfocus) DSP_this.showPicker();
 		});
 
-
 		if(valueElement){
 			var updateField = function(){
 				DSP_this.fromString(valueElement.value, leaveValue);
@@ -1307,9 +1307,7 @@ var dsp_jscolor = {
 		dsp_jscolor.requireImage('http://pit.dirty.ru/dirty/1/2010/04/29/11119-151231-97b37c241b1e778ddd94c2659e7e0614.png');
 		dsp_jscolor.requireImage('http://pit.dirty.ru/dirty/1/2010/04/29/11119-151007-7d331cbee9f80935305d342227e0f6f5.gif');
 		dsp_jscolor.requireImage('http://pit.dirty.ru/dirty/1/2010/04/29/11119-150848-9b8117b5cfa416505278cda8115a920d.gif');
-
 	}
-
 }
 
 
@@ -1891,13 +1889,11 @@ function dsp_tooltip_init(){
 		},false);
 */
 
-
 	_$.addEvent(_$.$('dsp_c_tooltip_show_self'),'click',
 		function(){
 			if(_$.$('dsp_c_tooltip_show_self').checked===true) _$.set_save('tooltip_show_self',1);
 			else _$.set_save('tooltip_show_self',0);
 		});
-
 
 	// start events for gertrudes options
 	_$.addEvent(_$.$('dsp_c_grt_enabled'),'click',
@@ -1919,7 +1915,6 @@ function dsp_tooltip_init(){
 	// end events for gertrudes options
 
 }
-
 
 function DSP_make_content_settings(){
 
@@ -1947,17 +1942,14 @@ function DSP_make_content_settings(){
 
 		DSP_make_Setting_Bar('Общие',dsp_txt,'dsp_general_init()');
 
-
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold" type="checkbox" '+((_$.settings.posts_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold">SP2.0: Фильтр по рейтингу постов</label></td></tr>';
 		dsp_txt += '</table>';
-
 		dsp_txt += '<div id="dsp_l_threshold" style="display:'+((_$.settings.posts_threshold=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_own_threshold" type="checkbox" '+((_$.settings.own_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_own_threshold">Корректировать родной фильтр (см. FAQ)</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold_use_or" type="checkbox" '+((_$.settings.posts_threshold_use_or=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold_use_or">Использовать ИЛИ</label></td></tr>';
 		dsp_txt += '</table></div>';
-
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dirty_tags" type="checkbox" '+((_$.settings.dirty_tags=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dirty_tags">SP2.0: Dirty Tags</label></td></tr>';
 		dsp_txt += '</table>';
@@ -1980,7 +1972,6 @@ function DSP_make_content_settings(){
 
 		DSP_make_Setting_Bar('Посты',dsp_txt,'dsp_posts_init()');
 
-
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_quotes" type="checkbox" '+((_$.settings.quotes=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_quotes">SP2.0: Цитатник</label></td></tr>';
@@ -2002,11 +1993,9 @@ function DSP_make_content_settings(){
 		var dsp_txt = '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_d3search" type="checkbox" '+((_$.settings.d3search=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_d3search">SP2.0: Замена поиска на <a href="http://d3search.ru" target="_blank">d3search.ru</a></label></td></tr>';
 		dsp_txt += '</table>';
-
 		dsp_txt += '<div id="dsp_l_new_window" style="display:'+((_$.settings.d3search=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_new_window" type="checkbox" '+((_$.settings.new_window=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_new_window">Результаты поиска в новом окне</label></td></tr>';
 		dsp_txt += '</table></div>';
-
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_links_test" type="checkbox" '+((_$.settings.links_test=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_links_test">SP2.0: Проверка ссылок при написании поста на d3search</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_user_stats" type="checkbox" '+((_$.settings.user_stats=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_user_stats">SP2.0: Статистика в профилях</label></td></tr>';
@@ -2053,62 +2042,285 @@ function DSP_init()
 		addBenchmark( time1, 'dsp init' );
 	}
 
-// Favicons inits
-
-if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1'){
-
-	if(_$.location.indexOf('/user/')<0){
-
+// made by crea7or
+// start - new comments saver for posts which were not loaded completely.
+if(_$.settings.newcomments_saver == '1' )
+{
+	function sortArrayNumbers(a,b)
+	{
+		return ( b - a );
+	}
+	function removePostIdItem( commentsArray, postId )
+	{
+		for ( var arrayIndex = 0; arrayIndex < commentsArray.length; arrayIndex++)
+		{
+			if ( commentsArray[ arrayIndex ].pid == postId )
+			{
+				commentsArray.splice( arrayIndex, 1 );
+				break;
+			}
+		}
+	}
+	function setNewCommentsValue( postId, newMessages)
+	{
+		var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
+		removePostIdItem( newCommentsArray, postId );
+		var newEntry = new Object();
+		newEntry.pid = postId;
+		newEntry.mid = newMessages;
+		newCommentsArray.push( newEntry );
+		while ( newCommentsArray.length > 30 )
+		{
+			newCommentsArray.shift();
+		};
+		localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
+		return true;
+	}
+	
 	var time1 = new Date();
+	var commentsMarked = 0;
+	var divPostHolder = document.getElementById('js-posts_holder');
+	if ( divPostHolder == null )
+	{
+		divPostHolder = document.getElementById('content_left');
+	}
+	if ( divPostHolder )
+	{
+		var postHeaderLinks;
+		var postNewMesssages;
+		var postId;
+		var postsArray = divPostHolder.querySelectorAll('div.dd');
+		for ( var postIndex = 0; postIndex < postsArray.length; postIndex++ )
+		{
+			postHeaderLinks = postsArray[postIndex].getElementsByTagName('a');
+			var indexOfHref = 0;
+			if ( document.location.href.indexOf("/banned/") >= 0 )
+			{
+				if ( postHeaderLinks.length > 2 )
+				{
+					indexOfHref = 2;
+				}
+			}
+			else
+			{
+				if ( postHeaderLinks.length > 3 )
+				{
+					indexOfHref = 3;
+				}
+			}
+			if ( indexOfHref > 0 )
+			{
+				postId = Number( postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/));
+				postNewMesssages = Number( postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/));
 
+				var postLinks = postsArray[postIndex].parentNode.getElementsByTagName('a');
+				for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
+				{
+					if ( postLinks[ postLinksIndex ].getAttribute('href').indexOf( postId ) > -1 )
+					{
+						postLinks[ postLinksIndex ].setAttribute('onclick', 'return setNewCommentsValue(' + postId +',' + postNewMesssages + ');');
+					}
+				}
+			}
+		}
+		_$.injectScript( setNewCommentsValue + "\n" + removePostIdItem );
+	}
+	function documentChangedCmnt( event )
+	{
+		if (supressEvents)
+		{
+			return;
+		}
+		if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
+		{
+			var newCommentId = Number( event.target.getAttribute('id'));
+			if ( newCommentId > 0 )
+			{
+				var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
+				var postId = Number( document.location.href.match(/[\d]+/));
+				addLastCommentId( oldCommentsArray, postId, newCommentId );
+			}
+		}
+	}
+	function addLastCommentId( oldCommentsArray, postId, newId )
+	{
+		// part 2
+		removePostIdItem( oldCommentsArray, postId );
+		var newEntry = new Object();
+		newEntry.pid = postId;
+		newEntry.mid = newId;
+		oldCommentsArray.push( newEntry );
+		while ( oldCommentsArray.length > 100 )
+		{
+			oldCommentsArray.shift();
+		};
+		localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
+		// part 2
+	}
+
+	if ( document.location.href.indexOf("/comments/") > -1 || document.location.href.indexOf("/inbox/") > -1  )
+	{
+		var postId = Number( document.location.href.match(/[\d]+/));
+		if ( document.getElementById('js-footer') != null )
+		{
+			// part 1
+			var newCommentsInPost = 0;
+			var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
+			for ( var arrayIndex = 0; arrayIndex < newCommentsArray.length; arrayIndex++)
+			{
+				if ( newCommentsArray[ arrayIndex ].pid == postId )
+				{
+					newCommentsInPost = newCommentsArray[ arrayIndex ].mid;
+					break;
+				}
+			}
+			// part 1
+			// part 2
+			var oldMessageId = 0;
+			var oldestMessageIdInPost = 0;
+			var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
+			for ( var arrayIndex = 0; arrayIndex < oldCommentsArray.length; arrayIndex++)
+			{
+				if ( oldCommentsArray[ arrayIndex ].pid == postId )
+				{
+					oldMessageId = oldCommentsArray[ arrayIndex ].mid;
+					break;
+				}
+			}
+			// part 2
+			var currentCommentId = 0;
+			var oldestMessageIdInPost = 0;
+			var commentsIdArray = new Array();
+			var commentsHolder = document.getElementById('js-commentsHolder');
+			var commentClass;
+			if ( commentsHolder )
+			{
+				for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
+				{
+					if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
+					{
+						currentCommentId = Number( commentsHolder.childNodes[indexOfComment].getAttribute('id'));
+						if ( currentCommentId > oldestMessageIdInPost )
+						{
+							oldestMessageIdInPost = currentCommentId;
+						}
+						if ( oldMessageId > 0 )
+						{
+							if ( currentCommentId > oldMessageId )
+							{
+								commentClass = commentsHolder.childNodes[indexOfComment].getAttribute('class');	
+								if ( commentClass.indexOf('new') == -1 )
+								{
+									commentsHolder.childNodes[indexOfComment].setAttribute('class', commentClass + " new");
+									commentsMarked++;
+								}
+							}
+						}
+						if ( newCommentsInPost > 0 )
+						{
+							commentsIdArray.push( currentCommentId );
+						}
+					}
+				}
+				// part 1
+				if ( newCommentsInPost > 0 )
+				{
+					commentsIdArray.sort( sortArrayNumbers);
+					var commentToBeNew;
+					for ( var commentIndex = 0; commentIndex < newCommentsInPost; commentIndex++)
+					{
+						commentToBeNew = document.getElementById( commentsIdArray[ commentIndex ]);
+						if( oldMessageId >= commentsIdArray[ commentIndex ] )
+						{
+							commentToBeNew = null;
+						}
+						if ( commentToBeNew )
+						{
+							commentClass = commentToBeNew.getAttribute('class');
+							if ( commentClass.indexOf('new') == -1 )
+							{
+								commentToBeNew.setAttribute('class', commentClass + " new");
+								commentsMarked++;
+							}
+						}
+					}
+				}
+				// part 1
+				// part 1
+				removePostIdItem( newCommentsArray, postId );
+				localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
+				// part 1
+				// part 2
+				addLastCommentId( oldCommentsArray, postId, oldestMessageIdInPost );
+				// part 2
+				//if( _$.settings.comment_scroller == '1' && commentsMarked > 0 )
+				//{
+				//	recountComments();
+				//}
+			}
+			_$.addEvent(document,"DOMNodeInserted", documentChangedCmnt);
+		}
+		else
+		{
+			// post were not loaded
+			if ( postId > 0 )
+			{
+				_$.injectScript(" futu_alert( 'ЭВМ империи перегрелась и часть страницы не догрузилась. Дайте ей отдохнуть секунд 5 и обновите страницу. А новые комментарии мы попробуем восстановить.', false, 'red');");
+			}
+		}
+	}
+	if ( commentsMarked > 0 )
+	{
+		addBenchmark( time1, 'new comment saver, ' + commentsMarked + ' comments saved');
+	}
+	else
+	{
+		addBenchmark( time1, 'new comment saver' );
+	}
+}
+// end - new comments saver for posts which were not loaded completely.
+
+// start favicons
+if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
+{
+	if(_$.location.indexOf('/user/')<0)
+	{
+		var time1 = new Date();
 		var dsp_elements = _$.$t('a',_$.$('content'));
-
-		if(_$.settings.favicon_style=='1'){
-
-			for(var i=0;i<dsp_elements.length;i++){
-
-				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0){
-
+		if(_$.settings.favicon_style=='1')
+		{
+			for(var i=0;i<dsp_elements.length;i++)
+			{
+				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0)
+				{
 					_$.addEvent(dsp_elements[i],'mouseover',function(e){DSP_show_favicon(e.target,1);});
 					_$.addEvent(dsp_elements[i],'mouseout',function(e){DSP_show_favicon(e.target,0);});
 				}
 			}
-
 		}
-		else{
-
-			for(var i=0;i<dsp_elements.length;i++){
-
-				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0){
-
+		else
+		{
+			for(var i=0;i<dsp_elements.length;i++)
+			{
+				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0)
+				{
 					var favicon = 'http://favicon.yandex.net/favicon/'+dsp_elements[i].toString().split('/')[2];
-
 					dsp_elements[i].style.paddingLeft = '19px';
 					dsp_elements[i].style.backgroundImage = 'url('+favicon+')';//,url(http://pit.dirty.ru/dirty/1/2010/10/31/28281-154853-236c6922bc86581a4d9fbf18719fb16b.png)';
 					dsp_elements[i].style.backgroundRepeat = 'no-repeat';//, no-repeat';
 				}
 			}
-
 		}
-
-
-	addBenchmark( time1, 'favicons' );
-
+		addBenchmark( time1, 'favicons' );
 	}
 }
+// end favicons
 
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * *
-
-		Average IDs and Votes
-
-
-* * * * * * * * * * * * * * * * * * * * * * * * * */
-
-if(_$.settings.posts_average=='1'){
-
-	if(_$.location.indexOf('/comments/')==0){
-
+// start Average IDs and Votes
+if(_$.settings.posts_average=='1')
+{
+	if(_$.location.indexOf('/comments/')==0)
+	{
 		var time1 = new Date();
 
 		var dsp_av_res = document.createElement('span');
@@ -2147,7 +2359,7 @@ if(_$.settings.posts_average=='1'){
 
 		addBenchmark( time1, 'post average' );
 	}
-}
+}// end Average IDs and Votes
 
 
 // Username replace
@@ -3679,7 +3891,7 @@ function postBoxInsLink( elementId)
 }
 
 // Format buttons for posts and comments (at music.dirty.ru)
-if( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.location.href.indexOf("write") > 0 )
+if(( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.location.href.indexOf("write") > 0 ) && ( document.location.href.indexOf("/inbox/") == -1 ))
 {
 	// add script to the page
 	var postBoxScr=document.createElement("script");
@@ -5247,244 +5459,6 @@ if(_$.settings.dirty_tags=='1')
 		addBenchmark( time1, 'instant search' );
 	}
 	// end of instant search in comments
-
-	// made by crea7or
-	// start - new comments saver for posts which were not loaded completely.
-	if(_$.settings.newcomments_saver == '1' )
-	{
-		function sortArrayNumbers(a,b)
-		{
-			return ( b - a );
-		}
-		function removePostIdItem( commentsArray, postId )
-		{
-			for ( var arrayIndex = 0; arrayIndex < commentsArray.length; arrayIndex++)
-			{
-				if ( commentsArray[ arrayIndex ].pid == postId )
-				{
-					commentsArray.splice( arrayIndex, 1 );
-					break;
-				}
-			}
-		}
-		function setNewCommentsValue( postId, newMessages)
-		{
-			var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
-			removePostIdItem( newCommentsArray, postId );
-			var newEntry = new Object();
-			newEntry.pid = postId;
-			newEntry.mid = newMessages;
-			newCommentsArray.push( newEntry );
-			while ( newCommentsArray.length > 30 )
-			{
-				newCommentsArray.shift();
-			};
-			localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
-			return true;
-		}
-		
-		var time1 = new Date();
-		var commentsMarked = 0;
-		var divPostHolder = document.getElementById('js-posts_holder');
-		if ( divPostHolder == null )
-		{
-			divPostHolder = document.getElementById('content_left');
-		}
-		if ( divPostHolder )
-		{
-			var postHeaderLinks;
-			var postNewMesssages;
-			var postId;
-			var postsArray = divPostHolder.querySelectorAll('div.dd');
-			for ( var postIndex = 0; postIndex < postsArray.length; postIndex++ )
-			{
-				postHeaderLinks = postsArray[postIndex].getElementsByTagName('a');
-				var indexOfHref = 0;
-				if ( document.location.href.indexOf("/banned/") >= 0 )
-				{
-					if ( postHeaderLinks.length > 2 )
-					{
-						indexOfHref = 2;
-					}
-				}
-				else
-				{
-					if ( postHeaderLinks.length > 3 )
-					{
-						indexOfHref = 3;
-					}
-				}
-				if ( indexOfHref > 0 )
-				{
-					postId = Number( postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/));
-					postNewMesssages = Number( postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/));
-
-					var postLinks = postsArray[postIndex].parentNode.getElementsByTagName('a');
-					for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
-					{
-						if ( postLinks[ postLinksIndex ].getAttribute('href').indexOf( postId ) > -1 )
-						{
-							postLinks[ postLinksIndex ].setAttribute('onclick', 'return setNewCommentsValue(' + postId +',' + postNewMesssages + ');');
-						}
-					}
-				}
-			}
-			_$.injectScript( setNewCommentsValue + "\n" + removePostIdItem );
-		}
-		function documentChangedCmnt( event )
-		{
-			if (supressEvents)
-			{
-				return;
-			}
-			if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
-			{
-				var newCommentId = Number( event.target.getAttribute('id'));
-				if ( newCommentId > 0 )
-				{
-					var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
-					var postId = Number( document.location.href.match(/[\d]+/));
-					addLastCommentId( oldCommentsArray, postId, newCommentId );
-				}
-			}
-		}
-		function addLastCommentId( oldCommentsArray, postId, newId )
-		{
-			// part 2
-			removePostIdItem( oldCommentsArray, postId );
-			var newEntry = new Object();
-			newEntry.pid = postId;
-			newEntry.mid = newId;
-			oldCommentsArray.push( newEntry );
-			while ( oldCommentsArray.length > 100 )
-			{
-				oldCommentsArray.shift();
-			};
-			localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
-			// part 2
-		}
-
-		if ( document.location.href.indexOf("/comments/") > -1 || document.location.href.indexOf("/inbox/") > -1  )
-		{
-			var postId = Number( document.location.href.match(/[\d]+/));
-			if ( document.getElementById('js-footer') != null )
-			{
-				// part 1
-				var newCommentsInPost = 0;
-				var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
-				for ( var arrayIndex = 0; arrayIndex < newCommentsArray.length; arrayIndex++)
-				{
-					if ( newCommentsArray[ arrayIndex ].pid == postId )
-					{
-						newCommentsInPost = newCommentsArray[ arrayIndex ].mid;
-						break;
-					}
-				}
-				// part 1
-				// part 2
-				var oldMessageId = 0;
-				var oldestMessageIdInPost = 0;
-				var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
-				for ( var arrayIndex = 0; arrayIndex < oldCommentsArray.length; arrayIndex++)
-				{
-					if ( oldCommentsArray[ arrayIndex ].pid == postId )
-					{
-						oldMessageId = oldCommentsArray[ arrayIndex ].mid;
-						break;
-					}
-				}
-				// part 2
-				var currentCommentId = 0;
-				var oldestMessageIdInPost = 0;
-				var commentsIdArray = new Array();
-				var commentsHolder = document.getElementById('js-commentsHolder');
-				var commentClass;
-				if ( commentsHolder )
-				{
-					for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
-					{
-						if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
-						{
-							currentCommentId = Number( commentsHolder.childNodes[indexOfComment].getAttribute('id'));
-							if ( currentCommentId > oldestMessageIdInPost )
-							{
-								oldestMessageIdInPost = currentCommentId;
-							}
-							if ( oldMessageId > 0 )
-							{
-								if ( currentCommentId > oldMessageId )
-								{
-									commentClass = commentsHolder.childNodes[indexOfComment].getAttribute('class');	
-									if ( commentClass.indexOf('new') == -1 )
-									{
-										commentsHolder.childNodes[indexOfComment].setAttribute('class', commentClass + " new");
-										commentsMarked++;
-									}
-								}
-							}
-							if ( newCommentsInPost > 0 )
-							{
-								commentsIdArray.push( currentCommentId );
-							}
-						}
-					}
-					// part 1
-					if ( newCommentsInPost > 0 )
-					{
-						commentsIdArray.sort( sortArrayNumbers);
-						var commentToBeNew;
-						for ( var commentIndex = 0; commentIndex < newCommentsInPost; commentIndex++)
-						{
-							commentToBeNew = document.getElementById( commentsIdArray[ commentIndex ]);
-							if( oldMessageId >= commentsIdArray[ commentIndex ] )
-							{
-								commentToBeNew = null;
-							}
-							if ( commentToBeNew )
-							{
-								commentClass = commentToBeNew.getAttribute('class');
-								if ( commentClass.indexOf('new') == -1 )
-								{
-									commentToBeNew.setAttribute('class', commentClass + " new");
-									commentsMarked++;
-								}
-							}
-						}
-					}
-					// part 1
-					// part 1
-					removePostIdItem( newCommentsArray, postId );
-					localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
-					// part 1
-					// part 2
-					addLastCommentId( oldCommentsArray, postId, oldestMessageIdInPost );
-					// part 2
-					if( _$.settings.comment_scroller == '1' && commentsMarked > 0 )
-					{
-						recountComments();
-					}
-				}
-				_$.addEvent(document,"DOMNodeInserted", documentChangedCmnt);
-			}
-			else
-			{
-				// post were not loaded
-				if ( postId > 0 )
-				{
-					_$.injectScript(" futu_alert( 'ЭВМ империи перегрелась и часть страницы не догрузилась. Дайте ей отдохнуть секунд 5 и обновите страницу. А новые комментарии мы попробуем восстановить.', false, 'red');");
-				}
-			}
-		}
-		if ( commentsMarked > 0 )
-		{
-			addBenchmark( time1, 'new comment saver, ' + commentsMarked + ' comments saved');
-		}
-		else
-		{
-			addBenchmark( time1, 'new comment saver' );
-		}
-	}
-	// end - new comments saver for posts which were not loaded completely.
 }
 
 var time1 = new Date();
