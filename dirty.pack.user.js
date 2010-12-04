@@ -510,20 +510,24 @@ if(_$.location.indexOf('/off/')!=0)
 	var dsp_general_bar = '';
 	var dsp_general_param = '';
 	var dsp_check_change_pictures = 1;
-	if(_$.getUsername()!=""){
+	if(_$.getUsername()!="")
+	{
 		var dsp_self_name = _$.getUsername();
 		var dsp_self_num = _$.getNumber();
-	}else{
+	}
+	else
+	{
 		var dsp_self_name = "%username%";
 		var dsp_self_num = 0;
 	}
 
-	function DSP_make_General_Bar(){
-
+	function DSP_make_General_Bar()
+	{
 		//var time1 = new Date();
 		var dsp_output = dsp_bars = dsp_params = '';
 		var dsp_left_panel = _$.$c('left_col_nav')[0];
-		for(var i=0; i<6; i++){
+		for(var i=0; i<6; i++)
+		{
 				dsp_bars += '<div id="dsp_setting_button_'+i+'" style="background-color:#edf1f6;width:140px;height:30px;line-height:30px;border-top:1px solid #edf1f6;border-right:1px solid #b6b6b6">&nbsp;</div>';
 				dsp_params += '<div id="dsp_setting_'+i+'" style="padding:10px 0 0 10px;display:none;border-top:1px solid #b6b6b6"></div>';
 		}
@@ -532,6 +536,14 @@ if(_$.location.indexOf('/off/')!=0)
 		dsp_output += '<div id="_$.settings" style="display:none;position:fixed;top:'+((_$.viewarea_size().y-300)/2)+'px;left:'+((_$.viewarea_size().x-610)/2)+'px;width:610px;height:300px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="610" height="300"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">';
 		dsp_output += '<table cellspacing="0" cellpadding="0" width="100%" border="0" style="font-size: 110%;"><tr><td valign="top" colspan="1" height="30" style="font-size:140%;color:#5880af;"><a href="http://userscripts.org/scripts/show/88906">Service Pack 2</a></td><td valign="top" colspan="1" height="30" style="padding-left:5px; font-size:170%;color:#5880af;"></td><td width="40" align="right" valign="top"><div id="dsp_setting_close" style="background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div></td></tr><tr><td valign="top" width="140" style="">'+dsp_bars+'</td><td colspan="2" valign="top">'+dsp_params+'</td></tr></table>';
 		dsp_output += '</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>';
+
+		if ( dsp_left_panel == null )
+		{
+			var tablesArray = document.body.getElementsByTagName('table');
+			var tdArray = tablesArray[5].getElementsByTagName('td');
+			dsp_left_panel = document.createElement('div');
+			tdArray[0].appendChild( dsp_left_panel );			
+		}
 
 		dsp_left_panel.innerHTML += dsp_output;
 
@@ -2034,7 +2046,7 @@ function DSP_make_content_settings(){
 
 function DSP_init()
 {
-	if ( document.querySelector('div.content_left') != null )
+	if ( document.querySelector('div.content_left') != null || document.location.href.indexOf('music.dirty') > -1 )
 	{
 		var time1 = new Date();
 		DSP_make_General_Bar();
@@ -4110,7 +4122,7 @@ if(_$.settings.dirty_tags=='1')
 	{
 		var vTagStr = commentDiv.innerHTML.replace( /(\&nbsp;)/gi,' ');
 		// regexp based on http://leprosorium.ru/users/antyrat script
-		commentDiv.innerHTML = vTagStr.replace( /([^:\s\.\>\<][\wа-яёЁ\-\–\—\s\!\?,]+)(\[x\]|\s\[x\]|\s\[х\]|\[х\])+/gi, "$1 [<a href=\"#\" onclick=\"return manageTag(this);\" title=\"$1\" style=\"color: red;\">x</a>]");
+		commentDiv.innerHTML = vTagStr.replace( /([^:\s\.\>\<][\wа-яёЁ\-\–\—\s\!\%\?,]+)(\[x\]|\s\[x\]|\s\[х\]|\[х\])+/gi, "$1 [<a href=\"#\" onclick=\"return manageTag(this);\" title=\"$1\" style=\"color: red;\">x</a>]");
 	}
 	function documentChangedTags( event )
 	{
@@ -4932,11 +4944,14 @@ if(_$.settings.dirty_tags=='1')
 			if(inner == null)continue;
 			ownComment = false;
 			var html = inner.innerHTML;
-			if(html.indexOf('Написал '+suffix) > -1 || html.indexOf('Написала '+suffix) > -1 || html.indexOf('Забанил '+suffix) > -1 || html.indexOf('Забанила '+suffix) > -1)ownComment = true;
-			if(html.match(/href="\/(comments|my\/inbox)\/([0-9]+)#new">/g) != null){
+			if(html.indexOf('Написал '+suffix) > -1 || html.indexOf('Написала '+suffix) > -1 || html.indexOf('Забанил '+suffix) > -1 || html.indexOf('Забанила '+suffix) > -1) ownComment = true;
+			//if(html.match(/href="\/(comments|my\/inbox)\/([0-9]+)#new">/g) != null)
+			if(html.indexOf('#new') > -1)
+			{
 				newPosts.push(allPostsArr[i]);
 				//Add read comments - button
-				if(_$.settings.read_button=='1'){
+				if(_$.settings.read_button=='1')
+				{
 					var newLink = (location.pathname.indexOf('/banned')==0)?_$.$t('a',inner)[2]:_$.$t('a',inner)[3];
 					id = newLink.href;
 					link = document.createElement("a");
