@@ -1,4 +1,4 @@
-//
+﻿//
 // ==UserScript==
 // @name			Dirty Service Pack 2
 // @author			Stasik0, BearOff, crea7or, flashface, slavka123
@@ -6,7 +6,8 @@
 // @description		Dirty Service Pack 2.5
 // @require			http://crea7or.spb.ru/scripts/user.js.updater.php?id=88906&days=1
 // @include			http://dirty.ru/*
-// @include			http://*.dirty.ru/*
+// @include			http://www.dirty.ru/*
+// @include			http://music.dirty.ru/*
 // @run-at			document-end
 // ==/UserScript==
 
