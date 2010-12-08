@@ -420,6 +420,7 @@ if( typeof _$.settings.colors_on == "undefined") { _$.settings.colors_on = 0; se
 if( typeof _$.settings.colors_border == "undefined") { _$.settings.colors_border = 1; settingsSave = true; }
 //if( typeof _$.settings_colors.length < 1 ) { _$.settings_colors = '[]'; settingsSave = true; }
 //SP2 adding scripts - STEP ONE
+if( typeof _$.settings.dirty_avatar == "undefined") { _$.settings.dirty_avatar = 1; settingsSave = true; }
 if( typeof _$.settings.grt_enabled == "undefined") { _$.settings.grt_enabled = 1; settingsSave = true; }
 if( typeof _$.settings.grt_random == "undefined") { _$.settings.grt_random = 1; settingsSave = true; }
 if( typeof _$.settings.online_enabled == "undefined") { _$.settings.online_enabled = 1; settingsSave = true; }
@@ -5475,6 +5476,42 @@ if(_$.settings.dirty_tags=='1')
 		addBenchmark( time1, 'instant search' );
 	}
 	// end of instant search in comments
+
+	// made by crea7or
+	// start of dirty avatar
+	if(_$.settings.dirty_avatar == '1' && location.pathname.indexOf('/user/') > -1 )
+	{
+		var time1 = new Date();
+		var divWithAvatar = document.querySelector('div.userstory')
+		var avatarImg = null;
+		if ( divWithAvatar )
+		{
+			var imgArray = divWithAvatar.getElementsByTagName('img');
+			for ( index = 0; index < imgArray.length; index++ )
+			{
+				if ( imgArray[index].getAttribute('alt').toLowerCase().indexOf('dirty avatar') > -1 )
+				{
+					avatarImg = imgArray[index];
+					break;
+				}
+			}
+		}
+		if ( avatarImg != null )
+		{
+			var tableWehereAvatar = document.querySelector('table.userpic')
+			var tdWehereAvatar = null;
+			if ( tableWehereAvatar != null )
+			{
+				tdWehereAvatar = tableWehereAvatar.getElementsByTagName('td')[0];
+			}
+			if ( tdWehereAvatar != null )
+			{
+				tdWehereAvatar.innerHTML = "<img src=\"" + avatarImg.getAttribute('src') + "\">";
+			}
+		}
+		addBenchmark( time1, 'dirty avatar' );
+	}
+	// end of dirty avatar
 }
 
 var time1 = new Date();
