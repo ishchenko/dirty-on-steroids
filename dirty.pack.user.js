@@ -1,4 +1,4 @@
-﻿//
+//
 // ==UserScript==
 // @name			Dirty Service Pack 2
 // @author			Stasik0, BearOff, crea7or, flashface, slavka123
@@ -3760,6 +3760,37 @@ if(_$.settings.youtube_preview=='1'){
 							this.setAttribute('name', this.innerHTML);
 							this.style.textDecoration = "none";
 							this.innerHTML = '<span style="display:inline-block; clear: both; width: '+(width+36)+'px; "><span><object width="'+width+'" height="'+height+'"><param name="movie" value="http://www.youtube.com/v/'+id+'?autoplay=1&start='+time+'&fs=1"></param><param name="allowFullScreen" value="true"></param></param><param name="allowScriptAccess" value="always"></param><embed src="http://www.youtube.com/v/'+id+'?autoplay=1&start='+time+'&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="'+width+'" height="'+height+'"></embed></object></span>'+button+'</span>';
+							//adding size change links
+							var div = document.createElement('div');
+							div.innerHTML = '<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>';
+							_$.insertAfter(this, div);
+							arr = _$.$t('a',div);
+							for(var link in arr){
+							  link = arr[link];
+								_$.addEvent(link,'click',function(e){
+									if(this.className == "normal"){
+										w=480; h=385;
+									}else if (this.className == "big"){
+										w=640; h=480;
+									}else{
+										w=800; h=600;
+									};
+									
+									var pDiv = this.parentNode.parentNode.previousSibling;
+									//move x button
+									_$.$t('span',pDiv)[0].style.width = w+36+"px";
+									_$.$t('div',pDiv)[0].style.top = "-"+(h-14)+"px";
+									//resize movie
+									var elem = _$.$t('embed',pDiv)[0];
+									elem.width = w;
+									elem.height = h;
+									var elem = _$.$t('object',pDiv)[0];
+									elem.width = w;
+									elem.height = h;
+									e.preventDefault();
+									return false;
+								});
+							}
 						}else{
 							if(this.parentNode.tagName.toLowerCase()=="td"){
 								//it`s a video-post preview
@@ -3768,6 +3799,7 @@ if(_$.settings.youtube_preview=='1'){
 							this.innerHTML = this.getAttribute('name');
 							this.style.textDecoration = "underline";
 							this.setAttribute('name', "");
+							this.parentNode.removeChild(this.nextSibling);
 						}
 						e.preventDefault();
 						return false;
