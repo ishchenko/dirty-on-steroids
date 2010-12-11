@@ -3764,6 +3764,9 @@ if(_$.settings.youtube_preview=='1'){
 							var div = document.createElement('div');
 							div.innerHTML = '<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>';
 							_$.insertAfter(this, div);
+							//div.setAttribute("style","position:relative;");
+							//div.style.left = (_$.element_position(this).x - div.clientWidth + 30) + "px";
+							this.style.display = "block";
 							arr = _$.$t('a',div);
 							for(var link in arr){
 							  link = arr[link];
@@ -3799,6 +3802,7 @@ if(_$.settings.youtube_preview=='1'){
 							this.innerHTML = this.getAttribute('name');
 							this.style.textDecoration = "underline";
 							this.setAttribute('name', "");
+							this.style.display = "inline";
 							this.parentNode.removeChild(this.nextSibling);
 						}
 						e.preventDefault();
