@@ -5523,12 +5523,17 @@ if(_$.settings.dirty_tags=='1')
 		if ( divWithAvatar )
 		{
 			var imgArray = divWithAvatar.getElementsByTagName('img');
+			var altAttr;
 			for ( index = 0; index < imgArray.length; index++ )
 			{
-				if ( imgArray[index].getAttribute('alt').toLowerCase().indexOf('dirty avatar') > -1 )
+				altAttr = imgArray[index].getAttribute('alt');
+				if ( altAttr != null )
 				{
-					avatarImg = imgArray[index];
-					break;
+					if ( altAttr.toLowerCase().indexOf('dirty avatar') > -1 )
+					{
+						avatarImg = imgArray[index];
+						break;
+					}
 				}
 			}
 		}
