@@ -2056,243 +2056,244 @@ function DSP_init()
 		addBenchmark( time1, 'dsp init' );
 	}
 
-// made by crea7or
-// start - new comments saver for posts which were not loaded completely.
-if(_$.settings.newcomments_saver == '1' )
-{
-	function sortArrayNumbers(a,b)
+	// made by crea7or
+	// start - new comments saver for posts which were not loaded completely.
+	if(_$.settings.newcomments_saver == '1' )
 	{
-		return ( b - a );
-	}
-	function removePostIdItem( commentsArray, postId )
-	{
-		for ( var arrayIndex = 0; arrayIndex < commentsArray.length; arrayIndex++)
+		function sortArrayNumbers(a,b)
 		{
-			if ( commentsArray[ arrayIndex ].pid == postId )
+			return ( b - a );
+		}
+		function removePostIdItem( commentsArray, postId )
+		{
+			for ( var arrayIndex = 0; arrayIndex < commentsArray.length; arrayIndex++)
 			{
-				commentsArray.splice( arrayIndex, 1 );
-				break;
+				if ( commentsArray[ arrayIndex ].pid == postId )
+				{
+					commentsArray.splice( arrayIndex, 1 );
+					break;
+				}
 			}
 		}
-	}
-	function setNewCommentsValue( postId, newMessages)
-	{
-		var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
-		removePostIdItem( newCommentsArray, postId );
-		var newEntry = new Object();
-		newEntry.pid = postId;
-		newEntry.mid = newMessages;
-		newCommentsArray.push( newEntry );
-		while ( newCommentsArray.length > 30 )
+		function setNewCommentsValue( postId, newMessages)
 		{
-			newCommentsArray.shift();
-		};
-		localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
-		return true;
-	}
-	
-	var time1 = new Date();
-	var commentsMarked = 0;
-	var divPostHolder = document.getElementById('js-posts_holder');
-	if ( divPostHolder == null )
-	{
-		divPostHolder = document.getElementById('content_left');
-	}
-	if ( divPostHolder )
-	{
-		var postHeaderLinks;
-		var postNewMesssages;
-		var postId;
-		var postsArray = divPostHolder.querySelectorAll('div.dd');
-		for ( var postIndex = 0; postIndex < postsArray.length; postIndex++ )
+			var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
+			removePostIdItem( newCommentsArray, postId );
+			var newEntry = new Object();
+			newEntry.pid = postId;
+			newEntry.mid = newMessages;
+			newCommentsArray.push( newEntry );
+			while ( newCommentsArray.length > 30 )
+			{
+				newCommentsArray.shift();
+			};
+			localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
+			return true;
+		}
+		
+		var time1 = new Date();
+		var commentsMarked = 0;
+		var divPostHolder = document.getElementById('js-posts_holder');
+		if ( divPostHolder == null )
 		{
-			postHeaderLinks = postsArray[postIndex].getElementsByTagName('a');
-			var indexOfHref = 0;
-			if ( document.location.href.indexOf("/banned/") >= 0 )
+			divPostHolder = document.getElementById('content_left');
+		}
+		if ( divPostHolder )
+		{
+			var postHeaderLinks;
+			var postNewMesssages;
+			var postId;
+			var postsArray = divPostHolder.querySelectorAll('div.dd');
+			for ( var postIndex = 0; postIndex < postsArray.length; postIndex++ )
 			{
-				if ( postHeaderLinks.length > 2 )
+				postHeaderLinks = postsArray[postIndex].getElementsByTagName('a');
+				var indexOfHref = 0;
+				if ( document.location.href.indexOf("/banned/") >= 0 )
 				{
-					indexOfHref = 2;
-				}
-			}
-			else
-			{
-				if ( postHeaderLinks.length > 3 )
-				{
-					indexOfHref = 3;
-				}
-			}
-			if ( indexOfHref > 0 )
-			{
-				postId = Number( postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/));
-				postNewMesssages = Number( postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/));
-
-				var postLinks = postsArray[postIndex].parentNode.getElementsByTagName('a');
-				for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
-				{
-					if ( postLinks[ postLinksIndex ].getAttribute('href').indexOf( postId ) > -1 )
+					if ( postHeaderLinks.length > 2 )
 					{
-						postLinks[ postLinksIndex ].setAttribute('onclick', 'return setNewCommentsValue(' + postId +',' + postNewMesssages + ');');
+						indexOfHref = 2;
+					}
+				}
+				else
+				{
+					if ( postHeaderLinks.length > 3 )
+					{
+						indexOfHref = 3;
+					}
+				}
+				if ( indexOfHref > 0 )
+				{
+					postId = Number( postHeaderLinks[indexOfHref ].getAttribute('href').match(/[\d]+/));
+					postNewMesssages = Number( postHeaderLinks[indexOfHref ].innerHTML.match(/[\d]+/));
+
+					var postLinks = postsArray[postIndex].parentNode.getElementsByTagName('a');
+					for ( var postLinksIndex = 0; postLinksIndex < postLinks.length; postLinksIndex++ )
+					{
+						if ( postLinks[ postLinksIndex ].getAttribute('href').indexOf( postId ) > -1 )
+						{
+							postLinks[ postLinksIndex ].setAttribute('onclick', 'return setNewCommentsValue(' + postId +',' + postNewMesssages + ');');
+						}
 					}
 				}
 			}
+			_$.injectScript( setNewCommentsValue + "\n" + removePostIdItem );
 		}
-		_$.injectScript( setNewCommentsValue + "\n" + removePostIdItem );
-	}
-	function documentChangedCmnt( event )
-	{
-		if (supressEvents)
+		function documentChangedCmnt( event )
 		{
-			return;
-		}
-		if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
-		{
-			var newCommentId = Number( event.target.getAttribute('id'));
-			if ( newCommentId > 0 )
+			if (supressEvents)
 			{
-				var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
-				var postId = Number( document.location.href.match(/[\d]+/));
-				addLastCommentId( oldCommentsArray, postId, newCommentId );
+				return;
+			}
+			if( event.target.className != null && event.target.className.indexOf("comment") > -1 )
+			{
+				var newCommentId = Number( event.target.getAttribute('id'));
+				if ( newCommentId > 0 )
+				{
+					var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
+					var postId = Number( document.location.href.match(/[\d]+/));
+					addLastCommentId( oldCommentsArray, postId, newCommentId );
+				}
 			}
 		}
-	}
-	function addLastCommentId( oldCommentsArray, postId, newId )
-	{
-		// part 2
-		removePostIdItem( oldCommentsArray, postId );
-		var newEntry = new Object();
-		newEntry.pid = postId;
-		newEntry.mid = newId;
-		oldCommentsArray.push( newEntry );
-		while ( oldCommentsArray.length > 100 )
+		function addLastCommentId( oldCommentsArray, postId, newId )
 		{
-			oldCommentsArray.shift();
-		};
-		localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
-		// part 2
-	}
+			// part 2
+			removePostIdItem( oldCommentsArray, postId );
+			var newEntry = new Object();
+			newEntry.pid = postId;
+			newEntry.mid = newId;
+			oldCommentsArray.push( newEntry );
+			while ( oldCommentsArray.length > 100 )
+			{
+				oldCommentsArray.shift();
+			};
+			localStorage.setItem( 'postLastCommentsArray', jsonStringify( oldCommentsArray ));
+			// part 2
+		}
 
-	if ( document.location.href.indexOf("/comments/") > -1 || document.location.href.indexOf("/inbox/") > -1  )
-	{
-		var postId = Number( document.location.href.match(/[\d]+/));
-		if ( document.getElementById('js-footer') != null )
+		if ( document.location.href.indexOf("/comments/") > -1 || document.location.href.indexOf("/inbox/") > -1  )
 		{
-			// part 1
-			var newCommentsInPost = 0;
-			var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
-			for ( var arrayIndex = 0; arrayIndex < newCommentsArray.length; arrayIndex++)
+			var postId = Number( document.location.href.match(/[\d]+/));
+			if ( document.getElementById('js-footer') != null )
 			{
-				if ( newCommentsArray[ arrayIndex ].pid == postId )
+				// part 1
+				var newCommentsInPost = 0;
+				var newCommentsArray = jsonParse( localStorGetItem( 'postNewMessagesArray',"[]"));
+				for ( var arrayIndex = 0; arrayIndex < newCommentsArray.length; arrayIndex++)
 				{
-					newCommentsInPost = newCommentsArray[ arrayIndex ].mid;
-					break;
-				}
-			}
-			// part 1
-			// part 2
-			var oldMessageId = 0;
-			var oldestMessageIdInPost = 0;
-			var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
-			for ( var arrayIndex = 0; arrayIndex < oldCommentsArray.length; arrayIndex++)
-			{
-				if ( oldCommentsArray[ arrayIndex ].pid == postId )
-				{
-					oldMessageId = oldCommentsArray[ arrayIndex ].mid;
-					break;
-				}
-			}
-			// part 2
-			var currentCommentId = 0;
-			var oldestMessageIdInPost = 0;
-			var commentsIdArray = new Array();
-			var commentsHolder = document.getElementById('js-commentsHolder');
-			var commentClass;
-			if ( commentsHolder )
-			{
-				for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
-				{
-					if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
+					if ( newCommentsArray[ arrayIndex ].pid == postId )
 					{
-						currentCommentId = Number( commentsHolder.childNodes[indexOfComment].getAttribute('id'));
-						if ( currentCommentId > oldestMessageIdInPost )
+						newCommentsInPost = newCommentsArray[ arrayIndex ].mid;
+						break;
+					}
+				}
+				// part 1
+				// part 2
+				var oldMessageId = 0;
+				var oldestMessageIdInPost = 0;
+				var oldCommentsArray = jsonParse( localStorGetItem( 'postLastCommentsArray',"[]"));
+				for ( var arrayIndex = 0; arrayIndex < oldCommentsArray.length; arrayIndex++)
+				{
+					if ( oldCommentsArray[ arrayIndex ].pid == postId )
+					{
+						oldMessageId = oldCommentsArray[ arrayIndex ].mid;
+						break;
+					}
+				}
+				// part 2
+				var currentCommentId = 0;
+				var oldestMessageIdInPost = 0;
+				var commentsIdArray = new Array();
+				var commentsHolder = document.getElementById('js-commentsHolder');
+				var commentClass;
+				if ( commentsHolder )
+				{
+					for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
+					{
+						if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
 						{
-							oldestMessageIdInPost = currentCommentId;
-						}
-						if ( oldMessageId > 0 )
-						{
-							if ( currentCommentId > oldMessageId )
+							currentCommentId = Number( commentsHolder.childNodes[indexOfComment].getAttribute('id'));
+							if ( currentCommentId > oldestMessageIdInPost )
 							{
-								commentClass = commentsHolder.childNodes[indexOfComment].getAttribute('class');	
+								oldestMessageIdInPost = currentCommentId;
+							}
+							if ( oldMessageId > 0 )
+							{
+								if ( currentCommentId > oldMessageId )
+								{
+									commentClass = commentsHolder.childNodes[indexOfComment].getAttribute('class');	
+									if ( commentClass.indexOf('new') == -1 )
+									{
+										commentsHolder.childNodes[indexOfComment].setAttribute('class', commentClass + " new");
+										commentsMarked++;
+									}
+								}
+							}
+							if ( newCommentsInPost > 0 )
+							{
+								commentsIdArray.push( currentCommentId );
+							}
+						}
+					}
+					// part 1
+					if ( newCommentsInPost > 0 )
+					{
+						commentsIdArray.sort( sortArrayNumbers);
+						var commentToBeNew;
+						for ( var commentIndex = 0; commentIndex < newCommentsInPost; commentIndex++)
+						{
+							commentToBeNew = document.getElementById( commentsIdArray[ commentIndex ]);
+							if( oldMessageId >= commentsIdArray[ commentIndex ] )
+							{
+								commentToBeNew = null;
+							}
+							if ( commentToBeNew )
+							{
+								commentClass = commentToBeNew.getAttribute('class');
 								if ( commentClass.indexOf('new') == -1 )
 								{
-									commentsHolder.childNodes[indexOfComment].setAttribute('class', commentClass + " new");
+									commentToBeNew.setAttribute('class', commentClass + " new");
 									commentsMarked++;
 								}
 							}
 						}
-						if ( newCommentsInPost > 0 )
-						{
-							commentsIdArray.push( currentCommentId );
-						}
 					}
+					// part 1
+					// part 1
+					removePostIdItem( newCommentsArray, postId );
+					localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
+					// part 1
+					// part 2
+					addLastCommentId( oldCommentsArray, postId, oldestMessageIdInPost );
+					// part 2
+					//if( _$.settings.comment_scroller == '1' && commentsMarked > 0 )
+					//{
+					//	recountComments();
+					//}
 				}
-				// part 1
-				if ( newCommentsInPost > 0 )
-				{
-					commentsIdArray.sort( sortArrayNumbers);
-					var commentToBeNew;
-					for ( var commentIndex = 0; commentIndex < newCommentsInPost; commentIndex++)
-					{
-						commentToBeNew = document.getElementById( commentsIdArray[ commentIndex ]);
-						if( oldMessageId >= commentsIdArray[ commentIndex ] )
-						{
-							commentToBeNew = null;
-						}
-						if ( commentToBeNew )
-						{
-							commentClass = commentToBeNew.getAttribute('class');
-							if ( commentClass.indexOf('new') == -1 )
-							{
-								commentToBeNew.setAttribute('class', commentClass + " new");
-								commentsMarked++;
-							}
-						}
-					}
-				}
-				// part 1
-				// part 1
-				removePostIdItem( newCommentsArray, postId );
-				localStorage.setItem( 'postNewMessagesArray', jsonStringify( newCommentsArray ));
-				// part 1
-				// part 2
-				addLastCommentId( oldCommentsArray, postId, oldestMessageIdInPost );
-				// part 2
-				//if( _$.settings.comment_scroller == '1' && commentsMarked > 0 )
-				//{
-				//	recountComments();
-				//}
+				_$.addEvent(document,"DOMNodeInserted", documentChangedCmnt);
 			}
-			_$.addEvent(document,"DOMNodeInserted", documentChangedCmnt);
+			else
+			{
+				// post were not loaded
+				if ( postId > 0 )
+				{
+					_$.injectScript(" futu_alert( 'ЭВМ империи перегрелась и часть страницы не догрузилась. Дайте ей отдохнуть секунд 5 и обновите страницу. А новые комментарии мы попробуем восстановить.', false, 'red');");
+				}
+			}
+		}
+		if ( commentsMarked > 0 )
+		{
+			addBenchmark( time1, 'new comment saver, ' + commentsMarked + ' comments saved');
 		}
 		else
 		{
-			// post were not loaded
-			if ( postId > 0 )
-			{
-				_$.injectScript(" futu_alert( 'ЭВМ империи перегрелась и часть страницы не догрузилась. Дайте ей отдохнуть секунд 5 и обновите страницу. А новые комментарии мы попробуем восстановить.', false, 'red');");
-			}
+			addBenchmark( time1, 'new comment saver' );
 		}
 	}
-	if ( commentsMarked > 0 )
-	{
-		addBenchmark( time1, 'new comment saver, ' + commentsMarked + ' comments saved');
-	}
-	else
-	{
-		addBenchmark( time1, 'new comment saver' );
-	}
-}
-// end - new comments saver for posts which were not loaded completely.
+	// end - new comments saver for posts which were not loaded completely.	
+
 
 // start favicons
 if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
