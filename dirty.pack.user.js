@@ -5563,7 +5563,7 @@ if(_$.settings.dirty_tags=='1')
 	if(_$.settings.dekabr == '1'){
 		var mystuff = _$.$('js-header_inbox_link');
 		var iframe = document.createElement('iframe');
-		iframe.setAttribute('style', 'display:block; float: left; width: 115px; height:20px; border:0; padding:1px; display: inline; margin-top: 1px;');
+		iframe.setAttribute('style', 'display:block; float: left; width: 100px; height:20px; border:0; display: inline;');
 		iframe.setAttribute('src', 'http://dekabr.org/cnew.php');
 		_$.insertAfter(mystuff, iframe);
 	}
