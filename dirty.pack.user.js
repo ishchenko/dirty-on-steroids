@@ -420,6 +420,7 @@ if( typeof _$.settings.colors_on == "undefined") { _$.settings.colors_on = 0; se
 if( typeof _$.settings.colors_border == "undefined") { _$.settings.colors_border = 1; settingsSave = true; }
 //if( typeof _$.settings_colors.length < 1 ) { _$.settings_colors = '[]'; settingsSave = true; }
 //SP2 adding scripts - STEP ONE
+if( typeof _$.settings.dekabr == "undefined") { _$.settings.dekabr = 0; settingsSave = true; }
 if( typeof _$.settings.dirty_avatar == "undefined") { _$.settings.dirty_avatar = 1; settingsSave = true; }
 if( typeof _$.settings.grt_enabled == "undefined") { _$.settings.grt_enabled = 1; settingsSave = true; }
 if( typeof _$.settings.grt_random == "undefined") { _$.settings.grt_random = 1; settingsSave = true; }
@@ -1876,6 +1877,7 @@ function dsp_tooltip_init(){
 	add_checkbox_event('dsp_c_inbox_recreate','inbox_recreate');
 	add_checkbox_event('dsp_c_ban_encoding','ban_encoding');
 	add_checkbox_event('dsp_c_timings_display','timings_display');
+	add_checkbox_event('dsp_c_dekabr','dekabr');
 
 	_$.addEvent(_$.$('dsp_c_use_picture'),'click',
 	function(){
@@ -2036,7 +2038,9 @@ function DSP_make_content_settings(){
 		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
 		dsp_txt += '<tr><td align="right"><input id="dsp_c_tooltip_show_self" type="checkbox" '+((_$.settings.favicon_style=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_tooltip_show_self">Тултип на ссылке возле logout</label></td></tr>';
 		dsp_txt += '</table></div>';
-		dsp_txt += '<table cellspacing="0" border="0"><tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2.5: Показывать время выполнения</label></td></tr>';
+		dsp_txt += '<table cellspacing="0" border="0">'
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2.5: Показывать время выполнения</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dekabr" type="checkbox" '+((_$.settings.dekabr=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dekabr">Ссылка на dekabr.org</label></td></tr>';
 		dsp_txt += '</table>';
 
 		DSP_make_Setting_Bar('Tooltip & Misc',dsp_txt,'dsp_tooltip_init()');
@@ -5554,6 +5558,15 @@ if(_$.settings.dirty_tags=='1')
 		addBenchmark( time1, 'dirty avatar' );
 	}
 	// end of dirty avatar
+	
+	//stasik0
+	if(_$.settings.dekabr == '1'){
+		var mystuff = _$.$('js-header_my_things_link');
+		var iframe = document.createElement('iframe');
+		iframe.setAttribute('style', 'display:block; float: left; width: 115px; height:20px; border:0; padding:1px; display: inline; margin-top: 1px;');
+		iframe.setAttribute('src', 'http://dekabr.org/cnew.php');
+		_$.insertAfter(mystuff, iframe);
+	}
 }
 
 var time1 = new Date();
