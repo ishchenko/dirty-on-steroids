@@ -2305,7 +2305,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 	if(_$.location.indexOf('/user/')<0)
 	{
 		var time1 = new Date();
-		var dsp_elements = _$.$t('a',_$.$('content'));
+		var dsp_elements = _$.$t('a',_$.$('js-posts_holder'));
 		if(_$.settings.favicon_style=='1')
 		{
 			for(var i=0;i<dsp_elements.length;i++)
