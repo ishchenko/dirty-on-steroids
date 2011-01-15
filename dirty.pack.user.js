@@ -2318,7 +2318,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 	
 		//TODO: populate this line with 2nd level domains
 		//whitelist = "dirty.ru, livejournal.com, wikipedia.org, leprosorium.ru, rian.ru, ebay.com, flickr.com, lenta.ru, yandex.net, yandex.ru, youtube.com, 1tv.ru, wikimedia.org, nytimes.com, d3search.ru, adm-dirty.ru";
-		var whitelist = jsonParse( localStorGetItem( 'faviconsWhilelist',"[]"));
+		var whitelist = jsonParse( localStorGetItem( 'faviconsWhitelist',"[]"));
 		
 		if(whitelist == "*"){
 			return true;
