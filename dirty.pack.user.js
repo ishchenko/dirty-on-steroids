@@ -637,22 +637,6 @@ if(_$.location.indexOf('/off/')!=0)
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
-		Favicons
-
-* * * * * * * * * * * * * * * * * * * * * * * * * */
-
-	function DSP_show_favicon(obj,show){
-	if(show==1){
-			var favicon = 'http://favicon.yandex.net/favicon/'+obj.toString().split('/')[2];
-			obj.style.paddingTop='16px';
-			obj.style.backgroundImage = 'url('+favicon+')';//,url(http://pit.dirty.ru/dirty/1/2010/10/31/28281-154853-236c6922bc86581a4d9fbf18719fb16b.png)';
-			obj.style.backgroundRepeat = 'no-repeat';//, no-repeat';
-		}
-		else obj.style.backgroundImage = 'none';
-	}
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * *
-
 		Username Replace
 
 * * * * * * * * * * * * * * * * * * * * * * * * * */
@@ -2302,10 +2286,36 @@ function DSP_init()
 // start favicons
 if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 {
+	//global vars + some config
+	var domainArray = new Object();
+	var faviconUrls = new Array();
+	var faviconImages = new Array();
+	var faviconsAtOnce = 40;
+	var query = "http://favicon.yandex.net/favicon/";
+	//
+
+	objectSize = function(obj) {
+		var size = 0, key;
+		for (key in obj) {
+				if (obj.hasOwnProperty(key)) size++;
+		}
+		return size;
+	};
+	
+	function DSP_show_favicon(obj,show){
+			if(show==1){
+				var favicon = 'http://favicon.yandex.net/favicon/'+obj.toString().split('/')[2];
+				obj.style.paddingTop='16px';
+				obj.style.backgroundImage = 'url('+favicon+')';//,url(http://pit.dirty.ru/dirty/1/2010/10/31/28281-154853-236c6922bc86581a4d9fbf18719fb16b.png)';
+				obj.style.backgroundRepeat = 'no-repeat';//, no-repeat';
+			}
+			else obj.style.backgroundImage = 'none';
+	}
+
 	if(_$.location.indexOf('/user/')<0)
 	{
 		var time1 = new Date();
-		var dsp_elements = _$.$t('a',_$.$('js-posts_holder'));
+		dsp_elements = _$.$t('a',_$.$('js-posts_holder'));
 		if(_$.settings.favicon_style=='1')
 		{
 			for(var i=0;i<dsp_elements.length;i++)
@@ -2323,14 +2333,44 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 			{
 				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0)
 				{
-					var favicon = 'http://favicon.yandex.net/favicon/'+dsp_elements[i].toString().split('/')[2];
-					dsp_elements[i].style.paddingLeft = '19px';
-					dsp_elements[i].style.backgroundImage = 'url('+favicon+')';//,url(http://pit.dirty.ru/dirty/1/2010/10/31/28281-154853-236c6922bc86581a4d9fbf18719fb16b.png)';
-					dsp_elements[i].style.backgroundRepeat = 'no-repeat';//, no-repeat';
+					domainArray[dsp_elements[i].toString().split('/')[2]] = objectSize(domainArray);
 				}
 			}
+			//forming query for yandex			
+			list = "";
+			var counter = 0;
+			for (var domain in domainArray) {
+				list += domain + '/';
+				counter++;
+				if(counter == faviconsAtOnce){
+					faviconUrls[faviconUrls.length] = query+list;
+					list = "";
+					counter=0;
+				}
+			}
+			//some unsubmitted icons?
+			if(counter>0)faviconUrls[faviconUrls.length] = query+list;
+			for(var i=0;i<dsp_elements.length;i++)
+			{
+				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0)
+				{
+					//var favicon = 'http://favicon.yandex.net/favicon/'+dsp_elements[i].toString().split('/')[2]+'/dirty.ru/';
+					domain = dsp_elements[i].toString().split('/')[2];
+					domainNr = domainArray[domain];
+					imageNr = Math.floor(domainNr/faviconsAtOnce);
+					offset = (domainNr-faviconsAtOnce*imageNr) * 16;
+					dsp_elements[i].style.paddingLeft = '19px';
+					dsp_elements[i].style.backgroundRepeat = 'no-repeat';//, no-repeat';
+					dsp_elements[i].style.backgroundPosition = "0px -"+offset+"px";
+					dsp_elements[i].style.backgroundImage = 'url('+faviconUrls[imageNr]+')';
+					//dsp_elements[i].style.backgroundImage = 'url('+favicon+')';//,url(http://pit.dirty.ru/dirty/1/2010/10/31/28281-154853-236c6922bc86581a4d9fbf18719fb16b.png)';
+				}
+			}
+		
 		}
 		addBenchmark( time1, 'favicons' );
+	}
+	function submitFavQuery(){
 	}
 }
 // end favicons
