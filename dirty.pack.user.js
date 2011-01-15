@@ -2317,7 +2317,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 		if(domain.length==0)return false;
 	
 		//TODO: populate this line with 2nd level domains
-		whitelist = "livejournal.com, wikipedia.org, leprosorium.ru, rian.ru, ebay.com, flickr.com, lenta.ru, yandex.net, yandex.ru, youtube.com, 1tv.ru, wikimedia.org, nytimes.com";
+		whitelist = "dirty.ru, livejournal.com, wikipedia.org, leprosorium.ru, rian.ru, ebay.com, flickr.com, lenta.ru, yandex.net, yandex.ru, youtube.com, 1tv.ru, wikimedia.org, nytimes.com, d3search.ru, adm-dirty.ru";
 		
 		if(whitelist == "*"){
 			return true;
@@ -2349,13 +2349,14 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 	if(_$.location.indexOf('/user/')<0)
 	{
 		var time1 = new Date();
-		dsp_elements = _$.$t('a',_$.$('js-posts_holder'));
+		//dsp_elements = _$.$t('a',_$.$('js-posts_holder'));
+		dsp_elements = document.querySelectorAll('div.dt > a, div.c_body > a');
 		if(_$.settings.favicon_style=='1')
 		{
 			for(var i=0;i<dsp_elements.length;i++)
 			{
 				raw_domain = dsp_elements[i].toString().split('/')[2];
-				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0&&inWhiteList(raw_domain))
+				if(dsp_elements[i].toString().indexOf('http://')!=-1&&inWhiteList(raw_domain))
 				{
 					_$.addEvent(dsp_elements[i],'mouseover',function(e){DSP_show_favicon(e.target,1);});
 					_$.addEvent(dsp_elements[i],'mouseout',function(e){DSP_show_favicon(e.target,0);});
@@ -2367,7 +2368,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 			for(var i=0;i<dsp_elements.length;i++)
 			{
 				raw_domain = dsp_elements[i].toString().split('/')[2];
-				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0&&inWhiteList(raw_domain))
+				if(dsp_elements[i].toString().indexOf('http://')!=-1&&inWhiteList(raw_domain))
 				{
 					if(typeof(domainArray[raw_domain]) === "undefined"){
 						domainArray[raw_domain] = objectSize(domainArray);
@@ -2391,7 +2392,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 			for(var i=0;i<dsp_elements.length;i++)
 			{
 				raw_domain = dsp_elements[i].toString().split('/')[2];
-				if(dsp_elements[i].toString().indexOf('http://')!=-1&&dsp_elements[i].toString().indexOf('dirty.ru/')<0&&inWhiteList(raw_domain))
+				if(dsp_elements[i].toString().indexOf('http://')!=-1&&inWhiteList(raw_domain))
 				{
 					//var favicon = 'http://favicon.yandex.net/favicon/'+dsp_elements[i].toString().split('/')[2]+'/dirty.ru/';
 					domainNr = domainArray[raw_domain];
