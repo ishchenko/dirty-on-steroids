@@ -2302,6 +2302,25 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 		return size;
 	};
 	
+	function sortObj(arr){
+	// Setup Arrays
+	var sortedKeys = new Array();
+	var sortedObj = {};
+
+	// Separate keys and sort them
+	for (var i in arr){
+		sortedKeys.push(i);
+	}
+	sortedKeys.sort();
+
+	// Reconstruct sorted obj based on keys
+	for (var i in sortedKeys){
+		sortedObj[sortedKeys[i]] = arr[sortedKeys[i]];
+	}
+	return sortedObj;
+	}
+
+	
 	function extractDomain(domain){
 		//normalize, 'www.ru' will not work ;)
 		domain = domain.toLowerCase().replace(/^www\./, "")
@@ -2388,6 +2407,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 			if(lastDomain != "" && typeof(domainArray['youtube.com']) !== "undefined"){
 				domainArray[lastDomain] = domainArray['youtube.com'];
 				domainArray['youtube.com'] = objectSize(domainArray) -1;
+				domainArray = sortObj(domainArray);				
 			}
 			
 			//forming query for yandex			
