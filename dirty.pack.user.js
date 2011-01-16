@@ -2302,9 +2302,27 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 		return size;
 	};
 	
+	function extractDomain(domain){
+		//normalize, 'www.ru' will not work ;)
+		domain = domain.toLowerCase().replace(/^www\./, "")
+		//more work, extract root domain
+		var s = domain.split('.');
+		//let us hope that it works, do not want to check all TLDs
+		if(s.length > 2){
+			if(s[s.length-2].length == 2){
+				//form like blabla.**.blabla
+				//domain has 3 segments
+				domain = s.slice(-3).join('.');
+			}else{
+				domain = s.slice(-2).join('.');
+			}
+		}
+		return domain;		
+	}
+	
 	function DSP_show_favicon(obj,show){
 			if(show==1){
-				var favicon = 'http://favicon.yandex.net/favicon/'+obj.toString().split('/')[2];
+				var favicon = 'http://favicon.yandex.net/favicon/'+extractDomain(obj.toString().split('/')[2]);
 				obj.style.paddingTop='16px';
 				obj.style.backgroundImage = 'url('+favicon+')';//,url(http://pit.dirty.ru/dirty/1/2010/10/31/28281-154853-236c6922bc86581a4d9fbf18719fb16b.png)';
 				obj.style.backgroundRepeat = 'no-repeat';//, no-repeat';
@@ -2324,20 +2342,8 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 			return true;
 		}else{
 			whitelist = whitelist+",";
-			//normalize, 'www.ru' will not work ;)
-			domain = domain.toLowerCase().replace(/^www\./, "")
-			//more work, extract root domain
-			var s = domain.split('.');
-			//let us hope that it works, do not want to check all TLS
-			if(s.length > 2){
-				if(s[s.length-2].length == 2 || s[s.length-2].length == 3){
-					//form like blabla.**.blabla
-					//domain has 3 segments
-					domain = s.slice(-3).join('.');
-				}else{
-					domain = s.slice(-2).join('.');
-				}
-			}
+			//next line done in the caller function
+			//domain = extractDomain(domain);
 			if(whitelist.indexOf(domain+",")>-1) {
 				return true;
 			}else{
@@ -2356,7 +2362,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 		{
 			for(var i=0;i<dsp_elements.length;i++)
 			{
-				raw_domain = dsp_elements[i].toString().split('/')[2];
+				raw_domain = extractDomain(dsp_elements[i].toString().split('/')[2]);
 				if(dsp_elements[i].toString().indexOf('http://')!=-1&&inWhiteList(raw_domain))
 				{
 					_$.addEvent(dsp_elements[i],'mouseover',function(e){DSP_show_favicon(e.target,1);});
@@ -2366,16 +2372,24 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 		}
 		else
 		{
+		  var lastDomain = "";
 			for(var i=0;i<dsp_elements.length;i++)
 			{
-				raw_domain = dsp_elements[i].toString().split('/')[2];
+				raw_domain = extractDomain(dsp_elements[i].toString().split('/')[2]);
 				if(dsp_elements[i].toString().indexOf('http://')!=-1&&inWhiteList(raw_domain))
 				{
 					if(typeof(domainArray[raw_domain]) === "undefined"){
 						domainArray[raw_domain] = objectSize(domainArray);
+						lastDomain = raw_domain;
 					}
 				}
 			}
+			//hack: make sure that youtube ist on the last position
+			if(lastDomain != "" && typeof(domainArray['youtube.com']) !== "undefined"){
+				domainArray[lastDomain] = domainArray['youtube.com'];
+				domainArray['youtube.com'] = objectSize(domainArray) -1;
+			}
+			
 			//forming query for yandex			
 			list = "";
 			var counter = 0;
@@ -2392,7 +2406,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 			if(counter>0)faviconUrls[faviconUrls.length] = query+list;
 			for(var i=0;i<dsp_elements.length;i++)
 			{
-				raw_domain = dsp_elements[i].toString().split('/')[2];
+				raw_domain = extractDomain(dsp_elements[i].toString().split('/')[2]);
 				if(dsp_elements[i].toString().indexOf('http://')!=-1&&inWhiteList(raw_domain))
 				{
 					//var favicon = 'http://favicon.yandex.net/favicon/'+dsp_elements[i].toString().split('/')[2]+'/dirty.ru/';
