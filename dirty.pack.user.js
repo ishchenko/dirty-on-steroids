@@ -2304,6 +2304,9 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 	
 
 	function extractDomain(domain){
+		if(typeof(domain) === 'undefined'){
+			return "";
+		}
 		//normalize, 'www.ru' will not work ;)
 		domain = domain.toLowerCase().replace(/^www\./, "");
 		//more work, extract root domain
