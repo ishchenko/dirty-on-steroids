@@ -2302,25 +2302,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 		return size;
 	};
 	
-	function sortObj(arr){
-	// Setup Arrays
-	var sortedKeys = new Array();
-	var sortedObj = {};
 
-	// Separate keys and sort them
-	for (var i in arr){
-		sortedKeys.push(i);
-	}
-	sortedKeys.sort();
-
-	// Reconstruct sorted obj based on keys
-	for (var i in sortedKeys){
-		sortedObj[sortedKeys[i]] = arr[sortedKeys[i]];
-	}
-	return sortedObj;
-	}
-
-	
 	function extractDomain(domain){
 		//normalize, 'www.ru' will not work ;)
 		domain = domain.toLowerCase().replace(/^www\./, "")
@@ -2391,23 +2373,25 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 		}
 		else
 		{
-		  var lastDomain = "";
+		  var youTube = -1;
 			for(var i=0;i<dsp_elements.length;i++)
 			{
 				raw_domain = extractDomain(dsp_elements[i].toString().split('/')[2]);
 				if(dsp_elements[i].toString().indexOf('http://')!=-1&&inWhiteList(raw_domain))
 				{
-					if(typeof(domainArray[raw_domain]) === "undefined"){
-						domainArray[raw_domain] = objectSize(domainArray);
-						lastDomain = raw_domain;
+					if(raw_domain!="youtube.com"){
+						if(typeof(domainArray[raw_domain]) === "undefined"){
+							domainArray[raw_domain] = objectSize(domainArray);
+							lastDomain = raw_domain;
+						}
+					}else{
+						youTube=1;
 					}
 				}
 			}
 			//hack: make sure that youtube ist on the last position
-			if(lastDomain != "" && typeof(domainArray['youtube.com']) !== "undefined"){
-				domainArray[lastDomain] = domainArray['youtube.com'];
-				domainArray['youtube.com'] = objectSize(domainArray) -1;
-				domainArray = sortObj(domainArray);				
+			if(youTube==1){
+				domainArray["youtube.com"] = objectSize(domainArray);		
 			}
 			
 			//forming query for yandex			
