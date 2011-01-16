@@ -2305,7 +2305,7 @@ if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
 
 	function extractDomain(domain){
 		//normalize, 'www.ru' will not work ;)
-		domain = domain.toLowerCase().replace(/^www\./, "")
+		domain = domain.toLowerCase().replace(/^www\./, "");
 		//more work, extract root domain
 		var s = domain.split('.');
 		//let us hope that it works, do not want to check all TLDs
