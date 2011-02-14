@@ -2043,7 +2043,36 @@ function DSP_init()
 		var time1 = new Date();
 		DSP_make_General_Bar();
 		DSP_show_hide_setting(0);
-		addBenchmark( time1, 'dsp init' );
+		addBenchmark( time1, 'dsp init' );   
+		
+		var ulLeft = document.querySelector('ul.left_col_nav')
+		if ( ulLeft)
+		{
+		    liLast = ulLeft.getElementsByTagName('li');
+		    if ( liLast )
+		    {
+		    var liItem = document.createElement('li');
+		    var aItem = document.createElement('a');
+		    aItem.setAttribute('href', 'http://inboxes.d3search.ru/');
+		    aItem.innerHTML = 'Список инбоксов';
+		    liItem.appendChild(aItem);
+		    ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
+
+		    liItem = document.createElement('li');
+		    aItem = document.createElement('a');
+		    aItem.setAttribute('href', 'http://d3search.ru/stat');
+		    aItem.innerHTML = 'Статистика';
+		    liItem.appendChild( aItem );
+            ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
+
+		    liItem = document.createElement('li');
+		    aItem = document.createElement('a');
+		    aItem.setAttribute('href', 'http://d3search.ru/roulette');
+		    aItem.innerHTML = 'КПДВ рулет';
+		    liItem.appendChild(aItem);
+            ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
+            }
+		}		
 	}
 
 	// made by crea7or
