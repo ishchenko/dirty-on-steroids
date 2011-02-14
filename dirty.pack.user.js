@@ -1,4 +1,4 @@
-//
+﻿//
 // ==UserScript==
 // @name			Dirty Service Pack 2
 // @author			Stasik0, BearOff, crea7or, flashface, slavka123
@@ -4144,8 +4144,9 @@ if(_$.settings.dirty_tags=='1')
 	function saveTagsList()
 	{
 		//workaround for opera with 0x10 code at the end of stings
-		var nrm = document.getElementById('vtags-own-tags').value.replace(/\r/g,'');
-		localStorage.setItem('dirtyTags', jsonStringify( nrm.split('\n')));
+	    var nrm = document.getElementById('vtags-own-tags').value.replace(/\r/g, '');
+//	    var tagsArray = tagsArray = nrm.split('\n');
+	    localStorage.setItem('dirtyTags', jsonStringify(nrm.split('\n')));
 		manageOwnTags();
 		return false;
 	}
@@ -4157,7 +4158,8 @@ if(_$.settings.dirty_tags=='1')
 		var tagsArray = new Array();
 		if ( tagsArrayFromLocalStore == null )
 		{
-			tagsArray = jsonParse( localStorGetItem( 'dirtyTags', '["Тупая фигня", "Это же реклама" , "Это неправда", "Об этом уже писали", "Ctrl-C Ctrl-V", "Свежак", "КДПВ", "Скандалы интриги расследования", "Все правильно сделал", "Фишкинет", "Господи какая красота111", "британские учёные", "Чиновники", "Милиция","Оборотни","Беспредел","Наука","Космос","Искусство","История","Авто","Авиация","Армия","РПЦ","Маразм","Кругом враги","Животные","fapfapfap","боже он умер","Вавилонская библиотека","вирусняк","Гурусик нямка","Думаем о России","пост проклят","еще один все понял","и снова о Главном","Зачем моё измождённое тело","слава богу родился","лепрозорий на выезде","нафталин","ожируй клюв","он же упоротый","политический кружок при сельском клубе","слава России","Творчество душевнобольных","понаехали","Я маленькая лошадка","Я открыл для себя википедию"]'));
+		    tagsArray = jsonParse(localStorGetItem('dirtyTags', '["Тупая фигня", "Это же реклама" , "Это неправда", "Об этом уже писали", "Ctrl-C Ctrl-V", "Свежак", "КДПВ", "Скандалы интриги расследования", "Все правильно сделал", "Фишкинет", "Господи какая красота111", "британские учёные", "Чиновники", "Милиция","Оборотни","Беспредел","Наука","Космос","Искусство","История","Авто","Авиация","Армия","РПЦ","Маразм","Кругом враги","Животные","fapfapfap","боже он умер","Вавилонская библиотека","вирусняк","Гурусик нямка","Думаем о России","пост проклят","еще один все понял","и снова о Главном","Зачем моё измождённое тело","слава богу родился","лепрозорий на выезде","нафталин","ожируй клюв","он же упоротый","политический кружок при сельском клубе","слава России","Творчество душевнобольных","понаехали","Я маленькая лошадка","Я открыл для себя википедию"]'));
+		    //localStorage.setItem('dirtyTags', jsonStringify(tagsArray));
 		}
 		else
 		{
@@ -4252,10 +4254,12 @@ if(_$.settings.dirty_tags=='1')
 	// set gold tag
 	function checkGoldTag()
 	{
+	    var goldSet = false;
 		var postGoldTag = document.getElementsByClassName('stars');
 		var postSilverTag = document.getElementsByClassName('wasstars');
 		if ( postSilverTag.length > 0 || postGoldTag.length > 0 )
 		{
+		    goldSet = true;
 			if ( document.querySelector('li#js-personal_tag_72') == null )
 			{
 				// add  gold
@@ -4263,6 +4267,44 @@ if(_$.settings.dirty_tags=='1')
 				location.href="javascript:void( tagsHandler.submitTag());"
 			}
 		}
+		//
+		//	if ( js-public_tag_31045)
+		var divDd = document.querySelector('div.dd');
+		if( divDd ) 
+		{
+		    var sizePreTime = 10;
+		    var posTime = divDd.innerHTML.indexOf('сегодня в ');
+		    if ( posTime < 0 )
+		    {
+		        sizePreTime = 8;
+		        posTime = divDd.innerHTML.indexOf('вчера в ');
+		    }
+		    if ( posTime > 0 )
+		    {
+		        var timeArr = divDd.innerHTML.slice( posTime + sizePreTime, posTime + sizePreTime + 5 ).split('.');
+		        if ( timeArr.length == 2 )
+		        {
+		            var curTime = new Date();
+		            var postTime = ( Number(timeArr[0]) * 60 ) + Number( timeArr[1]);
+		            var nowTime = ( curTime.getHours() * 60 ) + curTime.getMinutes();
+		            if (sizePreTime == 8) 
+		            {
+		                nowTime += ( 24 * 60 );
+		            }
+		            if (( nowTime - postTime) < 61 )
+		            {
+		                if (( document.querySelector('li#js-personal_tag_31045') == null ) && ( goldSet == true )) 
+		                {
+		                    // add  gold for hour
+		                    document.getElementById('js-new_tag_input').value = 'Золото за час';
+		                    location.href = "javascript:void( tagsHandler.submitTag());"
+		                }		            
+		            }
+		        }
+            }		    
+		}
+		
+		
 	}
 	function processCommentTags( commentDiv )
 	{
