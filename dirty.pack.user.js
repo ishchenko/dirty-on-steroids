@@ -4145,7 +4145,7 @@ if(_$.settings.dirty_tags=='1')
 		var ourTagsDivCheck = document.getElementById('js-vtags-textarea');
 		if (ourTagsDivCheck == null )
 		{
-			var tagsDivAtDirty = document.querySelector('div.b-i-tags_comments_page');
+			var tagsDivAtDirty = document.getElementById('js-post_tags');
 			if ( tagsDivAtDirty )
 			{
 				// create list of tags to edit
@@ -4234,7 +4234,7 @@ if(_$.settings.dirty_tags=='1')
 			}
 			//
 			// create div for tags
-			var tagsDivAtDirty = document.querySelector('div.b-i-tags_comments_page');
+			var tagsDivAtDirty = document.getElementById('js-post_tags');
 			if ( tagsDivAtDirty )
 			{
 				ourTagsDiv = document.createElement('div');
@@ -4360,14 +4360,14 @@ if(_$.settings.dirty_tags=='1')
 	{
 		var time1 = new Date();
 		var loggedUser = document.querySelector('div.header_logout');
-		var addFormDiv = document.querySelector('div.b-tag_add_form');
+		var addFormDiv = document.getElementById('js-tag_add_form_block');
 		if ( loggedUser && addFormDiv )
 		{
 			// add script to the page
 			_$.injectScript( manageTag + "\n" + manageTagsList + "\n" + manageOwnTags + "\n"+ loadTagsList + "\n" + saveTagsList );
 			if ( _$.settings.dirty_tags_hidetags == 1 )
 			{
-				var tagsDivAtDirty = document.querySelector('div.b-i-tags_comments_page');
+				var tagsDivAtDirty = document.getElementById('js-post_tags');
 				var divWithLinkToTags = document.createElement('div');
 				divWithLinkToTags.setAttribute('id','js-tags-script-floatlink');
 				divWithLinkToTags.setAttribute('style', 'font-size: 12px; display: block;');
