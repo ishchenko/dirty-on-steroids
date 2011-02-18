@@ -5124,7 +5124,7 @@ if(_$.settings.dirty_tags=='1')
 	}
 
 	//SHARED PART of read-button and new comment scroller
-	if(_$.settings.read_button=='1' || _$.settings.comment_scorller=='1')
+	if(_$.settings.read_button=='1' || _$.settings.comment_scroller=='1')
 	{
 		var time1 = new Date();
 
