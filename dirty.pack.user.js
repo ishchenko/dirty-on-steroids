@@ -3867,16 +3867,32 @@ if(_$.settings.karma_log=='1'){
 }
 
 //Youtube preview
-if(_$.settings.youtube_preview=='1'){
+if(_$.settings.youtube_preview=='1')
+{
 		var time1 = new Date();
-		function addPreview(comments){
+
+		function isNumber(n)
+		{
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+
+		function addPreview(comments)
+		{
 			var comment_links = comments.getElementsByTagName('a');
 			var youtube_links = new Array();
-			for(var i=0; i<comment_links.length; i++){
-				if(comment_links[i].href.split("youtube.com/").length>1){
+			var vimeo_links = new Array();
+			for (var i = 0; i < comment_links.length; i++)
+			{
+				if (comment_links[i].href.split("youtube.com/").length > 1)
+				{
 					youtube_links.push(comment_links[i]);
 				}
-		}
+				else if (comment_links[i].href.split("vimeo.com/").length > 1)
+				{
+					vimeo_links.push(comment_links[i]);
+				}
+			}
+
 		width = 480;
 		var height = 385;
 		var button = '<div style="display:inline-block; position:relative; top: -'+(height-14)+'px; left: 2px; background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b style="color: #FFF;">x</b></div>';
@@ -3948,6 +3964,100 @@ if(_$.settings.youtube_preview=='1'){
 				}
 			);
 		}
+		
+     width = 480;
+        height = 385;
+        button = '<div style="display:inline-block; position:relative; top: -' + (height - 14) + 'px; left: 2px; background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b style="color: #FFF;">x</b></div>';
+        //process vimeo links
+        for (var i = 0; i < vimeo_links.length; i++)
+        {
+            var link = vimeo_links[i];
+            var linkar = link.href.split("vimeo.com/");
+            var changeIt = false;
+			if (linkar.length > 1)
+			{
+				changeIt = isNumber(linkar[1])
+			}
+			if ( changeIt )
+			{
+            _$.addEvent(link, 'click', function(e)
+            {
+                //var re = processUrl(this.href);
+                var linkar = this.href.split("vimeo.com/");
+                if (linkar.length > 1)
+                {
+                    vimeo_id = linkar[1];
+                    if (this.name == "")
+                    {
+                        if (this.parentNode.tagName.toLowerCase() == "td")
+                        {
+                            //it`s a video-post preview
+                            this.parentNode.setAttribute('name', this.parentNode.width);
+                            this.parentNode.setAttribute('width', width + 46);
+                        }
+                        this.setAttribute('name', this.innerHTML);
+                        this.style.textDecoration = "none";
+                        this.innerHTML = '<span style="display:inline-block; clear: both; width: ' + (width + 36) + 'px; "><span><iframe width="' + width + '" height="' + height + '" src="http://player.vimeo.com/video/' + vimeo_id + '?autoplay=1" frameborder="0"></iframe></span>' + button + '</span>';
+                        //adding size change links
+                        var div = document.createElement('div');
+                        div.innerHTML = '<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>';
+                        _$.insertAfter(this, div);
+                        //div.setAttribute("style","position:relative;");
+                        //div.style.left = (_$.element_position(this).x - div.clientWidth + 30) + "px";
+                        this.style.display = "block";
+                        arr = _$.$t('a', div);
+                        for (var link in arr)
+                        {
+                            link = arr[link];
+                            _$.addEvent(link, 'click', function(e)
+                            {
+                                if (this.className == "normal")
+                                {
+                                    w = 480; h = 385;
+                                }
+                                else if (this.className == "big")
+                                {
+                                    w = 640; h = 480;
+                                }
+                                else
+                                {
+                                    w = 800; h = 600;
+                                };
+
+                                var pDiv = this.parentNode.parentNode.previousSibling;
+                                //move x button
+                                _$.$t('span', pDiv)[0].style.width = w + 36 + "px";
+                                _$.$t('div', pDiv)[0].style.top = "-" + (h - 14) + "px";
+                                //resize movie
+                                var elem = _$.$t('iframe', pDiv)[0];
+                                elem.width = w;
+                                elem.height = h;
+                                e.preventDefault();
+                                return false;
+                            });
+                        }
+                    }
+                    else
+                    {
+                        if (this.parentNode.tagName.toLowerCase() == "td")
+                        {
+                            //it`s a video-post preview
+                            this.parentNode.setAttribute('width', this.parentNode.getAttribute('name'));
+                        }
+                        this.innerHTML = this.getAttribute('name');
+                        this.style.textDecoration = "underline";
+                        this.setAttribute('name', "");
+                        this.style.display = "inline";
+                        this.parentNode.removeChild(this.nextSibling);
+                    }
+                    e.preventDefault();
+                    return false;
+                }
+            }
+			);
+			}		
+		}
+		
 	}
 
 		function documentChanged(event) {
