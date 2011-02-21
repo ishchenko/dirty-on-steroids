@@ -2068,7 +2068,7 @@ function DSP_init()
 		    liItem = document.createElement('li');
 		    aItem = document.createElement('a');
 		    aItem.setAttribute('href', 'http://d3search.ru/roulette');
-		    aItem.innerHTML = 'КПДВ рулет';
+		    aItem.innerHTML = 'КДПВ рулет';
 		    liItem.appendChild(aItem);
             ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
             }
