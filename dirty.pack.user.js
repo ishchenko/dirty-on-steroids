@@ -2055,19 +2055,22 @@ function DSP_init()
 		    var aItem = document.createElement('a');
 		    aItem.setAttribute('href', 'http://inboxes.d3search.ru/');
 		    aItem.innerHTML = 'Список инбоксов';
+		aItem.setAttribute('target', '_blank');
 		    liItem.appendChild(aItem);
 		    ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
 
 		    liItem = document.createElement('li');
 		    aItem = document.createElement('a');
 		    aItem.setAttribute('href', 'http://d3search.ru/stat');
+		aItem.setAttribute('target', '_blank');
 		    aItem.innerHTML = 'Статистика';
 		    liItem.appendChild( aItem );
             ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
 
-		    liItem = document.createElement('li');
-		    aItem = document.createElement('a');
-		    aItem.setAttribute('href', 'http://d3search.ru/roulette');
+		liItem = document.createElement('li');
+		aItem = document.createElement('a');
+		aItem.setAttribute('href', 'http://d3search.ru/roulette');
+		aItem.setAttribute('target', '_blank');
 		    aItem.innerHTML = 'КДПВ рулет';
 		    liItem.appendChild(aItem);
             ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
@@ -2704,6 +2707,13 @@ var divTags = document.getElementById('js-tags');
 if ( divRightCol && divTags)
 {
 	var divAds = divRightCol.querySelector('div.b-ads');
+	if ( ! divAds )
+	{
+		divAds = document.createElement('div');
+		divAds.setAttribute('style','float: right; width: 300px; height: 690px; margin-top: -105px; position: relative; z-index: 3;');
+		divAds.setAttribute('class','b-abs');
+		divTags.parentNode.insertBefore( divAds, divTags );
+	}
 	var newsFromD3search = localStorage.getItem('stickersMarkup');
 	if ( newsFromD3search != null  && divAds)
 	{
@@ -2728,15 +2738,17 @@ if ( divRightCol && divTags)
 
 		//do we have some items to show?
 		newsArray = tempDiv.querySelectorAll('div.sticker');
-		if( newsArray.length > 0 ){
+		if( newsArray.length > 0 )
+		{
 			//only if new news are present
-			divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
+			//divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 			var divForNews = document.createElement('div');
 			var subDivForNews = document.createElement('div');
 			divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
 			var subDivForNews = document.createElement('div');
 
-			for(var i=0;i<newsArray.length;i++){
+			for(var i=0;i<newsArray.length;i++)
+			{
 				//remove original hide link
 				var hide = newsArray[i].querySelector('div.sticker-hide');
 				if(hide)newsArray[i].removeChild(hide);
@@ -4469,6 +4481,24 @@ if(_$.settings.dirty_tags=='1')
 	if( document.location.href.indexOf("comments") > -1 )
 	{
 		var time1 = new Date();
+		
+		var newTagsDiv = document.getElementById('js-post_tags');
+		if ( newTagsDiv)
+		{
+			//var oldTagsDiv = document.querySelector('div.h-ads_comments_page');
+			//var cloneDiv = document.cloneNode( newTagsDiv );
+			//if ( oldTagsDiv )
+			//{
+//				oldTagsDiv.appendChild( newTagsDiv );
+//				_$.injectScript("tagsHandler.toggleTagEdit();");				
+//				newTagsDiv = document.getElementById('js-new_tag_input');
+//				if ( newTagsDiv)
+//				{
+//					newTagsDiv.setAttribute('style','width: 220px !important;');
+//				}				
+//			}
+		}
+		
 		var loggedUser = document.querySelector('div.header_logout');
 		var addFormDiv = document.getElementById('js-tag_add_form_block');
 		if ( loggedUser && addFormDiv )
