@@ -9,6 +9,7 @@
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
+// @version			2.5.1
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -413,6 +414,7 @@ if( typeof _$.settings.use_pictures == "undefined") { _$.settings.use_pictures =
 if( typeof _$.settings.username_replace == "undefined") { _$.settings.username_replace = 0; settingsSave = true; }
 if( typeof _$.settings.posts_average == "undefined") { _$.settings.posts_average = 0; settingsSave = true; }
 if( typeof _$.settings.youtube_fullscreen == "undefined") { _$.settings.youtube_fullscreen = 1; settingsSave = true; }
+if( typeof _$.settings.imglinks_preview == "undefined") { _$.settings.imglinks_preview = 1; settingsSave = true; }
 if( typeof _$.settings.tooltip_on == "undefined") { _$.settings.tooltip_on = 1; settingsSave = true; };
 if( typeof _$.settings.tooltip_show_self == "undefined") { _$.settings.tooltip_show_self = 1; settingsSave = true; }
 if( typeof _$.settings.favicon_on == "undefined") { _$.settings.favicon_on = 1; _$.settings.favicon_style = 0; settingsSave = true; }
@@ -3383,7 +3385,7 @@ function yarr(){
 	}
   }
 	tagpref = "<a href=\"http://www.youtube.com/watch?v="+youtube_id+"&t='+seconds+'\">";
-	taginf = "<img src=\"http://img.youtube.com/vi/"+youtube_id+"/"+val+".jpg\" width=\"120\">";
+	taginf = "<img src=\"http://img.youtube.com/vi/"+youtube_id+"/"+val+".jpg\">";
 	tagpost = "</a>";
 
 	if(val == 4){
@@ -3511,8 +3513,55 @@ if(youtube_textarea!=null){
 
 //END BIG BLOCK
 
+// preview img links by crea7or
+function clickOnImageLink(e)
+{
+	// http://pit.dirty.ru/dirty/1/2011/04/15/28284-142540-32deef3d70482f072b516ac3a723533d.gif
+	var imgPreview = document.createElement('img');
+	imgPreview.setAttribute('src', this.href );
+	var imgLink = document.createElement('a');
+	imgLink.setAttribute('href', '#');
+	_$.addEvent( imgLink, 'click', function(e) { this.previousSibling.setAttribute('style', this.previousSibling.getAttribute('bkpstyle')); this.parentNode.removeChild(this ); e.preventDefault(); return false; });
+	imgLink.appendChild( imgPreview );
+	_$.insertAfter(this, imgLink);
+	this.setAttribute('bkpstyle', this.getAttribute('style'));
+	this.setAttribute('style', 'display: none');
+	e.preventDefault();
+	return false;
+}
+
+if ( _$.settings.imglinks_preview == 1 )
+{
+	var allLinksArray = document.body.getElementsByTagName('a');	
+	for (var i = 0; i < allLinksArray.length; i++)
+	{
+		if ( allLinksArray[i].href.length > 5 )
+		{
+			linkext3 = allLinksArray[i].href.substr( allLinksArray[i].href.length - 4 );
+			if ( linkext3.search(/\.gif/i) == 0)
+			{
+				_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
+			}
+			else if (linkext3.search(/\.jpg/i) == 0)
+			{
+				_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
+			}
+			else if(linkext3.search(/\.png/i) == 0)
+			{
+				_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
+			}
+			else if(linkext3.search(/jpeg/i) == 0)
+			{
+				_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);		
+			}
+		}
+	}
+}
+// preview img links by crea7or
+
 //click on ещё
-if(location.pathname.indexOf('/user/')==0 && _$.$c('usermorebutton').length > 0){
+if(location.pathname.indexOf('/user/')==0 && _$.$c('usermorebutton').length > 0)
+{
 	_$.$c('usermorebutton')[0].style.display = "none";
 	_$.injectScript("$('js-user_page_more').toggleClass('hidden');");
 }
@@ -3677,6 +3726,10 @@ if( _$.settings.ban_encoding == '1')
 			'Ð»Ð¾Ð¿Ð°ÑÐ¾Ð¹':'лопатой',
 			'Ð´Ð¾':'до',
 			'Ð·Ð°':'за',
+			'ÐÐ¿ÑÐµÐ»Ñ':'Апреля',
+			'ÐÐ°ÑÑÐ°':'Марта',
+			'Ð¤ÐµÐ²ÑÐ°Ð»Ñ':'Февраля',
+			'Ð¯Ð½Ð²Ð°ÑÑ':'Января',
 			'ÐÐµÐºÐ°Ð±ÑÑ':'Декабря',
 			'ÐÐºÑÑÐ±ÑÑ':'Октября',
 			'ÐÐ¾ÑÐ±ÑÑ':'Ноября',
