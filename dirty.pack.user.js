@@ -9,7 +9,7 @@
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
-// @version			2.5.1
+// @version			2.5.2
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -2715,7 +2715,7 @@ if ( divRightCol && divTags)
 		divAds.setAttribute('style','float: right; width: 300px; height: 690px; margin-top: -105px; position: relative; z-index: 3;');
 		divAds.setAttribute('class','b-abs');
 		divTags.parentNode.insertBefore( divAds, divTags );
-	}
+	}	
 	var newsFromD3search = localStorage.getItem('stickersMarkup');
 	if ( newsFromD3search != null  && divAds)
 	{
@@ -2745,6 +2745,7 @@ if ( divRightCol && divTags)
 			//only if new news are present
 			//divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 			var divForNews = document.createElement('div');
+			divForNews.setAttribute('style', 'margin-top: 30px;');
 			var subDivForNews = document.createElement('div');
 			for(var i=0;i<newsArray.length;i++)
 			{
@@ -3529,31 +3530,54 @@ function clickOnImageLink(e)
 
 if ( _$.settings.imglinks_preview == 1 )
 {
-	var allLinksArray = document.body.getElementsByTagName('a');	
-	for (var i = 0; i < allLinksArray.length; i++)
+
+
+	function imagesPreview( baseelement )
 	{
-		if ( allLinksArray[i].href.length > 5 )
+		var allLinksArray = baseelement.getElementsByTagName('a');
+		for (var i = 0; i < allLinksArray.length; i++)
 		{
-			linkext3 = allLinksArray[i].href.substr( allLinksArray[i].href.length - 4 );
-			if ( linkext3.search(/\.gif/i) == 0)
+			if (allLinksArray[i].href.length > 5)
 			{
-				_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
+				linkext3 = allLinksArray[i].href.substr(allLinksArray[i].href.length - 4);
+				if (linkext3.search(/\.gif/i) == 0)
+				{
+					_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
+				}
+				else if (linkext3.search(/\.jpg/i) == 0)
+				{
+					_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
+				}
+				else if (linkext3.search(/\.png/i) == 0)
+				{
+					_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
+				}
+				else if (linkext3.search(/jpeg/i) == 0)
+				{
+					_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
+				}
 			}
-			else if (linkext3.search(/\.jpg/i) == 0)
-			{
-				_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
-			}
-			else if(linkext3.search(/\.png/i) == 0)
-			{
-				_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);
-			}
-			else if(linkext3.search(/jpeg/i) == 0)
-			{
-				_$.addEvent(allLinksArray[i], 'click', clickOnImageLink);		
-			}
-		}
+		}	
 	}
+
+	imagesPreview( document.body );
+
+	function imgDocumentChanged( event )
+	{
+		if ( supressEvents )
+		{
+			return;
+		}
+		if ( event.target.className != null && event.target.className.indexOf("comment") > -1)
+		{
+			imagesPreview(event.target);
+		}
+	}	
+
+	//handle new ajax-generated content
+	_$.addEvent(document, "DOMNodeInserted", imgDocumentChanged);	
 }
+
 // preview img links by crea7or
 
 //click on ещё
