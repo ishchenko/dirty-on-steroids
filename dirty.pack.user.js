@@ -2709,8 +2709,8 @@ var divTags = document.getElementById('js-tags');
 if ( divRightCol && divTags)
 {
 	var divAds = divRightCol.querySelector('div.b-ads');
-	if ( ! divAds )
-	{
+	if ( divAds == null )
+	{	
 		divAds = document.createElement('div');
 		divAds.setAttribute('style','float: right; width: 300px; height: 690px; margin-top: -105px; position: relative; z-index: 3;');
 		divAds.setAttribute('class','b-abs');
@@ -2746,9 +2746,6 @@ if ( divRightCol && divTags)
 			//divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
 			var divForNews = document.createElement('div');
 			var subDivForNews = document.createElement('div');
-			divForNews.setAttribute('style','float: right; position: relative; width: 300px; z-index: 20; margin-top:-75px;');
-			var subDivForNews = document.createElement('div');
-
 			for(var i=0;i<newsArray.length;i++)
 			{
 				//remove original hide link
@@ -2763,7 +2760,8 @@ if ( divRightCol && divTags)
 
 			//now append some events
 			var linksArray = subDivForNews.querySelectorAll("a.vote_details_close");
-			for(var i=0;i<linksArray.length;i++){
+			for(var i=0;i<linksArray.length;i++)
+			{
 				_$.addEvent(linksArray[i], 'click', function(e){
 				  var parentDiv = e.target.parentNode;
 					if(parentDiv.parentNode.querySelectorAll("div.subs_ads").length <=1){
@@ -2797,8 +2795,7 @@ if ( divRightCol && divTags)
 			//in tempDiv there are some remainders like <style> tags etc
 			divForNews.appendChild(tempDiv);
 			divForNews.appendChild( subDivForNews );
-			divRightCol.insertBefore( divForNews, divAds );
-
+			divAds.appendChild( divForNews );
 		}
 	}
 }
