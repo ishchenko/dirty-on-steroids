@@ -3985,13 +3985,17 @@ if(_$.settings.youtube_preview=='1')
 		//process youtube links
 		for(var i=0; i<youtube_links.length; i++){
 			var link = youtube_links[i];
-			_$.addEvent(link,'click',function(e){
+			_$.addEvent(link,'click',function(e)
+			{
 					var re = processUrl(this.href);
-					if(re != false){
+					if(re != false)
+					{
 						youtube_id = re.id;
 						time = re.time;
-						if(this.name == ""){
-							if(this.parentNode.tagName.toLowerCase()=="td"){
+						if(this.name == "")
+						{
+							if(this.parentNode.tagName.toLowerCase()=="td")
+							{
 								//it`s a video-post preview
 								this.parentNode.setAttribute('name', this.parentNode.width);
 								this.parentNode.setAttribute('width', width+46);
@@ -4007,7 +4011,8 @@ if(_$.settings.youtube_preview=='1')
 							//div.style.left = (_$.element_position(this).x - div.clientWidth + 30) + "px";
 							this.style.display = "block";
 							arr = _$.$t('a',div);
-							for(var link in arr){
+							for(var link in arr)
+							{
 							  link = arr[link];
 								_$.addEvent(link,'click',function(e){
 									if(this.className == "normal"){
@@ -4033,8 +4038,11 @@ if(_$.settings.youtube_preview=='1')
 									return false;
 								});
 							}
-						}else{
-							if(this.parentNode.tagName.toLowerCase()=="td"){
+						}
+						else if (e.target.innerText == 'x')
+						{
+							if(this.parentNode.tagName.toLowerCase()=="td")
+							{
 								//it`s a video-post preview
 								this.parentNode.setAttribute('width', this.parentNode.getAttribute('name'));
 							}
