@@ -9,7 +9,7 @@
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
-// @version			2.5.2
+// @version			2.5.3
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -2053,29 +2053,37 @@ function DSP_init()
 		    liLast = ulLeft.getElementsByTagName('li');
 		    if ( liLast )
 		    {
-		    var liItem = document.createElement('li');
-		    var aItem = document.createElement('a');
-		    aItem.setAttribute('href', 'http://inboxes.d3search.ru/');
-		    aItem.innerHTML = 'Список инбоксов';
-		aItem.setAttribute('target', '_blank');
-		    liItem.appendChild(aItem);
-		    ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
+		    	liItem = document.createElement('li');
+		    	aItem = document.createElement('a');
+		    	aItem.setAttribute('href', 'http://inboxes.d3search.ru/');
+		    	aItem.innerHTML = 'Список инбоксов';
+		    	aItem.setAttribute('target', '_blank');
+		    	liItem.appendChild(aItem);
+		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
 
-		    liItem = document.createElement('li');
-		    aItem = document.createElement('a');
-		    aItem.setAttribute('href', 'http://d3search.ru/stat');
-		aItem.setAttribute('target', '_blank');
-		    aItem.innerHTML = 'Статистика';
-		    liItem.appendChild( aItem );
-            ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
+		    	liItem = document.createElement('li');
+		    	aItem = document.createElement('a');
+		    	aItem.setAttribute('href', 'http://d3search.ru/stat');
+		    	aItem.setAttribute('target', '_blank');
+		    	aItem.innerHTML = 'Статистика';
+		    	liItem.appendChild(aItem);
+		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
 
-		liItem = document.createElement('li');
-		aItem = document.createElement('a');
-		aItem.setAttribute('href', 'http://d3search.ru/roulette');
-		aItem.setAttribute('target', '_blank');
-		    aItem.innerHTML = 'КДПВ рулет';
-		    liItem.appendChild(aItem);
-            ulLeft.insertBefore( liItem, liLast[ liLast.length -1 ]);
+		    	liItem = document.createElement('li');
+		    	aItem = document.createElement('a');
+		    	aItem.setAttribute('href', 'http://d3search.ru/roulette');
+		    	aItem.setAttribute('target', '_blank');
+		    	aItem.innerHTML = 'КДПВ рулет';
+		    	liItem.appendChild(aItem);
+		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
+
+		    	liItem = document.createElement('li');
+		    	aItem = document.createElement('a');
+		    	aItem.setAttribute('href', 'http://together.ru/');
+		    	aItem.setAttribute('target', '_blank');
+		    	aItem.innerHTML = 'Сообщество "Вместе"';
+		    	liItem.appendChild(aItem);
+		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
             }
 		}		
 	}
@@ -2520,75 +2528,97 @@ if(_$.settings.posts_average=='1')
 
 // Username replace
 
-if(_$.settings.username_replace=='1'){
-
+if(_$.settings.username_replace=='1')
+{
 	var time1 = new Date();
-
 	DSP_replace_username(1);
-
 	addBenchmark( time1, '%username% replace' );
 }
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * *
 
-		Youtube Video Enhancer
-
-
-* * * * * * * * * * * * * * * * * * * * * * * * * */
-
-
-if(_$.settings.youtube_fullscreen=='1'){
-
-	if(_$.location.indexOf('/comments/')==0){
-
+//		Youtube Video Enhancer
+if(_$.settings.youtube_fullscreen=='1')
+{
+	if(_$.location.indexOf('/comments/')==0)
+	{
 		var time1 = new Date();
-
-		if(_$.$t('object').length>0&&_$.$c('dt')[0].innerHTML.indexOf('value="http://www.youtube.com')>0){
-
+		if(_$.$t('object').length>0&&_$.$c('dt')[0].innerHTML.indexOf('value="http://www.youtube.com')>0)
+		{
 			var dsp_video_link = _$.$t('object')[0].parentNode.innerHTML.split('value="http')[1].split('"')[0];
 			var dsp_video_array = _$.$t('object')[0].parentNode.innerHTML.split('<');
 			var dsp_video_html = dsp_video_array[0];
-
-			for(var i=1; i<dsp_video_array.length; i++){
-
+			for(var i=1; i<dsp_video_array.length; i++)
+			{
 				if(dsp_video_array[i][0]=='p') dsp_video_html += '<'+dsp_video_array[i]+'</param>';
 				else if(dsp_video_array[i][0]=='e') dsp_video_html += '<'+dsp_video_array[i]+'</embed>';
 				else dsp_video_html += '<'+dsp_video_array[i];
 			}
-
 			dsp_video_html = dsp_video_html.split('%20').join('').split('<embed').join('<param name="allowFullScreen" value="true"></param><embed allowfullscreen="true"');
 			dsp_video_html = dsp_video_html.split(dsp_video_link).join(dsp_video_link+'&hl=ru_RU&fs=1');
 			_$.$t('object')[0].parentNode.innerHTML = dsp_video_html;
 		}
-
-
 		addBenchmark( time1, 'youtube fullscreen' );
 	}
+
+	// add youtube bar to all images of video from youtube.com
+	/*
+	function youtubImageLoad( e )
+	{
+		var newImg = new Image();
+		newImg.src = this.getAttribute('src');
+		var imgWidth = newImg.width;
+		if ( this.getAttribute('width') > 0 )
+		{
+			imgWidth = this.getAttribute('width');
+		}
+		ytImageSrc = "http://pit.dirty.ru/dirty/1/2011/04/19/28284-000154-0baf2067878046ed9998ee2ca0f298f3.png";	
+		if ( this.parentNode.tagName == "A" )
+		{
+			var ytbarImg = document.createElement('img');
+			ytbarImg.setAttribute('src', ytImageSrc );
+			ytbarImg.setAttribute('width',  imgWidth );
+			ytbarImg.setAttribute('style', 'margin-top: -5px; clear: all; position: absolute; left: ' + this.offsetLeft + 'px;');
+	
+			this.parentNode.appendChild( document.createElement('br'));
+			this.parentNode.appendChild( ytbarImg );
+			this.parentNode.appendChild( document.createElement('br'));			
+			this.parentNode.appendChild( document.createElement('p'));
+		}
+		return true;
+	}
+
+	var imgLinks = document.getElementsByTagName('img');
+	if ( imgLinks )
+	{
+		for ( cntr =0; cntr < imgLinks.length; cntr++ )	
+		{
+			if ( imgLinks[cntr].getAttribute('src').search(/img\.youtube\.com/i) > -1 )
+			{
+				_$.addEvent( imgLinks[cntr], 'load', youtubImageLoad );
+			}
+		}
+	}
+	*/
 }
 
-
 // Color Picker
-
-if(_$.settings.colors_on=='1'){
-
+if(_$.settings.colors_on=='1')
+{
 	var time1 = new Date();
-	if(_$.location.indexOf('/comments/')==0||_$.location.indexOf('/news/')==0||(_$.location.indexOf('/my/inbox/')==0&&_$.location!='/my/inbox/')){
-
+	if(_$.location.indexOf('/comments/')==0||_$.location.indexOf('/news/')==0||(_$.location.indexOf('/my/inbox/')==0&&_$.location!='/my/inbox/'))
+	{
 		dsp_all_comments = _$.$c('c_footer');
-
 		DSP_colorize_comments();
 		dsp_jscolor.init();
 	}
-
 	addBenchmark( time1, 'comments colorizer' );
 }
-
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
 		Service Pack 2
-
+		
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 //SP 2, NEW SCRIPTS START HERE
 //STEP FOUR
@@ -3530,8 +3560,6 @@ function clickOnImageLink(e)
 
 if ( _$.settings.imglinks_preview == 1 )
 {
-
-
 	function imagesPreview( baseelement )
 	{
 		var allLinksArray = baseelement.getElementsByTagName('a');
@@ -3631,7 +3659,7 @@ if(_$.settings.arrows_on=='1'){
 		return false;
 	}
 
-	function documentChanged(event) {
+	function documentChangedArr(event) {
 		if (supressEvents) {
 			return;
 		}
@@ -3641,7 +3669,7 @@ if(_$.settings.arrows_on=='1'){
 	}
 
 	apply_links(document);
-	_$.addEvent(document,"DOMNodeInserted", documentChanged);
+	_$.addEvent(document,"DOMNodeInserted", documentChangedArr);
 
 	addBenchmark( time1, 'triple arrows in comments' );
 }
@@ -3747,6 +3775,7 @@ if( _$.settings.ban_encoding == '1')
 			'Ð»Ð¾Ð¿Ð°ÑÐ¾Ð¹':'лопатой',
 			'Ð´Ð¾':'до',
 			'Ð·Ð°':'за',
+			'Вая':'Мая',
 			'ÐÐ¿ÑÐµÐ»Ñ':'Апреля',
 			'ÐÐ°ÑÑÐ°':'Марта',
 			'Ð¤ÐµÐ²ÑÐ°Ð»Ñ':'Февраля',
@@ -4039,7 +4068,8 @@ if(_$.settings.youtube_preview=='1')
 								});
 							}
 						}
-						else if (e.target.innerText == 'x')
+//						else if (e.target.firstChild.data == 'x')
+						else
 						{
 							if(this.parentNode.tagName.toLowerCase()=="td")
 							{
@@ -4154,11 +4184,14 @@ if(_$.settings.youtube_preview=='1')
 		
 	}
 
-		function documentChanged(event) {
-			if (supressEvents) {
+		function documentChangedYT(event) 
+		{
+			if (supressEvents) 
+			{
 				return;
 			}
-			if(event.target.className != null && event.target.className.indexOf("comment")>-1){
+			if(event.target.className != null && event.target.className.indexOf("comment")>-1)
+			{
 				addPreview(event.target);
 			}
 		}
@@ -4188,7 +4221,7 @@ if(_$.settings.youtube_preview=='1')
 		}
 
 		//handle new ajax-generated content
-		_$.addEvent(document,"DOMNodeInserted", documentChanged);
+		_$.addEvent(document,"DOMNodeInserted", documentChangedYT);
 
 		addBenchmark( time1, 'youtube preview' );
 	}
