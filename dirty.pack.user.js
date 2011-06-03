@@ -4,12 +4,12 @@
 // @author			Stasik0, BearOff, crea7or, flashface, slavka123
 // @namespace		http://dirty.ru/
 // @description		Dirty Service Pack 2.5
-// @require			http://crea7or.spb.ru/scripts/user.js.updater.php?id=88906&days=1
+// @require			http://crea7or.spb.ru/scripts/user.js.updater.php?id=88906&days=7
 // @include			http://dirty.ru/*
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
-// @version			2.5.3
+// @version			2.5.5
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -2742,10 +2742,11 @@ if ( divRightCol && divTags)
 	if ( divAds == null )
 	{	
 		divAds = document.createElement('div');
-		divAds.setAttribute('style','float: right; width: 300px; height: 690px; margin-top: -105px; position: relative; z-index: 3;');
-		divAds.setAttribute('class','b-abs');
+		divAds.setAttribute('style','float: right; width: 300px; height: 690px; margin-top: 0px; position: relative; z-index: 3;');
+		divAds.setAttribute('class', 'b-abs');
 		divTags.parentNode.insertBefore( divAds, divTags );
 	}	
+	
 	var newsFromD3search = localStorage.getItem('stickersMarkup');
 	if ( newsFromD3search != null  && divAds)
 	{
@@ -3775,7 +3776,8 @@ if( _$.settings.ban_encoding == '1')
 			'Ð»Ð¾Ð¿Ð°ÑÐ¾Ð¹':'лопатой',
 			'Ð´Ð¾':'до',
 			'Ð·Ð°':'за',
-			'Вая':'Мая',
+			'ÐÑÐ½Ñ':'Июня',
+			'ÐÐ°Ñ':'Мая',
 			'ÐÐ¿ÑÐµÐ»Ñ':'Апреля',
 			'ÐÐ°ÑÑÐ°':'Марта',
 			'Ð¤ÐµÐ²ÑÐ°Ð»Ñ':'Февраля',
@@ -4550,7 +4552,9 @@ if(_$.settings.dirty_tags=='1')
 		        var timeArr = divDd.innerHTML.slice( posTime + sizePreTime, posTime + sizePreTime + 5 ).split('.');
 		        if ( timeArr.length == 2 )
 		        {
-		            var curTime = new Date();
+			var curTime = new Date();
+			if ( curTime.getTimezoneOffset() == -240 )
+			{
 		            var postTime = ( Number(timeArr[0]) * 60 ) + Number( timeArr[1]);
 		            var nowTime = ( curTime.getHours() * 60 ) + curTime.getMinutes();
 		            if (sizePreTime == 8) 
@@ -4566,6 +4570,7 @@ if(_$.settings.dirty_tags=='1')
 		                    location.href = "javascript:void( tagsHandler.submitTag());"
 		                }		            
 		            }
+			}
 		        }
             }		    
 		}
