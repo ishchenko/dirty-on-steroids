@@ -2,3 +2,5 @@
 manifest.json
 i128.png
 dirty.pack.user.old.js
+/.settings/
+/.*
