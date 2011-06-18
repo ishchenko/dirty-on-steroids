@@ -59,26 +59,13 @@ var _$ = {
 	browser: function(){
 
 		var string = navigator.userAgent.toLowerCase();
-		var params = null;
+		var sign = {opera:'opera/',firefox:'firefox/',chrome:'chrome/',safari:'safari/',ie:'msie '};
 
-		if(string.indexOf('opera/')>-1)
-			params = {name:'opera',ver:string.split('opera/')[1].split(' ')[0]};
+		for( var i in sign)
+			if(string.indexOf(sign[i])>-1)
+				return {name:i,ver:string.split(sign[i])[1].split(' ')[0]};
 
-		else if(string.indexOf('firefox/')>-1)
-			params = {name:'firefox',ver:string.split('firefox/')[1].split(' ')[0]};
-
-		else if(string.indexOf('chrome/')>-1)
-			params = {name:'chrome',ver:string.split('chrome/')[1].split(' ')[0]};
-
-		else if(string.indexOf('safari/')>-1)
-			params = {name:'safari',ver:string.split('safari/')[1].split(' ')[0]};
-
-		else if(string.indexOf('msie ')>-1)
-			params = {name:'ie',ver:string.split('msie ')[1].split(' ')[0]};
-
-		else params = {name:'unknown',ver:'unknown'};
-
-		return params;
+		return {name:'unknown',ver:'unknown'};
 	},
 
 	$: function(id){
@@ -88,22 +75,12 @@ var _$ = {
 
 	$t: function(name,obj){
 
-		var obj = obj||document;
-
-		return obj.getElementsByTagName(name);
+		return (obj||document).getElementsByTagName(name);
 	},
 
 	$c: function(name,obj,tagName)
 	{
-		var obj = obj||document;
-		if( tagName==null )
-		{
-			return obj.querySelectorAll( '*.' + name );
-		}
-		else
-		{
-			return obj.querySelectorAll( tagName + '.' + name );
-		}
+		return (obj||document).querySelectorAll((tagName==null?'*':tagName)  + '.' + name );
 	},
 
 	$f: function(name,element,val){
@@ -134,15 +111,15 @@ var _$ = {
 
 	toggle_div: function(name,param){
 
-		if(param) document.getElementById(name).style.display = (param==1)?'block':'none';
-		else document.getElementById(name).style.display = (document.getElementById(name).style.display=='none')?'block':'none';
+		with(document.getElementById(name).style)
+			display = (param && param==1 || display=='none')?'block':'none';
 	},
 
 	current_scroll: function(){
 
 		var scrollx = (document.scrollX)?document.scrollX:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft;
 		var scrolly = (document.scrollY)?document.scrollY:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop;
-		return {x:scrollx,y:scrolly}
+		return {x:scrollx,y:scrolly};
 	},
 
 	element_position: function(el){
@@ -157,21 +134,21 @@ var _$ = {
 				y += el.offsetTop;
 			}
 		}
-		return {x:x,y:y}
+		return {x:x,y:y};
 	},
 
 	document_size: function(){
 
 		var y = parseInt(Math.max(document.compatMode!='CSS1Compat'?document.body.scrollHeight:document.documentElement.scrollHeight,_$.viewarea_size().y));
 		var x = parseInt(Math.max(document.compatMode!='CSS1Compat'?document.body.scrollWidth:document.documentElement.scrollWidth,_$.viewarea_size().x));
-		return {x:x,y:y}
+		return {x:x,y:y};
 	},
 
 	viewarea_size: function(){
 
 		var y = parseInt(((document.compatMode||_$.browser().name=='ie')&&!window.opera)?(document.compatMode=='CSS1Compat')?document.documentElement.clientHeight:document.body.clientHeight:(document.parentWindow||document.defaultView).innerHeight);
 		var x = parseInt(((document.compatMode||_$.browser().name=='ie')&&!window.opera)?(document.compatMode=='CSS1Compat')?document.documentElement.clientWidth:document.body.clientWidth:(document.parentWindow||document.defaultView).innerWidth);
-		return {x:x,y:y}
+		return {x:x,y:y};
 	},
 
 	scroll_position: function(y,x){
@@ -183,7 +160,7 @@ var _$ = {
 
 			y = document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop;
 			x = document.body.scrollTop?document.body.scrollLeft:document.documentElement.scrollLeft;
-			return {x:x, y:y}
+			return {x:x, y:y};
 		}
 		else{
 			if(y===null){y = document.body.scrollTop?document.body.scrollTop:document.documentElement.scrollTop;};
@@ -349,7 +326,7 @@ var _$ = {
 		if (document.createEventObject){
 			// dispatch for IE
 			var evt = document.createEventObject();
-			return element.fireEvent('on'+event,evt)
+			return element.fireEvent('on'+event,evt);
 		}else{
 			// dispatch for firefox + others
 			var evt = document.createEvent("MouseEvents");
@@ -367,7 +344,7 @@ var _$ = {
 	//		element.innerText = text;
 	//	}
 	//}
-}
+};
 
 // BEGIN CONFIG
 // made by crea7or
@@ -409,79 +386,84 @@ _$.injectScript( jsonParse + "\n" + jsonStringify  + "\n" +  localStorGetItem );
 
 _$.set_get();
 
-var settingsSave = false;
-if( typeof _$.settings.use_pictures == "undefined") { _$.settings.use_pictures = 1; settingsSave = true; }
-if( typeof _$.settings.username_replace == "undefined") { _$.settings.username_replace = 0; settingsSave = true; }
-if( typeof _$.settings.posts_average == "undefined") { _$.settings.posts_average = 0; settingsSave = true; }
-if( typeof _$.settings.youtube_fullscreen == "undefined") { _$.settings.youtube_fullscreen = 1; settingsSave = true; }
-if( typeof _$.settings.imglinks_preview == "undefined") { _$.settings.imglinks_preview = 1; settingsSave = true; }
-if( typeof _$.settings.tooltip_on == "undefined") { _$.settings.tooltip_on = 1; settingsSave = true; };
-if( typeof _$.settings.tooltip_show_self == "undefined") { _$.settings.tooltip_show_self = 1; settingsSave = true; }
-if( typeof _$.settings.favicon_on == "undefined") { _$.settings.favicon_on = 1; _$.settings.favicon_style = 0; settingsSave = true; }
-if( typeof _$.settings.colors_on == "undefined") { _$.settings.colors_on = 0; settingsSave = true; }
-if( typeof _$.settings.colors_border == "undefined") { _$.settings.colors_border = 1; settingsSave = true; }
-//if( typeof _$.settings_colors.length < 1 ) { _$.settings_colors = '[]'; settingsSave = true; }
-//SP2 adding scripts - STEP ONE
-if( typeof _$.settings.dekabr == "undefined") { _$.settings.dekabr = 0; settingsSave = true; }
-if( typeof _$.settings.dirty_avatar == "undefined") { _$.settings.dirty_avatar = 1; settingsSave = true; }
-if( typeof _$.settings.grt_enabled == "undefined") { _$.settings.grt_enabled = 1; settingsSave = true; }
-if( typeof _$.settings.grt_random == "undefined") { _$.settings.grt_random = 1; settingsSave = true; }
-if( typeof _$.settings.online_enabled == "undefined") { _$.settings.online_enabled = 1; settingsSave = true; }
-if( typeof _$.settings.instant_search == "undefined") { _$.settings.instant_search = 1; settingsSave = true; }
-if( typeof _$.settings.instant_search_hide == "undefined") { _$.settings.instant_search_hide = 0; settingsSave = true; }
-if( typeof _$.settings.newcomments_saver == "undefined") { _$.settings.newcomments_saver = 1; settingsSave = true; }
-if( typeof _$.settings.newcomments_saver_max == "undefined") { _$.settings.newcomments_saver_max = 0; settingsSave = true; }
-if( typeof _$.settings.inbox_text == "undefined") { _$.settings.inbox_text = 1; settingsSave = true; }
-if( typeof _$.settings.arrows_on == "undefined") { _$.settings.arrows_on = 1; settingsSave = true; }
-if( typeof _$.settings.inbox_recreate == "undefined") { _$.settings.inbox_recreate = 1; settingsSave = true; }
-if( typeof _$.settings.user_stats == "undefined") { _$.settings.user_stats = 1; settingsSave = true; }
-if( typeof _$.settings.ban_encoding == "undefined") { _$.settings.ban_encoding = 1; settingsSave = true; }
-if( typeof _$.settings.links_test == "undefined") { _$.settings.links_test = 1; settingsSave = true; }
-if( typeof _$.settings.d3search == "undefined") { _$.settings.d3search = 1; settingsSave = true; }
-if( typeof _$.settings.karma_log == "undefined") { _$.settings.karma_log = 1; settingsSave = true; }
-if( typeof _$.settings.youtube_preview == "undefined") { _$.settings.youtube_preview = 1; settingsSave = true; }
-if( typeof _$.settings.read_button == "undefined") { _$.settings.read_button = 1; settingsSave = true; }
-if( typeof _$.settings.comment_scroller == "undefined") { _$.settings.comment_scroller = 1; settingsSave = true; }
-if( typeof _$.settings.smooth_scroll == "undefined")
-{
-	if(_$.browser().name == "chrome"){
-		{ _$.settings.smooth_scroll = 0; settingsSave = true; };
-	}else{
-		{ _$.settings.smooth_scroll = 1; settingsSave = true; };
+{ // vars incapsulator
+	
+var needToSave = false;
+
+var defConfig=
+	{use_pictures:1
+	,username_replace:0
+	,posts_average:0
+	,youtube_fullscreen:1
+	,imglinks_preview:1
+	,tooltip_on:1
+	,tooltip_show_self:1
+	,favicon_on:1
+	,favicon_style:0
+	,colors_on:0
+	,colors_border:1
+	// SP2 adding scripts - STEP ONE
+	,dekabr:0
+	,dirty_avatar:1
+	,grt_enabled:1
+	,grt_random:1
+	,online_enabled:1
+	,instant_search:1
+	,instant_search_hide:0
+	,newcomments_saver:1
+	,newcomments_saver_max:0
+	,inbox_text:1
+	,arrows_on:1
+	,inbox_recreate:1
+	,user_stats:1
+	,ban_encoding:1
+	,links_test:1
+	,d3search:1
+	,karma_log:1
+	,youtube_preview:1
+	,read_button:1
+	,comment_scroller:1
+	,smooth_scroll: (_$.browser().name == "chrome" ? 0 :1)
+	,dirty_tags:1
+	,dirty_tags_autogold:1
+	,dirty_tags_hidetags:1
+	,timings_display:0
+	,comments_threshold:0
+	,posts_threshold:0
+	,post_content_filter_layout:0
+	,posts_threshold_use_or:0
+	,comments_order:1
+	//posts & comments threshold
+	,threshold:0
+	,thresh_comm_count:0
+	,thresh_comm_count:0
+	,thresh_step:100
+	,opt_count:4
+	,show_posts:1
+	,show_video:1
+	,show_photo:1
+	,show_audio:1
+	,cmnt_threshold:-1000
+	,cmnt_thresh_type:1
+	,cmnt_thresh_step:10
+	,cmnt_opt_count:4
+	,cmnt_picts_always:0
+	//posts & comments tresh
+	,own_threshold:0
+	,new_window:1
+	,quotes:1
+	};
+
+for(var i in defConfig)
+	if(typeof _$.settings[i] == "undefined")
+	{
+		_$.settings[i]=defConfig[i];
+		needToSave=true;
 	}
-}
-if( typeof _$.settings.dirty_tags == "undefined") { _$.settings.dirty_tags = 1; settingsSave = true; }
-if( typeof _$.settings.dirty_tags_autogold == "undefined") { _$.settings.dirty_tags_autogold = 1; settingsSave = true; }
-if( typeof _$.settings.dirty_tags_hidetags == "undefined") { _$.settings.dirty_tags_hidetags = 1; settingsSave = true; }
-if( typeof _$.settings.timings_display == "undefined") { _$.settings.timings_display = 0; settingsSave = true; }
-if( typeof _$.settings.comments_threshold == "undefined") { _$.settings.comments_threshold = 0; settingsSave = true; }
-if( typeof _$.settings.posts_threshold == "undefined") { _$.settings.posts_threshold = 0; settingsSave = true; }
-if( typeof _$.settings.post_content_filter_layout == "undefined") { _$.settings.post_content_filter_layout = 0; settingsSave = true; }
-if( typeof _$.settings.posts_threshold_use_or == "undefined") { _$.settings.posts_threshold_use_or = 0; settingsSave = true; }
-if( typeof _$.settings.comments_order == "undefined") { _$.settings.comments_order = 1; settingsSave = true; }
-//posts & comments threshold
-if( typeof _$.settings.threshold == "undefined") { _$.settings.threshold = 0; settingsSave = true; }
-if( typeof _$.settings.thresh_comm_count == "undefined") { _$.settings.thresh_comm_count = 0; settingsSave = true; }
-if( typeof _$.settings.thresh_step == "undefined") { _$.settings.thresh_step = 100; settingsSave = true; }
-if( typeof _$.settings.opt_count == "undefined") { _$.settings.opt_count = 4; settingsSave = true; }
-if( typeof _$.settings.show_posts == "undefined") { _$.settings.show_posts = 1; settingsSave = true; }
-if( typeof _$.settings.show_video == "undefined") { _$.settings.show_video = 1; settingsSave = true; }
-if( typeof _$.settings.show_photo == "undefined") { _$.settings.show_photo = 1; settingsSave = true; }
-if( typeof _$.settings.show_audio == "undefined") { _$.settings.show_audio = 1; settingsSave = true; }
-if( typeof _$.settings.cmnt_threshold == "undefined") { _$.settings.cmnt_threshold = -1000; settingsSave = true; }
-if( typeof _$.settings.cmnt_thresh_type == "undefined") { _$.settings.cmnt_thresh_type = 1; settingsSave = true; }
-if( typeof _$.settings.cmnt_thresh_step == "undefined") { _$.settings.cmnt_thresh_step = 10; settingsSave = true; }
-if( typeof _$.settings.cmnt_opt_count == "undefined") { _$.settings.cmnt_opt_count = 4; settingsSave = true; }
-if( typeof _$.settings.cmnt_picts_always == "undefined") { _$.settings.cmnt_picts_always = 0; settingsSave = true; }
-//posts & comments tresh
-
-if( typeof _$.settings.own_threshold == "undefined"){ _$.settings.own_threshold = 0; settingsSave = true; }
-if( typeof _$.settings.new_window == "undefined"){ _$.settings.new_window = 1; settingsSave = true; }
-if( typeof _$.settings.quotes == "undefined") { _$.settings.quotes = 1; settingsSave = true; }
-
-if ( settingsSave )
-{
+	
+if ( needToSave )
 	_$.set_save( null , 0);
+
 }
 //END CONFIG
 
@@ -553,7 +535,7 @@ if(_$.location.indexOf('/off/')!=0)
 		dsp_left_panel.innerHTML += dsp_output;
 
 		_$.addEvent(_$.$('dsp_setting_bar'),'click',DSP_make_content_settings);
-		_$.addEvent(_$.$('dsp_setting_close'),'click',function(){DSP_show_hide_window('_$.settings')});
+		_$.addEvent(_$.$('dsp_setting_close'),'click',function(){DSP_show_hide_window('_$.settings');});
 		dsp_general_bar = _$.$('dsp_settings_panels');
 		dsp_general_param = _$.$('dsp_settings_props');
 
@@ -576,7 +558,7 @@ if(_$.location.indexOf('/off/')!=0)
 		eval(init);
 
 		_$.$('dsp_setting_button_'+dsp_setting_id).style.cursor="pointer";
-		_$.addEvent(_$.$('dsp_setting_button_'+dsp_setting_id),'click',function(){DSP_show_hide_setting(dsp_setting_id)});
+		_$.addEvent(_$.$('dsp_setting_button_'+dsp_setting_id),'click',function(){DSP_show_hide_setting(dsp_setting_id);});
 		//addBenchmark( time1, 'settings bar' );
 	}
 
@@ -1309,7 +1291,7 @@ var dsp_jscolor = {
 		dsp_jscolor.requireImage('http://pit.dirty.ru/dirty/1/2010/04/29/11119-151007-7d331cbee9f80935305d342227e0f6f5.gif');
 		dsp_jscolor.requireImage('http://pit.dirty.ru/dirty/1/2010/04/29/11119-150848-9b8117b5cfa416505278cda8115a920d.gif');
 	}
-}
+};
 
 
 function DSP_colorize_comments()
@@ -1416,8 +1398,8 @@ _$.tooltip = {
 
 	processGreeting: function(){
 		if(_$.settings.tooltip_show_self==1 && _$.settings.tooltip_on==1){
-			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseover',function(e){clearTimeout(dup_showing);dup_showBaloon(e.target)});
-			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseout',function(){clearTimeout(dup_showing);dup_processing=0});
+			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseover',function(e){clearTimeout(dup_showing);dup_showBaloon(e.target);});
+			_$.addEvent(_$.$t('a',_$.$c('header_tagline_inner')[0])[0],'mouseout',function(){clearTimeout(dup_showing);dup_processing=0;});
 		}
 	},
 
@@ -2026,7 +2008,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '<tr><td align="right" width="25"><input id="dsp_c_use_picture" type="checkbox" '+((_$.settings.use_pictures=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_use_picture">Режим "без картинок"</label></td></tr>';
 		dsp_txt += '<tr><td align="right"><input id="dsp_c_tooltip_show_self" type="checkbox" '+((_$.settings.favicon_style=='0')?'checked="checked"':'')+'></td><td><label for="dsp_c_tooltip_show_self">Тултип на ссылке возле logout</label></td></tr>';
 		dsp_txt += '</table></div>';
-		dsp_txt += '<table cellspacing="0" border="0">'
+		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_timings_display" type="checkbox" '+((_$.settings.timings_display=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_timings_display">SP2.5: Показывать время выполнения</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_dekabr" type="checkbox" '+((_$.settings.dekabr=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_dekabr">Ссылка на dekabr.org</label></td></tr>';
 		dsp_txt += '</table>';
@@ -2047,7 +2029,7 @@ function DSP_init()
 		DSP_show_hide_setting(0);
 		addBenchmark( time1, 'dsp init' );   
 		
-		var ulLeft = document.querySelector('ul.left_col_nav')
+		var ulLeft = document.querySelector('ul.left_col_nav');
 		if ( ulLeft)
 		{
 		    liLast = ulLeft.getElementsByTagName('li');
@@ -2519,7 +2501,7 @@ if(_$.settings.posts_average=='1')
 
 		_$.$('dsp_layer_posts_average').innerHTML += ' | &#216;id '+dsp_ids_count+' | &#216;&#177; '+dsp_votes_count;
 
-		if(dsp_temp_length>=0)_$.$('dsp_layer_posts_average').innerHTML += ' | '+dsp_average_votes.length+' комментариев'
+		if(dsp_temp_length>=0)_$.$('dsp_layer_posts_average').innerHTML += ' | '+dsp_average_votes.length+' комментариев';
 
 		addBenchmark( time1, 'post average' );
 	}
@@ -2840,7 +2822,7 @@ addBenchmark( time1, 'd3s news' );
 function socialAdd( userName )
 {
 	var parameters = "user=" + userName + "&wtf=101010"  + "&action=add";
-	var request = new XMLHttpRequest()
+	var request = new XMLHttpRequest();
 	if(! request)
 	{
 		futu_alert( 'Что-то пошло не так...', false, 'red');
@@ -3476,7 +3458,7 @@ function addYoutube(){
 
 	//global
 	youtube_id = re.id;
-	var id = re.id
+	var id = re.id;
 	time = re.time;
 
 	var inject = "";
@@ -3487,7 +3469,7 @@ function addYoutube(){
 		inject += 'function onYouTubePlayerReady(playerId) { player=document.getElementById(\'yembed\');';
 	}
 	if(time > -1){inject += 'player.seekTo('+time+', true); ';}
-	inject += ' interval=setInterval(statechange, 250); };'
+	inject += ' interval=setInterval(statechange, 250); };';
 	inject += 'function statechange(){if(player){seconds = Math.round(player.getCurrentTime()); document.getElementById(\'youtube_time\').innerHTML = "Перемотайте на нужное время. Позиция сейчас: "+seconds+" cек. Ссылка будет поставлена именно на эту секунду ролика.";}}';
 	_$.injectScript(inject);
 
@@ -4102,7 +4084,7 @@ if(_$.settings.youtube_preview=='1')
             var changeIt = false;
 			if (linkar.length > 1)
 			{
-				changeIt = isNumber(linkar[1])
+				changeIt = isNumber(linkar[1]);
 			}
 			if ( changeIt )
 			{
@@ -4206,7 +4188,7 @@ if(_$.settings.youtube_preview=='1')
 			var image_link = post.style.backgroundImage;
 			if(image_link.search("youtube.com")>-1){
 				image_link = post.style.backgroundImage.split("url(")[1].split(")")[0];
-				image_link = image_link.replace('"','')
+				image_link = image_link.replace('"','');
 				var url = image_link.split("/vi/")[1].split("/")[0];
 				post.style.backgroundImage = "";
 				post.style.paddingLeft = 0;
@@ -4532,7 +4514,7 @@ if(_$.settings.dirty_tags=='1')
 			{
 				// add  gold
 				document.getElementById('js-new_tag_input').value = 'Золотой пост';
-				location.href="javascript:void( tagsHandler.submitTag());"
+				location.href="javascript:void( tagsHandler.submitTag());";
 			}
 		}
 		//
@@ -4567,7 +4549,7 @@ if(_$.settings.dirty_tags=='1')
 		                {
 		                    // add  gold for hour
 		                    document.getElementById('js-new_tag_input').value = 'Золото за час';
-		                    location.href = "javascript:void( tagsHandler.submitTag());"
+		                    location.href = "javascript:void( tagsHandler.submitTag());";
 		                }		            
 		            }
 			}
@@ -4735,7 +4717,7 @@ if(_$.settings.dirty_tags=='1')
 				},
 
 				getIntFromPrompt : function (msg, curr_val) {
-					 var result = prompt(msg, curr_val)
+					 var result = prompt(msg, curr_val);
 					 if (result==null) {
 								return false;
 					 }
@@ -4757,7 +4739,7 @@ if(_$.settings.dirty_tags=='1')
 						var new_sel = document.getElementById('thres_select_'+_dct.curr_select_numb);
 
 						if (new_sel.value == 'set_step') {
-								var result = _dct.getIntFromPrompt("Новое значение шага:", _$.settings.cmnt_thresh_step)
+								var result = _dct.getIntFromPrompt("Новое значение шага:", _$.settings.cmnt_thresh_step);
 								if (result) {
 										_$.settings.cmnt_thresh_step = result;
 								}
@@ -4767,7 +4749,7 @@ if(_$.settings.dirty_tags=='1')
 								_$.settings.cmnt_thresh_type = (_$.settings.cmnt_thresh_type==1) ? 2:1;
 								_dct.replaceSelect();
 						} else if (new_sel.value == 'set_opt_count') {
-								var result = _dct.getIntFromPrompt("Количество опций:", _$.settings.cmnt_opt_count)
+								var result = _dct.getIntFromPrompt("Количество опций:", _$.settings.cmnt_opt_count);
 								if (result) {
 										if (result<=0) {
 												result = 1;
@@ -4800,7 +4782,7 @@ if(_$.settings.dirty_tags=='1')
 						}
 
 						if (_dct.curr_select_numb==0) {
-								curr_select_node_name = 'comments-threshold'
+								curr_select_node_name = 'comments-threshold';
 						} else {
 								curr_select_node_name = 'div_select_'+_dct.curr_select_numb;
 						}
@@ -4811,7 +4793,7 @@ if(_$.settings.dirty_tags=='1')
 
 						if (navigator.appName == "Opera") {
 								new_sel.className = "hidden";
-								new_sel.onchange = function(){_dct.onChangeThreshold()};
+								new_sel.onchange = function(){_dct.onChangeThreshold();};
 						} else {
 								new_sel.addEventListener('change', _dct.onChangeThreshold, false);
 						}
@@ -4894,7 +4876,7 @@ if(_$.settings.dirty_tags=='1')
 						var vote_arr;
 						_$.$c('comment', document, 'div');
 						for (var i=0; i<_dct.comments.length;i++) {
-								_dct.comments[i].parent_id = _dct.comments[i].parentNode.id
+								_dct.comments[i].parent_id = _dct.comments[i].parentNode.id;
 								vote_arr = _dct.getElementsByClassAndTag('vote_result', 'strong', _dct.comments[i]);
 								if (vote_arr && vote_arr.length==1) {
 										_dct.comments[i].vote = parseInt(vote_arr[0].innerHTML);
@@ -4917,7 +4899,7 @@ if(_$.settings.dirty_tags=='1')
 
 				doOrder : function(order) {
 						var last_comment;
-						var prev_comment
+						var prev_comment;
 						var big_parent = document.getElementById("js-commentsHolder");
 						supressEvents = true;
 						for (var i=order.length; i>0; i--) {
@@ -4984,7 +4966,7 @@ if(_$.settings.dirty_tags=='1')
 						tree_link.className = "dashed comments_header_refresh_comments";
 
 						if (navigator.appName == "Opera") {
-								tree_link.onclick = function(){_dct.toggleCommentsOrder()};
+								tree_link.onclick = function(){_dct.toggleCommentsOrder();};
 						} else {
 								tree_link.addEventListener('click', _dct.toggleCommentsOrder, false);
 						}
@@ -5025,7 +5007,7 @@ if(_$.settings.dirty_tags=='1')
 								_dct.onChangeThreshold();
 						}
 				}
-		}
+		};
 		_dct.workPlease();
 		addBenchmark( time1, 'comments threshhold' );
 	}
@@ -5057,7 +5039,7 @@ if(_$.settings.dirty_tags=='1')
 
 
 				getIntFromPrompt : function(msg, curr_val, allow_0) {
-					 var result = prompt(msg, curr_val)
+					 var result = prompt(msg, curr_val);
 					 if (result==null) {
 								return false;
 					 }
@@ -5079,14 +5061,14 @@ if(_$.settings.dirty_tags=='1')
 						var new_sel = document.getElementById('thres_select_'+_dpt.curr_select_numb);
 
 						if (new_sel.value == 'set_step') {
-								var result = _dpt.getIntFromPrompt("Новое значение шага:", _$.settings.thresh_step)
+								var result = _dpt.getIntFromPrompt("Новое значение шага:", _$.settings.thresh_step);
 								if (result) {
 										_$.settings.thresh_step = result;
 								}
 								new_sel.options[0].selected = true;
 								_dpt.replaceSelect();
 						} else if (new_sel.value == 'set_comm_tresh') {
-								var result = _dpt.getIntFromPrompt("Минимальное количество комментариев\n(ноль для выключения этой опции):", _$.settings.thresh_comm_count)
+								var result = _dpt.getIntFromPrompt("Минимальное количество комментариев\n(ноль для выключения этой опции):", _$.settings.thresh_comm_count);
 								if (result!==false) {
 										if (result<0) {
 												result = 0;
@@ -5096,7 +5078,7 @@ if(_$.settings.dirty_tags=='1')
 								new_sel.options[0].selected = true;
 								_dpt.replaceSelect();
 						} else if (new_sel.value == 'set_opt_count') {
-								var result = _dpt.getIntFromPrompt("Количество опций:", _$.settings.opt_count)
+								var result = _dpt.getIntFromPrompt("Количество опций:", _$.settings.opt_count);
 								if (result!==false) {
 										if (result<=0) {
 												result = 1;
@@ -5172,11 +5154,11 @@ if(_$.settings.dirty_tags=='1')
 								temp_link.href ="javascript:void(0)";
 								temp_link.innerHTML = names[i];
 								if (eval("_$.settings."+chcks[i]) == 1) {
-									temp_link.style.fontWeight = "bold"
+									temp_link.style.fontWeight = "bold";
 								}
 
 								var span = document.createElement("span");
-								span.innerHTML = "&nbsp;"
+								span.innerHTML = "&nbsp;";
 								div_to_insert.appendChild(temp_link);
 								div_to_insert.appendChild(span);
 							}
@@ -5199,7 +5181,7 @@ if(_$.settings.dirty_tags=='1')
 						}
 
 						if (_dpt.curr_select_numb==0) {
-								curr_select_node_id = 'posts-threshold'
+								curr_select_node_id = 'posts-threshold';
 						} else {
 								curr_select_node_id = 'div_select_'+_dpt.curr_select_numb;
 						}
@@ -5209,7 +5191,7 @@ if(_$.settings.dirty_tags=='1')
 
 						if (navigator.appName == "Opera") {
 								new_sel.className = "hidden";
-								new_sel.onchange = function(){_dpt.onChangeThreshold()};
+								new_sel.onchange = function(){_dpt.onChangeThreshold();};
 						} else {
 								new_sel.addEventListener('change', _dpt.onChangeThreshold, false);
 						}
@@ -5377,7 +5359,7 @@ if(_$.settings.dirty_tags=='1')
 								_dpt.onChangeThreshold();
 						}
 				}
-		}
+		};
 
 		_dpt.workPlease();
 		addBenchmark( time1, 'posts threshhold' );
@@ -5606,15 +5588,15 @@ if(_$.settings.dirty_tags=='1')
 			function disableSelection(target){
 				if (typeof target.onselectstart!="undefined") //IE route
 
-						target.onselectstart=function(){return false}
+						target.onselectstart=function(){return false;};
 
 				else if (typeof target.style.MozUserSelect!="undefined") //Firefox route
 
-						target.style.MozUserSelect="none"
+						target.style.MozUserSelect="none";
 
 				else //All other route (ie: Opera)
 
-						target.onmousedown=function(){return false}
+						target.onmousedown=function(){return false;};
 
 			}
 
@@ -5678,7 +5660,7 @@ if(_$.settings.dirty_tags=='1')
 				allPostsArr = scanVisible(backup_allPostsArr);
 				newPosts = scanVisible(backup_newPosts);
 				mine = scanVisible(backup_mine);
-				allPosts = allPostsArr.length
+				allPosts = allPostsArr.length;
 				//update scroller items
 				onScroll();
 			};
@@ -5847,7 +5829,7 @@ if(_$.settings.dirty_tags=='1')
 					var commentAlink = document.getElementById( commentId + '-sh');
 					if ( commentAlink )
 					{
-						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', false );")
+						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', false );");
 						commentAlink.innerHTML = 'убрать это';
 					}
 				}
@@ -5865,7 +5847,7 @@ if(_$.settings.dirty_tags=='1')
 					var commentAlink = document.getElementById( commentId + '-sh');
 					if ( commentAlink )
 					{
-						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', true );")
+						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', true );");
 						commentAlink.innerHTML = 'а что там?';
 					}
 				}
@@ -5957,7 +5939,7 @@ if(_$.settings.dirty_tags=='1')
 	if(_$.settings.dirty_avatar == '1' && location.pathname.indexOf('/user/') > -1 )
 	{
 		var time1 = new Date();
-		var divWithAvatar = document.querySelector('div.userstory')
+		var divWithAvatar = document.querySelector('div.userstory');
 		var avatarImg = null;
 		if ( divWithAvatar )
 		{
@@ -5978,7 +5960,7 @@ if(_$.settings.dirty_tags=='1')
 		}
 		if ( avatarImg != null )
 		{
-			var tableWehereAvatar = document.querySelector('table.userpic')
+			var tableWehereAvatar = document.querySelector('table.userpic');
 			var tdWehereAvatar = null;
 			if ( tableWehereAvatar != null )
 			{
