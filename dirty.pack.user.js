@@ -1,7 +1,7 @@
 ﻿//
 // ==UserScript==
 // @name			Dirty Service Pack 2
-// @author			Stasik0, BearOff, crea7or, flashface, slavka123
+// @author			Stasik0, BearOff, crea7or, flashface, slavka123, crimaniak
 // @namespace		http://dirty.ru/
 // @description		Dirty Service Pack 2.5
 // @require			http://crea7or.spb.ru/scripts/user.js.updater.php?id=88906&days=7
@@ -14,11 +14,15 @@
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
 
-		Funtions and Params
+		Functions and Params
 
 * * * * * * * * * * * * * * * * * * * * * * * * * */
 var dateToCheck1 = new Date();
 
+/// Shit mountain anti-pattern
+/**
+ * todo: make object structure, move all static methods and properties from constructors to prototypes, refactor unstructured code
+ */
 var _$ = {
 	settings: {},
 	settings_colors: new Array(),
@@ -259,14 +263,31 @@ var _$ = {
 		else styleSheet.appendChild(document.createTextNode(cssStr));
 	},
 
-	js_include: function(script){
-
-		var new_js = document.createElement('script');
-		new_js.setAttribute('type','text/javascript');
-		new_js.setAttribute('src',script);
-		document.getElementsByTagName('head')[0].appendChild(new_js);
+	/// Set style properties
+	setStyle: function(element,style)
+	{
+		for(var i in style)
+			element.style[i]=style[i];
+	},
+	
+	/**
+	 * Function to create new element and set attributes, style and innerHTML property
+	 * @param tagName string tag name
+	 * @param parms object with possible keys: style, attributes, innerHTML
+	 * @returns newly created element
+	 */
+	newElement: function(tagName,parms)
+	{
+		var e=document.createElement(tagName);
+		
+		if(parms.style!==undefined) this.setStyle(e,parms.style);
+		if(parms.attributes!==undefined) for(var i in parms.attributes)	e.setAttribute(i,parms.attributes[i]);	
+		if(parms.innerHTML!==undefined)	e.innerHTML=parms.innerHTML;
+		
+		return e;
 	},
 
+	
 	event: function(e){
 
 		e = e||window.event;
@@ -290,12 +311,13 @@ var _$ = {
 		_$.$t('head')[0].appendChild(inject);
 	},
 
-	injectScriptUrl: function(url){
-		var inject = document.createElement("script");
-		inject.setAttribute("type", "text/javascript");
-		inject.setAttribute("src", url);
-		_$.$t('head')[0].appendChild(inject);
+	injectScriptUrl: function(url)
+	{
+		_$.$t('head')[0].appendChild(this.newElement('script',{attributes:{type:'text/javascript',src:url}}));
 	},
+
+	/// todo: ask if can be removed
+	js_include: function(url){ this.injectScriptUrl(url);},
 
 	insertAfter: function (referenceNode, node) {
 		referenceNode.parentNode.insertBefore(node, referenceNode.nextSibling);
@@ -472,11 +494,14 @@ if ( needToSave )
 
 if ( _$.settings.timings_display == 1 )
 {
-	var divWithBenchmark = document.createElement('div');
-	divWithBenchmark.setAttribute('id','js-benchmark');
-	divWithBenchmark.setAttribute('style','border: 1px dotted grey; padding: 5px 5px 5px 5px; font-family: verdana, sans-serif; font-size: 10px;');
-	divWithBenchmark.innerHTML = "<table cellspacing=1 cellpadding=1>";
-	document.body.insertBefore( divWithBenchmark, document.body.firstChild );
+	document.body.insertBefore(
+		_$.newElement('div',
+			{attributes:
+					{id:'js-benchmark'
+					,style:'border: 1px dotted grey; padding: 5px 5px 5px 5px; font-family: verdana, sans-serif; font-size: 10px;'
+					}
+			,innerHTML:"<table cellspacing=1 cellpadding=1>"})	
+		,document.body.firstChild );
 }
 
 function addBenchmark( results, name )
@@ -486,12 +511,10 @@ function addBenchmark( results, name )
 		var time2 = new Date();
 		var divBench = document.getElementById('js-benchmark');
 		if ( divBench )
-		{
-			var divWithBenchmark = document.createElement('div');
-			divWithBenchmark.setAttribute('style','font-family: verdana, sans-serif; font-size: 10px;');
-			divWithBenchmark.innerHTML = ( time2 - results ) + " ms   : " + name;
-			divBench.appendChild( divWithBenchmark );
-		}
+			divBench.appendChild(_$.newElement('div', 
+				{attributes:{style:'font-family: verdana, sans-serif; font-size: 10px;'}
+				,innerHTML: ( time2 - results ) + " ms   : " + name
+				}));
 	}
 }
 
@@ -522,10 +545,10 @@ if(_$.location.indexOf('/off/')!=0)
 				dsp_params += '<div id="dsp_setting_'+i+'" style="padding:10px 0 0 10px;display:none;border-top:1px solid #b6b6b6"></div>';
 		}
 
-		dsp_output += '<br><div style="background: #fff url(http://pit.dirty.ru/dirty/1/2010/04/27/11119-033725-660249a537b6f5822a9918ea8835026b.png) 7px 4px no-repeat;height:50px;border-top:1px solid #e9e9e9;border-bottom:1px solid #e9e9e9"><a id="dsp_setting_bar" style="cursor:pointer;text-decoration:underline;line-height:50px;margin-left:62px">Настройки</a></div>';
-		dsp_output += '<div id="_$.settings" style="display:none;position:fixed;top:'+((_$.viewarea_size().y-300)/2)+'px;left:'+((_$.viewarea_size().x-610)/2)+'px;width:610px;height:300px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="610" height="300"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">';
-		dsp_output += '<table cellspacing="0" cellpadding="0" width="100%" border="0" style="font-size: 110%;"><tr><td valign="top" colspan="1" height="30" style="font-size:140%;color:#5880af;"><a href="http://userscripts.org/scripts/show/88906">Service Pack 2</a></td><td valign="top" colspan="1" height="30" style="padding-left:5px; font-size:8%;color:#5880af;"></td><td width="40" align="right" valign="top"><div id="dsp_setting_close" style="background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div></td></tr><tr><td valign="top" width="140" style="">'+dsp_bars+'</td><td colspan="2" valign="top">'+dsp_params+'</td></tr></table>';
-		dsp_output += '</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>';
+		dsp_output += '<br><div style="background: #fff url(http://pit.dirty.ru/dirty/1/2010/04/27/11119-033725-660249a537b6f5822a9918ea8835026b.png) 7px 4px no-repeat;height:50px;border-top:1px solid #e9e9e9;border-bottom:1px solid #e9e9e9"><a id="dsp_setting_bar" style="cursor:pointer;text-decoration:underline;line-height:50px;margin-left:62px">Настройки</a></div>'
+		 + '<div id="_$.settings" style="display:none;position:fixed;top:'+((_$.viewarea_size().y-300)/2)+'px;left:'+((_$.viewarea_size().x-610)/2)+'px;width:610px;height:300px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="610" height="300"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">'
+		 + '<table cellspacing="0" cellpadding="0" width="100%" border="0" style="font-size: 110%;"><tr><td valign="top" colspan="1" height="30" style="font-size:140%;color:#5880af;"><a href="http://userscripts.org/scripts/show/88906">Service Pack 2</a></td><td valign="top" colspan="1" height="30" style="padding-left:5px; font-size:8%;color:#5880af;"></td><td width="40" align="right" valign="top"><div id="dsp_setting_close" style="background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div></td></tr><tr><td valign="top" width="140" style="">'+dsp_bars+'</td><td colspan="2" valign="top">'+dsp_params+'</td></tr></table>'
+		 + '</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>';
 
 		if ( dsp_left_panel == null )
 		{
@@ -1061,7 +1084,6 @@ var dsp_jscolor = {
 			}
 		}
 
-
 		function removePicker(){
 			DSP_save_color();
 			document.getElementsByTagName('body')[0].removeChild(dsp_jscolor.picker.boxB);
@@ -1069,39 +1091,43 @@ var dsp_jscolor = {
 			delete dsp_jscolor.picker;
 		}
 
-
 		function drawPicker(x,y){
 			var dsp_color = _$.$("dsp_color_show_div");
 			if(!dsp_color){
-				document.body.appendChild(dsp_color = document.createElement('div'));
-				dsp_color.id = 'dsp_color_show_div';
-				dsp_color.style.position = 'absolute';
-				dsp_color.style.zIndex = 1399;
-				dsp_color.innerHTML = '<table cellspacing="0" cellpadding="0" width="282" height="160" border="0"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"><div style="width:100px;height:35px;background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:-20px 0"></div></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table>';
+				document.body.appendChild(
+						dsp_color = _$.newElement('div',
+									{attributes:{id:'dsp_color_show_div'}
+									,style:{position:'absolute',zIndex:1399} // <- Шито?
+									,innerHTML:'<table cellspacing="0" cellpadding="0" width="282" height="160" border="0"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"><div style="width:100px;height:35px;background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:-20px 0"></div></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table>'
+									})
+				);
 
-				dsp_color.appendChild(dsp_closer = document.createElement('div'));
-				dsp_closer.id = 'dsp_color_closer';
-				dsp_closer.style.backgroundColor = '#999';
-				dsp_closer.style.position = 'absolute';
-				dsp_closer.style.width = '20px';
-				dsp_closer.style.height = '20px';
-				dsp_closer.style.fontSize = '12px';
-				dsp_closer.style.lineHeight = '18px';
-				dsp_closer.style.textAlign = 'center';
-				dsp_closer.style.color = '#fff';
-				dsp_closer.style.cursor = 'pointer';
-				dsp_closer.style.zIndex = 1400;
-				dsp_closer.style.left = '237px';
-				dsp_closer.style.top = '30px';
-				dsp_closer.innerHTML = '<b>x</b>';
+				dsp_color.appendChild(dsp_closer = _$.newElement('div',
+						{attributes:{id:'dsp_color_closer'}
+						,innerHTML:'<b>x</b>'
+						,style: 
+							{backgroundColor: '#999'
+							,position: 'absolute'
+							,width: '20px'
+							,height: '20px'
+							,fontSize: '12px'
+							,lineHeight: '18px'
+							,textAlign: 'center'
+							,color: '#fff'
+							,cursor: 'pointer'
+							,zIndex: 1400
+							,left: '237px'
+							,top: '30px'
+							}
+						}
+				));
+				
 				_$.addEvent(dsp_closer,'click',function(){removePicker();});
 			}
 
 			dsp_color.style.left = (x-5)+'px';
 			dsp_color.style.top = (y-20)+'px';
 			dsp_color.style.display = 'block';
-
-
 
 			if(!dsp_jscolor.picker){
 
@@ -1115,23 +1141,20 @@ var dsp_jscolor = {
 					sldB : document.createElement('div'),
 					sldM : document.createElement('div')
 				};
-				for(var i=0,segSize=4; i<dsp_jscolor.images.sld[1]; i+=segSize) {
-					var seg = document.createElement('div');
-					seg.style.height = segSize+'px';
-					seg.style.fontSize = '1px';
-					seg.style.lineHeight = '0';
-					dsp_jscolor.picker.sld.appendChild(seg);
+				with(dsp_jscolor.picker)
+				{
+					for(var i=0,segSize=4; i<dsp_jscolor.images.sld[1]; i+=segSize) {
+						sld.appendChild(_$.newElement('div',{style: {height:segSize+'px',fontSize:'1px',lineHeight:'0'}}));
+					}
+					sldB.appendChild(sld);
+					box.appendChild(sldB);
+					box.appendChild(sldM);
+					padB.appendChild(pad);
+					box.appendChild(padB);
+					box.appendChild(padM);
+					boxB.appendChild(box);
 				}
-				dsp_jscolor.picker.sldB.appendChild(dsp_jscolor.picker.sld);
-				dsp_jscolor.picker.box.appendChild(dsp_jscolor.picker.sldB);
-				dsp_jscolor.picker.box.appendChild(dsp_jscolor.picker.sldM);
-				dsp_jscolor.picker.padB.appendChild(dsp_jscolor.picker.pad);
-				dsp_jscolor.picker.box.appendChild(dsp_jscolor.picker.padB);
-				dsp_jscolor.picker.box.appendChild(dsp_jscolor.picker.padM);
-				dsp_jscolor.picker.boxB.appendChild(dsp_jscolor.picker.box);
 			}
-
-
 
 			var p = dsp_jscolor.picker;
 
@@ -2061,37 +2084,18 @@ function DSP_init()
 		    liLast = ulLeft.getElementsByTagName('li');
 		    if ( liLast )
 		    {
-		    	liItem = document.createElement('li');
-		    	aItem = document.createElement('a');
-		    	aItem.setAttribute('href', 'http://inboxes.d3search.ru/');
-		    	aItem.innerHTML = 'Список инбоксов';
-		    	aItem.setAttribute('target', '_blank');
-		    	liItem.appendChild(aItem);
-		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
-
-		    	liItem = document.createElement('li');
-		    	aItem = document.createElement('a');
-		    	aItem.setAttribute('href', 'http://d3search.ru/stat');
-		    	aItem.setAttribute('target', '_blank');
-		    	aItem.innerHTML = 'Статистика';
-		    	liItem.appendChild(aItem);
-		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
-
-		    	liItem = document.createElement('li');
-		    	aItem = document.createElement('a');
-		    	aItem.setAttribute('href', 'http://d3search.ru/roulette');
-		    	aItem.setAttribute('target', '_blank');
-		    	aItem.innerHTML = 'КДПВ рулет';
-		    	liItem.appendChild(aItem);
-		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
-
-		    	liItem = document.createElement('li');
-		    	aItem = document.createElement('a');
-		    	aItem.setAttribute('href', 'http://together.ru/');
-		    	aItem.setAttribute('target', '_blank');
-		    	aItem.innerHTML = 'Сообщество "Вместе"';
-		    	liItem.appendChild(aItem);
-		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
+		    	var links =
+		    		[{href:'http://inboxes.d3search.ru/',innerHTML:'Список инбоксов'}
+		    		,{href:'http://d3search.ru/stat',innerHTML:'Статистика'}
+		    		,{href:'http://d3search.ru/roulette',innerHTML:'КДПВ рулет'}
+		    		,{href:'http://together.ru/',innerHTML:'Сообщество "Вместе"'}
+		    		];
+		    	for(var i in links)
+		    	{
+			    	liItem = document.createElement('li');
+			    	liItem.appendChild(_$.newElement('a',{attributes:{href:links[i].href,target:'_blank'},innerHTML:links[i].innerHTML}));
+			    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
+		    	}
             }
 		}		
 	}
@@ -2749,13 +2753,13 @@ if ( divRightCol && divTags)
 	var divAds = divRightCol.querySelector('div.b-ads');
 	if ( divAds == null )
 	{	
-		divAds = document.createElement('div');
-		divAds.setAttribute('style','float: right; width: 300px; height: 690px; margin-top: 0px; position: relative; z-index: 3;');
-		divAds.setAttribute('class', 'b-abs');
-		divTags.parentNode.insertBefore( divAds, divTags );
+		divTags.parentNode.insertBefore
+				(divAds=_$.newElement('div',{attributes:{class:'b-ads',style:'float: right; width: 300px; height: 690px; margin-top: 0px; position: relative; z-index: 3;'}})
+				, divTags );
 	}	
 	
 	var newsFromD3search = localStorage.getItem('stickersMarkup');
+	/// todo: I think divAds always true is here
 	if ( newsFromD3search != null  && divAds)
 	{
 		var hiddenStickers = jsonParse( localStorGetItem('dirtySpHiddenStickers',"[]"));
@@ -2995,12 +2999,11 @@ function vPreview(e)
 	if ( vPrvTextArea && vPrvDiv )
 	{
 		vRemovePreview( null );
-		var newdiv = document.createElement('div');
-		newdiv.setAttribute('style', 'padding: 5px 5px 5px 5px; margin-left: 0px  !important; border: 1px dashed grey;');
-		newdiv.setAttribute('id', 'vprw-preview');
-		newdiv.setAttribute('class', 'comment');
-		newdiv.innerHTML = vPrvTextArea.value.replace(/\n/g,'<br>');
-		vPrvDiv.appendChild( newdiv );
+		vPrvDiv.appendChild( _$.newElement('div', {attributes:
+				{id:'vprw-preview'
+				,class:'comment'
+				,style:'padding: 5px 5px 5px 5px; margin-left: 0px  !important; border: 1px dashed grey;'}
+			,innerHTML: vPrvTextArea.value.replace(/\n/g,'<br>')}));
 	}
 	e.preventDefault();
 	return false;
@@ -3024,9 +3027,10 @@ function vRemovePreview(e)
 var vPrvDiv = document.querySelector('div.comments_add_pics');
 if ( vPrvDiv )
 {
-	var newdiv = document.createElement('div');
-	newdiv.setAttribute('style', 'margin-right: 30px; float: right;');
-	newdiv.innerHTML = "<a href=\"#\" id=\"prevLink\" class=\"dashed\" style=\"color: black; font-size: 11px;\">предпросмотр</a>";
+	var newdiv = _$.newElement('div',
+			{style:{marginRight: '30px',float:'right'}
+			,innerHTML:"<a href=\"#\" id=\"prevLink\" class=\"dashed\" style=\"color: black; font-size: 11px;\">предпросмотр</a>"
+			});
 	vPrvDiv.parentNode.insertBefore( newdiv, vPrvDiv );
 	addEvent(document.getElementById('prevLink'), "click", vPreview);
 	addEvent(document.getElementById('js-post-yarrr'), "click", vRemovePreview);
@@ -3049,22 +3053,20 @@ if ( vPrvDiv )
 		else
 		{
 			vTortAddLinks.firstChild.setAttribute( 'style', 'margin-left: 10px; padding-left: 15px;');
-			newa = document.createElement('a');
-			newa.setAttribute('href', 'http://music.dirty.ru/');
-			newa.setAttribute('style', 'margin-left: 10px; background: none; padding-left: 0px;');
-			newa.innerHTML = 'music';
-			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
-			newa = document.createElement('a');
-			newa.setAttribute('href', 'http://dirty.ru/banned/');
-			newa.setAttribute('style', 'margin-left: 10px; background: none; padding-left: 0px;');
-			newa.innerHTML = 'banned';
-			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
-			newa = document.createElement('a');
-			newa.setAttribute('href', 'http://www.quotes-dirty.ru/');
-			newa.setAttribute('style', 'margin-left: 0px; background: none; padding-left: 0px;');
-			newa.setAttribute('target', '_blank');
-			newa.innerHTML = 'quotes';
-			vTortAddLinks.insertBefore( newa, vTortAddLinks.firstChild );
+			
+			var links=
+				[{innerHTML:'music',attributes:{href:'http://music.dirty.ru/'}}
+				,{innerHTML:'banned',attributes:{href:'http://dirty.ru/banned/'}}
+				,{innerHTML:'quotes',attributes:{href:'http://www.quotes-dirty.ru/',target:'_blank'}}
+				];
+			
+			for(i in links)
+				vTortAddLinks.insertBefore( _$.newElement('a', 
+						{attributes: links[i].attributes
+						,style: {marginLeft: '10px', background: 'none', paddingLeft: '0px'}
+						,innerHTML: links[i].innerHTML})
+				, vTortAddLinks.firstChild );
+				
 			vTortAddLinks.parentNode.setAttribute( 'style', 'padding-left: 10px;');
 			vTortAddLinks = document.querySelector('div.header_tagline');
 			vTortAddLinks.setAttribute('style', 'margin-right: 0px;');
@@ -3081,9 +3083,10 @@ if ( vPrvDiv )
 			vTortInbPreHeader = document.querySelector('div.inbox_comments');
 			if ( vTortInbMenu && vTortInbPreHeader )
 			{
-				vTortAddLinksInbox = document.createElement('div');
-				vTortAddLinksInbox.setAttribute('class', 'inbox_header');
-				vTortAddLinksInbox.innerHTML = '&nbsp;';
+				vTortAddLinksInbox = _$.newElement('div', 
+					{attributes: {class: 'inbox_header'}
+					,innerHTML: '&nbsp;'
+					}); 
 				vTortInbMenu.insertBefore( vTortAddLinksInbox, vTortInbPreHeader );
 			}
 		}
@@ -3091,10 +3094,11 @@ if ( vPrvDiv )
 		if ( vTortAddLinksInbox)
 		{
 			vTortAddLinksInbox.setAttribute('style', 'background: #FAFAFA; padding: 20px 20px 20px 42px; margin: 0px 0px 20px 0px;');
-			vTortNewa = document.createElement('div');
-			vTortNewa.setAttribute('style', 'float: right;');
-			vTortNewa.innerHTML = "<a href=\"#\" class=\"dashed comments_header_new_comment\" onclick=\"var e = document.getElementById('js-inboxers-list');  if(e.style.display == 'block') e.style.display = 'none'; else e.style.display = 'block'; return false;\">список инбоксеров</a>&nbsp;&nbsp;";
-			vTortAddLinksInbox.appendChild( vTortNewa );
+
+			vTortAddLinksInbox.appendChild( _$.newElement('div',
+				{style: {float: 'right'}
+				,innerHTML:"<a href=\"#\" class=\"dashed comments_header_new_comment\" onclick=\"var e = document.getElementById('js-inboxers-list');  if(e.style.display == 'block') e.style.display = 'none'; else e.style.display = 'block'; return false;\">список инбоксеров</a>&nbsp;&nbsp;" 
+				}));
 		}
 
 		var vTortHideInboxers = document.querySelector('div.inbox-tools-static');
