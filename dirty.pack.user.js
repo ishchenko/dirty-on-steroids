@@ -358,6 +358,11 @@ var _$ = {
 			evt.initEvent(event, true, true ); // event type,bubbling,cancelable
 			return !element.dispatchEvent(evt);
 		}
+	},
+	
+	tagsDiv: function()
+	{
+		return document.getElementById('js-post_tags');  
 	}
 
 	//,
@@ -2782,8 +2787,7 @@ if ( divRightCol && divTags)
 		{
 			//only if new news are present
 			//divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
-			var divForNews = document.createElement('div');
-			divForNews.setAttribute('style', 'margin-top: 30px;');
+			var divForNews = _$.newElement('div', {style:{marginTop:'30px'}});
 			var subDivForNews = document.createElement('div');
 			for(var i=0;i<newsArray.length;i++)
 			{
@@ -3521,20 +3525,20 @@ if(youtube_textarea!=null){
 	youtube_textarea.appendChild(link);
 	_$.addEvent(_$.$('youtube_link'),'click',addYoutube);
 
-	var preview_div = document.createElement("div");
 	var width = 720;
 	var height = 295;
-	dsp_output = '<div id="youtube_preview" style="display:none;position:fixed;top:'+((_$.viewarea_size().y-height)/2)+'px;left:'+((_$.viewarea_size().x-width)/2)+'px;width:'+width+'px;height:'+height+'px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="'+width+'" height="'+height+'"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">'
+	
+	document.body.appendChild(_$.newElement('div',
+		{innerHTML: '<div id="youtube_preview" style="display:none;position:fixed;top:'+((_$.viewarea_size().y-height)/2)+'px;left:'+((_$.viewarea_size().x-width)/2)+'px;width:'+width+'px;height:'+height+'px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="'+width+'" height="'+height+'"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">'
 		+'<div id="youtube_preview_close" style="float: right; background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div>'
 		+'<table><tr><td><div style="font-size:180%;color:#5880af; padding-bottom: 10px;">Youtube preview</div></td><td><div style="float: left";>Картинка в посте</div></td></tr>'
 		+'<tr><td><div id="youtube_embed" style="width: 340px; float:left;"></div></td>'
 		+'<td><div id="youtube_thumbs"></div></td></tr></table>'
 		+'<div id="youtube_time" style="width: 340px; float:left;">Перемотайте на нужное время. Позиция сейчас: 0 cек. Ссылка будет поставлена именно на эту секунду ролика.</div>'
 		+'<div id="youtube_yarrr" style="cursor: pointer; float: right;"><img src="http://dirty.ru/i/yarrr.gif"/></div>'
-		+'</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>';
-
-	preview_div.innerHTML = dsp_output;
-	document.body.appendChild(preview_div);
+		+'</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>'
+		}));
+	
 	_$.addEvent(_$.$('youtube_preview_close'),'click',close);
 	_$.addEvent(_$.$('youtube_yarrr'),'click',yarr);
 }
@@ -3545,12 +3549,17 @@ if(youtube_textarea!=null){
 function clickOnImageLink(e)
 {
 	// http://pit.dirty.ru/dirty/1/2011/04/15/28284-142540-32deef3d70482f072b516ac3a723533d.gif
-	var imgPreview = document.createElement('img');
-	imgPreview.setAttribute('src', this.href );
-	var imgLink = document.createElement('a');
-	imgLink.setAttribute('href', '#');
-	_$.addEvent( imgLink, 'click', function(e) { this.previousSibling.setAttribute('style', this.previousSibling.getAttribute('bkpstyle')); this.parentNode.removeChild(this ); e.preventDefault(); return false; });
-	imgLink.appendChild( imgPreview );
+	
+	var imgLink = _$.newElement('a',{attributes:{href:'#'}});
+	
+	_$.addEvent( imgLink, 'click', function(e) 
+		{
+			this.previousSibling.setAttribute('style', this.previousSibling.getAttribute('bkpstyle')); 
+			this.parentNode.removeChild(this ); 
+			e.preventDefault();return false;
+		});
+
+	imgLink.appendChild(_$.newElement('img', {attributes:{src:this.href}}));
 	_$.insertAfter(this, imgLink);
 	this.setAttribute('bkpstyle', this.getAttribute('style'));
 	this.setAttribute('style', 'display: none');
@@ -3622,11 +3631,10 @@ if(document.location.href.split('/my/inbox/write/').length > 1 && _$.$('js-new_i
 }
 
 //Ссылка на статистику d3search
-if(location.pathname.indexOf('/users/')==0){
+if(location.pathname.indexOf('/users/')==0)
+{
 	var img = _$.$t('img', _$.$('generic-wrapper'))[4];
-	var div = document.createElement('div');
-	div.innerHTML = '<a href="http://d3search.ru/stat">Статистика на d3search.ru</a><br>';
-	img.parentNode.insertBefore(div, img);
+	img.parentNode.insertBefore(_$.newElement('div', {innerHTML:'<a href="http://d3search.ru/stat">Статистика на d3search.ru</a><br>'}), img);
 }
 
 //ON/OFF THRNABLE FUNCTIONS
@@ -3688,19 +3696,19 @@ if(_$.settings.inbox_recreate=='1')
 	if(arr.length == 1 && userlist.length > 0)
 	{
 		var form = arr[0];
-		var elem = document.createElement("div");
-		elem.innerHTML = '[<a href="http://dirty.ru/my/inbox/write/'+userlist.substr(0,userlist.length-1)+'">копировать пользователей</a>]';
-		_$.insertAfter(form, elem);
+
+		_$.insertAfter(form, _$.newElement('div',
+			{innerHTML: '[<a href="http://dirty.ru/my/inbox/write/'+userlist.substr(0,userlist.length-1)+'">копировать пользователей</a>]'
+			}));
 
 		// made by crea7or
 		// start of SCRIPTS-57
-		vS57own = document.getElementById('js-inboxUserAddInput');
-		if ( vS57own )
+		if ( vS57own = document.getElementById('js-inboxUserAddInput') )
 		{
 			_$.injectScript( s57inboxBanAll );
-			var elemz = document.createElement("div");
-			elemz.innerHTML = '[<a href="#" onclick="s57inboxBanAll(); return false;">забанить всех</a>]';
-			_$.insertAfter(form, elemz);
+			_$.insertAfter(form, _$.newElement('div',
+				{innerHTML: '[<a href="#" onclick="s57inboxBanAll(); return false;">забанить всех</a>]'
+				}));
 		}
 	}
 }
@@ -3744,17 +3752,16 @@ if(_$.settings.user_stats=='1')
 				// isn't needed for non users
 				if ( ownUsername.length > 0 )
 				{
-					var vS61div = document.createElement('div');
-					vS61div.setAttribute("class", "userinboxwrite");
-					vS61div.innerHTML = userStatsInfo.parentNode.childNodes[5].innerHTML;
-					userStatsInfo.parentNode.childNodes[1].appendChild( vS61div );
+					userStatsInfo.parentNode.childNodes[1].appendChild(_$.newElement('div',
+						{attributes:{class:"userinboxwrite"}
+						,innerHTML: userStatsInfo.parentNode.childNodes[5].innerHTML
+						}));
 				}
 				// end SCRIPTS-61
 				var username = elem[0].innerHTML.split('</a></h2>')[0].split('">')[1];
-				var div = document.createElement('div');
-				div.setAttribute("id", "d3search-userinfo");
-				div.setAttribute("class", "userstat");
-				userStatsInfo.appendChild(div);
+				
+				userStatsInfo.appendChild(_$.newElement('div',{attributes:{id:"d3search-userinfo",class:"userstat"}}));
+				
 				_$.injectScriptUrl("http://d3search.ru/wazzup?username=" + encodeURI(username) + "&ownUsername=" + encodeURI(ownUsername)+"&container=d3search-userinfo");
 			}
 		}
@@ -3889,11 +3896,8 @@ if(_$.settings.links_test=='1'){
 			}
 			if(link == "http://")	link="";
 
-			var div = document.createElement('div');
-			div.setAttribute("id", "d3search-postinfo");
-			div.setAttribute("class", "userstat");
 			if(_$.$('d3search-postinfo')!=null)_$.$('d3search-postinfo').parentNode.removeChild(_$.$('d3search-postinfo'));
-			form.insertBefore(div, _$.$c("submit_btn", form)[0]);
+			form.insertBefore(_$.newElement('div', {attributes:{id:"d3search-postinfo",class:"userstat"}}), _$.$c("submit_btn", form)[0]);
 
 			_$.injectScriptUrl("http://d3search.ru/wazzup?post="+encodeURIComponent(comment)+"&link="+encodeURIComponent(link)+"&container=d3search-postinfo");
 		}
@@ -4034,8 +4038,8 @@ if(_$.settings.youtube_preview=='1')
 							this.style.textDecoration = "none";
 							this.innerHTML = '<span style="display:inline-block; clear: both; width: '+(width+36)+'px; "><span><object width="'+width+'" height="'+height+'"><param name="movie" value="http://www.youtube.com/v/'+id+'?autoplay=1&start='+time+'&fs=1"></param><param name="allowFullScreen" value="true"></param></param><param name="allowScriptAccess" value="always"></param><embed src="http://www.youtube.com/v/'+id+'?autoplay=1&start='+time+'&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="'+width+'" height="'+height+'"></embed></object></span>'+button+'</span>';
 							//adding size change links
-							var div = document.createElement('div');
-							div.innerHTML = '<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>';
+							var div = _$.newElement('div', {innerHTML:'<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>'});
+								
 							_$.insertAfter(this, div);
 							//div.setAttribute("style","position:relative;");
 							//div.style.left = (_$.element_position(this).x - div.clientWidth + 30) + "px";
@@ -4124,8 +4128,7 @@ if(_$.settings.youtube_preview=='1')
                         this.style.textDecoration = "none";
                         this.innerHTML = '<span style="display:inline-block; clear: both; width: ' + (width + 36) + 'px; "><span><iframe width="' + width + '" height="' + height + '" src="http://player.vimeo.com/video/' + vimeo_id + '?autoplay=1" frameborder="0"></iframe></span>' + button + '</span>';
                         //adding size change links
-                        var div = document.createElement('div');
-                        div.innerHTML = '<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>';
+                        var div = _$.newElement('div', {innerHTML:'<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>'});
                         _$.insertAfter(this, div);
                         //div.setAttribute("style","position:relative;");
                         //div.style.left = (_$.element_position(this).x - div.clientWidth + 30) + "px";
@@ -4384,7 +4387,7 @@ if(_$.settings.dirty_tags=='1')
 		var ourTagsDivCheck = document.getElementById('js-vtags-textarea');
 		if (ourTagsDivCheck == null )
 		{
-			var tagsDivAtDirty = document.getElementById('js-post_tags');
+			var tagsDivAtDirty = _$.tagsDiv();
 			if ( tagsDivAtDirty )
 			{
 				// create list of tags to edit
@@ -4397,9 +4400,7 @@ if(_$.settings.dirty_tags=='1')
 				var vTagsTextArea = document.getElementById('vtags-own-tags');
 				if ( vTagsTextArea )
 				{
-					var tagsArray = loadTagsList();
-					var tagsInString = tagsArray.toString();
-					vTagsTextArea.value = tagsInString.replace(/,/gi,'\n');
+					vTagsTextArea.value = loadTagsList().toString().replace(/,/gi,'\n');
 				}
 			}
 		}
@@ -4473,12 +4474,11 @@ if(_$.settings.dirty_tags=='1')
 			}
 			//
 			// create div for tags
-			var tagsDivAtDirty = document.getElementById('js-post_tags');
+			var tagsDivAtDirty = _$.tagsDiv();
 			if ( tagsDivAtDirty )
 			{
-				ourTagsDiv = document.createElement('div');
-				ourTagsDiv.setAttribute('id','js-tags-script-predefines');
-				ourTagsDiv.setAttribute('style', 'font-size: 12px;');
+				ourTagsDiv = _$.newElement('div', {attributes:{id:'js-tags-script-predefines',style:'font-size: 12px;'}});
+					
 				var postUserName;
 				var postFooter = document.querySelector('div.dd');
 				if ( postFooter )
@@ -4627,12 +4627,10 @@ if(_$.settings.dirty_tags=='1')
 			_$.injectScript( manageTag + "\n" + manageTagsList + "\n" + manageOwnTags + "\n"+ loadTagsList + "\n" + saveTagsList );
 			if ( _$.settings.dirty_tags_hidetags == 1 )
 			{
-				var tagsDivAtDirty = document.getElementById('js-post_tags');
-				var divWithLinkToTags = document.createElement('div');
-				divWithLinkToTags.setAttribute('id','js-tags-script-floatlink');
-				divWithLinkToTags.setAttribute('style', 'font-size: 12px; display: block;');
-				divWithLinkToTags.innerHTML = "<a href=\"#\" onclick=\"return manageTagsList();\" class=\"dashed\">ваш список меток</a><br><br>";
-				tagsDivAtDirty.appendChild( divWithLinkToTags );
+				_$.tagsDiv().appendChild( _$.newElement('div',
+					{attributes: {id:'js-tags-script-floatlink',style:'font-size: 12px; display: block;'}
+					,innerHTML: '<a href="#" onclick="return manageTagsList();" class="dashed">ваш список меток</a><br><br>'
+					}));
 			}
 			else
 			{
@@ -4843,9 +4841,8 @@ if(_$.settings.dirty_tags=='1')
 						new_sel.options[_$.settings.cmnt_opt_count+4].text = picts_filtering;
 						new_sel.options[_$.settings.cmnt_opt_count+4].value = "set_pict_filter";
 
-						var new_div = document.createElement("FORM");
-						new_div.name='div_select_'+_dct.curr_select_numb;
-						new_div.id='div_select_'+_dct.curr_select_numb;
+						var divId='div_select_'+_dct.curr_select_numb;
+						var new_div = _$.newElement('FORM', {attributes:{id:divId,name:divId}}) ;
 						new_div.appendChild(new_sel);
 						curr_sel_node.parentNode.replaceChild(new_div, curr_sel_node);
 
@@ -4974,22 +4971,21 @@ if(_$.settings.dirty_tags=='1')
 						}
 						div_to_insert = div_to_insert[0];
 						//<A HREF="javascript:top.frames[0].toggleNode('<?php print(("".($app_id * 10)."_".$function_id));?>')" ID="fun_<?=$function_id?>1"><?php print($function_name);?></A>
-						var tree_link = document.createElement("a");
-						tree_link.id = "tree_link";
-						tree_link.href = "javascript:void(0);";
+						
+						var tree_link = _$.newElement('a',
+							{attributes: {id:"tree_link",href:"javascript:void(0);",class:"dashed comments_header_refresh_comments"}
+							,innerHTML: "списком!"
+							}); 
 						//tree_link.href = "javascript:_dct.toggleCommentsOrder();";
-
-						tree_link.innerHTML = "списком!";
-						tree_link.className = "dashed comments_header_refresh_comments";
 
 						if (navigator.appName == "Opera") {
 								tree_link.onclick = function(){_dct.toggleCommentsOrder();};
 						} else {
 								tree_link.addEventListener('click', _dct.toggleCommentsOrder, false);
 						}
-						var space_link = document.createElement("a");
+						var space_link = _$.newElement('a',{innerHTML:"&nbsp;&nbsp;"});
+						
 						div_to_insert.appendChild(space_link);
-						space_link.innerHTML = "&nbsp;&nbsp;";
 						div_to_insert.appendChild(tree_link);
 				},
 
@@ -5143,39 +5139,37 @@ if(_$.settings.dirty_tags=='1')
 						var names = ['Посты', 'Фото', 'Видео', 'Аудио'];
 						if (_$.settings.post_content_filter_layout!='1') {
 							for (var i=0; i<chcks.length; i++) {
-								var temp_chk = document.createElement("input");
-								temp_chk.type='checkbox';
-								temp_chk.id=chcks[i];
+								
+								var temp_chk = _$.newElement('input',
+									{attributes: {id: chcks[i], type: 'checkbox', checked: _$.settings[chcks[i]] == 1}
+									});
+								
 								if (navigator.appName == "Opera") {
 										temp_chk.onclick=function(){_dpt.onSortChks(this);};
 								} else {
 										temp_chk.addEventListener('click', _dpt.onSortChks, false);
 								}
-
-								temp_chk.checked = (eval("_$.settings."+chcks[i]) == 1);
-								var temp_link = document.createElement("a");
-								temp_link.innerHTML ='<label for="'+chcks[i]+'">'+names[i]+'</label>';
+								
+								var temp_link = _$.newElement('a',{innerHTML:'<label for="'+chcks[i]+'">'+names[i]+'</label>'});
+									
 								div_to_insert.appendChild(temp_chk);
 								div_to_insert.appendChild(temp_link);
 							}
 						} else {
 							for (var i=0; i<chcks.length; i++) {
-								var temp_link=document.createElement("a");
-								temp_link.id=chcks[i];
+								var temp_link= _$.newElement('a',
+									{attributes: {id: chcks[i], href: "javascript:void(0)"}
+									,innerHTML: names[i]
+									,style: (_$.settings[chcks[i]] == 1 ? {fontWeight: 'bold'} : {})
+									});
+									
 								if (navigator.appName == "Opera") {
 										temp_link.onclick=function(){_dpt.onSortChks(this);};
 								} else {
 										temp_link.addEventListener('click', _dpt.onSortChks, false);
 								}
-
-								temp_link.href ="javascript:void(0)";
-								temp_link.innerHTML = names[i];
-								if (eval("_$.settings."+chcks[i]) == 1) {
-									temp_link.style.fontWeight = "bold";
-								}
-
-								var span = document.createElement("span");
-								span.innerHTML = "&nbsp;";
+								var span = _$.newElement('span', {innerHTML:"&nbsp;"});
+									
 								div_to_insert.appendChild(temp_link);
 								div_to_insert.appendChild(span);
 							}
@@ -5238,9 +5232,8 @@ if(_$.settings.dirty_tags=='1')
 						new_sel.options[_$.settings.opt_count+3].text = "Число опций...";
 						new_sel.options[_$.settings.opt_count+3].value = "set_opt_count";
 
-						var new_div = document.createElement("FORM");
-						new_div.name='div_select_'+_dpt.curr_select_numb;
-						new_div.id='div_select_'+_dpt.curr_select_numb;
+						var divId='div_select_'+_dpt.curr_select_numb;
+						var new_div = _$.newElement('FORM', {attributes:{id:divId,name:divId}});
 						new_div.appendChild(new_sel);
 
 						curr_sel_node.parentNode.replaceChild(new_div, curr_sel_node);
@@ -5430,14 +5423,14 @@ if(_$.settings.dirty_tags=='1')
 				{
 					var newLink = (location.pathname.indexOf('/banned')==0)?_$.$t('a',inner)[2]:_$.$t('a',inner)[3];
 					id = newLink.href;
-					link = document.createElement("a");
-					link.setAttribute("href", "#");
-					link.setAttribute("style", "margin-left:5px; display:inline-block;");
-					link.setAttribute("title", "Пометить комментарии как прочтённые");
+					
+					link = _$.newElement('a',
+						{attributes: {href:'#',title:"Пометить комментарии как прочтённые",pos:i,posId:id}
+						,style: {marginLeft:'5px',display:'inline-block'}
+						,innerHTML: "<strong>[x]</strong>"
+						}); 
 					if(ownComment)link.setAttribute("own", "true");
-					link.setAttribute("pos", i);
-					link.setAttribute("posId", id);
-					link.innerHTML = "<strong>[x]</strong>";
+					
 					_$.insertAfter(newLink, link);
 
 					_$.addEvent(link, 'click', function(e){
@@ -5768,19 +5761,22 @@ if(_$.settings.dirty_tags=='1')
 			var currentCommentHeader;
 			var commentUserNameA;
 			var hideShowLink;
-			var newLinkToShowHide;
-			var spaceSpan;
 			var commentsHolder = document.getElementById('js-commentsHolder');
 			for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
+				
 			{
 				if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
 				{
-					currentCommentId = commentsHolder.childNodes[indexOfComment].getAttribute('id');
-					currentCommentBody = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[1];
+					with(commentsHolder.childNodes[indexOfComment])
+					{
+						currentCommentId = getAttribute('id');
+						currentCommentBody = childNodes[1].childNodes[1];
+						currentCommentHeader = childNodes[1].childNodes[3];
+					}
+					
 					currentCommentBodyText = currentCommentBody.innerHTML;
-					currentCommentHeader = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[3];
-					commentUserNameA = currentCommentHeader.querySelector('a.c_user');
-					if ( commentUserNameA )
+
+					if ( commentUserNameA = currentCommentHeader.querySelector('a.c_user') )
 					{
 						currentCommentBodyText += " " + commentUserNameA.innerHTML;
 					}
@@ -5799,13 +5795,8 @@ if(_$.settings.dirty_tags=='1')
 						hideShowLink = currentCommentHeader.getElementById( currentCommentId + '-sh');
 						if ( hideShowLink == null )
 						{
-							spaceSpan = document.createElement('span');
-							spaceSpan.innerHTML = "&nbsp;&nbsp";
-							currentCommentHeader.appendChild( spaceSpan );
-							newLinkToShowHide = document.createElement('a');
-							newLinkToShowHide.setAttribute('href', '#');
-							newLinkToShowHide.setAttribute('id', currentCommentId + '-sh');
-							currentCommentHeader.appendChild( newLinkToShowHide );
+							currentCommentHeader.appendChild(_$.newElement('span', {innerHTML:"&nbsp;&nbsp"}));
+							currentCommentHeader.appendChild(_$.newElement('a',{attributes:{href:'#',id:currentCommentId + '-sh'}}));
 						}
 						commentShowHide( currentCommentId, false );
 					}
@@ -5916,22 +5907,23 @@ if(_$.settings.dirty_tags=='1')
 			{
 				inputElementDiv.setAttribute('style', 'float: left;');
 			}
-			var formElement = document.createElement('form');
-			formElement.setAttribute('onsubmit', 'return commentsFilter();');
-			var inputElementA = document.createElement('a');
-			inputElementA.setAttribute('href', '#');
-			inputElementA.setAttribute('onclick', 'return commentsFilter();');
-			inputElementA.setAttribute('style', 'margin-left: 5px;');
-			inputElementA.setAttribute('class', 'dashed');
-			inputElementA.innerHTML = 'фас!';
-			var inputElement = document.createElement('input');
-			inputElement.setAttribute('type', 'text');
-			inputElement.setAttribute('id', 'js-search-in-comments');
-			inputElement.setAttribute('onchange', 'return commentsFilter();');
-			inputElement.setAttribute('name', 'js-search-in-comments');
-			inputElement.setAttribute('class', 'text_input js-input_default');
+			var formElement = _$.newElement('form',{attributes:{onsubmit:'return commentsFilter();'}});
+			
+			var inputElementA = _$.newElement('a',
+				{attributes: {href:'#',onclick: 'return commentsFilter();',class:'dashed'}
+				,style: {marginLeft: '5px'}
+				,innerHTML: 'фас!'
+				});
+				
+							
+			var inputElement = _$.newElement('input',
+				{attributes: {type:'text',id:'js-search-in-comments',name:'js-search-in-comments'
+							 ,onchange:'return commentsFilter();',class:'text_input js-input_default'}
+				}); 
+				
 			formElement.appendChild( inputElement );
 			formElement.appendChild( inputElementA );
+			
 			inputElementDiv.appendChild( formElement );
 			headerDiv.insertBefore( inputElementDiv, insertOurHeaderAfter );
 			_$.injectScript( commentsFilter + "\n" + "var instant_search_hide = " + _$.settings.instant_search_hide + ";" + "\n" + commentShowHide );
@@ -5984,10 +5976,10 @@ if(_$.settings.dirty_tags=='1')
 	//stasik0
 	if(_$.settings.dekabr == '1'){
 		var mystuff = _$.$('js-header_inbox_link');
-		var iframe = document.createElement('iframe');
-		iframe.setAttribute('style', 'display:block; float: left; width: 100px; height:20px; border:0; display: inline;');
-		iframe.setAttribute('src', 'http://dekabr.org/cnew.php');
-		_$.insertAfter(mystuff, iframe);
+		
+		_$.insertAfter(mystuff, _$.newElement('iframe',
+			{attributes: {src: 'http://dekabr.org/cnew.php',style: 'display:block; float: left; width: 100px; height:20px; border:0; display: inline;'}
+			}));
 	}
 }
 
