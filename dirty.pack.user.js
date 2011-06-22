@@ -1337,9 +1337,9 @@ function DSP_colorize_comments()
 			}
 		}
 
-		var dsp_av_res = document.createElement('span');
-		dsp_av_res.innerHTML = '&nbsp; <a class="dsp_color" style="text-decoration:underline;cursor:pointer">цвет</a><span'+((temp_color=='')?' style="display:none"':'')+' id="dsp_color_remover_'+i+'"> | <a style="text-decoration:underline;cursor:pointer">сбросить</a></span>';
-		dsp_all_comments[i].appendChild(dsp_av_res);
+		dsp_all_comments[i].appendChild(_$.newElement('span',
+			{innerHTML:'&nbsp; <a class="dsp_color" style="text-decoration:underline;cursor:pointer">цвет</a><span'+((temp_color=='')?' style="display:none"':'')+' id="dsp_color_remover_'+i+'"> | <a style="text-decoration:underline;cursor:pointer">сбросить</a></span>'
+			}));
 
 		_$.addEvent(_$.$('dsp_color_remover_'+i),'click',function(e){DSP_color_remove(e.target);});
 
@@ -1478,19 +1478,18 @@ function dup_showBaloon(obj){
 
 			var dup_div;
 
-			if(!_$.$('dup_show_div')){
-				dup_div = document.createElement('div');
-				dup_div.id = 'dup_show_div';
-				dup_div.style.position = 'absolute';
-				dup_div.style.zIndex = '1300';
-				document.body.appendChild(dup_div);
+			if(!(dup_div=_$.$('dup_show_div'))){
 
+				dup_div=_$.newElement('div',
+						{attributes: {id:'dup_show_div'}
+						,style: {position: 'absolute',zIndex: '1300'}
+						});
+				
+				document.body.appendChild(dup_div);
 				_$.addEvent(document,'click',function(){
 						_$.$('dup_show_div').style.display = 'none';
 					});
 			}
-
-			dup_div = _$.$('dup_show_div');
 
 			if(dsp_check_change_pictures==1){
 				if(_$.settings.no_pictures==0) dup_div.innerHTML = '<input type="hidden" id="dup_current_id" value=""><table cellspacing="0" cellpadding="0" border="0"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"><div style="width:100px;height:35px;background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:-20px 0"></div></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" id="dup_data_td"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table>';
@@ -2499,9 +2498,7 @@ if(_$.settings.posts_average=='1')
 	{
 		var time1 = new Date();
 
-		var dsp_av_res = document.createElement('span');
-		dsp_av_res.id = 'dsp_layer_posts_average';
-		_$.$c('dd')[0].appendChild(dsp_av_res);
+		_$.$c('dd')[0].appendChild(_$.newElement('span',{attributes:{id:'dsp_layer_posts_average'}}));
 
 		var dsp_ids_count = 0;
 		var dsp_votes_count = 0;
@@ -2731,9 +2728,7 @@ if ( _$.settings.grt_enabled =='1' )
 				var vGreetPattern = /(\%username\%)+/gi;
 				var vGreetReplacement = "<a href=\"" + vGreetLink+ "\">" + vGreetName + "</a>";
 				var vGreetResult = vTxtsArr[vTxtsArrIndex].text.replace(vGreetPattern, vGreetReplacement);
-				var vGreetNode = document.createElement('div');
-				vGreetNode.innerHTML = vGreetResult;
-				divs.insertBefore( vGreetNode, divs.childNodes[0] );
+				divs.insertBefore( _$.newElement('div',{innerHTML:vGreetResult}), divs.childNodes[0] );
 				_$.tooltip.processGreeting();
 			}
 		}
@@ -2905,9 +2900,9 @@ if ( document.location.href.indexOf("dirty.ru/user/") > -1 )
 	}
 	if ( userBasicInfo && dsp_self_name.length > 0 && userName.length > 0 )
 	{
-		var newDiv = document.createElement('div');
-		newDiv.innerHTML = "<a href=\"#\" onclick=\"return socialAdd('" + userName + "');\" style=\"background: url(http://img.dirty.ru/d3/social-add-button.gif) no-repeat 1px 0px; padding: 0px 0px 3px 22px;\">Следить за пользователем</a>";
-		userBasicInfo.appendChild( newDiv );
+		userBasicInfo.appendChild( _$.newElement('div',
+				{innerHTML: "<a href=\"#\" onclick=\"return socialAdd('" + userName + "');\" style=\"background: url(http://img.dirty.ru/d3/social-add-button.gif) no-repeat 1px 0px; padding: 0px 0px 3px 22px;\">Следить за пользователем</a>" 
+				}));
 		_$.injectScript( socialAdd );
 	}
 }
@@ -2928,26 +2923,20 @@ if ( _$.settings.online_enabled =='1' )
 			var divContentLeft = document.querySelector("div.content_left");
 			if ( divContentLeft )
 			{
-				var checkinsMarkup = localStorage.getItem('checkinsMarkup');
-				var newdiv = document.createElement('div');
-				newdiv.innerHTML =  checkinsMarkup;
-				divContentLeft.appendChild( newdiv );
+				divContentLeft.appendChild( _$.newElement('div', {innerHTML:localStorage.getItem('checkinsMarkup')}) );
 				_$.tooltip.processLinks(divContentLeft);
 			}
 			var highlightsStyles = localStorage.getItem('checkinsHighlights');
 			if (highlightsStyles != null)
 			{
-				var highlightsDiv = document.createElement('div');
-				highlightsDiv.innerHTML = highlightsStyles;
-				document.body.appendChild(highlightsDiv);
+				document.body.appendChild(_$.newElement('div', {innerHTML:highlightsStyles}));
 			}
 		};
 		var now = new Date().getTime();
 		if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 		{
 			_$.addEvent(window, 'load', function(){
-				var checkinScript = document.createElement("script");
-				checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
+				var checkinScript = _$.newElement("script",{attributes:{src:"http://api.d3search.ru/checkin/" + vUserName}});
 				document.body.appendChild(checkinScript);
 				localStorage.setItem('lastCheckinTimestamp', now);
 				_$.addEvent(checkinScript, 'load', drawStuff);
@@ -3526,10 +3515,8 @@ var youtube_id;
 //add link to textarea
 var youtube_textarea = _$.$c('textarea_editor')[0];
 if(youtube_textarea!=null){
-	var link = document.createElement("a");
-	link.innerHTML = "<b>Youtube</b>";
-	link.id = "youtube_link";
-	link.style.cursor="pointer";
+	var link = _$.newElement('a',{attributes:{id:'youtube_link'},innerHTML:"<b>Youtube</b>",style:{cursor:'pointer'}});
+	
 	//link.onclick = "insert_youtube(); return false;";
 	youtube_textarea.appendChild(link);
 	_$.addEvent(_$.$('youtube_link'),'click',addYoutube);
@@ -3537,15 +3524,15 @@ if(youtube_textarea!=null){
 	var preview_div = document.createElement("div");
 	var width = 720;
 	var height = 295;
-	dsp_output = "";
-	dsp_output += '<div id="youtube_preview" style="display:none;position:fixed;top:'+((_$.viewarea_size().y-height)/2)+'px;left:'+((_$.viewarea_size().x-width)/2)+'px;width:'+width+'px;height:'+height+'px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="'+width+'" height="'+height+'"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">';
-	dsp_output += '<div id="youtube_preview_close" style="float: right; background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div>';
-	dsp_output += '<table><tr><td><div style="font-size:180%;color:#5880af; padding-bottom: 10px;">Youtube preview</div></td><td><div style="float: left";>Картинка в посте</div></td></tr>';
-	dsp_output += '<tr><td><div id="youtube_embed" style="width: 340px; float:left;"></div></td>';
-	dsp_output += '<td><div id="youtube_thumbs"></div></td></tr></table>';
-	dsp_output += '<div id="youtube_time" style="width: 340px; float:left;">Перемотайте на нужное время. Позиция сейчас: 0 cек. Ссылка будет поставлена именно на эту секунду ролика.</div>';
-	dsp_output += '<div id="youtube_yarrr" style="cursor: pointer; float: right;"><img src="http://dirty.ru/i/yarrr.gif"/></div>';
-	dsp_output += '</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>';
+	dsp_output = '<div id="youtube_preview" style="display:none;position:fixed;top:'+((_$.viewarea_size().y-height)/2)+'px;left:'+((_$.viewarea_size().x-width)/2)+'px;width:'+width+'px;height:'+height+'px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="'+width+'" height="'+height+'"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">'
+		+'<div id="youtube_preview_close" style="float: right; background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div>'
+		+'<table><tr><td><div style="font-size:180%;color:#5880af; padding-bottom: 10px;">Youtube preview</div></td><td><div style="float: left";>Картинка в посте</div></td></tr>'
+		+'<tr><td><div id="youtube_embed" style="width: 340px; float:left;"></div></td>'
+		+'<td><div id="youtube_thumbs"></div></td></tr></table>'
+		+'<div id="youtube_time" style="width: 340px; float:left;">Перемотайте на нужное время. Позиция сейчас: 0 cек. Ссылка будет поставлена именно на эту секунду ролика.</div>'
+		+'<div id="youtube_yarrr" style="cursor: pointer; float: right;"><img src="http://dirty.ru/i/yarrr.gif"/></div>'
+		+'</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>';
+
 	preview_div.innerHTML = dsp_output;
 	document.body.appendChild(preview_div);
 	_$.addEvent(_$.$('youtube_preview_close'),'click',close);
@@ -4359,11 +4346,12 @@ if(( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.l
 				}
 				if (formatButtonsTextAreaWriteHdr )
 				{
-					var newdiv = document.createElement('div');
-					newdiv.setAttribute('class', 'textarea_editor');
-					newdiv.setAttribute('style', 'textarea_editor');
-					newdiv.innerHTML = "<br><a onclick=\"return postBoxInsText('b', '" + fbID + "');\" href=\"#\"><b>Bold</b></a>&nbsp;<a onclick=\"return postBoxInsText('i', '" + fbID + "');\" href=\"#\"><i>Italic</i></a>&nbsp;<a onclick=\"return postBoxInsText('u', '" + fbID + "');\" href=\"#\"><u>Underline</u></a>&nbsp;<a onclick=\"return postBoxInsText('sup', '" + fbID + "');\" href=\"#\">x<sup>2</sup></a>&nbsp;<a onclick=\"return postBoxInsText('sub', '" + fbID + "');\" href=\"#\">x<sub>2</sub></a>&nbsp;<a onclick=\"return postBoxInsText('irony', '" + fbID + "');\" href=\"#\"><span class=\"irony\">Irony</span></a><span class=\"textarea_editor_divider\">&nbsp;</span><a onclick=\"return postBoxInsLink('" + fbID + "');\" href=\"#\"><b>Link</b></a>&nbsp;<a onclick=\"return postBoxInsImage('" + fbID + "');\" href=\"#\"><b>Image</b></a>";
-					formatButtonsTextAreaWriteHdr.appendChild( newdiv );
+					formatButtonsTextAreaWriteHdr.appendChild(
+						_$.newElement('div', 
+							{attributes: {class: 'textarea_editor',style:'textarea_editor'} ///< @todo: incorrect style
+							,innerHTML: "<br><a onclick=\"return postBoxInsText('b', '" + fbID + "');\" href=\"#\"><b>Bold</b></a>&nbsp;<a onclick=\"return postBoxInsText('i', '" + fbID + "');\" href=\"#\"><i>Italic</i></a>&nbsp;<a onclick=\"return postBoxInsText('u', '" + fbID + "');\" href=\"#\"><u>Underline</u></a>&nbsp;<a onclick=\"return postBoxInsText('sup', '" + fbID + "');\" href=\"#\">x<sup>2</sup></a>&nbsp;<a onclick=\"return postBoxInsText('sub', '" + fbID + "');\" href=\"#\">x<sub>2</sub></a>&nbsp;<a onclick=\"return postBoxInsText('irony', '" + fbID + "');\" href=\"#\"><span class=\"irony\">Irony</span></a><span class=\"textarea_editor_divider\">&nbsp;</span><a onclick=\"return postBoxInsLink('" + fbID + "');\" href=\"#\"><b>Link</b></a>&nbsp;<a onclick=\"return postBoxInsImage('" + fbID + "');\" href=\"#\"><b>Image</b></a>" 
+							})
+					);
 				}
 			}
 		}
@@ -4400,12 +4388,12 @@ if(_$.settings.dirty_tags=='1')
 			if ( tagsDivAtDirty )
 			{
 				// create list of tags to edit
-				var divEditor = document.createElement('div');
-				divEditor.setAttribute('style', 'font-size: 12px;');
-				divEditor.setAttribute('id','js-vtags-textarea');
-				divEditor.innerHTML = "<textarea rows=\"32\" cols=\"40\" id=\"vtags-own-tags\" style=\"font-size: 12px;\"></textarea><br><br>";
-				divEditor.innerHTML += "<a href=\"#\" onclick=\"return saveTagsList();\" class=\"dashed\"><img src=\"http://pit.dirty.ru/dirty/1/2010/07/18/28284-165319-dab6dbe746b938b30cc807225bee1e65.png\" width=\"16\" height=\"16\" hspace=\"5\" vspace=\"3\" border=\"0\" align=\"top\">сохранить мой список</a><br><br>";
-				tagsDivAtDirty.appendChild(divEditor);
+				tagsDivAtDirty.appendChild(
+						_$.newElement('div',
+							{attributes: {id: 'js-vtags-textarea',style: 'font-size: 12px'}
+							,innerHTML: '<textarea rows="32" cols="40" id="vtags-own-tags" style="font-size: 12px;"></textarea><br><br>'
+									  + '<a href="#" onclick="return saveTagsList();" class="dashed"><img src="http://pit.dirty.ru/dirty/1/2010/07/18/28284-165319-dab6dbe746b938b30cc807225bee1e65.png" width="16" height="16" hspace="5" vspace="3" border="0" align="top">сохранить мой список</a><br><br>' 
+							}));
 				var vTagsTextArea = document.getElementById('vtags-own-tags');
 				if ( vTagsTextArea )
 				{
@@ -4652,13 +4640,12 @@ if(_$.settings.dirty_tags=='1')
 			}
 			// create link to edit tags
 			var tagForms = addFormDiv.getElementsByTagName('form');
-			newdiv = document.createElement('a');
-			newdiv.setAttribute('style', 'margin-left: 10px;');
-			newdiv.setAttribute('class', 'dashed');
-			newdiv.setAttribute('href', '#');
-			newdiv.innerHTML = "<img src=\"http://pit.dirty.ru/dirty/1/2010/07/18/28284-162705-21ac0118341f8bfd711a91b3a893af67.png\" width=\"16\" height=\"16\" border=\"0\">";
-			newdiv.setAttribute('onclick', "manageOwnTags()");
-			tagForms[0].appendChild(newdiv);
+
+			tagForms[0].appendChild(_$.newElement('a', 
+				{attributes: {class: 'dashed', href: '#', onclick: "manageOwnTags()"}
+				,style: {marginLeft: '10px'}
+				,innerHTML: '<img src="http://pit.dirty.ru/dirty/1/2010/07/18/28284-162705-21ac0118341f8bfd711a91b3a893af67.png" width="16" height="16" border="0">' 
+				}));
 
 			addBenchmark( time1, 'dirtytags settings' );
 			var time1 = new Date();
@@ -5714,25 +5701,18 @@ if(_$.settings.dirty_tags=='1')
 
 			//handle new ajax-generated content
 			_$.addEvent(document,"DOMNodeInserted", documentChanged);
-
-			var newdiv = document.createElement('div');
-			newdiv.style.position = "fixed";
-			newdiv.style.top = "50%";
-			newdiv.style.marginTop = "-72px";
-			newdiv.style.right = "1px";
-			newdiv.style.zIndex = "100";
-			var temp = "";
-			temp += '<div id="home" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;"></div>';
-			temp += '<div id="up" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;">0</div>';
-			temp += '<div id="mine" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;">'+mine.length+'</div>';
-			temp += '<div id="down" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;">'+newPosts.length+'</div>';
-			newdiv.innerHTML = temp;
-			document.body.insertBefore(newdiv, document.body.firstChild);
+			document.body.insertBefore(_$.newElement('div',
+				{style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'}
+				,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;"></div>'
+						+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;">0</div>'
+						+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;">'+mine.length+'</div>'
+						+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;">'+newPosts.length+'</div>'
+				}), document.body.firstChild);
 
 			disableSelection(_$.$('mine'));
 			disableSelection(_$.$('up'));
 			disableSelection(_$.$('down'));
-
+			
 			_$.addEvent(_$.$('home'), 'click', function(){if(_$.settings.smooth_scroll=='1'){smoothScroll(0);}else{window.scrollTo(_$.current_scroll().x,0);}});
 			_$.addEvent(_$.$('up'), 'click', prev);
 			_$.addEvent(_$.$('down'), 'click', next);
@@ -5764,17 +5744,13 @@ if(_$.settings.dirty_tags=='1')
 		var allUsers = commentsHolder.querySelectorAll('a.c_user');
 		for (var key = 0; key < allBodies.length; key++)
 		{
-			var c_inner = allBodies[key].innerHTML;
-			c_inner = c_inner.replace('&','amp');
-			c_inner = c_inner.replace("'",'');
-			c_inner = c_inner.replace('"','');
-			var link = document.createElement('a');
-			link.setAttribute('href', 'http://quotes-dirty.ru/write?username='+encodeURI( allUsers[key].innerHTML )+'&text='+encodeURI(c_inner));
-			link.setAttribute('target', '_blank');
-			link.setAttribute('class', 'c_answer');
-			link.setAttribute('style', 'margin-left: 10px;');
-			link.innerHTML = "в цитатник";
-			allUsers[key].parentNode.appendChild(link);
+			var c_inner = allBodies[key].innerHTML.replace('&','amp').replace("'",'').replace('"','');
+
+			allUsers[key].parentNode.appendChild(_$.newElement('a',
+				{attributes: {target: '_blank', class: 'c_answer', href: 'http://quotes-dirty.ru/write?username='+encodeURI( allUsers[key].innerHTML )+'&text='+encodeURI(c_inner)}
+				,style: {marginLeft: '10px'}
+				,innerHTML: "в цитатник"
+				}));
 		}
 		addBenchmark( time1, 'quotes' );
 	}
