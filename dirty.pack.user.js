@@ -287,6 +287,8 @@ var _$ = {
 		return e;
 	},
 
+	/// newElement('div',...) shortcut
+	newDiv: function(parms) { return this.newElement('div', parms); },
 	
 	event: function(e){
 
@@ -500,7 +502,7 @@ if ( needToSave )
 if ( _$.settings.timings_display == 1 )
 {
 	document.body.insertBefore(
-		_$.newElement('div',
+		_$.newDiv(
 			{attributes:
 					{id:'js-benchmark'
 					,style:'border: 1px dotted grey; padding: 5px 5px 5px 5px; font-family: verdana, sans-serif; font-size: 10px;'
@@ -516,7 +518,7 @@ function addBenchmark( results, name )
 		var time2 = new Date();
 		var divBench = document.getElementById('js-benchmark');
 		if ( divBench )
-			divBench.appendChild(_$.newElement('div', 
+			divBench.appendChild(_$.newDiv( 
 				{attributes:{style:'font-family: verdana, sans-serif; font-size: 10px;'}
 				,innerHTML: ( time2 - results ) + " ms   : " + name
 				}));
@@ -1100,14 +1102,14 @@ var dsp_jscolor = {
 			var dsp_color = _$.$("dsp_color_show_div");
 			if(!dsp_color){
 				document.body.appendChild(
-						dsp_color = _$.newElement('div',
+						dsp_color = _$.newDiv(
 									{attributes:{id:'dsp_color_show_div'}
 									,style:{position:'absolute',zIndex:1399} // <- Шито?
 									,innerHTML:'<table cellspacing="0" cellpadding="0" width="282" height="160" border="0"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"><div style="width:100px;height:35px;background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:-20px 0"></div></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table>'
 									})
 				);
 
-				dsp_color.appendChild(dsp_closer = _$.newElement('div',
+				dsp_color.appendChild(dsp_closer = _$.newDiv(
 						{attributes:{id:'dsp_color_closer'}
 						,innerHTML:'<b>x</b>'
 						,style: 
@@ -1149,7 +1151,7 @@ var dsp_jscolor = {
 				with(dsp_jscolor.picker)
 				{
 					for(var i=0,segSize=4; i<dsp_jscolor.images.sld[1]; i+=segSize) {
-						sld.appendChild(_$.newElement('div',{style: {height:segSize+'px',fontSize:'1px',lineHeight:'0'}}));
+						sld.appendChild(_$.newDiv({style: {height:segSize+'px',fontSize:'1px',lineHeight:'0'}}));
 					}
 					sldB.appendChild(sld);
 					box.appendChild(sldB);
@@ -1485,7 +1487,7 @@ function dup_showBaloon(obj){
 
 			if(!(dup_div=_$.$('dup_show_div'))){
 
-				dup_div=_$.newElement('div',
+				dup_div=_$.newDiv(
 						{attributes: {id:'dup_show_div'}
 						,style: {position: 'absolute',zIndex: '1300'}
 						});
@@ -2733,7 +2735,7 @@ if ( _$.settings.grt_enabled =='1' )
 				var vGreetPattern = /(\%username\%)+/gi;
 				var vGreetReplacement = "<a href=\"" + vGreetLink+ "\">" + vGreetName + "</a>";
 				var vGreetResult = vTxtsArr[vTxtsArrIndex].text.replace(vGreetPattern, vGreetReplacement);
-				divs.insertBefore( _$.newElement('div',{innerHTML:vGreetResult}), divs.childNodes[0] );
+				divs.insertBefore( _$.newDiv({innerHTML:vGreetResult}), divs.childNodes[0] );
 				_$.tooltip.processGreeting();
 			}
 		}
@@ -2754,7 +2756,7 @@ if ( divRightCol && divTags)
 	if ( divAds == null )
 	{	
 		divTags.parentNode.insertBefore
-				(divAds=_$.newElement('div',{attributes:{class:'b-ads',style:'float: right; width: 300px; height: 690px; margin-top: 0px; position: relative; z-index: 3;'}})
+				(divAds=_$.newDiv({attributes:{class:'b-ads',style:'float: right; width: 300px; height: 690px; margin-top: 0px; position: relative; z-index: 3;'}})
 				, divTags );
 	}	
 	
@@ -2787,7 +2789,7 @@ if ( divRightCol && divTags)
 		{
 			//only if new news are present
 			//divAds.setAttribute('style', 'clear: both; margin-top: 0px;');
-			var divForNews = _$.newElement('div', {style:{marginTop:'30px'}});
+			var divForNews = _$.newDiv( {style:{marginTop:'30px'}});
 			var subDivForNews = document.createElement('div');
 			for(var i=0;i<newsArray.length;i++)
 			{
@@ -2904,7 +2906,7 @@ if ( document.location.href.indexOf("dirty.ru/user/") > -1 )
 	}
 	if ( userBasicInfo && dsp_self_name.length > 0 && userName.length > 0 )
 	{
-		userBasicInfo.appendChild( _$.newElement('div',
+		userBasicInfo.appendChild( _$.newDiv(
 				{innerHTML: "<a href=\"#\" onclick=\"return socialAdd('" + userName + "');\" style=\"background: url(http://img.dirty.ru/d3/social-add-button.gif) no-repeat 1px 0px; padding: 0px 0px 3px 22px;\">Следить за пользователем</a>" 
 				}));
 		_$.injectScript( socialAdd );
@@ -2927,13 +2929,13 @@ if ( _$.settings.online_enabled =='1' )
 			var divContentLeft = document.querySelector("div.content_left");
 			if ( divContentLeft )
 			{
-				divContentLeft.appendChild( _$.newElement('div', {innerHTML:localStorage.getItem('checkinsMarkup')}) );
+				divContentLeft.appendChild( _$.newDiv( {innerHTML:localStorage.getItem('checkinsMarkup')}) );
 				_$.tooltip.processLinks(divContentLeft);
 			}
 			var highlightsStyles = localStorage.getItem('checkinsHighlights');
 			if (highlightsStyles != null)
 			{
-				document.body.appendChild(_$.newElement('div', {innerHTML:highlightsStyles}));
+				document.body.appendChild(_$.newDiv( {innerHTML:highlightsStyles}));
 			}
 		};
 		var now = new Date().getTime();
@@ -2992,7 +2994,7 @@ function vPreview(e)
 	if ( vPrvTextArea && vPrvDiv )
 	{
 		vRemovePreview( null );
-		vPrvDiv.appendChild( _$.newElement('div', {attributes:
+		vPrvDiv.appendChild( _$.newDiv( {attributes:
 				{id:'vprw-preview'
 				,class:'comment'
 				,style:'padding: 5px 5px 5px 5px; margin-left: 0px  !important; border: 1px dashed grey;'}
@@ -3020,7 +3022,7 @@ function vRemovePreview(e)
 var vPrvDiv = document.querySelector('div.comments_add_pics');
 if ( vPrvDiv )
 {
-	var newdiv = _$.newElement('div',
+	var newdiv = _$.newDiv(
 			{style:{marginRight: '30px',float:'right'}
 			,innerHTML:"<a href=\"#\" id=\"prevLink\" class=\"dashed\" style=\"color: black; font-size: 11px;\">предпросмотр</a>"
 			});
@@ -3076,7 +3078,7 @@ if ( vPrvDiv )
 			vTortInbPreHeader = document.querySelector('div.inbox_comments');
 			if ( vTortInbMenu && vTortInbPreHeader )
 			{
-				vTortAddLinksInbox = _$.newElement('div', 
+				vTortAddLinksInbox = _$.newDiv( 
 					{attributes: {class: 'inbox_header'}
 					,innerHTML: '&nbsp;'
 					}); 
@@ -3088,7 +3090,7 @@ if ( vPrvDiv )
 		{
 			vTortAddLinksInbox.setAttribute('style', 'background: #FAFAFA; padding: 20px 20px 20px 42px; margin: 0px 0px 20px 0px;');
 
-			vTortAddLinksInbox.appendChild( _$.newElement('div',
+			vTortAddLinksInbox.appendChild( _$.newDiv(
 				{style: {float: 'right'}
 				,innerHTML:"<a href=\"#\" class=\"dashed comments_header_new_comment\" onclick=\"var e = document.getElementById('js-inboxers-list');  if(e.style.display == 'block') e.style.display = 'none'; else e.style.display = 'block'; return false;\">список инбоксеров</a>&nbsp;&nbsp;" 
 				}));
@@ -3528,7 +3530,7 @@ if(youtube_textarea!=null){
 	var width = 720;
 	var height = 295;
 	
-	document.body.appendChild(_$.newElement('div',
+	document.body.appendChild(_$.newDiv(
 		{innerHTML: '<div id="youtube_preview" style="display:none;position:fixed;top:'+((_$.viewarea_size().y-height)/2)+'px;left:'+((_$.viewarea_size().x-width)/2)+'px;width:'+width+'px;height:'+height+'px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="'+width+'" height="'+height+'"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">'
 		+'<div id="youtube_preview_close" style="float: right; background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div>'
 		+'<table><tr><td><div style="font-size:180%;color:#5880af; padding-bottom: 10px;">Youtube preview</div></td><td><div style="float: left";>Картинка в посте</div></td></tr>'
@@ -3634,7 +3636,7 @@ if(document.location.href.split('/my/inbox/write/').length > 1 && _$.$('js-new_i
 if(location.pathname.indexOf('/users/')==0)
 {
 	var img = _$.$t('img', _$.$('generic-wrapper'))[4];
-	img.parentNode.insertBefore(_$.newElement('div', {innerHTML:'<a href="http://d3search.ru/stat">Статистика на d3search.ru</a><br>'}), img);
+	img.parentNode.insertBefore(_$.newDiv( {innerHTML:'<a href="http://d3search.ru/stat">Статистика на d3search.ru</a><br>'}), img);
 }
 
 //ON/OFF THRNABLE FUNCTIONS
@@ -3697,7 +3699,7 @@ if(_$.settings.inbox_recreate=='1')
 	{
 		var form = arr[0];
 
-		_$.insertAfter(form, _$.newElement('div',
+		_$.insertAfter(form, _$.newDiv(
 			{innerHTML: '[<a href="http://dirty.ru/my/inbox/write/'+userlist.substr(0,userlist.length-1)+'">копировать пользователей</a>]'
 			}));
 
@@ -3706,7 +3708,7 @@ if(_$.settings.inbox_recreate=='1')
 		if ( vS57own = document.getElementById('js-inboxUserAddInput') )
 		{
 			_$.injectScript( s57inboxBanAll );
-			_$.insertAfter(form, _$.newElement('div',
+			_$.insertAfter(form, _$.newDiv(
 				{innerHTML: '[<a href="#" onclick="s57inboxBanAll(); return false;">забанить всех</a>]'
 				}));
 		}
@@ -3752,7 +3754,7 @@ if(_$.settings.user_stats=='1')
 				// isn't needed for non users
 				if ( ownUsername.length > 0 )
 				{
-					userStatsInfo.parentNode.childNodes[1].appendChild(_$.newElement('div',
+					userStatsInfo.parentNode.childNodes[1].appendChild(_$.newDiv(
 						{attributes:{class:"userinboxwrite"}
 						,innerHTML: userStatsInfo.parentNode.childNodes[5].innerHTML
 						}));
@@ -3760,7 +3762,7 @@ if(_$.settings.user_stats=='1')
 				// end SCRIPTS-61
 				var username = elem[0].innerHTML.split('</a></h2>')[0].split('">')[1];
 				
-				userStatsInfo.appendChild(_$.newElement('div',{attributes:{id:"d3search-userinfo",class:"userstat"}}));
+				userStatsInfo.appendChild(_$.newDiv({attributes:{id:"d3search-userinfo",class:"userstat"}}));
 				
 				_$.injectScriptUrl("http://d3search.ru/wazzup?username=" + encodeURI(username) + "&ownUsername=" + encodeURI(ownUsername)+"&container=d3search-userinfo");
 			}
@@ -3897,7 +3899,7 @@ if(_$.settings.links_test=='1'){
 			if(link == "http://")	link="";
 
 			if(_$.$('d3search-postinfo')!=null)_$.$('d3search-postinfo').parentNode.removeChild(_$.$('d3search-postinfo'));
-			form.insertBefore(_$.newElement('div', {attributes:{id:"d3search-postinfo",class:"userstat"}}), _$.$c("submit_btn", form)[0]);
+			form.insertBefore(_$.newDiv( {attributes:{id:"d3search-postinfo",class:"userstat"}}), _$.$c("submit_btn", form)[0]);
 
 			_$.injectScriptUrl("http://d3search.ru/wazzup?post="+encodeURIComponent(comment)+"&link="+encodeURIComponent(link)+"&container=d3search-postinfo");
 		}
@@ -4038,7 +4040,7 @@ if(_$.settings.youtube_preview=='1')
 							this.style.textDecoration = "none";
 							this.innerHTML = '<span style="display:inline-block; clear: both; width: '+(width+36)+'px; "><span><object width="'+width+'" height="'+height+'"><param name="movie" value="http://www.youtube.com/v/'+id+'?autoplay=1&start='+time+'&fs=1"></param><param name="allowFullScreen" value="true"></param></param><param name="allowScriptAccess" value="always"></param><embed src="http://www.youtube.com/v/'+id+'?autoplay=1&start='+time+'&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="'+width+'" height="'+height+'"></embed></object></span>'+button+'</span>';
 							//adding size change links
-							var div = _$.newElement('div', {innerHTML:'<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>'});
+							var div = _$.newDiv( {innerHTML:'<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>'});
 								
 							_$.insertAfter(this, div);
 							//div.setAttribute("style","position:relative;");
@@ -4128,7 +4130,7 @@ if(_$.settings.youtube_preview=='1')
                         this.style.textDecoration = "none";
                         this.innerHTML = '<span style="display:inline-block; clear: both; width: ' + (width + 36) + 'px; "><span><iframe width="' + width + '" height="' + height + '" src="http://player.vimeo.com/video/' + vimeo_id + '?autoplay=1" frameborder="0"></iframe></span>' + button + '</span>';
                         //adding size change links
-                        var div = _$.newElement('div', {innerHTML:'<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>'});
+                        var div = _$.newDiv( {innerHTML:'<sup>Размер: <a class="normal" href="#">нормальный</a> <a class="big" href="#">побольше</a> <a class="bigger" href="#">большой</a></sup>'});
                         _$.insertAfter(this, div);
                         //div.setAttribute("style","position:relative;");
                         //div.style.left = (_$.element_position(this).x - div.clientWidth + 30) + "px";
@@ -4350,7 +4352,7 @@ if(( document.location.href.indexOf("music.dirty.ru/comments") > 0 || document.l
 				if (formatButtonsTextAreaWriteHdr )
 				{
 					formatButtonsTextAreaWriteHdr.appendChild(
-						_$.newElement('div', 
+						_$.newDiv( 
 							{attributes: {class: 'textarea_editor',style:'textarea_editor'} ///< @todo: incorrect style
 							,innerHTML: "<br><a onclick=\"return postBoxInsText('b', '" + fbID + "');\" href=\"#\"><b>Bold</b></a>&nbsp;<a onclick=\"return postBoxInsText('i', '" + fbID + "');\" href=\"#\"><i>Italic</i></a>&nbsp;<a onclick=\"return postBoxInsText('u', '" + fbID + "');\" href=\"#\"><u>Underline</u></a>&nbsp;<a onclick=\"return postBoxInsText('sup', '" + fbID + "');\" href=\"#\">x<sup>2</sup></a>&nbsp;<a onclick=\"return postBoxInsText('sub', '" + fbID + "');\" href=\"#\">x<sub>2</sub></a>&nbsp;<a onclick=\"return postBoxInsText('irony', '" + fbID + "');\" href=\"#\"><span class=\"irony\">Irony</span></a><span class=\"textarea_editor_divider\">&nbsp;</span><a onclick=\"return postBoxInsLink('" + fbID + "');\" href=\"#\"><b>Link</b></a>&nbsp;<a onclick=\"return postBoxInsImage('" + fbID + "');\" href=\"#\"><b>Image</b></a>" 
 							})
@@ -4392,7 +4394,7 @@ if(_$.settings.dirty_tags=='1')
 			{
 				// create list of tags to edit
 				tagsDivAtDirty.appendChild(
-						_$.newElement('div',
+						_$.newDiv(
 							{attributes: {id: 'js-vtags-textarea',style: 'font-size: 12px'}
 							,innerHTML: '<textarea rows="32" cols="40" id="vtags-own-tags" style="font-size: 12px;"></textarea><br><br>'
 									  + '<a href="#" onclick="return saveTagsList();" class="dashed"><img src="http://pit.dirty.ru/dirty/1/2010/07/18/28284-165319-dab6dbe746b938b30cc807225bee1e65.png" width="16" height="16" hspace="5" vspace="3" border="0" align="top">сохранить мой список</a><br><br>' 
@@ -4477,7 +4479,7 @@ if(_$.settings.dirty_tags=='1')
 			var tagsDivAtDirty = _$.tagsDiv();
 			if ( tagsDivAtDirty )
 			{
-				ourTagsDiv = _$.newElement('div', {attributes:{id:'js-tags-script-predefines',style:'font-size: 12px;'}});
+				ourTagsDiv = _$.newDiv( {attributes:{id:'js-tags-script-predefines',style:'font-size: 12px;'}});
 					
 				var postUserName;
 				var postFooter = document.querySelector('div.dd');
@@ -4627,7 +4629,7 @@ if(_$.settings.dirty_tags=='1')
 			_$.injectScript( manageTag + "\n" + manageTagsList + "\n" + manageOwnTags + "\n"+ loadTagsList + "\n" + saveTagsList );
 			if ( _$.settings.dirty_tags_hidetags == 1 )
 			{
-				_$.tagsDiv().appendChild( _$.newElement('div',
+				_$.tagsDiv().appendChild( _$.newDiv(
 					{attributes: {id:'js-tags-script-floatlink',style:'font-size: 12px; display: block;'}
 					,innerHTML: '<a href="#" onclick="return manageTagsList();" class="dashed">ваш список меток</a><br><br>'
 					}));
@@ -5694,7 +5696,7 @@ if(_$.settings.dirty_tags=='1')
 
 			//handle new ajax-generated content
 			_$.addEvent(document,"DOMNodeInserted", documentChanged);
-			document.body.insertBefore(_$.newElement('div',
+			document.body.insertBefore(_$.newDiv(
 				{style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'}
 				,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;"></div>'
 						+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;">0</div>'
