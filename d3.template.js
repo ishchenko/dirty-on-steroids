@@ -241,34 +241,9 @@ var d3=
 	
 	initCore: function()
 	{
-		//d3.transferObjects();
 		this.config.load();
 		this.addModule(d3.config);
 	}
-	
-	/// deprecated - you don't need original window and document, use closures to attach event handlers
-	/*
-	transferObjects: function()
-	{
-		switch(this.browser().name)
-		{case 'chrome':
-			var t=d3.newElement('div',attributes:{onclick:"return {window:window,document:document};"}});
-			var retval=t.onclick();
-			this.window=retval.window;
-			this.document=retval.document;
-			break;
-		 case 'firefox':
-			this.window=unsafeWindow;
-			this.document=document.wrappedJSObject;
-			break;
-		 case 'opera':
-			 this.window=window;
-			 this.document=document;
-			 break;
-		 default:
-			alert("Don't know method for "+d3.browser().name);
-		}
-	}*/
 };
 
 d3.initCore();

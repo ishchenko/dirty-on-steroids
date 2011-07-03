@@ -1,9 +1,9 @@
 //
 // ==UserScript==
-// @name			Dirty Modular SP Core
+// @name			Dirty Modular SP
 // @author			crimaniak
 // @namespace		http://dirty.ru/
-// @description		Dirty Modular Service Pack Core. Manage extensions settings and provide jQuery service.
+// @description		Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
 // @include			http://dirty.ru/*
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
@@ -36,6 +36,7 @@ var d3=
 {
 	modules: [],
 	
+	/// Usualy you don't need this function with jQuery 
 	browser: function()
 	{
 		var string = navigator.userAgent.toLowerCase();
@@ -75,18 +76,19 @@ var d3=
 	/// newElement('div',...) shortcut
 	newDiv: function(parms) { return this.newElement('div', parms); },
 	
+	/// Get element(s) of page
 	get:
 	{
 		logoutLink: function(){return $j('#js-header_logout_link');},
 		leftNavigation: function(){return $j('.left_col_nav');}
 	},
-
+	/// JSON helper
 	json:
 	{
 		encode: function(value) {return (JSON.stringify != undefined ? JSON.stringify:JSON.encode)(value);},
 		decode: function(value)	{return (JSON.parse != undefined ? JSON.parse:JSON.decode)(value);}		
 	},
-	
+	/// Add and run d3 module
 	addModule: function(module)
 	{
 		this.modules.push(module);
@@ -94,7 +96,6 @@ var d3=
 		if(module.config == undefined || module.config.active == undefined || module.config.active.value)
 			module.run();
 	},
-	
 	// Config core module
 	config:
 	{
@@ -174,10 +175,8 @@ var d3=
 			{
 				return '<tr><td><input type="checkbox" id="'+this.id+'" name="'+this.id+'"'+(this.value ? ' checked' : '')+'></td><td><label for="'+this.id+'">'+this.caption+'</label></td></tr>';
 			},
-			getValue: function()
-			{
-				return $j('#'+this.id).attr('checked') ? true : false;
-			}
+
+			getValue: function() {return $j('#'+this.id).attr('checked') ? true : false;}
 		},
 		text:
 		{
@@ -205,10 +204,8 @@ var d3=
 				}
 				return html+'</tr></tbody></table></td></tr>';
 			},
-			getValue: function()
-			{
-				return $j('input:radio[name='+this.id+']:checked').val();
-			}
+
+			getValue: function() {return $j('input:radio[name='+this.id+']:checked').val();}
 		},
 		select:
 		{
@@ -221,10 +218,8 @@ var d3=
 				}
 				return html+'</select></td></tr>';
 			},
-			getValue: function()
-			{
-				return $j('select#'+this.id+' option:selected').val();
-			}
+			
+			getValue: function() {return $j('select#'+this.id+' option:selected').val();}
 		},
 		/// Get new values from controls and save config to storage
 		save: function()
@@ -263,34 +258,9 @@ var d3=
 	
 	initCore: function()
 	{
-		//d3.transferObjects();
 		this.config.load();
 		this.addModule(d3.config);
 	}
-	
-	/// deprecated
-	/*
-	transferObjects: function()
-	{
-		switch(this.browser().name)
-		{case 'chrome':
-			var t=d3.newElement('div',attributes:{onclick:"return {window:window,document:document};"}});
-			var retval=t.onclick();
-			this.window=retval.window;
-			this.document=retval.document;
-			break;
-		 case 'firefox':
-			this.window=unsafeWindow;
-			this.document=document.wrappedJSObject;
-			break;
-		 case 'opera':
-			 this.window=window;
-			 this.document=document;
-			 break;
-		 default:
-			alert("Don't know method for "+d3.browser().name);
-		}
-	}*/
 };
 
 d3.initCore();
