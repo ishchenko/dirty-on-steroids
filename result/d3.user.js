@@ -40,7 +40,8 @@ var d3=
 		id: null,
 		name: null
 	},
-	/// Usualy you don't need this function with jQuery 
+	/// Please use $j.browser
+	/*
 	browser: function()
 	{
 		var string = navigator.userAgent.toLowerCase();
@@ -51,7 +52,7 @@ var d3=
 				return {name:i,ver:string.split(sign[i])[1].split(' ')[0]};
 
 		return {name:'unknown',ver:'unknown'};
-	},
+	},*/
 
 	/// Set style properties
 	setStyle: function(element,style)
@@ -263,10 +264,11 @@ var d3=
 	initCore: function()
 	{
 		this.collectInfo();
+		this.getOriginal();
 		this.config.load();
 		this.addModule(d3.config);
 	},
-	
+	// collect d3-specific info
 	collectInfo: function()
 	{
 		var e=$j('.header_tagline_inner>a[href^="http://dirty.ru/users/"]');
@@ -275,8 +277,28 @@ var d3=
 			this.user.id=Math.floor(e.attr('href').replace(/[^\d]+/,''));
 			this.user.name=e.get(0).firstChild.data;
 		}
+	},
+	/// Get original window and document objects
+	getOriginal: function()
+	{
+		if($j.browser.webkit)
+		{
+			var retval=d3.newElement('div',{attributes:{onclick:"return {window:window,document:document};"}}).onclick();
+			this.window=retval.window;
+			this.document=retval.document;
+		}
+		else if($j.browser.mozilla)
+		{
+			this.window=unsafeWindow;
+			this.document=document.wrappedJSObject;
+		}
+		else if($j.browser.opera)
+		{
+			this.window=window;
+			this.document=document;
+		}else
+			alert("Don't know method to get original window for this browser");
 	}
-	
 	
 };
 
@@ -414,6 +436,22 @@ d3.addModule(
 	{
 		alert("Радиокнопки: "+this.config.testRadio.value+"\nТекст: "+this.config.testText.value
 			+"\nСелект: "+this.config.testSelect.value+"\nЧекбокс: "+this.config.testCheckbox.value);
+	}
+});
+// browser info
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Информация о браузере',
+	author: 'crimaniak',
+	config: {active:{type:'checkbox',value:true}},
+	run: function()
+	{
+		var info='';
+		$j.each($j.browser, function(i, val) {
+		      info += i+" : <span>"+val+"</span><br>";
+		    });
+		d3.get.leftNavigation().append('<li>'+info+'</li>');
 	}
 });
 
