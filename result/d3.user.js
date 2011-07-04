@@ -412,6 +412,47 @@ d3.addModule(
 			);
 	}
 });
+// Replace %username% to username
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Замена %username%',
+	author: 'crimaniak',
+	config: {active:{type:'checkbox',value:false}},
+	run: function()
+	{
+		if(d3.user.name==null) return;
+		
+		var nodes=document.evaluate("//body//text()[contains(string(),'%username%')]"
+				,document
+				,document.createNSResolver(document)
+				,XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE
+				,null);
+		for (var i = 0; i < nodes.snapshotLength; i++) 
+		{
+             var node = nodes.snapshotItem(i);
+             if(node.data != undefined) ///< opera fix
+				node.data=node.data.split('%username%').join(d3.user.name);
+		}
+	}
+});
+
+// browser info
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Информация о браузере',
+	author: 'crimaniak',
+	config: {active:{type:'checkbox',value:false}},
+	run: function()
+	{
+		var info='';
+		$j.each($j.browser, function(i, val) {
+		      info += i+" : <span>"+val+"</span><br>";
+		    });
+		d3.get.leftNavigation().append('<li>'+info+'</li>');
+	}
+});
 
 // test module
 d3.addModule(
@@ -436,22 +477,6 @@ d3.addModule(
 	{
 		alert("Радиокнопки: "+this.config.testRadio.value+"\nТекст: "+this.config.testText.value
 			+"\nСелект: "+this.config.testSelect.value+"\nЧекбокс: "+this.config.testCheckbox.value);
-	}
-});
-// browser info
-d3.addModule(
-{
-	type: "Прочее",
-	name: 'Информация о браузере',
-	author: 'crimaniak',
-	config: {active:{type:'checkbox',value:true}},
-	run: function()
-	{
-		var info='';
-		$j.each($j.browser, function(i, val) {
-		      info += i+" : <span>"+val+"</span><br>";
-		    });
-		d3.get.leftNavigation().append('<li>'+info+'</li>');
 	}
 });
 

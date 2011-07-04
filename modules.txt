@@ -1,5 +1,6 @@
 core/crc32.js
 core/tabsheets.js
 extra/tagline.links.js
-extra/test.js
+extra/replace.username.js
 extra/browser.js
+extra/test.js
