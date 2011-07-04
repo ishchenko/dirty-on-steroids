@@ -18,7 +18,11 @@ var $j=jQuery.noConflict();	// $j closure used for jQuery to avoid conflict with
 var d3=
 {
 	modules: [],
-	
+	user:
+	{
+		id: null,
+		name: null
+	},
 	/// Usualy you don't need this function with jQuery 
 	browser: function()
 	{
@@ -241,9 +245,22 @@ var d3=
 	
 	initCore: function()
 	{
+		this.collectInfo();
 		this.config.load();
 		this.addModule(d3.config);
+	},
+	
+	collectInfo: function()
+	{
+		var e=$j('.header_tagline_inner>a[href^="http://dirty.ru/users/"]');
+		if(e.length)
+		{
+			this.user.id=Math.floor(e.attr('href').replace(/[^\d]+/,''));
+			this.user.name=e.get(0).firstChild.data;
+		}
 	}
+	
+	
 };
 
 d3.initCore();
