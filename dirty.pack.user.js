@@ -438,6 +438,7 @@ if( typeof _$.settings.user_stats == "undefined") { _$.settings.user_stats = 1; 
 if( typeof _$.settings.ban_encoding == "undefined") { _$.settings.ban_encoding = 1; settingsSave = true; }
 if( typeof _$.settings.links_test == "undefined") { _$.settings.links_test = 1; settingsSave = true; }
 if( typeof _$.settings.d3search == "undefined") { _$.settings.d3search = 1; settingsSave = true; }
+if( typeof _$.settings.d3search_quick == "undefined") { _$.settings.d3search_quick = 1; settingsSave = true; }
 if( typeof _$.settings.karma_log == "undefined") { _$.settings.karma_log = 1; settingsSave = true; }
 if( typeof _$.settings.youtube_preview == "undefined") { _$.settings.youtube_preview = 1; settingsSave = true; }
 if( typeof _$.settings.read_button == "undefined") { _$.settings.read_button = 1; settingsSave = true; }
@@ -455,6 +456,7 @@ if( typeof _$.settings.dirty_tags_autogold == "undefined") { _$.settings.dirty_t
 if( typeof _$.settings.dirty_tags_hidetags == "undefined") { _$.settings.dirty_tags_hidetags = 1; settingsSave = true; }
 if( typeof _$.settings.timings_display == "undefined") { _$.settings.timings_display = 0; settingsSave = true; }
 if( typeof _$.settings.comments_threshold == "undefined") { _$.settings.comments_threshold = 0; settingsSave = true; }
+if( typeof _$.settings.posts_spades == "undefined") { _$.settings.posts_spades = 1; settingsSave = true; }
 if( typeof _$.settings.posts_threshold == "undefined") { _$.settings.posts_threshold = 0; settingsSave = true; }
 if( typeof _$.settings.post_content_filter_layout == "undefined") { _$.settings.post_content_filter_layout = 0; settingsSave = true; }
 if( typeof _$.settings.posts_threshold_use_or == "undefined") { _$.settings.posts_threshold_use_or = 0; settingsSave = true; }
@@ -1717,6 +1719,7 @@ function dsp_d3search_init(){
 	add_checkbox_event('dsp_c_new_window','new_window');
 	add_checkbox_event('dsp_c_user_stats','user_stats');
 	add_checkbox_event('dsp_c_links_test','links_test');
+	add_checkbox_event('dsp_c_d3search_quick','d3search_quick');
 }
 
 function dsp_general_init(){
@@ -1782,6 +1785,9 @@ function dsp_general_init(){
 
 function dsp_posts_init(){
 	//SP2
+
+    add_checkbox_event('dsp_c_posts_spades','posts_spades');
+
 	_$.addEvent(_$.$('dsp_c_posts_threshold'),'click',
 	function(){
 		DSP_show_hide_menu('dsp_l_threshold');
@@ -1790,7 +1796,8 @@ function dsp_posts_init(){
 		else _$.set_save('posts_threshold',0);
 
 	});
-	add_checkbox_event('dsp_c_own_threshold','own_threshold');
+
+    add_checkbox_event('dsp_c_own_threshold','own_threshold');
 	add_checkbox_event('dsp_c_posts_threshold_use_or','posts_threshold_use_or');
 
 	add_checkbox_event('dsp_c_read_button','read_button');
@@ -1948,6 +1955,7 @@ function DSP_make_content_settings(){
 
 		dsp_txt = '<table cellspacing="0" border="0">';
 		//SP2
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_spades" type="checkbox" '+((_$.settings.posts_spades=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_spades">Лопаты</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_posts_threshold" type="checkbox" '+((_$.settings.posts_threshold=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_posts_threshold">SP2.0: Фильтр по рейтингу постов</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_threshold" style="display:'+((_$.settings.posts_threshold=='1')?'block':'none')+'"><table cellspacing="0" border="0" style="margin-left:20px;">';
@@ -2003,6 +2011,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '<table cellspacing="0" border="0">';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_links_test" type="checkbox" '+((_$.settings.links_test=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_links_test">SP2.0: Проверка ссылок при написании поста на d3search</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_user_stats" type="checkbox" '+((_$.settings.user_stats=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_user_stats">SP2.0: Статистика в профилях</label></td></tr>';
+		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_d3search_quick" type="checkbox" '+((_$.settings.d3search_quick=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_d3search_quick">Кнопка быстрого поиска на d3search</label></td></tr>';
 		dsp_txt += '</table>';
 		DSP_make_Setting_Bar('d3search',dsp_txt,'dsp_d3search_init()');
 
@@ -6001,6 +6010,383 @@ if(_$.settings.dirty_tags=='1')
 		iframe.setAttribute('src', 'http://dekabr.org/cnew.php');
 		_$.insertAfter(mystuff, iframe);
 	}
+
+    if (_$.settings.posts_spades == '1') {
+
+        (function() {
+
+            var d3searchUrl = "http://api.d3search.ru";
+
+            var realWindow = (window.unsafeWindow || window);
+            if (window.navigator.vendor && window.navigator.vendor.match(/Google/)) {
+                //chrome hack
+                var div = document.createElement("div");
+                div.setAttribute("onclick", "return window;");
+                realWindow = div.onclick();
+            }
+
+            var realDocument = realWindow.document;
+            var crossBrowserJSObject = (realWindow.wrappedJSObject || realWindow);
+            var globals = crossBrowserJSObject.globals;
+            var $A = crossBrowserJSObject.$A;
+            var $ = crossBrowserJSObject.$;
+            var $$ = crossBrowserJSObject.$$;
+            var username = $$.call(crossBrowserJSObject, ".header_tagline_inner a")[0].innerHTML;
+
+            injectIntoVoteDetailsHandler();
+            injectIntoVoteHandler();
+            createSpadeButtons();
+
+            function getSpades() {
+                return {
+                    DUPLICATE : {
+                        name: 'Об этом уже писали'
+                    },
+                    BULLSHIT : {
+                        name: 'Пост — тупая фигня'
+                    },
+                    ADVERT : {
+                        name: 'Это же реклама!'
+                    },
+                    LIE: {
+                        name: 'Это же неправда!'
+                    },
+                    DULL: {
+                        name: 'Пост — никакой'
+                    },
+                    COPYPASTE: {
+                        name: 'Ctrl+C -> Ctrl+V'
+                    },
+                    GRAMMAR : {
+                        name: 'Я люблю русский язык'
+                    }
+                }
+            }
+
+            function injectIntoVoteDetailsHandler() {
+
+                var voteDetailsHandler = crossBrowserJSObject.voteDetailsHandler;
+                if (!voteDetailsHandler) return;
+
+                var voteDetailsHandlerLoadDataOriginal = voteDetailsHandler.loadData;
+
+                voteDetailsHandler.loadData = function() {
+                    var script = realDocument.createElement("script");
+                    //somehow evil browsers sometimes ignore no-cache headers, maybe because this is an injected script
+                    script.setAttribute('src', d3searchUrl + "/lopating/get/" + voteDetailsHandler.params.id + "?nocache=" + new Date().getTime());
+                    script.addEventListener('load', function() {
+                        voteDetailsHandlerLoadDataOriginal.call(voteDetailsHandler);
+                    }, true);
+                    realDocument.body.appendChild(script);
+                };
+
+                var voteDetailsHandlerVotesOriginal = voteDetailsHandler.countVotes;
+
+                voteDetailsHandler.countVotes = function(response) {
+
+                    if (voteDetailsHandler.params.type !== 'post') { //not being rude for karma or comments
+                        voteDetailsHandlerVotesOriginal.call(voteDetailsHandler, response);
+                        return;
+                    }
+
+                    var spadeGroups = getSpades();
+                    spadeGroups.OLDFAGS = {
+                        name: 'Без лопаты'
+                    };
+                    for (var groupId in spadeGroups) {
+                        spadeGroups[groupId].persons = [];
+                    }
+
+                    $A(response.votes).each(function (person) {
+
+                        var isSpade = false;
+                        $A(voteDetailsHandler.spades).each(function(spade) { // << voteDetailsHandler.spades is set via injecting /lopating/get/<postid>
+                            if (person.login === spade.login) {
+                                spadeGroups[spade.spadeType].persons.push(person);
+                                isSpade = true;
+                            }
+                        });
+                        if (!isSpade) {
+                            spadeGroups.OLDFAGS.persons.push(person);
+                        }
+                    });
+
+                    voteDetailsHandler.groupHeaderCounter = 0; //will fix person counters
+                    var first = true;
+                    response.votes = [];
+                    for (var group in spadeGroups) {
+                        if (spadeGroups[group].persons.length > 0) {
+                            if (!first) {
+                                voteDetailsHandler.groupHeaderCounter++;
+                                response.votes.push({spade: '&nbsp;'}); ///a silly spacer
+                            } else {
+                                first = false;
+                            }
+                            voteDetailsHandler.groupHeaderCounter++;
+                            response.votes.push({spade: spadeGroups[group].name});
+                            response.votes = response.votes.concat(spadeGroups[group].persons);
+                        }
+                    }
+
+                    voteDetailsHandlerVotesOriginal.call(voteDetailsHandler, response);
+
+                };
+
+                voteDetailsHandler.groupHeaderCounter = 0; //must set zero counters for non-post vote details
+
+                var voteDetailsHandlerSetHeadersOriginal = voteDetailsHandler.setHeaders;
+                voteDetailsHandler.setHeaders = function() {
+                    //fixing vote counters that were incorrect due to group headers
+                    voteDetailsHandler.minusCol -= voteDetailsHandler.groupHeaderCounter;
+                    voteDetailsHandlerSetHeadersOriginal.apply(this, arguments);
+                };
+
+                //ok, copy-paste, not granular enough
+                voteDetailsHandler.buildCol = function (page, arr) {
+
+                    var iHTML = '';
+                    if (arr[page]) {
+                        $A(arr[page]).each(function (person) {
+                            if (voteDetailsHandler.params.type == 'karma') {
+                                iHTML += '<li><a href="' + globals.parentSite + '/user/' + person.login + '/">' + person.login + '&nbsp;(' + person.attitude + ')' + '</a></li>';
+                            } else if (person.spade) {
+                                iHTML += '<li><strong>' + person.spade + '</strong></li>';
+                            } else {
+                                iHTML += '<li><a href="' + globals.parentSite + '/user/' + person.login + '/">' + person.login + '</a>&nbsp;(' + person.attitude + ')</li>';
+                            }
+                        });
+                    }
+                    return iHTML;
+
+                };
+
+
+                var voteDetailsHandlerBuildLayerOriginal = voteDetailsHandler.buildLayer;
+                voteDetailsHandler.buildLayer = function() {
+                    voteDetailsHandlerBuildLayerOriginal.apply(voteDetailsHandler, arguments);
+                    //greetz from Stasik
+                    $$.call(crossBrowserJSObject, voteDetailsHandler.layer).set('styles', {
+                        width: "450px",
+                        background: "#eeecec"
+                    });
+                };
+            }
+
+
+            function injectIntoVoteHandler() {
+
+                var voteHandler = crossBrowserJSObject.voteHandler;
+                if (!voteHandler) return;
+
+                //copy-paste with changes
+                voteHandler.realSpadeVote = function (button, target_id, token) {
+                    //greetz from Stasik
+                    if ($$.call(crossBrowserJSObject, button).hasClass('vote_voted')) {
+
+                        var url = '/ratectl/';
+                        var data = 'wtf=' + voteHandler.wtf + '&id=' + target_id + '&type=1&value=-1';
+
+                        //OMG IT'S FULL OF WIN
+                        //Using low-level code because mootools shit won't work in userscript sandbox in all browsers
+                        var ajaxObject = null;
+                        if (window.XMLHttpRequest) {
+                            ajaxObject = new XMLHttpRequest();
+                        } else if (window.ActiveXObject) {
+                            //in fact I'm not sure if this script is used in IE anyway
+                            ajaxObject = new ActiveXObject("Microsoft.XMLHTTP");
+                        }
+                        if (!ajaxObject) return;
+
+                        ajaxObject.onreadystatechange = function() {
+                            if (ajaxObject.readyState == 4) {
+                                if (ajaxObject.status == 200) {
+
+                                    //removing plus button highlighting
+                                    button.parentNode.querySelector('.vote_button_plus').className = 'vote_button vote_button_plus';
+
+                                    //highlighting minus button
+                                    button.parentNode.querySelector('.vote_button_minus').className = 'vote_button vote_button_minus vote_voted';
+
+                                    //committing spade transaction. token may be undefined if a user tried to change spade type directly
+                                    if (token != undefined) {
+                                        var script = realDocument.createElement("script");
+                                        script.setAttribute('src', d3searchUrl + "/lopating/vote/" + token + "?nocache=" + new Date().getTime());
+                                        script.addEventListener('load', function() {
+                                            button.parentNode.className = "vote"; //kinda removing vote_over, effectively hiding vote buttons
+                                        }, true);
+                                        realDocument.body.appendChild(script);
+                                    } else {
+                                        //hide spades selector if no spade will be set
+                                        button.parentNode.className = "vote";
+                                    }
+
+                                    var response = eval("(" + ajaxObject.responseText + ")");
+                                    if (response.rating) {
+                                        button.parentNode.querySelector('.vote_result').innerHTML = response.rating;
+                                    }
+
+                                }
+                            }
+                        };
+                        ajaxObject.open("POST", url, true);
+                        ajaxObject.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        ajaxObject.setRequestHeader("Content-length", data.length);
+                        ajaxObject.setRequestHeader("Connection", "close");
+                        ajaxObject.send(data);
+
+                    }
+                };
+
+
+                voteHandler.spadeVote = function(button, targetId, spadeId) {
+
+                    //starting spade transaction
+                    var script = realDocument.createElement("script");
+                    script.setAttribute('src', d3searchUrl + "/lopating/try/" + targetId + "?user=" + encodeURI(username) + "&type=" + spadeId + "&nocache=" + new Date().getTime());
+                    script.addEventListener('load', function() {
+                        //voting on dirty server
+                        voteHandler.realSpadeVote($.call(crossBrowserJSObject, button), "p" + targetId, crossBrowserJSObject.spadeVoteToken); //token from loaded script
+                    }, true);
+                    realDocument.body.appendChild(script);
+
+                };
+            }
+
+            //'http://img.dirty.ru/pics/lapata.gif'
+            function createSpadeButtons() {
+
+                //tweaking vote buttons container
+                var postContainerSelector = "div[id^='p'][class^='post']";
+
+                setStyleRule(postContainerSelector + " .vote.over", "width: 180px; height: 188px; bottom: -153px; z-index: 100;");
+                setStyleRule(postContainerSelector + " .vote_button_spade", "width: 160px; padding: 0 8px 2px 20px; line-height: 20px; font-size: 10px; text-align: left;");
+                setStyleRule(postContainerSelector + " .vote_button_spade_over", "background: #eee url('http://img.dirty.ru/d3/lopata.gif') no-repeat 4px 4px;");
+                setStyleRule(postContainerSelector + " .vote_button_minus", "background-image: url('http://img.dirty.ru/d3/lopata.gif'); background-repeat: no-repeat; background-position: 2px 3px;");
+                setStyleRule(postContainerSelector + " .vote.over .vote_button_minus", "display: none"); //hide minus button when spades selector is shown
+
+                var spadeButton = '<a class="vote_button vote_button_spade" style="top: {shift}px;" ' +
+                        'onclick="voteHandler.spadeVote(this, {postid}, \'{spade}\'); return false;" href="#">{title}</a>';
+
+                var postContainers = realDocument.querySelectorAll(postContainerSelector);
+                $A(postContainers).each(function(postContainer) {
+
+                    var postId = postContainer.getAttribute("id").substring(1);
+                    var voteContainer = postContainer.getElementsByClassName("vote")[0];
+
+                    voteContainer.querySelector(".vote_button_minus").innerHTML = '';
+                    var spades = getSpades(), spade, spadeIndex = 0;
+                    for (var spadeId in spades) {
+                        spade = spades[spadeId];
+                        voteContainer.innerHTML += spadeButton.
+                                replace(/\{shift\}/g, (spadeIndex + 2) * 20).
+                                replace(/\{postid\}/g, postId).
+                                replace(/\{title\}/g, spade.name).
+                                replace(/\{spade\}/g, spadeId);
+                        spadeIndex++;
+                    }
+                });
+
+                var highlightMinusButton = function() {
+                    //greetz from Stasik
+                    $$.call(crossBrowserJSObject, this).toggleClass("vote_button_spade_over");
+                };
+
+                $$.call(crossBrowserJSObject, ".vote_button_spade").addEvent('mouseenter', highlightMinusButton);
+                $$.call(crossBrowserJSObject, ".vote_button_spade").addEvent('mouseleave', highlightMinusButton);
+
+                function setStyleRule (selector, rule) {
+                    var stylesheet = document.styleSheets[(document.styleSheets.length - 1)];
+
+                    for (var i in document.styleSheets) {
+                        if (document.styleSheets[i].href && document.styleSheets[i].href.indexOf("style.css")) {
+                            stylesheet = document.styleSheets[i];
+                        }
+                    }
+
+                    if (stylesheet.addRule) {
+                        stylesheet.addRule(selector, rule);
+                    } else if (stylesheet.insertRule) {
+                        stylesheet.insertRule(selector + ' { ' + rule + ' }', stylesheet.cssRules.length);
+                    }
+                }
+
+            }
+
+
+        })();
+    }
+
+    if (_$.settings.d3search_quick == '1') {
+        (function() {
+
+            var postContainers = document.querySelectorAll("div[class^='post ']");
+
+            for (var i = 0, searchButton; i < postContainers.length; i++) {
+
+                searchButton = document.createElement("span");
+                searchButton.title = "Поиск ссылок из этого поста на d3search.ru";
+                searchButton.style.href = "#";
+                searchButton.style.cursor = "pointer";
+                searchButton.style.backgroundPosition = "50% 50%";
+                searchButton.style.backgroundColor = "transparent";
+                searchButton.style.backgroundImage = "url('http://dirty.ru/i/header_search_icon.gif')";
+                searchButton.style.padding = "6px";
+                searchButton.style.marginLeft = "3px";
+                searchButton.style.marginRight = "3px";
+
+                searchButton.addEventListener('click', function(postContainer) {
+
+                    return function() {
+
+                        //hide the button after click
+                        this.parentNode.removeChild(this);
+
+                        var hrefs = "";
+                        var anchors = postContainer.querySelectorAll("div[class^='dt'] a");
+                        for (var j = 0; j < anchors.length; j++) {
+                            var anchor = anchors[j];
+                            //skipping post link
+                            if (anchor.parentNode.tagName == 'H3' && (anchor.href.indexOf("www.dirty.ru/") + anchor.href.indexOf("dirty.ru/")) >= 0) continue;
+                            hrefs += "<a href=\"" + anchor.href + "\"></a>\n"
+                        }
+
+                        var thisPostId = postContainer.id.substring(1);
+                        var quickSearchContainerId = "quick-search-" + thisPostId;
+                        var quickSearchUrl = "http://d3search.ru/wazzup?container=" + quickSearchContainerId + "&thisPostId=" + thisPostId + "&post=" + encodeURIComponent(hrefs);
+
+                        var quickSearchContainer = document.createElement("div");
+                        quickSearchContainer.style.padding = "8px";
+                        quickSearchContainer.style.borderTop = "1px solid #eee";
+                        quickSearchContainer.style.backgroundColor = "#f5f5f5";
+
+                        if (quickSearchUrl.length > 4000) {
+
+                            quickSearchContainer.innerHTML = 'Слишком много ссылок в этом посте. Поиска не будет. Так-то.';
+                            postContainer.appendChild(quickSearchContainer);
+
+                        } else {
+                            quickSearchContainer.innerHTML = 'Ищем на d3search...';
+                            quickSearchContainer.setAttribute("id", quickSearchContainerId);
+                            postContainer.appendChild(quickSearchContainer);
+
+                            var injectedScript = document.createElement("script");
+                            injectedScript.src = quickSearchUrl;
+                            document.body.appendChild(injectedScript);
+                        }
+
+                    };
+
+                }(postContainers[i]), false);
+
+                //inserting the button next to post icon
+                var nextToIconContainer = postContainers[i].querySelector(".c_icon").nextSibling;
+                nextToIconContainer.parentNode.insertBefore(searchButton, nextToIconContainer);
+
+            }
+
+        })()
+    }
+
 }
 
 var time1 = new Date();
