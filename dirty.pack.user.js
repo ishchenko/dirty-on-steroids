@@ -6049,10 +6049,10 @@ if(_$.settings.dirty_tags=='1')
                         name: 'Это же реклама!'
                     },
                     LIE: {
-                        name: 'Это же неправда!'
+                        name: 'Это неправда'
                     },
                     DULL: {
-                        name: 'Пост — никакой'
+                        name: 'Пост никакой'
                     },
                     COPYPASTE: {
                         name: 'Ctrl+C -> Ctrl+V'
