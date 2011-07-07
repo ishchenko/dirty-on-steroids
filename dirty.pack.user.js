@@ -9,7 +9,7 @@
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
-// @version			2.5.6
+// @version			2.5.7
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -6273,16 +6273,19 @@ if(_$.settings.dirty_tags=='1')
                     var postId = postContainer.getAttribute("id").substring(1);
                     var voteContainer = postContainer.getElementsByClassName("vote")[0];
 
-                    voteContainer.querySelector(".vote_button_minus").innerHTML = '';
-                    var spades = getSpades(), spade, spadeIndex = 0;
-                    for (var spadeId in spades) {
-                        spade = spades[spadeId];
-                        voteContainer.innerHTML += spadeButton.
-                                replace(/\{shift\}/g, (spadeIndex + 2) * 20).
-                                replace(/\{postid\}/g, postId).
-                                replace(/\{title\}/g, spade.name).
-                                replace(/\{spade\}/g, spadeId);
-                        spadeIndex++;
+                    var minusButton = voteContainer.querySelector(".vote_button_minus");
+                    if (minusButton) { //it might be no minus button for your own posts
+                        minusButton.innerHTML = '';
+                        var spades = getSpades(), spade, spadeIndex = 0;
+                        for (var spadeId in spades) {
+                            spade = spades[spadeId];
+                            voteContainer.innerHTML += spadeButton.
+                                    replace(/\{shift\}/g, (spadeIndex + 2) * 20).
+                                    replace(/\{postid\}/g, postId).
+                                    replace(/\{title\}/g, spade.name).
+                                    replace(/\{spade\}/g, spadeId);
+                            spadeIndex++;
+                        }
                     }
                 });
 
