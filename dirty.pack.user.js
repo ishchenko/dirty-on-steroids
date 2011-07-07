@@ -9,7 +9,7 @@
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
-// @version			2.5.5
+// @version			2.5.6
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
