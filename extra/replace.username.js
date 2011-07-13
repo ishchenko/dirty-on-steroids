@@ -9,16 +9,11 @@ d3.addModule(
 	{
 		if(d3.user.name==null) return;
 		
-		var nodes=document.evaluate("//body//text()[contains(string(),'%username%')]"
-				,document
-				,document.createNSResolver(document)
-				,XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE
-				,null);
-		for (var i = 0; i < nodes.snapshotLength; i++) 
-		{
-             var node = nodes.snapshotItem(i);
-             if(node.data != undefined) ///< opera fix
-				node.data=node.data.split('%username%').join(d3.user.name);
-		}
+		d3.xpath("//body//text()[contains(string(),'%username%')]", 
+			function(node)
+			{
+				if(node.data != undefined) ///< opera fix
+					node.data=node.data.replace('%username%',d3.user.name);
+			});
 	}
 });

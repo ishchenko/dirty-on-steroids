@@ -281,6 +281,14 @@ var d3=
 			this.document=document;
 		}else
 			alert("Don't know method to get original window for this browser");
+	},
+	xpath: function(selector,handler,context)
+	{
+		if(context==undefined) context=document;
+		var nodes=document.evaluate(selector,context,document.createNSResolver(document),XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
+		for (var i = 0; i < nodes.snapshotLength; i++) 
+             if(handler(nodes.snapshotItem(i),i)===false) return false;
+		return true;
 	}
 	
 };
