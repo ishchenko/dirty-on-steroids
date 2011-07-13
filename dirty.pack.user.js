@@ -9,7 +9,7 @@
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
-// @version			2.5.7
+// @version			2.5.8
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -5759,6 +5759,9 @@ if(_$.settings.dirty_tags=='1')
 
     if (_$.settings.posts_spades == '1') {
 
+    	var time1 = new Date();
+
+
         (function() {
 
             var d3searchUrl = "http://api.d3search.ru";
@@ -6063,9 +6066,13 @@ if(_$.settings.dirty_tags=='1')
 
 
         })();
+        //
+        addBenchmark(time1, 'lopatas');
     }
 
     if (_$.settings.d3search_quick == '1') {
+    	var time1 = new Date();
+    
         (function() {
 
             var postContainers = document.querySelectorAll("div[class^='post ']");
@@ -6134,6 +6141,9 @@ if(_$.settings.dirty_tags=='1')
             }
 
         })()
+
+        addBenchmark(time1, 'instant d3 search');
+    
     }
 
 }
