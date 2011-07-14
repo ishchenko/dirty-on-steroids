@@ -282,15 +282,21 @@ var d3=
 		}else
 			alert("Don't know method to get original window for this browser");
 	},
-	xpath: function(selector,handler,context)
+	xpath:
 	{
-		if(context==undefined) context=document;
-		var nodes=document.evaluate(selector,context,document.createNSResolver(document),XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
-		for (var i = 0; i < nodes.snapshotLength; i++) 
-             if(handler(nodes.snapshotItem(i),i)===false) return false;
-		return true;
+		get:	function(selector,context)
+		{
+			if(context==undefined) context=document;
+			return document.evaluate(selector,context,document.createNSResolver(document),XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
+		},
+		each:	function(selector,handler,context)
+		{
+			var nodes=this.get(selector, context);
+			for (var i = 0; i < nodes.snapshotLength; i++) 
+	             if(handler(nodes.snapshotItem(i),i)===false) return false;
+			return true;
+		}
 	}
-	
 };
 
 d3.initCore();

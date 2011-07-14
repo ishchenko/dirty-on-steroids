@@ -9,7 +9,7 @@ d3.addModule(
 	{
 		if(d3.user.name==null) return;
 		
-		d3.xpath("//body//text()[contains(string(),'%username%')]", 
+		d3.xpath.each("//body//text()[contains(string(),'%username%')]", 
 			function(node)
 			{
 				if(node.data != undefined) ///< opera fix
