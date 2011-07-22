@@ -1,6 +1,12 @@
 core/crc32.js
 core/tabsheets.js
+core/jquery.unselectable.min.js
+core/item.js
+core/post.js
+core/comment.js
+core/content.js
 extra/tagline.links.js
 extra/replace.username.js
 extra/browser.js
 extra/test.js
+extra/right.navigator.js
