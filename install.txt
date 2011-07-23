@@ -8,9 +8,19 @@ php d3merge
 Структура проекта:
 
 core/ каталог для модулей ядра
+core/comment.js класс коментария
 core/crc32.js библиотека CRC32
+core/item.js базовый класс для комментариев и постов
+core/jquery.unselectable.min.js модуль unselectable для jquery
+core/post.js класс поста
 core/tabsheets.js виджет вкладок
+core/user.js класс пользователя
 extra/ каталог для дополнительных модулей
+extra/browser.js девелоперский плагин - показывает информацию о браузере
+extra/replace.username.js замена %username%
+extra/right.navigator.js навигация по новым и своим объектам
+extra/tagline.links.js дополнительные ссылки в таглинии
+extra/test.js девелоперский плагин - проверка сервиса конфигурации 
 result/ каталог для собранного сервис-пака
 result/d3.user.js собранный сервис-пак, пригодный для установки в браузер
 bearOff.selectors.js немного селекторов для справки
@@ -18,6 +28,7 @@ d3.template.js код ядра сервис-пака
 d3merge.php php скрипт для сборки сервис-пака
 install.txt этот файл
 jquery.js библиотека jQuery в ужатом виде
+merge.bat батник, пускающий d3merge.php 
 modules.txt список модулей, согласно которому собирается сервис-пак. Запрещается исключать из списка модули из каталога core.
 
 Для добавления дополнительного модуля в сервис-пак надо проделать следующее:

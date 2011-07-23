@@ -23,19 +23,6 @@ var d3=
 		id: null,
 		name: null
 	},
-	/// Please use $j.browser
-	/*
-	browser: function()
-	{
-		var string = navigator.userAgent.toLowerCase();
-		var sign = {opera:'opera/',firefox:'firefox/',chrome:'chrome/',safari:'safari/',ie:'msie '};
-
-		for( var i in sign)
-			if(string.indexOf(sign[i])>-1)
-				return {name:i,ver:string.split(sign[i])[1].split(' ')[0]};
-
-		return {name:'unknown',ver:'unknown'};
-	},*/
 
 	/// Set style properties
 	setStyle: function(element,style)
