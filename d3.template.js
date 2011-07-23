@@ -274,7 +274,7 @@ var d3=
 		get:	function(selector,context)
 		{
 			if(context==undefined) context=document;
-			return document.evaluate(selector,context,document.createNSResolver(document),XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
+			return document.evaluate(selector,context,document.createNSResolver(document),XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null);
 		},
 		each:	function(selector,handler,context)
 		{

@@ -40,19 +40,6 @@ var d3=
 		id: null,
 		name: null
 	},
-	/// Please use $j.browser
-	/*
-	browser: function()
-	{
-		var string = navigator.userAgent.toLowerCase();
-		var sign = {opera:'opera/',firefox:'firefox/',chrome:'chrome/',safari:'safari/',ie:'msie '};
-
-		for( var i in sign)
-			if(string.indexOf(sign[i])>-1)
-				return {name:i,ver:string.split(sign[i])[1].split(' ')[0]};
-
-		return {name:'unknown',ver:'unknown'};
-	},*/
 
 	/// Set style properties
 	setStyle: function(element,style)
@@ -304,7 +291,7 @@ var d3=
 		get:	function(selector,context)
 		{
 			if(context==undefined) context=document;
-			return document.evaluate(selector,context,document.createNSResolver(document),XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
+			return document.evaluate(selector,context,document.createNSResolver(document),XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,null);
 		},
 		each:	function(selector,handler,context)
 		{
@@ -420,8 +407,6 @@ var Post=function(container)
 	this.info=$j('.dd',this.container);
 	this.rating=
 	{
-		//parent:	this,
-		//container: function(){alert(post.container);return $j('.vote',$j(post.container));},
 		getValue: function(){return $j('.vote_result',post.container).text();}
 	};
 	this.userName = $j('a[href^="/user/"]',this.info).text();
@@ -488,15 +473,17 @@ d3.addModule(
 			if(container.hasClass('comment'))
 			{
 				var comment=new Comment(container);
+				/* @todo: debug this variant 
 				var prevId=container.prev().attr('id');
-				//alert(prevId);
-				/*for(var i=0;i<me.comments.length;++i)
+				alert(prevId);
+				for(var i=0;i<me.comments.length;++i)
 					if(me.comments[i].id=prevId)
 					{
 						me.comments.splice(i+1, 0, comment);
 						break;
 					}
-				*/ me.countItems();
+				*/ 
+				me.countItems();
 				for(var i=0;i<me.listeners.length;++i)
 					me.listeners[i](comment);
 			}
@@ -583,7 +570,7 @@ d3.addModule(
 	author: 'crimaniak',
 	name: 'Тест конфига',
 	config: 
-		{active:{type:'checkbox',value:true}
+		{active:{type:'checkbox',value:false}
 		,testRadio:{type:'radio',options:{"Опция 1":1,"Опция 2":2,"Опция 3":3,"Опция 4":4,"Опция 5":5,"Опция 6":6},caption:'Тестовые радиокнопки',value:6}
 		,testText:{type:'text',value:'test text',caption:'Тестовое поле: '}
 		,testSelect:{type:'select',value:'value 2',options:{'опция 1':'value 1','опция 2':'value 2'},caption:'Тестовый селект:'}
@@ -601,7 +588,7 @@ d3.addModule(
 			+"\nСелект: "+this.config.testSelect.value+"\nЧекбокс: "+this.config.testCheckbox.value);
 	}
 });
-// Заготовка для навигатора справа
+// Hавигатор справа
 d3.addModule(
 {
 	type: "Прочее",
