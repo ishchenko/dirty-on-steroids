@@ -111,7 +111,7 @@ d3.addModule(
 					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
 			}), document.body.firstChild);
 			var ids=['home','up','mine','down'];
-			for(var i in ids)
+			for(var i=0;i<ids.length;++i)
 				$j('#'+ids[i]).unselectable();
 	}
 });
