@@ -2086,7 +2086,7 @@ function DSP_init()
 		    	aItem = document.createElement('a');
 		    	aItem.setAttribute('href', 'http://together.ru/');
 		    	aItem.setAttribute('target', '_blank');
-		    	aItem.innerHTML = 'Сообщество "Вместе"';
+		    	aItem.innerHTML = 'Сообщество "Тугеза"';
 		    	liItem.appendChild(aItem);
 		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
             }
