@@ -3,13 +3,13 @@
 // @name			Dirty Service Pack 2
 // @author			Stasik0, BearOff, crea7or, flashface, slavka123
 // @namespace		http://dirty.ru/
-// @description		Dirty Service Pack 2.5
+// @description		Dirty Service Pack 2.6
 // @require			http://crea7or.spb.ru/scripts/user.js.updater.php?id=88906&days=7
 // @include			http://dirty.ru/*
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
-// @version			2.5.8
+// @version			2.6.0
 // ==/UserScript==
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -22,6 +22,8 @@ var dateToCheck1 = new Date();
 var _$ = {
 	settings: {},
 	settings_colors: new Array(),
+	settings_ignorlist: new Array(),
+	settings_ignorTextlist: new Array(),
 	location: window.location.href.split(window.location.host)[1],
 
 	// made by crea7or
@@ -34,6 +36,8 @@ var _$ = {
 		}
 		localStorage.setItem('dirtySp', jsonStringify(_$.settings));
 		localStorage.setItem('dirtyCommentsColors', jsonStringify(_$.settings_colors));
+		localStorage.setItem('dirtyIgnoreList', jsonStringify(_$.settings_ignorlist));
+		localStorage.setItem('dirtyIgnoreTextList', jsonStringify(_$.settings_ignorTextlist));
 	},
 	set_get: function()
 	{
@@ -50,10 +54,20 @@ var _$ = {
 		{
 			_$.settings = jsonParse( localStorGetItem('dirtySp', "{}"));
 			_$.settings_colors = jsonParse( localStorGetItem('dirtyCommentsColors', "[]"));
+			_$.settings_ignorlist = jsonParse( localStorGetItem('dirtyIgnoreList', "[]"));
+			_$.settings_ignorTextlist = jsonParse( localStorGetItem('dirtyIgnoreTextList', "[]"));			
 			if ( _$.settings_colors == "[]" || _$.settings_colors.constructor === undefined || _$.settings_colors.constructor != Array )
 			{
 				_$.settings_colors = new Array();
 			}
+			if (_$.settings_ignorlist == "[]" || _$.settings_ignorlist.constructor === undefined || _$.settings_ignorlist.constructor != Array)
+			{
+				_$.settings_ignorlist = new Array();
+			}
+			if (_$.settings_ignorTextlist == "[]" || _$.settings_ignorTextlist.constructor === undefined || _$.settings_ignorTextlist.constructor != Array)
+			{
+				_$.settings_ignorTextlist = new Array();
+			}			
 		}
 	},
 	browser: function(){
@@ -478,6 +492,7 @@ if( typeof _$.settings.cmnt_picts_always == "undefined") { _$.settings.cmnt_pict
 if( typeof _$.settings.own_threshold == "undefined"){ _$.settings.own_threshold = 0; settingsSave = true; }
 if( typeof _$.settings.new_window == "undefined"){ _$.settings.new_window = 1; settingsSave = true; }
 if( typeof _$.settings.quotes == "undefined") { _$.settings.quotes = 1; settingsSave = true; }
+if( typeof _$.settings.ignorlist == "undefined") { _$.settings.ignorlist = 1; settingsSave = true; }
 
 if ( settingsSave )
 {
@@ -1779,6 +1794,14 @@ function dsp_general_init(){
 		}
 
 	});
+
+	_$.addEvent(_$.$('dsp_c_ignorlist'), 'click',
+	function()
+	{
+		if (_$.$('dsp_c_ignorlist').checked === true) _$.set_save('ignorlist', 1);
+		else _$.set_save('ignorlist', 0);
+	});
+	
 }
 
 function dsp_posts_init(){
@@ -1830,6 +1853,9 @@ function dsp_posts_init(){
 			if(_$.$('dsp_c_youtube_fullscreen').checked===true) _$.set_save('youtube_fullscreen',1);
 			else _$.set_save('youtube_fullscreen',0);
 		});
+
+
+		
 	add_checkbox_event('dsp_c_post_content_filter_layout','post_content_filter_layout');
 }
 
@@ -1939,6 +1965,7 @@ function DSP_make_content_settings(){
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_youtube_preview" type="checkbox" '+((_$.settings.youtube_preview=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_youtube_preview">SP2.0: Предпросмотр youtube видео в постах и комментариях</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_online_enabled" type="checkbox" '+((_$.settings.online_enabled=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_online_enabled">SP2.5: Показывать кто на сайте</label></td></tr>';
 		dsp_txt += '<tr><td width="25" valign="top"><input id="dsp_c_username_replace" type="checkbox" '+((_$.settings.username_replace=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_username_replace">Заменять %username% на ваше имя</label></td></tr>';
+		dsp_txt += '<tr><td valign="top"><input id="dsp_c_ignorlist" type="checkbox" ' + ((_$.settings.ignorlist == '1') ? 'checked="checked"' : '') + '></td><td style=""><label for="dsp_c_ignorlist">Игнорирование выбранных пользователей</label></td></tr>';
 		dsp_txt += '<tr><td valign="top"><input id="dsp_c_favicon_on" type="checkbox" '+((_$.settings.favicon_on=='1')?'checked="checked"':'')+'></td><td style=""><label for="dsp_c_favicon_on">Показывать иконку сайта ссылки:</label></td></tr>';
 		dsp_txt += '</table>';
 		dsp_txt += '<div id="dsp_l_favicon" style="display:'+((_$.settings.favicon_on=='1')?'block':'none')+'"><form style="margin:0"><table cellspacing="0" border="0">';
@@ -2086,13 +2113,327 @@ function DSP_init()
 		    	aItem = document.createElement('a');
 		    	aItem.setAttribute('href', 'http://together.ru/');
 		    	aItem.setAttribute('target', '_blank');
-		    	aItem.innerHTML = 'Сообщество "Вместе"';
+		    	aItem.innerHTML = 'Сообщество "Тугеза"';
 		    	liItem.appendChild(aItem);
 		    	ulLeft.insertBefore(liItem, liLast[liLast.length - 1]);
             }
 		}		
 	}
 
+	// made by crea7or
+	// start of ignorlist
+	function commentShowHideIgnorList(commentId, showIfTrue)
+	{
+		var commentDiv = document.getElementById(commentId + '-sh-body');
+		var commentDivHeader = document.getElementById(commentId + '-sh-header');
+		if (commentDiv)
+		{
+			if (showIfTrue)
+			{
+				commentDiv.removeAttribute('style');
+				commentDivHeader.removeAttribute('style');
+				var commentAlink = document.getElementById(commentId + '-sh');
+				if (commentAlink)
+				{
+					commentAlink.setAttribute('onclick', "return commentShowHideIgnorList('" + commentId + "', false );")
+					commentAlink.innerHTML = 'убрать это';
+				}
+			}
+			else
+			{
+				commentDiv.setAttribute('style', 'display: none');
+				commentDivHeader.setAttribute('style', 'opacity: 0.5');
+				var commentAlink = document.getElementById(commentId + '-sh');
+				if (commentAlink)
+				{
+					commentAlink.setAttribute('onclick', "return commentShowHideIgnorList('" + commentId + "', true );")
+					commentAlink.innerHTML = 'а что там?';
+				}
+			}
+		}
+		return false;
+	}
+	
+	
+	function hideIgnoredPosts()
+	{
+		var ignoredPost;
+		for (childNodeIndex = 0; childNodeIndex < postHolderDiv.childNodes.length; childNodeIndex++)
+		{
+			if (postHolderDiv.childNodes[childNodeIndex].nodeName == 'DIV')
+			{
+				// ignore users
+				ignoredPost = 0;
+				
+				ddDiv = postHolderDiv.childNodes[childNodeIndex].querySelector('div.dd');
+				if (ddDiv != null)
+				{
+					ddLinks = ddDiv.getElementsByTagName('a');
+					for (userLinkInd = 0; userLinkInd < ddLinks.length; userLinkInd++)
+					{
+						if (ddLinks[userLinkInd].getAttribute('href').indexOf('/user/') > -1)
+						{
+							for (ignorListIndex = 0; ignorListIndex < _$.settings_ignorlist.length; ignorListIndex++)
+							{
+								if (ddLinks[userLinkInd].innerHTML.indexOf(_$.settings_ignorlist[ignorListIndex]) > -1)
+								{
+									postHolderDiv.childNodes[childNodeIndex].setAttribute('style', 'display: none');
+									ignoredPost = 1;
+									break;
+								}
+							}
+						}
+					}
+				}
+				// ignore words
+				if ( ignoredPost == 0 )
+				{
+					dtDiv = postHolderDiv.childNodes[childNodeIndex].querySelector('div.dt');
+					if (dtDiv != null)
+					{
+						for (ignorListIndex = 0; ignorListIndex < _$.settings_ignorTextlist.length; ignorListIndex++)
+						{					
+							if (dtDiv.innerHTML.search(new RegExp(( _$.settings_ignorTextlist[ ignorListIndex] + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1"), 'ig')) > -1)
+							{
+								postHolderDiv.childNodes[childNodeIndex].setAttribute('style', 'display: none');
+								break;
+							}
+						}
+					}					
+				}
+			}
+		}
+	}
+	
+	function showBlockedWords()
+	{
+		mainContainer = document.getElementById('sp-BlockedWords');
+		if ( mainContainer.firstChild != null )
+		{
+			mainContainer.removeChild( mainContainer.firstChild );
+		}
+		newContainer = document.createElement('div');
+		newContainer.innerHTML = '<br><br><b>Список слов, которые вы заблокировали:</b><br>';
+
+		for (blockedWordIndex = 0; blockedWordIndex < _$.settings_ignorTextlist.length; blockedWordIndex++)
+		{
+			blockToAdd = document.createElement('div');
+			blockToAdd.appendChild(document.createTextNode(' '));
+			linkToBlock = document.createElement('a');
+			linkToBlock.setAttribute('href', '#');
+			linkToBlock.innerHTML = "<strong>[x]</strong>";
+			linkToBlock.setAttribute('style', 'text-decoration:none');
+			linkToBlock.setAttribute('title', _$.settings_ignorTextlist[blockedWordIndex ]);
+			blockToAdd.appendChild(linkToBlock);
+			blockToAdd.appendChild(document.createTextNode('  '));
+			blockToAdd.appendChild(document.createTextNode( _$.settings_ignorTextlist[blockedWordIndex ] ));
+			newContainer.appendChild(blockToAdd);
+
+			linkToBlock.addEventListener('click', function()
+			{
+				requestConfirm = confirm('Разблокировать слово: ' + this.getAttribute('title') + ' ?')
+				if (requestConfirm)
+				{
+					for (blockedWordIndex = 0; blockedWordIndex < _$.settings_ignorTextlist.length; blockedWordIndex++)
+					{
+						if (_$.settings_ignorTextlist[blockedWordIndex] == this.getAttribute('title'))
+						{
+							_$.settings_ignorTextlist.splice(blockedWordIndex, 1);
+							blockedWordIndex--;
+						}
+					}
+					this.parentNode.parentNode.removeChild(this.parentNode);
+					_$.set_save();
+				}
+			}, false);
+		}
+		if (_$.settings_ignorTextlist.length == 0)
+		{
+			newContainer.appendChild(document.createTextNode('Ура! Читаем - всё!'));
+		}		
+		mainContainer.appendChild( newContainer );
+	}
+
+	function showBlockedUsers()
+	{
+		mainContainer = document.getElementById('sp-BlockedUsers');
+		if (mainContainer.firstChild != null)
+		{
+			mainContainer.removeChild(mainContainer.firstChild);
+		}
+		newContainer = document.createElement('div');
+		newContainer.innerHTML = '<br><br><b>Список людей, которых вы заблокировали:</b><br>';
+
+		for (blockedUserIndex = 0; blockedUserIndex < _$.settings_ignorlist.length; blockedUserIndex++)
+		{
+
+			blockToAdd = document.createElement('div');
+			blockToAdd.appendChild(document.createTextNode(' '));
+			linkToBlock = document.createElement('a');
+			linkToBlock.setAttribute('href', '#');
+			linkToBlock.innerHTML = "<strong>[x]</strong>";
+			linkToBlock.setAttribute('style', 'text-decoration:none');
+			linkToBlock.setAttribute('title', _$.settings_ignorlist[blockedUserIndex ]);			
+			blockToAdd.appendChild(linkToBlock);
+			blockToAdd.appendChild(document.createTextNode('  '));
+
+			linkToUser = document.createElement('a');
+			linkToUser.setAttribute('href', 'http://dirty.ru/user/' + _$.settings_ignorlist[blockedUserIndex] + '/');
+			linkToUser.innerHTML = _$.settings_ignorlist[blockedUserIndex];
+
+			blockToAdd.appendChild(linkToUser);
+
+			newContainer.appendChild(blockToAdd);
+
+			linkToBlock.addEventListener('click', function()
+			{
+				requestConfirm = confirm('Снова смотреть посты пользователя ' + this.getAttribute('title') + ' ?')
+				if (requestConfirm)
+				{
+					for (blockedUsrIndex = 0; blockedUsrIndex < _$.settings_ignorlist.length; blockedUsrIndex++)
+					{
+						if (_$.settings_ignorlist[blockedUsrIndex] == this.getAttribute('title'))
+						{
+							_$.settings_ignorlist.splice(blockedUsrIndex, 1);
+							blockedUsrIndex--;
+						}
+					}
+					this.parentNode.parentNode.removeChild(this.parentNode);
+					_$.set_save();
+				}
+			}, false);
+		}
+
+		if (_$.settings_ignorlist.length == 0)
+		{
+			newContainer.appendChild(document.createTextNode('Мир вам, нет тут никого.'));
+		}		
+		mainContainer.appendChild(newContainer);
+	}
+
+	if (_$.settings.ignorlist == '1')
+	{
+		var time1 = new Date();
+		postHolderDiv = document.getElementById('js-posts_holder');
+		if (postHolderDiv != null &&  location.pathname.indexOf('inbox') == -1 )
+		{
+			hideIgnoredPosts();
+		}
+		else
+		{
+			if ( location.pathname.indexOf('/my/socialism/') > -1)
+			{
+				td2td = document.getElementById('td2');
+				if (td2td != null)
+				{
+					newContainer = document.createElement('div');
+					newContainer.innerHTML = '<br><br><b>Заблокируем какое-нибудь ключевое слово?</b><br>';
+					
+					newInput = document.createElement('input');
+					newInput.setAttribute('type', 'text');
+					newInput.setAttribute('id', 'sp-textToBlock');
+					newContainer.appendChild(newInput);
+					newImage = document.createElement('img');
+					newImage.setAttribute('src', 'http://img.dirty.ru/d3/social-add-button.gif');
+					newImage.setAttribute('alt', 'Заблокировать ключевое слово');
+					newContainer.appendChild(newImage);
+					newImage.addEventListener('click', function()
+					{
+						userName = document.getElementById('sp-textToBlock').value;
+						requestConfirm = confirm('Заблокировать ключевое слово ' + userName + ' ?')
+						if (requestConfirm)
+						{
+							_$.settings_ignorTextlist.push(userName);
+							_$.set_save();
+							showBlockedWords();
+						}
+						document.getElementById('sp-userToBlock').value = "";
+					}, false);
+					
+					td2td.appendChild(newContainer);
+
+					newContainer = document.createElement('div');
+					newContainer.setAttribute('id', 'sp-BlockedWords');
+					td2td.appendChild(newContainer);
+					showBlockedWords();					
+				
+					newContainer = document.createElement('div');
+					newContainer.innerHTML = '<br><br><b>Может заблокируем кого-нибудь?</b><br>';
+
+					newInput = document.createElement('input');
+					newInput.setAttribute('type', 'text');
+					newInput.setAttribute('id', 'sp-userToBlock');
+					newContainer.appendChild( newInput );
+					newImage = document.createElement('img');
+					newImage.setAttribute('src','http://img.dirty.ru/d3/social-add-button.gif');
+					newImage.setAttribute('alt','Заблокировать пользователя');
+					newContainer.appendChild( newImage );
+					newImage.addEventListener('click', function()
+					{
+						userName = document.getElementById('sp-userToBlock').value;
+						requestConfirm = confirm('Заблокировать пользователя ' + userName + ' ?')
+						if (requestConfirm)
+						{
+							_$.settings_ignorlist.push( userName );
+							_$.set_save();
+							showBlockedUsers();
+						}
+						document.getElementById('sp-userToBlock').value = "";
+					}, false);
+							
+					td2td.appendChild(newContainer);
+					
+					newContainer = document.createElement('div');
+					newContainer.setAttribute('id', 'sp-BlockedUsers');
+					td2td.appendChild(newContainer);
+					showBlockedUsers();
+				}
+			}
+			
+			if (location.pathname.indexOf('/comments/') > -1)
+			{
+				_$.injectScript( commentShowHideIgnorList );
+	
+				var currentCommentId;
+				var currentCommentBody;
+				var currentCommentHeader;
+				var commentUserNameA;
+				var hideShowLink;
+				var newLinkToShowHide;
+				var spaceSpan;
+				var commentsHolder = document.getElementById('js-commentsHolder');
+				for (var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++)
+				{
+					if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
+					{
+						currentCommentId = commentsHolder.childNodes[indexOfComment].getAttribute('id');
+						currentCommentBody = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[1];
+						currentCommentHeader = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[3];
+						commentUserNameA = currentCommentHeader.querySelector('a.c_user');
+						
+						for ( ignUserIndex = 0; ignUserIndex < _$.settings_ignorlist.length; ignUserIndex++ )
+						{							
+							if ( _$.settings_ignorlist[ignUserIndex] == commentUserNameA.innerHTML )
+							{
+								currentCommentBody.setAttribute('id', currentCommentId + '-sh-body');
+								currentCommentHeader.setAttribute('id', currentCommentId + '-sh-header');
+								spaceSpan = document.createElement('span');
+								spaceSpan.innerHTML = "&nbsp;&nbsp";
+								currentCommentHeader.appendChild(spaceSpan);
+								newLinkToShowHide = document.createElement('a');
+								newLinkToShowHide.setAttribute('href', '#');
+								newLinkToShowHide.setAttribute('id', currentCommentId + '-sh');
+								currentCommentHeader.appendChild(newLinkToShowHide);
+								commentShowHideIgnorList( currentCommentId, false );
+							}
+						}
+					}
+				}
+			}
+		}
+		addBenchmark(time1, 'ignorlist');
+	}
+// end of ignorlist
 
 // start favicons
 if(_$.settings.favicon_on=='1'&&_$.settings.use_pictures=='1')
@@ -2326,46 +2667,6 @@ if(_$.settings.youtube_fullscreen=='1')
 		}
 		addBenchmark( time1, 'youtube fullscreen' );
 	}
-
-	// add youtube bar to all images of video from youtube.com
-	/*
-	function youtubImageLoad( e )
-	{
-		var newImg = new Image();
-		newImg.src = this.getAttribute('src');
-		var imgWidth = newImg.width;
-		if ( this.getAttribute('width') > 0 )
-		{
-			imgWidth = this.getAttribute('width');
-		}
-		ytImageSrc = "http://pit.dirty.ru/dirty/1/2011/04/19/28284-000154-0baf2067878046ed9998ee2ca0f298f3.png";	
-		if ( this.parentNode.tagName == "A" )
-		{
-			var ytbarImg = document.createElement('img');
-			ytbarImg.setAttribute('src', ytImageSrc );
-			ytbarImg.setAttribute('width',  imgWidth );
-			ytbarImg.setAttribute('style', 'margin-top: -5px; clear: all; position: absolute; left: ' + this.offsetLeft + 'px;');
-	
-			this.parentNode.appendChild( document.createElement('br'));
-			this.parentNode.appendChild( ytbarImg );
-			this.parentNode.appendChild( document.createElement('br'));			
-			this.parentNode.appendChild( document.createElement('p'));
-		}
-		return true;
-	}
-
-	var imgLinks = document.getElementsByTagName('img');
-	if ( imgLinks )
-	{
-		for ( cntr =0; cntr < imgLinks.length; cntr++ )	
-		{
-			if ( imgLinks[cntr].getAttribute('src').search(/img\.youtube\.com/i) > -1 )
-			{
-				_$.addEvent( imgLinks[cntr], 'load', youtubImageLoad );
-			}
-		}
-	}
-	*/
 }
 
 // Color Picker
@@ -5200,7 +5501,7 @@ if(_$.settings.dirty_tags=='1')
 					id = newLink.href;
 					link = document.createElement("a");
 					link.setAttribute("href", "#");
-					link.setAttribute("style", "margin-left:5px; display:inline-block;");
+					link.setAttribute("style", "margin-left:5px; display:inline-block; text-decoration:none");
 					link.setAttribute("title", "Пометить комментарии как прочтённые");
 					if(ownComment)link.setAttribute("own", "true");
 					link.setAttribute("pos", i);
@@ -5522,190 +5823,7 @@ if(_$.settings.dirty_tags=='1')
 		addBenchmark( time1, 'quotes' );
 	}
 
-	// made by crea7or
-	// start of instant search in comments
-	if(_$.settings.instant_search == '1' )
-	{
-		function commentsFilter()
-		{
-			var inputBox = document.getElementById('js-search-in-comments');
-			var currentCommentId;
-			var currentCommentBody;
-			var currentCommentBodyText;
-			var currentCommentHeader;
-			var commentUserNameA;
-			var hideShowLink;
-			var newLinkToShowHide;
-			var spaceSpan;
-			var commentsHolder = document.getElementById('js-commentsHolder');
-			for ( var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++ )
-			{
-				if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
-				{
-					currentCommentId = commentsHolder.childNodes[indexOfComment].getAttribute('id');
-					currentCommentBody = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[1];
-					currentCommentBodyText = currentCommentBody.innerHTML;
-					currentCommentHeader = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[3];
-					commentUserNameA = currentCommentHeader.querySelector('a.c_user');
-					if ( commentUserNameA )
-					{
-						currentCommentBodyText += " " + commentUserNameA.innerHTML;
-					}
-					currentCommentBody.setAttribute('id', currentCommentId + '-sh-body');
-					currentCommentHeader.setAttribute('id', currentCommentId + '-sh-header');
-					if ( currentCommentBodyText.search( new RegExp(( inputBox.value +'').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1"), 'ig' )) > -1 )
-					{
-						hideShowLink = currentCommentHeader.getElementById( currentCommentId + '-sh');
-						if ( hideShowLink )
-						{
-							commentShowHide( currentCommentId, true );
-						}
-					}
-					else
-					{
-						hideShowLink = currentCommentHeader.getElementById( currentCommentId + '-sh');
-						if ( hideShowLink == null )
-						{
-							spaceSpan = document.createElement('span');
-							spaceSpan.innerHTML = "&nbsp;&nbsp";
-							currentCommentHeader.appendChild( spaceSpan );
-							newLinkToShowHide = document.createElement('a');
-							newLinkToShowHide.setAttribute('href', '#');
-							newLinkToShowHide.setAttribute('id', currentCommentId + '-sh');
-							currentCommentHeader.appendChild( newLinkToShowHide );
-						}
-						commentShowHide( currentCommentId, false );
-					}
 
-				}
-			}
-			return false;
-		}
-
-		function commentShowHide( commentId, showIfTrue )
-		{
-			var commentDiv = document.getElementById( commentId + '-sh-body');
-			var commentDivHeader = document.getElementById( commentId + '-sh-header');
-			if ( commentDiv )
-			{
-				if ( showIfTrue )
-				{
-					if ( instant_search_hide )
-					{
-						commentDivHeader.parentNode.removeAttribute('style');
-					}
-					else
-					{
-						commentDiv.removeAttribute('style');
-						commentDivHeader.removeAttribute('style');
-					}
-					var commentAlink = document.getElementById( commentId + '-sh');
-					if ( commentAlink )
-					{
-						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', false );")
-						commentAlink.innerHTML = 'убрать это';
-					}
-				}
-				else
-				{
-					if ( instant_search_hide )
-					{
-						commentDivHeader.parentNode.setAttribute('style', 'display: none');
-					}
-					else
-					{
-						commentDiv.setAttribute('style', 'display: none');
-						commentDivHeader.setAttribute('style', 'opacity: 0.5');					
-					}
-					var commentAlink = document.getElementById( commentId + '-sh');
-					if ( commentAlink )
-					{
-						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', true );")
-						commentAlink.innerHTML = 'а что там?';
-					}
-				}
-			}
-			return false;
-		}
-
-		var time1 = new Date();
-		var headerDiv = null;
-		var insertOurHeaderAfter = null;
-		var postPage = false;
-		if ( document.location.href.indexOf("/comments/") >= 0 )
-		{
-			var commentsHolder = document.getElementById('js-comments');
-			if ( commentsHolder )
-			{
-				postPage = true;
-				headerDiv = document.querySelector('div.comments_header');
-				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold');
-				if ( divToModifyStyle )
-				{
-					divToModifyStyle.setAttribute('style', 'width: 300px;');
-				}
-				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls');
-				if ( divToModifyStyle )
-				{
-					divToModifyStyle.setAttribute('style', 'width: 30%; min-width: 300px;');
-				}
-				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold_inner');
-				if ( divToModifyStyle )
-				{
-					divToModifyStyle.setAttribute('style', 'padding-left: 5px; padding-right: 5px;');
-				}
-				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls_inner');
-				if ( divToModifyStyle )
-				{
-					divToModifyStyle.setAttribute('style', 'padding-left: 0px; margin-right: 0px; margin-left: 60px;');
-				}
-				insertOurHeaderAfter = headerDiv.firstChild;
-			}
-		}
-		else if (  document.location.href.indexOf("/inbox/") >= 0 )
-		{
-			 headerDiv = document.querySelector('div.inbox_header');
-			 if ( headerDiv )
-			 {
-				 insertOurHeaderAfter = headerDiv.lastChild;
-			 }
-		}
-
-		if ( headerDiv && insertOurHeaderAfter )
-		{
-			var inputElementDiv = document.createElement('div');
-			if ( postPage )
-			{
-				inputElementDiv.setAttribute('style', 'float: left; padding-left: 10px; padding-right: 5px;');
-				inputElementDiv.setAttribute('class', 'comments_header_threshhold_inner');
-			}
-			else
-			{
-				inputElementDiv.setAttribute('style', 'float: left;');
-			}
-			var formElement = document.createElement('form');
-			formElement.setAttribute('onsubmit', 'return commentsFilter();');
-			var inputElementA = document.createElement('a');
-			inputElementA.setAttribute('href', '#');
-			inputElementA.setAttribute('onclick', 'return commentsFilter();');
-			inputElementA.setAttribute('style', 'margin-left: 5px;');
-			inputElementA.setAttribute('class', 'dashed');
-			inputElementA.innerHTML = 'фас!';
-			var inputElement = document.createElement('input');
-			inputElement.setAttribute('type', 'text');
-			inputElement.setAttribute('id', 'js-search-in-comments');
-			inputElement.setAttribute('onchange', 'return commentsFilter();');
-			inputElement.setAttribute('name', 'js-search-in-comments');
-			inputElement.setAttribute('class', 'text_input js-input_default');
-			formElement.appendChild( inputElement );
-			formElement.appendChild( inputElementA );
-			inputElementDiv.appendChild( formElement );
-			headerDiv.insertBefore( inputElementDiv, insertOurHeaderAfter );
-			_$.injectScript( commentsFilter + "\n" + "var instant_search_hide = " + _$.settings.instant_search_hide + ";" + "\n" + commentShowHide );
-		}
-		addBenchmark( time1, 'instant search' );
-	}
-	// end of instant search in comments
 
 	// made by crea7or
 	// start of dirty avatar
@@ -5747,6 +5865,193 @@ if(_$.settings.dirty_tags=='1')
 		addBenchmark( time1, 'dirty avatar' );
 	}
 	// end of dirty avatar
+
+
+	// made by crea7or
+	// start of instant search in comments
+	if (_$.settings.instant_search == '1' )
+	{
+		function commentsFilter()
+		{
+			var inputBox = document.getElementById('js-search-in-comments');
+			var currentCommentId;
+			var currentCommentBody;
+			var currentCommentBodyText;
+			var currentCommentHeader;
+			var commentUserNameA;
+			var hideShowLink;
+			var newLinkToShowHide;
+			var spaceSpan;
+			var commentsHolder = document.getElementById('js-commentsHolder');
+			for (var indexOfComment = 0; indexOfComment < commentsHolder.childNodes.length; indexOfComment++)
+			{
+				if (commentsHolder.childNodes[indexOfComment].nodeName == 'DIV')
+				{
+					currentCommentId = commentsHolder.childNodes[indexOfComment].getAttribute('id');
+					currentCommentBody = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[1];
+					currentCommentBodyText = currentCommentBody.innerHTML;
+					currentCommentHeader = commentsHolder.childNodes[indexOfComment].childNodes[1].childNodes[3];
+					commentUserNameA = currentCommentHeader.querySelector('a.c_user');
+					if (commentUserNameA)
+					{
+						currentCommentBodyText += " " + commentUserNameA.innerHTML;
+					}
+					currentCommentBody.setAttribute('id', currentCommentId + '-sh-body');
+					currentCommentHeader.setAttribute('id', currentCommentId + '-sh-header');
+					if (currentCommentBodyText.search(new RegExp((inputBox.value + '').replace(/([\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:])/g, "\\$1"), 'ig')) > -1)
+					{
+						hideShowLink = currentCommentHeader.getElementById(currentCommentId + '-sh');
+						if (hideShowLink)
+						{
+							commentShowHide(currentCommentId, true);
+						}
+					}
+					else
+					{
+						hideShowLink = currentCommentHeader.getElementById(currentCommentId + '-sh');
+						if (hideShowLink == null)
+						{
+							spaceSpan = document.createElement('span');
+							spaceSpan.innerHTML = "&nbsp;&nbsp";
+							currentCommentHeader.appendChild(spaceSpan);
+							newLinkToShowHide = document.createElement('a');
+							newLinkToShowHide.setAttribute('href', '#');
+							newLinkToShowHide.setAttribute('id', currentCommentId + '-sh');
+							currentCommentHeader.appendChild(newLinkToShowHide);
+						}
+						commentShowHide(currentCommentId, false);
+					}
+
+				}
+			}
+			return false;
+		}
+
+		function commentShowHide(commentId, showIfTrue)
+		{
+			var commentDiv = document.getElementById(commentId + '-sh-body');
+			var commentDivHeader = document.getElementById(commentId + '-sh-header');
+			if (commentDiv)
+			{
+				if (showIfTrue)
+				{
+					if (instant_search_hide)
+					{
+						commentDivHeader.parentNode.removeAttribute('style');
+					}
+					else
+					{
+						commentDiv.removeAttribute('style');
+						commentDivHeader.removeAttribute('style');
+					}
+					var commentAlink = document.getElementById(commentId + '-sh');
+					if (commentAlink)
+					{
+						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', false );")
+						commentAlink.innerHTML = 'убрать это';
+					}
+				}
+				else
+				{
+					if (instant_search_hide)
+					{
+						commentDivHeader.parentNode.setAttribute('style', 'display: none');
+					}
+					else
+					{
+						commentDiv.setAttribute('style', 'display: none');
+						commentDivHeader.setAttribute('style', 'opacity: 0.5');
+					}
+					var commentAlink = document.getElementById(commentId + '-sh');
+					if (commentAlink)
+					{
+						commentAlink.setAttribute('onclick', "return commentShowHide('" + commentId + "', true );")
+						commentAlink.innerHTML = 'а что там?';
+					}
+				}
+			}
+			return false;
+		}
+
+		var time1 = new Date();
+		var headerDiv = null;
+		var insertOurHeaderAfter = null;
+		var postPage = false;
+		if (document.location.href.indexOf("/comments/") >= 0)
+		{
+			var commentsHolder = document.getElementById('js-comments');
+			if (commentsHolder)
+			{
+				postPage = true;
+				headerDiv = document.querySelector('div.comments_header');
+				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold');
+				if (divToModifyStyle)
+				{
+					divToModifyStyle.setAttribute('style', 'width: 300px;');
+				}
+				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls');
+				if (divToModifyStyle)
+				{
+					divToModifyStyle.setAttribute('style', 'width: 30%; min-width: 300px;');
+				}
+				divToModifyStyle = headerDiv.querySelector('div.comments_header_threshhold_inner');
+				if (divToModifyStyle)
+				{
+					divToModifyStyle.setAttribute('style', 'padding-left: 5px; padding-right: 5px;');
+				}
+				divToModifyStyle = headerDiv.querySelector('div.comments_header_controls_inner');
+				if (divToModifyStyle)
+				{
+					divToModifyStyle.setAttribute('style', 'padding-left: 0px; margin-right: 0px; margin-left: 60px;');
+				}
+				insertOurHeaderAfter = headerDiv.firstChild;
+			}
+		}
+		else if (document.location.href.indexOf("/inbox/") >= 0)
+		{
+			headerDiv = document.querySelector('div.inbox_header');
+			if (headerDiv)
+			{
+				insertOurHeaderAfter = headerDiv.lastChild;
+			}
+		}
+
+		if (headerDiv && insertOurHeaderAfter)
+		{
+			var inputElementDiv = document.createElement('div');
+			if (postPage)
+			{
+				inputElementDiv.setAttribute('style', 'float: left; padding-left: 10px; padding-right: 5px;');
+				inputElementDiv.setAttribute('class', 'comments_header_threshhold_inner');
+			}
+			else
+			{
+				inputElementDiv.setAttribute('style', 'float: left;');
+			}
+			var formElement = document.createElement('form');
+			formElement.setAttribute('onsubmit', 'return commentsFilter();');
+			var inputElementA = document.createElement('a');
+			inputElementA.setAttribute('href', '#');
+			inputElementA.setAttribute('onclick', 'return commentsFilter();');
+			inputElementA.setAttribute('style', 'margin-left: 5px;');
+			inputElementA.setAttribute('class', 'dashed');
+			inputElementA.innerHTML = 'фас!';
+			var inputElement = document.createElement('input');
+			inputElement.setAttribute('type', 'text');
+			inputElement.setAttribute('id', 'js-search-in-comments');
+			inputElement.setAttribute('onchange', 'return commentsFilter();');
+			inputElement.setAttribute('name', 'js-search-in-comments');
+			inputElement.setAttribute('class', 'text_input js-input_default');
+			formElement.appendChild(inputElement);
+			formElement.appendChild(inputElementA);
+			inputElementDiv.appendChild(formElement);
+			headerDiv.insertBefore(inputElementDiv, insertOurHeaderAfter);
+			_$.injectScript(commentsFilter + "\n" + "var instant_search_hide = " + _$.settings.instant_search_hide + ";" + "\n" + commentShowHide);
+		}
+		addBenchmark(time1, 'instant search');
+	}
+	// end of instant search in comments
+
 	
 	//stasik0
 	if(_$.settings.dekabr == '1'){
