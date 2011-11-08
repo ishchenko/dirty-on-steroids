@@ -1,7 +1,7 @@
 // Replace %username% to username
 d3.addModule(
 {
-	type: "Прочее",
+	type: "Содержание",
 	name: 'Замена %username%',
 	author: 'crimaniak',
 	config: {active:{type:'checkbox',value:false}},

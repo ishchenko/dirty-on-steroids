@@ -1,7 +1,7 @@
 // Hавигатор справа
 d3.addModule(
 {
-	type: "Прочее",
+	type: "Навигация",
 	name: 'Навигация по новым',
 	author: 'crimaniak',
 	config: {active:{type:'checkbox',value:true}},
@@ -36,9 +36,7 @@ d3.addModule(
 	
 	countItems: function()
 	{
-		var items= d3.content.comments.length ? d3.content.comments : d3.content.posts.length ? d3.content.posts : null;
-
-		if(items===null) return false;
+		var items = d3.get.items();
 		
 		this.newItems=[];
 		this.mineItems=[];

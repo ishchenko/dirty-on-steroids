@@ -11,11 +11,6 @@ var Comment=function(container)
 	this.userId=parseInt(/u(\d+)/.exec(this.container.attr('class'))[1],10);
 	this.indent=parseInt(/indent_(\d+)/.exec(this.container.attr('class'))[1],10);
 	this.userName=$j('.c_user',this.container).text();
-	var comment=this;
-	this.rating={
-			getValue: function(){return $j('.vote_result',comment.container).text();}
-	};
-
 };
 Comment.prototype=new Item
 ({

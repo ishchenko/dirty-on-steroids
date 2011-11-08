@@ -7,7 +7,7 @@ class d3merge
 	const core='d3.template.js';
 	const output='result\\d3.user.js';
 	
-	static public function run()
+	static public function run($arg)
 	{
 		chdir(dirname(__FILE__));
 		$jQuery=file_get_contents('jquery.js');
@@ -17,6 +17,7 @@ class d3merge
 		foreach($names as $fname)
 		{
 			$fname=preg_replace('![\\r\\n]+!','',$fname);
+			if(empty($fname)) continue;
 			if(file_exists($fname))
 			{
 				echo "Add $fname\n";
@@ -28,15 +29,25 @@ class d3merge
 				return;
 			}
 		}
-		
-		file_put_contents(self::output
-			,str_replace('// @modules@',$modules
+
+		$code=str_replace('// @modules@',$modules
 				,str_replace('// @jQuery@',$jQuery
-					,file_get_contents(self::core))));
-							
+					,file_get_contents(self::core)));
+
+		if($arg=='release')
+		{
+			echo "Compressing...\n";
+			require_once 'jsmin.php';
+			$parts=explode('==/UserScript==',$code);			
+			$parts[1]=JSMin::minify($parts[1]);
+			$code=implode("==/UserScript==\n",$parts);
+		}
+		
+		file_put_contents(self::output,$code);
+					
 		echo "done.\n";
 		echo "Now install ".self::output." script into your browser.\n";
 	}
 }
 
-d3merge::run();
+d3merge::run(@$argv[1]);

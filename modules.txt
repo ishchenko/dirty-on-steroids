@@ -10,3 +10,5 @@ extra/replace.username.js
 extra/browser.js
 extra/test.js
 extra/right.navigator.js
+extra/colored.rating.js
+

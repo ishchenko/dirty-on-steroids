@@ -2,7 +2,7 @@
 // tagline links
 d3.addModule(
 {
-	type: "Прочее",
+	type: "Навигация",
 	name: 'Линки в таглинии',
 	author: 'crimaniak',
 	config: {active:{type:'checkbox',value:true}},
