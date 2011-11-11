@@ -56,7 +56,7 @@ var d3=
 	{
 		logoutLink: function(){return $j('#js-header_logout_link');},
 		leftNavigation: function(){return $j('.left_col_nav');},
-		items: function(){return d3.content.comments.length ? d3.content.comments : d3.content.posts.length ? d3.content.posts : [];}
+		items: function(){return d3.content.items();}
 	},
 	/// JSON helper
 	json:

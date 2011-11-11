@@ -48,13 +48,13 @@ d3.addModule(
 		}
 		return true;
 	},
-
+/*
 	onNewComment: function(comment)
 	{
 		this.countItems();
 		this.newPosition();
 	},
-	
+*/	
 	scrollToItem: function(item)
 	{
 		if(item==null) return false;

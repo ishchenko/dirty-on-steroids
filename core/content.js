@@ -51,5 +51,17 @@ d3.addModule(
 		$j('.comment').each(function(){me.comments.push(new Comment($j(this)));});
 	},
 	
-	onNewComment: function(fn){this.listeners.push(fn);}
+	items: function(){return this.comments.length ? this.comments : this.posts.length ? this.posts : [];},
+	
+	onNewComment: function(fn){this.listeners.push(fn);},
+	
+	addItemsProcessor: function(processor)
+	{
+		var items = this.items();
+
+		for(var i=0;i<items.length;++i)
+			processor(items[i]);
+		
+		this.onNewComment(processor);
+	}
 });

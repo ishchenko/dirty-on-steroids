@@ -21,14 +21,15 @@ d3.addModule(
 		,{l: 999, c:'#cc0000'}
 		,{l:64000,c:'#ff0000'}
 		],
+		
 	run: function()
 	{
-		var items = d3.get.items();
-
+		var items=d3.get.items();
+		
 		for(var i=0;i<items.length;++i)
 			this.process(items[i]);
 		
-		d3.content.onNewComment(this.process);
+		this.content.onNewComment(this.process);
 	},
 
 	process: function(item)
