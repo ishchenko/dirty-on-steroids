@@ -6,7 +6,7 @@ d3.addModule(
 	author: 'crimaniak',
 	config: 
 		{active:{type:'checkbox',value:true}
-		,ratingPower: {type:'text',value:3,caption:'Коэффициент увеличения шрифта'}
+		,ratingPower: {type:'text',value:1,caption:'Коэффициент увеличения шрифта'}
 		},
 	colors:
 		[{l:-250, c:'#993333'}
