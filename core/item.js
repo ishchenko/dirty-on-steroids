@@ -6,6 +6,7 @@ Item.prototype=
 	getContent: function(){return $j(this.contentClass,this.container);},
 	getContentText: function(){return this.getContent().text();},
 	ratingContainer: function(){return $j('.vote_result',this.container);},
-	ratingValue: function(){return parseInt(this.ratingContainer().text(),10);}
+	ratingValue: function(){return parseInt(this.ratingContainer().text(),10);},
+	getFooter: function(){return $j(this.footerClass,this.container);}
 };
 

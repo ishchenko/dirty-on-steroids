@@ -6,9 +6,12 @@ core/post.js
 core/comment.js
 core/content.js
 extra/tagline.links.js
+extra/right.navigator.js
+extra/ignorator.js
+extra/hidden.author.js
+extra/colored.rating.js
 extra/replace.username.js
 extra/browser.js
 extra/test.js
-extra/right.navigator.js
-extra/colored.rating.js
+
 

@@ -1,7 +1,7 @@
 // Цветной рейтинг
 d3.addModule(
 {
-	type: "Содержание",
+	type: "Социализм",
 	name: 'Цветной рейтинг',
 	author: 'crimaniak',
 	config: 

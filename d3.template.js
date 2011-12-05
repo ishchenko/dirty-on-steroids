@@ -104,7 +104,7 @@ var d3=
 				 ,attributes:{id:'configBox'}
 				 ,innerHTML:'Настройки сервис-пака <a id="configCloser" style="position:absolute;right:1ex;top:0px;cursor:pointer">закрыть</a><div id="configTabs"></div>'}));
 			$j('body').append(box);
-			$j('#configCloser').click(function(event){box.hide();d3.config.save();return false;});
+			$j('#configCloser').click(function(event){box.hide();d3.config.readAndSave();return false;});
 			
 			this.tabs=new TabSheets($j('#configTabs'));
 			for(var sheetName in this.controls)
@@ -125,6 +125,7 @@ var d3=
 		{
 			this.module=module;
 			this.name=name;
+			module.config[this.name]._control=this;
 			
 			this.setValue=function(newValue) {this.module.config[this.name].value=this.value=newValue;};
 			this.getValue=function() {return $j('#'+this.id).val();};
@@ -160,6 +161,11 @@ var d3=
 			{
 				return '<tr><td colspan="2"><label>'+this.caption+'<input type="text" id="'+this.id+'" name="'+this.id+'" value="'+this.value+'"></label></td></tr>';
 			}
+		},
+		hidden:
+		{
+			draw: function(){return '';},
+			getValue: function(){return this.module.config[this.name].value;}
 		},
 		radio:
 		{
@@ -198,12 +204,16 @@ var d3=
 			getValue: function() {return $j('select#'+this.id+' option:selected').val();}
 		},
 		/// Get new values from controls and save config to storage
-		save: function()
+		readAndSave: function()
 		{
 			for(var sheet in this.controls)
 				for(var id in this.controls[sheet])
 					this.controls[sheet][id].update();
-
+			this.save();
+		},
+		/// Save config to storage
+		save: function()
+		{
 			localStorage.setItem('dirtySpm',d3.json.encode(this.data));
 		},
 		/// Load config from storage
@@ -238,6 +248,8 @@ var d3=
 		this.getOriginal();
 		this.config.load();
 		this.addModule(d3.config);
+		
+		this.window.d3=this;
 	},
 	// collect d3-specific info
 	collectInfo: function()
