@@ -1,4 +1,5 @@
 core/crc32.js
+core/regexp.escape.js
 core/tabsheets.js
 core/jquery.unselectable.min.js
 core/item.js
