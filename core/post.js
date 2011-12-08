@@ -16,7 +16,7 @@ Post.prototype=new Item
 	contentClass: '.dt',
 	footerClass: '.dd',
 	getClass: function(){return 'post';},
-	_idMask: /(\d+)\/?(#.+)?$/,
+	_idMask: /(\d+)\/?(#.*)?$/,
 	
 	switchBody: function()
 	{
