@@ -29,7 +29,7 @@ d3.addModule(
 		for(var i=0;i<items.length;++i)
 			this.process(items[i]);
 		
-		d3.content.onNewComment(this.process);
+		//d3.content.onNewComment(this.process);
 	},
 
 	process: function(item)
