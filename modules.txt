@@ -12,6 +12,7 @@ extra/ignorator.js
 extra/hidden.author.js
 extra/colored.rating.js
 extra/replace.username.js
+extra/ban.encoding.js
 extra/d3.search.js
 extra/browser.js
 extra/test.js
