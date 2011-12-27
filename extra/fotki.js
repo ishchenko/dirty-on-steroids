@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Фотогалерея поста',
 	author: 'maniak',
-	config: {active:{type:'checkbox',value:false}},
+	config: {active:{type:'checkbox',value:true}},
 	run: function()
 	{
 		if((document.location+"").search("dirty.ru/comments") >= 0)
