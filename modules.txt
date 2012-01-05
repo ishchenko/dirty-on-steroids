@@ -17,6 +17,3 @@ extra/d3.search.js
 extra/browser.js
 extra/fotki.js
 extra/test.js
-
-
-

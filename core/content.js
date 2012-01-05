@@ -25,16 +25,6 @@ d3.addModule(
 			if(container.hasClass('comment'))
 			{
 				var comment=new Comment(container);
-				/* @todo: debug this variant 
-				var prevId=container.prev().attr('id');
-				alert(prevId);
-				for(var i=0;i<me.comments.length;++i)
-					if(me.comments[i].id=prevId)
-					{
-						me.comments.splice(i+1, 0, comment);
-						break;
-					}
-				*/ 
 				me.countItems();
 				for(var i=0;i<me.listeners.length;++i)
 					me.listeners[i](comment);
