@@ -127,9 +127,9 @@ var d3=
 			this.name=name;
 			module.config[this.name]._control=this;
 			
-			this.setValue=function(newValue) {this.module.config[this.name].value=this.value=newValue;};
+			this.setValue=function(newValue) {d3.config.data[this.id]=this.module.config[this.name].value=this.value=newValue;};
 			this.getValue=function() {return $j('#'+this.id).val();};
-			this.update=function() {this.setValue(d3.config.data[this.id]=this.getValue());};
+			this.update=function() {this.setValue(this.getValue());};
 			
 			// collect properties from config data
 			for(var i in module.config[name])
