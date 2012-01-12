@@ -8,7 +8,7 @@
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
 // @run-at			document-end
-// @version			0.0.1
+// @version			0.0.2
 // ==/UserScript==
 
 // @jQuery@
@@ -161,6 +161,14 @@ var d3=
 			{
 				return '<tr><td colspan="2"><label>'+this.caption+'<input type="text" id="'+this.id+'" name="'+this.id+'" value="'+this.value+'"></label></td></tr>';
 			}
+		},
+		html:
+		{
+			draw: function()
+			{
+				return '<tr><td colspan="2">'+this.value+'</td></tr>';
+			},
+			getValue: function(){return this.module.config[this.name].value;}
 		},
 		hidden:
 		{

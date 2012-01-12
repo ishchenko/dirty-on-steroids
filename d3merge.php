@@ -30,9 +30,10 @@ class d3merge
 			}
 		}
 
-		$code=str_replace('// @modules@',$modules
-				,str_replace('// @jQuery@',$jQuery
-					,file_get_contents(self::core)));
+		$code=str_replace('@buildTime@',date('Y-m-d H:i:s')
+				,str_replace('// @modules@',$modules
+					,str_replace('// @jQuery@',$jQuery
+						,file_get_contents(self::core))));
 
 		if($arg=='release')
 		{

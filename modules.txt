@@ -14,6 +14,8 @@ extra/colored.rating.js
 extra/replace.username.js
 extra/ban.encoding.js
 extra/d3.search.js
+extra/kdpv.js
+extra/update.link.js
 extra/browser.js
 extra/fotki.js
 extra/test.js
