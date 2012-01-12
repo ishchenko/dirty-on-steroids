@@ -30,6 +30,8 @@ d3.addModule(
 					me.listeners[i](comment);
 			}
 		});
+		
+		d3.page={inbox: window.location.pathname.substr(0,10)=="/my/inbox/"};
 	},
 	
 	countItems: function()

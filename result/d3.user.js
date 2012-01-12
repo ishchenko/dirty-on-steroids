@@ -80,7 +80,7 @@ this.sheets[0].show();},hideAll:function(){this.sheets.forEach(function(item){it
 {var me=this;this.countItems();d3.content=this;$j(document).bind("DOMNodeInserted",function(event)
 {var container=$j(event.target);if(container.hasClass('comment'))
 {var comment=new Comment(container);me.countItems();for(var i=0;i<me.listeners.length;++i)
-me.listeners[i](comment);}});},countItems:function()
+me.listeners[i](comment);}});d3.page={inbox:window.location.pathname.substr(0,10)=="/my/inbox/"};},countItems:function()
 {this.posts=[];this.comments=[];var me=this;$j('.post').each(function(){me.posts.push(new Post($j(this)));});$j('.comment').each(function(){me.comments.push(new Comment($j(this)));});},items:function(){return this.comments.length?this.comments:this.posts.length?this.posts:[];},onNewComment:function(fn){this.listeners.push(fn);},addItemsProcessor:function(processor)
 {var items=this.items();for(var i=0;i<items.length;++i)
 processor(items[i]);this.onNewComment(processor);}});d3.addModule({type:"Навигация",name:'Линки в таглинии',author:'crimaniak',config:{active:{type:'checkbox',value:true}},run:function()
@@ -139,7 +139,7 @@ for(var i=0;i<items.length;++i)
 this.process(items[i]);},process:function(item)
 {var img=$j('p img',item.container).first();var p=img.parent();var opener=$j('<a href="#">Показать картинку</a>');img.css('display','none');opener.prependTo(p);p.click(function(){img.css('display','');opener.remove();return false;});}});d3.addModule({type:"Прочее",name:'Линк на последнюю версию',author:'crimaniak',config:{link:{type:'html',value:'<a href="https://github.com/crimaniak/dirty-on-steroids/raw/master/result/d3.user.js">Установить последнюю версию скрипта</a>'}},run:function(){}});d3.addModule({type:"Социализм",name:'Пряталки рейтинга',author:'crimaniak',config:{postRating:{type:'checkbox',value:false,caption:'Спрятать рейтинг постов'},commentRating:{type:'checkbox',value:false,caption:'Спрятать рейтинг комментариев'},voteButtons:{type:'checkbox',value:false,caption:'Спрятать кнопки голосования'}},run:function()
 {with(this.config)
-{if(postRating.value)$j('.post .vote_result').html('');if(commentRating.value)$j('.c_vote .vote_result').html('');if(voteButtons.value)$j('.vote_button').remove();}}});d3.addModule({type:"Прочее",name:'Информация о браузере',author:'crimaniak',config:{active:{type:'checkbox',value:false}},run:function()
+{if(postRating.value||d3.page.inbox)$j('.post .vote_result').html('');if(commentRating.value||d3.page.inbox)$j('.c_vote .vote_result').html('');if(voteButtons.value)$j('.vote_button').remove();}}});d3.addModule({type:"Прочее",name:'Информация о браузере',author:'crimaniak',config:{active:{type:'checkbox',value:false}},run:function()
 {var info='';$j.each($j.browser,function(i,val){info+=i+" : <span>"+val+"</span><br>";});d3.get.leftNavigation().append('<li>'+info+'</li>');}});﻿
 d3.addModule({type:"Содержание",name:'Фотогалерея поста',author:'maniak,crimaniak',config:{active:{type:'checkbox',value:true},height:{type:'text',value:'200px',caption:'Высота картинок в фотогалерее'}},run:function()
 {if(!d3.content.comments.length||!(this.imgs=$j('.c_body img')).length)return;$j("body").prepend
