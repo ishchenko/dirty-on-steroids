@@ -51,7 +51,13 @@ d3.addModule(
 		var needToSort=false;
 		$j.each(d3.content.comments,function(index,c)
 		{
-			$j('img',c.container).each(function(index){found.push({src:this.src,id:c.id,rating:c.ratingValue()});if(c.ratingValue()!=0)needToSort=true;});
+			$j('img',c.container).each(function(index)
+			{
+				if(this.src=='http://img.dirty.ru/pics/lapata.gif') return;
+				found.push({src:this.src,id:c.id,rating:c.ratingValue()});
+				var r=c.ratingValue();
+				if(r!=0 && r==r) needToSort=true;
+			});
 		});
 		if(needToSort) found.sort(function(a,b){return b.rating-a.rating;});
 		
