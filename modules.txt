@@ -2,6 +2,7 @@ core/crc32.js
 core/regexp.escape.js
 core/tabsheets.js
 core/jquery.unselectable.min.js
+core/url.js
 core/item.js
 core/post.js
 core/comment.js
@@ -9,6 +10,7 @@ core/content.js
 extra/tagline.links.js
 extra/right.navigator.js
 extra/ignorator.js
+extra/quotes.js
 extra/hidden.author.js
 extra/colored.rating.js
 extra/replace.username.js

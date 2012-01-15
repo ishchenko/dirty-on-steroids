@@ -71,7 +71,11 @@ this.sheets[0].show();},hideAll:function(){this.sheets.forEach(function(item){it
 .tbsHeader{padding: 1ex 2ex;border: 1px grey solid;border-right-style: none;margin-bottom: 5px;margin-right: 0;cursor: pointer;background-color: #FFFFFF;width:100px}\
 .tbsActive{position: relative;left: 1px;}\
 .tbsSheet{background-color: #FFFFFF;border: 1px solid grey;padding: 0 1ex;width:454px;height: 272px; overflow: auto;margin: 0;}\
-</style>');(function($){$.fn.unselectable=function(){return this.each(function(){$(this).css('-moz-user-select','none').css('-khtml-user-select','none').css('user-select','none');if($.browser.msie){$(this).each(function(){this.ondrag=function(){return false}});$(this).each(function(){this.onselectstart=function(){return(false)}})}else if($.browser.opera){$(this).attr('unselectable','on')}})}})(jQuery);var Item=function(o){for(var i in o)this[i]=o[i];};Item.prototype={offset:function(){return this.container.offset();},height:function(){return this.container.height();},getContent:function(){return $j(this.contentClass,this.container);},getContentText:function(){return this.getContent().text();},ratingContainer:function(){return $j('.vote_result',this.container);},ratingValue:function(){return parseInt(this.ratingContainer().text(),10);},getFooter:function(){return $j(this.footerClass,this.container);}};var Post=function(container)
+</style>');(function($){$.fn.unselectable=function(){return this.each(function(){$(this).css('-moz-user-select','none').css('-khtml-user-select','none').css('user-select','none');if($.browser.msie){$(this).each(function(){this.ondrag=function(){return false}});$(this).each(function(){this.onselectstart=function(){return(false)}})}else if($.browser.opera){$(this).attr('unselectable','on')}})}})(jQuery);function URL(base)
+{this.base=base!=undefined?base:'';this.parms=[];this._hash='';};URL.prototype={setBase:function(newBase){this.base=newBase;return this;},addBase:function(part){this.base+=part;return this;},add:function(name,value){this.parms.push({name:name,value:value});return this;},hash:function(hash){this._hash=hash;return this;},toString:function()
+{return this.base+this.getParms()+(this._hash!=''?'#'+this._hash:'');},getParms:function()
+{var parms='';var i;for(i=0;i<this.parms.length;++i)with(this.parms[i])
+parms+=(parms==''?'?':'&')+encodeURIComponent(name)+'='+encodeURIComponent(value);return parms;}};URL.make=function(base){return new URL(base);};var Item=function(o){for(var i in o)this[i]=o[i];};Item.prototype={offset:function(){return this.container.offset();},height:function(){return this.container.height();},getContent:function(){return $j(this.contentClass,this.container);},getContentText:function(){return this.getContent().text();},ratingContainer:function(){return $j('.vote_result',this.container);},ratingValue:function(){return parseInt(this.ratingContainer().text(),10);},getFooter:function(){return $j(this.footerClass,this.container);}};var Post=function(container)
 {this.container=container;this.container.get(0).post=this;this.info=$j('.dd',this.container);var a=$j('a[href^="/comments/"]',this.info);this.id=parseInt(this._idMask.exec(a.length<1?document.location.href:a.first().attr('href'))[1],10);this.userName=$j('a[href^="/user/"]',this.info).text();this.isNew=$j('a[href*="#new"]',this.info).length;this.isMine=this.userName==d3.user.name;};Post.prototype=new Item
 ({contentClass:'.dt',footerClass:'.dd',getClass:function(){return'post';},_idMask:/(\d+)\/?(#.*)?$/,switchBody:function()
 {with(this.container.style)if(display=='')display='none';else display='';return false;}});d3.Post=Post;var Comment=function(container)
@@ -113,7 +117,12 @@ $j('div.dt',post.container).hide();footer.append('<a class="ignorator" href="#">
 {value[id]=undefined;content.show();}else
 {value[id]=Number(new Date());content.hide();}
 _control.update();}
-d3.config.save();return false;}});d3.addModule({type:"Социализм",name:'Анонимные авторы постов',author:'crimaniak',config:{posts:{type:'checkbox',value:false,caption:"Анонимные авторы постов"},comments:{type:'checkbox',value:false,caption:"Анонимные комментаторы"},mark:{type:'text',value:'?????',caption:"Менять никнеймы на:"}},run:function()
+d3.config.save();return false;}});d3.addModule({type:"Содержание",name:'Кнопка цитатника',author:'crimaniak',url:'http://quotes-dirty.ru/write',config:{active:{type:'checkbox',value:true}},run:function()
+{var i;for(i=0;i<d3.content.comments.length;++i)with(d3.content.comments[i])
+$j('.vote',getFooter()).before
+('<a href="'
++URL.make(this.url).add('username',userName).add('text',getContent().text()).add('source',d3.page.inbox?'':document.location).hash(d3.page.inbox?'':id)
++'">в цитатник</a>');}});d3.addModule({type:"Социализм",name:'Анонимные авторы постов',author:'crimaniak',config:{posts:{type:'checkbox',value:false,caption:"Анонимные авторы постов"},comments:{type:'checkbox',value:false,caption:"Анонимные комментаторы"},mark:{type:'text',value:'?????',caption:"Менять никнеймы на:"}},run:function()
 {if(this.config.posts.value)
 $j('.post .dd a[href^="/user/"]').html(this.config.mark.value);var mark=this.config.mark.value;if(this.config.comments.value)
 {$j('.comment .c_footer a[href^="/user/"]').html(mark);d3.xpath.each("//div[contains(@class,'c_body')]//text()",function(node)
