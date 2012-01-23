@@ -66,7 +66,7 @@ d3.addModule(
 		item.getContent().get(0).style.opacity=0.1;
 		item.getContent().animate({opacity: 1},400);
 		*/
-		var content=item.getContent();
+		var content=item.container;
 		var oldColor=content.css('background-color');
 		window.setTimeout(function(){content.css('background-color',oldColor);}, 650);
 		content.css('background-color',"#fff48d");
