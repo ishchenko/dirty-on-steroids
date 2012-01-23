@@ -33,7 +33,7 @@ d3.addModule(
 		if(this.config.ignored.value[id]!=undefined)
 			$j('div.dt',post.container).hide();
 		
-		footer.append('<a class="ignorator" href="#">x</a>');
+		footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold">[x]</a>');
 		$j('.ignorator',footer).click(function(){return me.processClick(post);});
 	},
 	processClick: function(post)
