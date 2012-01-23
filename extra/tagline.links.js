@@ -16,10 +16,13 @@ d3.addModule(
 			];
 		
 		for(i in links)
+		{
 			l.before( d3.newElement('a', 
 					{attributes: links[i].attributes
-					,style: {marginLeft: '10px', background: 'none', paddingLeft: '0px'}
+					,style: {marginLeft: '7px', background: 'none', paddingLeft: '0px'}
 					,innerHTML: links[i].innerHTML})
 			);
+			l.before(' ');
+		}
 	}
 });
