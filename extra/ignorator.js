@@ -7,6 +7,7 @@ d3.addModule(
 	author: 'crimaniak',
 	config: {active:{type:'checkbox',value:true}
 			,ignored:{type:'hidden',value:{}}
+			,moderation:{type:'checkbox',value:false,caption:'модерация от d3search'}
 //			,postByAuthor:{type:'text'}
 //			,commentByAuthor:{type:'text'}
 			},
@@ -23,6 +24,15 @@ d3.addModule(
 		with(d3.content) if(comments.length==0 && posts.length>0) // Main page
 			for(var i=0;i<posts.length;++i) // process every post
 				this.processPost(posts[i]);
+		
+		if(this.config.moderation.value)
+		{
+		    var moderation = document.createElement('script');
+		    moderation.setAttribute('type', 'text/javascript');
+		    moderation.setAttribute('src', 'http://api.d3search.ru/moderation/list?t=' + new Date().getTime());
+		    document.getElementsByTagName('head')[0].appendChild(moderation);
+		}
+		
 	},
 	processPost: function(post)
 	{
