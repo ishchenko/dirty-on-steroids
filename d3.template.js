@@ -41,8 +41,9 @@ var d3=
 	{
 		var e=document.createElement(tagName);
 		
+		var i;
 		if(parms.style!==undefined) this.setStyle(e,parms.style);
-		if(parms.attributes!==undefined) for(var i in parms.attributes)	e.setAttribute(i,parms.attributes[i]);	
+		if(parms.attributes!==undefined) for(i in parms.attributes)	e.setAttribute(i,parms.attributes[i]);	
 		if(parms.innerHTML!==undefined)	e.innerHTML=parms.innerHTML;
 		
 		return e;
@@ -309,5 +310,11 @@ var d3=
 
 d3.initCore();
 
+try
+{
 // @modules@
-
+	
+}catch(e)
+{
+	alert("Problem in modular service pack: "+e);
+}

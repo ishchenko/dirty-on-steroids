@@ -17,7 +17,7 @@ class d3merge
 		foreach($names as $fname)
 		{
 			$fname=preg_replace('![\\r\\n]+!','',$fname);
-			if(empty($fname)) continue;
+			if(empty($fname) || $fname[0]==';') continue;
 			if(file_exists($fname))
 			{
 				echo "Add $fname\n";
