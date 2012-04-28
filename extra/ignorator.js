@@ -7,10 +7,12 @@ d3.addModule(
 	author: 'crimaniak',
 	config: {active:{type:'checkbox',value:true}
 			,ignored:{type:'hidden',value:{}}
+			,hideAtAll:{type:'checkbox',value:true,caption:'скрывать посты совсем'}
 			,moderation:{type:'checkbox',value:false,caption:'модерация от d3search'}
 //			,postByAuthor:{type:'text'}
 //			,commentByAuthor:{type:'text'}
 			},
+			
 	run: function()
 	{
 		if(Math.random()<0.05)
@@ -32,8 +34,8 @@ d3.addModule(
 		    moderation.setAttribute('src', 'http://api.d3search.ru/moderation/list?t=' + new Date().getTime());
 		    document.getElementsByTagName('head')[0].appendChild(moderation);
 		}
-		
 	},
+	
 	processPost: function(post)
 	{
 		var footer=post.getFooter();
@@ -41,11 +43,12 @@ d3.addModule(
 		var id=''+post.id;
 	
 		if(this.config.ignored.value[id]!=undefined)
-			$j('div.dt',post.container).hide();
+			(this.config.hideAtAll.value  ? post.container : $j('div.dt',post.container)).hide();
 		
 		footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold">[x]</a>');
 		$j('.ignorator',footer).click(function(){return me.processClick(post);});
 	},
+	
 	processClick: function(post)
 	{
 		var content=$j('div.dt',post.container);
