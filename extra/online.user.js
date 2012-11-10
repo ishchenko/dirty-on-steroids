@@ -37,12 +37,12 @@ d3.addModule(
 			var now = new Date().getTime();
 			if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 			{
-				_$.addEvent(window, 'load', function(){
+				$j(document).ready(function(){
 					var checkinScript = document.createElement("script");
 					checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
 					document.body.appendChild(checkinScript);
 					localStorage.setItem('lastCheckinTimestamp', now);
-					_$.addEvent(checkinScript, 'load', drawStuff);
+					checkinScript.load(drawStuff);
 				});
 			}else{
 				drawStuff();
