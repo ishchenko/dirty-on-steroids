@@ -51,6 +51,18 @@ var d3=
 
 	/// newElement('div',...) shortcut
 	newDiv: function(parms) { return this.newElement('div', parms); },
+
+	/// Local Storage get item with a default fallback (localStorGetItem from the old code) 
+	localStorageGetItem: function(itemName, defaultValue){
+		var loadedValue = localStorage.getItem( itemName );
+		if ( loadedValue == null )
+		{
+			loadedValue = defaultValue;
+		}
+		return loadedValue;
+	},
+	//shortcut for backward compability
+	localStorGetItem: function(itemName, defaultValue){this.localStorageGetItem(itemName, defaultValue);},
 	
 	/// Get element(s) of page
 	get:
