@@ -2,8 +2,8 @@
 // ==UserScript==
 // @name			Dirty Modular SP
 // @author			crimaniak
-// @namespace		http://dirty.ru/
-// @description		Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
+// @namespace			http://dirty.ru/
+// @description			Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
 // @include			http://dirty.ru/*
 // @include			http://www.dirty.ru/*
 // @include			http://music.dirty.ru/*
