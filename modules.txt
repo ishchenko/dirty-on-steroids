@@ -9,6 +9,7 @@ core/comment.js
 core/content.js
 extra/tagline.links.js
 extra/right.navigator.js
+extra/mark.as.read.js
 extra/ignorator.js
 extra/quotes.js
 extra/hidden.author.js

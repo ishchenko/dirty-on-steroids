@@ -86,7 +86,6 @@ d3.addModule(
 	countItems: function()
 	{
 		var items = d3.get.items();
-		
 		this.newItems=[];
 		this.mineItems=[];
 		// select new and mine items
