@@ -41,7 +41,6 @@ d3.addModule(
 			div.parent().html(content);
 			for(var i=0;i<d3.modules.length;++i){
 				if(d3.modules[i].name === "Навигация по новым"){
-					console.log("yea");
 					d3.modules[i].countItems.call(d3.modules[i]);
 					d3.modules[i].newPosition.call(d3.modules[i]);
 					break;
