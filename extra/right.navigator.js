@@ -135,6 +135,10 @@ d3.addModule(
 		item.getContent().animate({opacity: 1},400);
 		*/
 		var content=item.container;
+		var inner = $j(".comment_inner", content);
+		if(inner != null){ //is it a comment? if yes get a nested element for a better highlighting
+			content = inner;
+		}
 		var oldColor=content.css('background-color');
 		if(colorToHex(oldColor) == highlightColor)return;
 		window.setTimeout(function(){content.css('background-color',oldColor);}, 650);
