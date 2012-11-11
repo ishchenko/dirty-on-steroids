@@ -136,7 +136,7 @@ d3.addModule(
 		*/
 		var content=item.container;
 		var inner = $j(".comment_inner", content);
-		if(inner != null){ //is it a comment? if yes get a nested element for a better highlighting
+		if(inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
 			content = inner;
 		}
 		var oldColor=content.css('background-color');

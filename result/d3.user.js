@@ -746,7 +746,7 @@ d3.addModule(
 		*/
 		var content=item.container;
 		var inner = $j(".comment_inner", content);
-		if(inner != null){ //is it a comment? if yes get a nested element for a better highlighting
+		if(inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
 			content = inner;
 		}
 		var oldColor=content.css('background-color');
@@ -840,10 +840,8 @@ d3.addModule(
 		}).done(function () {
 			post.isNew = false;
 			var content = div.parent().html();
-			console.log(content);
 			content = content.replace(/(\r\n|\n|\r)/gm,"");
 			content = content.replace(/ \/ <a(.+)<\/a>(.+)<div(.+)<\/div>/,"");
-			console.log(content);
 			div.parent().html(content);
 			var module = d3.getModule("Навигация по новым");
 			if(module != null){
