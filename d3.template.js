@@ -18,6 +18,15 @@ var $j=jQuery.noConflict();	// $j closure used for jQuery to avoid conflict with
 var d3=
 {
 	modules: [],
+	/// Search module by name
+	getModule: function(name){
+		for(var i=0;i<this.modules.length;++i){
+				if(this.modules[i].name === name){
+					return this.modules[i];
+				}
+		}
+		return null;
+	},
 	user:
 	{
 		id: null,
@@ -128,9 +137,14 @@ var d3=
 		/// Draw one control sheet
 		drawSheet: function(data)
 		{
-			var html='<table><tbody><col width="24"></col>';
-			for(var id in data)
+			var html='<table style="width: 100%;"><tbody><col width="24"></col>';
+			for(var id in data){
+				if(data[id].name=='active'){
+					html += '<tr><td colspan="2" style="height: 20px;"><div style="padding-top:8px;"><div style="height: 1px; background-color: black;"><span style="background-color: white; position: relative; top: -0.8em; left: 20px;">Модуль "'+data[id].caption+'"</span></div></div></td></tr>';
+					data[id].caption = "Активировать";				
+				}
 				html+=data[id].draw();
+			}
 			return html+'</tbody></table>';
 		},
 		/// Control constructor

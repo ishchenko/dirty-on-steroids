@@ -23,8 +23,10 @@ d3.addModule(
 					var newdiv = document.createElement('div');
 					newdiv.innerHTML =  checkinsMarkup;
 					divContentLeft.appendChild( newdiv );
-					//Fixme: tooltip compatibility
-					//_$.tooltip.processLinks(divContentLeft); 
+					var module = d3.getModule("Dirty tooltip");
+					if(module != null){
+						module.processLinks.call(module, divContentLeft);
+					}
 				}
 				var highlightsStyles = localStorage.getItem('checkinsHighlights');
 				if (highlightsStyles != null)

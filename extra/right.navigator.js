@@ -40,7 +40,7 @@ d3.addModule(
 
 	scrollToPosition: function(position)
 	{
-		if(this.config.smoothScroll){
+		if(this.config.smoothScroll.value){
 			this.smoothScroll(position);
 		}else{
 			$j(window).scrollTop(

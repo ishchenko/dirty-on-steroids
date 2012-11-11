@@ -38,17 +38,13 @@ d3.addModule(
 		}).done(function () {
 			post.isNew = false;
 			var content = div.parent().html();
-			console.log(content);
 			content = content.replace(/(\r\n|\n|\r)/gm,"");
 			content = content.replace(/ \/ <a(.+)<\/a>(.+)<div(.+)<\/div>/,"");
-			console.log(content);
 			div.parent().html(content);
-			for(var i=0;i<d3.modules.length;++i){
-				if(d3.modules[i].name === "Навигация по новым"){
-					d3.modules[i].countItems.call(d3.modules[i]);
-					d3.modules[i].newPosition.call(d3.modules[i]);
-					break;
-				}		
+			var module = d3.getModule("Навигация по новым");
+			if(module != null){
+				module.countItems.call(module);
+				module.newPosition.call(module);
 			}
 		});
 		return false;

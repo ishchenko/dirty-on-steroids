@@ -25,3 +25,4 @@ extra/fotki.js
 extra/www.redirector.js
 extra/test.js
 extra/online.user.js
+extra/dirty.tooltip.js
