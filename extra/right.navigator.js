@@ -178,8 +178,9 @@ d3.addModule(
 		$j('#mine').html(this.mineItems.length-i);
 		this.nextMine = i<this.mineItems.length ? i : null;
 		
-		for(i=0; i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
+		for(i=0; i<this.newItems.length && this.newItems[i].offset().top+this.newItems[i].height()<offset; ++i);
 		$j('#up').html(i);
+		
 		this.prevNew = i>0 ? i-1 : null;
 
 		for(; i<this.newItems.length && this.newItems[i].offset().top<=offset; ++i);
