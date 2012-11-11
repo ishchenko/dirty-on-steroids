@@ -69,7 +69,7 @@ d3.addModule(
 		}
 		current = $j(window).scrollTop();
 		distance = destination - current;
-		if ( Math.abs(distance) < 5 ) {
+		if ( Math.abs(distance) < 5 || Math.round(current+(distance/4.5)) < 0) {
 			$j(window).scrollTop(destination);
 			this.resetScrolling();
 			this.newPosition();
@@ -79,7 +79,7 @@ d3.addModule(
 			Math.round(current+(distance/4.5))
 		);
 		me = this;
-		window.setTimeout(function(){me.scrollDeamon(destination)}, 35);
+		window.setTimeout(function(){me.scrollDeamon()}, 35);
 	},
 
 
@@ -157,7 +157,7 @@ d3.addModule(
 		content.css('background-color',highlightColor);
 	},
 	
-	getCurrentOffset: function() {return this.currentItem ? this.currentItem.offset().top : $j(window).scrollTop()+$j(window).height()/2;},
+	getCurrentOffset: function() {return this.currentItem ? this.currentItem.offset().top+this.currentItem.height()/2 : $j(window).scrollTop()+$j(window).height()/2;},
 	
 	onScroll: function()
 	{
@@ -177,14 +177,16 @@ d3.addModule(
 		for(var i=0; i< this.mineItems.length && this.mineItems[i].offset().top<=offset; ++i);
 		$j('#mine').html(this.mineItems.length-i);
 		this.nextMine = i<this.mineItems.length ? i : null;
-		
-		for(i=0; i<this.newItems.length && this.newItems[i].offset().top+this.newItems[i].height()<offset; ++i);
-		$j('#up').html(i);
-		
-		this.prevNew = i>0 ? i-1 : null;
 
-		for(; i<this.newItems.length && this.newItems[i].offset().top<=offset; ++i);
+		for(i=0; i<this.newItems.length && this.newItems[i].offset().top+this.newItems[i].height()<offset; ++i);
+		this.prevNew = i>0 ? i-1 : null;
+		
+		for(;i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
+		$j('#up').html(i);
+		if(this.prevNew==null)this.prevNew = i>0 ? i-1 : null;
+
 		$j('#down').html(this.newItems.length-i);
+		for(; i<this.newItems.length && this.newItems[i].offset().top<=offset; ++i);
 		this.nextNew = i<this.newItems.length ? i : null;
 	},
 		
