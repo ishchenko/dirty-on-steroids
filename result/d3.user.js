@@ -726,14 +726,26 @@ d3.addModule(
 		    if(color.substr(0, 3) !== "rgb"){
 			return "unknown";
 		    }
-		    var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
-		    
-		    var red = parseInt(digits[2]);
-		    var green = parseInt(digits[3]);
-		    var blue = parseInt(digits[4]);
-		    
-		    var rgb = blue | (green << 8) | (red << 16);
-		    return digits[1] + '#' + rgb.toString(16);
+
+			if(color.substr(0, 4) === "rgba"){
+				var digits = /(.*?)rgba\((\d+), (\d+), (\d+), (\d+)\)/.exec(color);
+				
+				var red = parseInt(digits[2]);
+				var green = parseInt(digits[3]);
+				var blue = parseInt(digits[4]);
+				var alpha = parseInt(digits[5]);
+				return '#'+(256 + red).toString(16).substr(1) +((1 << 24) + (green << 16) | (blue << 8) | alpha).toString(16).substr(1);
+			}else if(color.substr(0, 3) === "rgb"){
+				var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
+				
+				var red = parseInt(digits[2]);
+				var green = parseInt(digits[3]);
+				var blue = parseInt(digits[4]);
+				
+				var rgb = blue | (green << 8) | (red << 16);
+				return digits[1] + '#' + rgb.toString(16);
+			}
+			return "unknown";
 		};
 		if(item==null) return false;
 		this.scrolling=true;
@@ -746,7 +758,7 @@ d3.addModule(
 		*/
 		var content=item.container;
 		var inner = $j(".comment_inner", content);
-		if(inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
+		if(inner==null || inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
 			content = inner;
 		}
 		var oldColor=content.css('background-color');
@@ -789,10 +801,10 @@ d3.addModule(
 	{
 			document.body.insertBefore(d3.newDiv(
 			{style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'}
-			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;"></div>'
-					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
-					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
-					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
+			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;" onselectstart="return false"></div>'
+					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;" onselectstart="return false"></div>'
+					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;" onselectstart="return false"></div>'
+					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;" onselectstart="return false"></div>'
 			}), document.body.firstChild);
 			var ids=['home','up','mine','down'];
 			for(var i=0;i<ids.length;++i)
