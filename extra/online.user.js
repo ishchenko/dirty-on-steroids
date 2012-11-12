@@ -11,7 +11,7 @@ d3.addModule(
 	  	var time1 = new Date();
 
 		var vUserName = d3.user.name;
-		if( vUserName != null || vUserName.length > 0 )
+		if( vUserName != null && vUserName.length > 0 )
 		{
 			var lastCheckinTimestamp = d3.localStorGetItem('lastCheckinTimestamp', 0 );
 			var drawStuff = function()
