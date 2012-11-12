@@ -26,3 +26,6 @@ extra/www.redirector.js
 extra/test.js
 extra/online.user.js
 extra/dirty.tooltip.js
+extra/show.all.comments.js
+extra/preview.for.comments.js
+extra/hotlinks.for.images.js
