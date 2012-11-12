@@ -18,14 +18,10 @@ var $j=jQuery.noConflict();	// $j closure used for jQuery to avoid conflict with
 var d3=
 {
 	modules: [],
+	modulesByName : {},
 	/// Search module by name
 	getModule: function(name){
-		for(var i=0;i<this.modules.length;++i){
-				if(this.modules[i].name === name){
-					return this.modules[i];
-				}
-		}
-		return null;
+		return (this.modulesByName[name] == undefined) ? null : this.modulesByName[name];
 	},
 	user:
 	{
@@ -90,6 +86,9 @@ var d3=
 	addModule: function(module)
 	{
 		this.modules.push(module);
+		if(this.modulesByName[module.name] != undefined)
+			console.log('Duplicate module '+module.name);
+		this.modulesByName[module.name] = module;
 		this.config.addModule(module);
 		if(module.config == undefined || module.config.active == undefined || module.config.active.value)
 			module.run();
@@ -137,7 +136,7 @@ var d3=
 		/// Draw one control sheet
 		drawSheet: function(data)
 		{
-			var html='<table style="width: 100%;"><tbody><col width="24"></col>';
+			var html='<table style="width: 100%; border:0px; border-collapse:collapse; padding: 0px"><col width="24"></col><tbody>';
 			for(var id in data){
 				if(data[id].name=='active'){
 					html += '<tr><td colspan="2" style="height: 20px;"><div style="padding-top:8px;"><div style="height: 1px; background-color: black;"><span style="background-color: white; position: relative; top: -0.8em; left: 20px;">Модуль "'+data[id].caption+'"</span></div></div></td></tr>';

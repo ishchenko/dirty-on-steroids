@@ -21,14 +21,10 @@ var $j=jQuery.noConflict();	// $j closure used for jQuery to avoid conflict with
 var d3=
 {
 	modules: [],
+	modulesByName : {},
 	/// Search module by name
 	getModule: function(name){
-		for(var i=0;i<this.modules.length;++i){
-				if(this.modules[i].name === name){
-					return this.modules[i];
-				}
-		}
-		return null;
+		return (this.modulesByName[name] == undefined) ? null : this.modulesByName[name];
 	},
 	user:
 	{
@@ -93,6 +89,9 @@ var d3=
 	addModule: function(module)
 	{
 		this.modules.push(module);
+		if(this.modulesByName[module.name] != undefined)
+			console.log('Duplicate module '+module.name);
+		this.modulesByName[module.name] = module;
 		this.config.addModule(module);
 		if(module.config == undefined || module.config.active == undefined || module.config.active.value)
 			module.run();
@@ -140,7 +139,7 @@ var d3=
 		/// Draw one control sheet
 		drawSheet: function(data)
 		{
-			var html='<table style="width: 100%;"><tbody><col width="24"></col>';
+			var html='<table style="width: 100%; border:0px; border-collapse:collapse; padding: 0px"><col width="24"></col><tbody>';
 			for(var id in data){
 				if(data[id].name=='active'){
 					html += '<tr><td colspan="2" style="height: 20px;"><div style="padding-top:8px;"><div style="height: 1px; background-color: black;"><span style="background-color: white; position: relative; top: -0.8em; left: 20px;">Модуль "'+data[id].caption+'"</span></div></div></td></tr>';
@@ -424,7 +423,7 @@ jQuery('head').append('<style>\
 .tbsTabs{float:left;}\
 .tbsHeader{padding: 1ex 2ex;border: 1px grey solid;border-right-style: none;margin-bottom: 5px;margin-right: 0;cursor: pointer;background-color: #FFFFFF;width:100px}\
 .tbsActive{position: relative;left: 1px;}\
-.tbsSheet{background-color: #FFFFFF;border: 1px solid grey;padding: 0 1ex;width:454px;height: 272px; overflow: auto;margin: 0;}\
+.tbsSheet{background-color: #FFFFFF;border: 1px solid grey;padding: 0 1ex;position: absolute; left: 140px; top:20px; z-index:-1; width:454px;height: 272px; overflow: auto;margin: 0;}\
 </style>');
 
 (function($){$.fn.unselectable=function(){return this.each(function(){$(this).css('-moz-user-select','none').css('-khtml-user-select','none').css('user-select','none');if($.browser.msie){$(this).each(function(){this.ondrag=function(){return false}});$(this).each(function(){this.onselectstart=function(){return(false)}})}else if($.browser.opera){$(this).attr('unselectable','on')}})}})(jQuery);
@@ -636,7 +635,7 @@ d3.addModule(
 		$j(window).scroll(function(event){me.onScroll();});
 		$j('#home').click(function(){me.scrollToPosition(0);});
 		$j('#down').click(function(){me.scrollToItem(me.newItems[me.nextNew]);});
-		$j('#up').click(function(){me.scrollToItem(me.newItems[me.prevNew]);});
+		$j('#up'  ).click(function(){me.scrollToItem(me.newItems[me.prevNew]);});
 		$j('#mine').click(function(){me.scrollToItem(me.mineItems[me.nextMine]);});
 		
 		d3.content.onNewComment(function(comment)
@@ -667,10 +666,10 @@ d3.addModule(
 	smoothScroll: function(destination){
 		this.scrollDestination = destination;
 		this.scrolling = true;
-		this.scrollDeamon();
+		this.scrollDaemon();
 	},
 
-	scrollDeamon: function(){
+	scrollDaemon: function(){
 		var destination = this.scrollDestination;
 		if(this.scrolling == false){
 			scrolling = false;
@@ -688,8 +687,8 @@ d3.addModule(
 		$j(window).scrollTop(
 			Math.round(current+(distance/4.5))
 		);
-		me = this;
-		window.setTimeout(function(){me.scrollDeamon()}, 35);
+		var me = this;
+		window.setTimeout(function(){me.scrollDaemon();}, 35);
 	},
 
 
