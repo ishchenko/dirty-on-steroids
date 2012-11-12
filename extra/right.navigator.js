@@ -26,7 +26,7 @@ d3.addModule(
 		$j(window).scroll(function(event){me.onScroll();});
 		$j('#home').click(function(){me.scrollToPosition(0);});
 		$j('#down').click(function(){me.scrollToItem(me.newItems[me.nextNew]);});
-		$j('#up').click(function(){me.scrollToItem(me.newItems[me.prevNew]);});
+		$j('#up'  ).click(function(){me.scrollToItem(me.newItems[me.prevNew]);});
 		$j('#mine').click(function(){me.scrollToItem(me.mineItems[me.nextMine]);});
 		
 		d3.content.onNewComment(function(comment)
@@ -57,10 +57,10 @@ d3.addModule(
 	smoothScroll: function(destination){
 		this.scrollDestination = destination;
 		this.scrolling = true;
-		this.scrollDeamon();
+		this.scrollDaemon();
 	},
 
-	scrollDeamon: function(){
+	scrollDaemon: function(){
 		var destination = this.scrollDestination;
 		if(this.scrolling == false){
 			scrolling = false;
@@ -78,8 +78,8 @@ d3.addModule(
 		$j(window).scrollTop(
 			Math.round(current+(distance/4.5))
 		);
-		me = this;
-		window.setTimeout(function(){me.scrollDeamon()}, 35);
+		var me = this;
+		window.setTimeout(function(){me.scrollDaemon();}, 35);
 	},
 
 
