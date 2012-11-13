@@ -211,6 +211,9 @@ d3.addModule(
 			}
 			this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
 			$j("#down").text(this.newItems.length-1-i);
+		}else{
+			$j("#up").text(0);
+			$j("#down").text(0);
 		}
 
 
