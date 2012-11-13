@@ -1,14 +1,16 @@
 //
 // ==UserScript==
-// @name			Dirty Modular SP
-// @author			crimaniak
-// @namespace			http://dirty.ru/
-// @description			Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
-// @include			http://dirty.ru/*
-// @include			http://www.dirty.ru/*
-// @include			http://music.dirty.ru/*
-// @run-at			document-end
-// @version			0.0.2
+// @name            Dirty Modular SP
+// @author          crimaniak
+// @namespace       http://dirty.ru/
+// @description     Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
+// @include         http://dirty.ru/*
+// @include         http://www.dirty.ru/*
+// @include         http://music.dirty.ru/*
+// @include         http://d3.ru/*
+// @include         http://*.d3.ru/*
+// @run-at          document-end
+// @version         0.0.2
 // ==/UserScript==
 
 /*! jQuery v1.7.2 jquery.com | jquery.org/license */
@@ -63,11 +65,7 @@ var d3=
 	/// Local Storage get item with a default fallback (localStorGetItem from the old code) 
 	localStorageGetItem: function(itemName, defaultValue){
 		var loadedValue = localStorage.getItem( itemName );
-		if ( loadedValue == null )
-		{
-			loadedValue = defaultValue;
-		}
-		return loadedValue;
+		return loadedValue == null ? defaultValue : loadedValue;
 	},
 	//shortcut for backward compability
 	localStorGetItem: function(itemName, defaultValue){ return this.localStorageGetItem(itemName, defaultValue);},
@@ -1890,85 +1888,66 @@ d3.addModule(
 {
 	type: "Прочее",
 	name: 'Показывать favicons доменов',
-	author: 'Stasik0, NickJr',
+	author: 'Stasik0, NickJr, crimaniak',
 	config: {
 		active:{type:'checkbox',value:true},
-		mouseover:{type:'radio',options:{"перед ссылками":"false","при навидении":"true"},caption:'Показывать иконки',value:"false"},
-		domainWhitelist:{caption:'Список доменов', type: 'text', value:'dirty.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net'
+		mouseover:{type:'radio',caption:'Показывать иконки',options:{"перед ссылками":"false","при наведении":"true"},value:"false"},
+		domainWhitelist:{type: 'text', caption:'Список доменов', value:'dirty.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net,youtube.com'
 		},
 	},
+	
 	faviconService: 'http://favicon.yandex.net/favicon/',
 
-	extractDomain: function(domain){
-		if(typeof(domain) === 'undefined'){
-			return "";
-		}
-		//cut off protocol 
-		domain = domain.toLowerCase().replace(/^([a-zA-Z]+):\/\//, "");
-		//extract domain
-		if(domain.indexOf('/')>0)domain = domain.split('/')[0];
-		//normalize, 'www.ru' will not work ;)
-		domain = domain.toLowerCase().replace(/^www\./, "");
-		//more work, extract root domain
-		var s = domain.split('.');
-		//let us hope that it works, do not want to check all TLDs
-		if(s.length > 2){
-			if(s[s.length-2].length == 2){
-				//form like blabla.**.blabla
-				//domain has 3 segments
-				domain = s.slice(-3).join('.');
-			}else{
-				domain = s.slice(-2).join('.');
-			}
-		}
-		return domain;		
+	getDomainMasks: function()
+	{
+		return this.config.domainWhitelist.value
+			.split(/[\s,]+/)
+			.map(function(item){
+				return new RegExp('^.*'+item.replace(/\./g,'\\.').replace(/\*/g,'.*')+'$','i');
+			});
 	},
-
+	
 	hideFavicon: function(e){
 		$j(e.target).css('background-image', 'none');
 	},
 
-	showFavicon: function(e, me){
-		var faviconUrl = me.faviconService+me.extractDomain(e.target.toString());
-		$j(e.target).css('padding-top', '16px');
-		$j(e.target).css('background-image', 'url('+faviconUrl+')');
-		$j(e.target).css('background-repeat', 'no-repeat');
+	showFavicon: function(e, faviconUrl){
+		$j(e.target).css({'padding-top':'16px', 'background-image':'url('+faviconUrl+')', 'background-repeat':'no-repeat'});
 	},
 	
 	inWhiteList: function(domain){
-		if(domain.length==0)return false;
-		if(this.config.domainWhitelist == "*")return true;
-
-		var whitelist = this.config.domainWhitelist.value.replace(/\s+/g, '');
-		whitelist = whitelist+",";
-		
-		if(whitelist.indexOf(domain+",")>-1) {
+		if(domain.length==0) return false;
+		if(this.config.domainWhitelist.value === "*") return true;
+		if(this.inWhiteList.masks == undefined) this.inWhiteList.masks = this.getDomainMasks();
+		try
+		{
+			this.inWhiteList.masks.forEach(function(mask){
+				if(mask.test(domain)) {	throw true;	}
+			});
+			return false;
+		} catch(e)
+		{
 			return true;
 		}
-
-		return false;
 	},
 
 	run: function(){
-		if(d3.page.user)return;
+		if(d3.page.user) return;
 		var me=this;
-		var links = $j('div.dt > a, div.c_body > a');
 		//iterate over links
-		var domain = "";
-		for(var i=0;i<links.length;i++)
-		{
-			domain = this.extractDomain(links[i].toString());
-			if(links[i].toString().indexOf('http://')!=-1 && this.inWhiteList(domain)){
-				if(this.config.mouseover.value == 'true'){
-					$j(links[i]).mouseover(function(e){me.showFavicon(e,me);})
-					.mouseout(this.hideFavicon);
+		$j.each($j('div.dt > a, div.c_body > a'), function(index, link){
+			var faviconUrl = me.faviconService+link.hostname;
+			if(link.protocol == 'http:' && me.inWhiteList(link.hostname))
+			{
+				if(me.config.mouseover.value == 'true'){
+					$j(link)
+						.mouseover(function(e){me.showFavicon(e, faviconUrl);})
+						.mouseout(me.hideFavicon);
 				}else{
-					$j(links[i]).css('padding-left', '19px')
-					.css('background-repeat', 'no-repeat')
-					.css('background-image', 'url('+this.faviconService+domain+')');
+					$j(link).css({'padding-left':'19px', 'background-repeat':'no-repeat', 'background-image':'url('+faviconUrl+')'});
 				}
 			}
-		}
+		});
 	}
 });
 
