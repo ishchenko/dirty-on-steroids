@@ -28,20 +28,14 @@ d3.addModule(
 		$j('#down').mousedown(function(e){
 			e.preventDefault(); 
 			me.scrollToItem(me.newItems[me.nextNew]); 
-			//if(me.nextNew<me.newItems.length-1)me.nextNew++;
-			//if(me.prevNew<me.newItems.length-1 && me.prevNew != 0)me.prevNew++;
 		});
 		$j('#up').mousedown(function(e){
 			e.preventDefault(); 
 			me.scrollToItem(me.newItems[me.prevNew]);
-			//if(me.nextNew>0)me.nextNew--;
-			//if(me.prevNew>0)me.prevNew--;
 		});
 		$j('#mine').mousedown(function(e){
 			e.preventDefault(); 
 			me.scrollToItem(me.mineItems[me.nextMine]);
-			//me.nextMine++;
-			//if(me.nextMine==me.mineItems.length-1)me.nextMine=0;
 		});
 		
 		d3.content.onNewComment(function(comment)
@@ -94,7 +88,7 @@ d3.addModule(
 			Math.round(current+(distance/4.5))
 		);
 		var me = this;
-		window.setTimeout(function(){me.scrollDaemon();}, 35);
+		window.setTimeout(function(){me.scrollDaemon();}, 30);
 	},
 
 
