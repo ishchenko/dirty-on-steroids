@@ -1,14 +1,16 @@
 //
 // ==UserScript==
-// @name			Dirty Modular SP
-// @author			crimaniak
-// @namespace			http://dirty.ru/
-// @description			Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
-// @include			http://dirty.ru/*
-// @include			http://www.dirty.ru/*
-// @include			http://music.dirty.ru/*
-// @run-at			document-end
-// @version			0.0.2
+// @name            Dirty Modular SP
+// @author          crimaniak
+// @namespace       http://dirty.ru/
+// @description     Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
+// @include         http://dirty.ru/*
+// @include         http://www.dirty.ru/*
+// @include         http://music.dirty.ru/*
+// @include         http://d3.ru/*
+// @include         http://*.d3.ru/*
+// @run-at          document-end
+// @version         0.0.2
 // ==/UserScript==
 
 // @jQuery@
@@ -60,14 +62,10 @@ var d3=
 	/// Local Storage get item with a default fallback (localStorGetItem from the old code) 
 	localStorageGetItem: function(itemName, defaultValue){
 		var loadedValue = localStorage.getItem( itemName );
-		if ( loadedValue == null )
-		{
-			loadedValue = defaultValue;
-		}
-		return loadedValue;
+		return loadedValue == null ? defaultValue : loadedValue;
 	},
 	//shortcut for backward compability
-	localStorGetItem: function(itemName, defaultValue){this.localStorageGetItem(itemName, defaultValue);},
+	localStorGetItem: function(itemName, defaultValue){return this.localStorageGetItem(itemName, defaultValue);},
 	
 	/// Get element(s) of page
 	get:
