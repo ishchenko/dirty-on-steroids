@@ -187,14 +187,16 @@ d3.addModule(
 	newPosition: function()
 	{
 		var offset = this.getCurrentOffset();
-		//handling own posts
+		//--handling own posts
 		for(i=0; i<this.mineItems.length && this.mineItems[i].offset().top<offset; ++i);
 		$j("#mine").text(this.mineItems.length-i);
 		this.nextMine = i%this.mineItems.length;
 
-		//handling new posts
+		//--handling new posts
+		//scroll down until one post's top is below the viewpoint
 		for(i=0; i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
-		i--;
+		//go one post up if possible
+		if(i>0)i--;
 		//item is the last active element which top is above the current view
 		var item = this.newItems[i];
 		if(item){
