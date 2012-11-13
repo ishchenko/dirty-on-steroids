@@ -14,7 +14,6 @@ d3.addModule(
 		if( vUserName != null && vUserName.length > 0 )
 		{
 			var lastCheckinTimestamp = d3.localStorGetItem('lastCheckinTimestamp', 0 );
-			console.log("-->"+lastCheckinTimestamp);
 			var drawStuff = function()
 			{
 				var divContentLeft = document.querySelector("div.content_left");
@@ -38,7 +37,7 @@ d3.addModule(
 				}
 			};
 			var now = new Date().getTime();
-			if (1==1)//now - lastCheckinTimestamp) > 1000 * 60 * 2 )
+			if (now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 			{
 				$j(document).ready(function(){
 					$j.getScript("http://api.d3search.ru/checkin/" + vUserName, function() {
