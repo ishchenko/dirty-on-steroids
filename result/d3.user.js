@@ -1481,7 +1481,7 @@ d3.addModule(
 				}
 			};
 			var now = new Date().getTime();
-			if (now - lastCheckinTimestamp) > 1000 * 60 * 2 )
+			if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 			{
 				$j(document).ready(function(){
 					$j.getScript("http://api.d3search.ru/checkin/" + vUserName, function() {
