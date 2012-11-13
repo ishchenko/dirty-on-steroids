@@ -24,10 +24,22 @@ d3.addModule(
 		
 		var me=this;
 		$j(window).scroll(function(event){me.onScroll();});
-		$j('#home').click(function(){me.scrollToPosition(0);});
-		$j('#down').click(function(){me.scrollToItem(me.newItems[me.nextNew]);});
-		$j('#up'  ).click(function(){me.scrollToItem(me.newItems[me.prevNew]);});
-		$j('#mine').click(function(){me.scrollToItem(me.mineItems[me.nextMine]);});
+		$j('#home').mousedown(function(){me.scrollToPosition(0);});
+		$j('#down').mousedown(function(){
+			me.scrollToItem(me.newItems[me.nextNew]); 
+			if(me.nextNew<me.newItems.length-1)me.nextNew++;
+			if(me.prevNew<me.newItems.length-1 && me.prevNew != 0)me.prevNew++;
+		});
+		$j('#up').mousedown(function(){
+			me.scrollToItem(me.newItems[me.prevNew]);
+			if(me.nextNew>0)me.nextNew--;
+			if(me.prevNew>0)me.prevNew--;
+		});
+		$j('#mine').mousedown(function(){
+			me.scrollToItem(me.mineItems[me.nextMine]);
+			me.nextMine++;
+			if(me.nextMine==me.mineItems.length-1)me.nextMine=0;
+		});
 		
 		d3.content.onNewComment(function(comment)
 		{
@@ -175,29 +187,29 @@ d3.addModule(
 		var height=$j(window).height();
 
 		for(var i=0; i< this.mineItems.length && this.mineItems[i].offset().top<=offset; ++i);
-		$j('#mine').html(this.mineItems.length-i);
-		this.nextMine = i<this.mineItems.length ? i : null;
+		$j('#mine').text(this.mineItems.length-i);
+		if(!this.scrolling)this.nextMine = i<this.mineItems.length ? i : null;
 
 		for(i=0; i<this.newItems.length && this.newItems[i].offset().top+this.newItems[i].height()<offset; ++i);
-		this.prevNew = i>0 ? i-1 : null;
+		if(!this.scrolling)this.prevNew = i>0 ? i-1 : null;
 		
 		for(;i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
-		$j('#up').html(i);
-		if(this.prevNew==null)this.prevNew = i>0 ? i-1 : null;
+		$j('#up ').text(i);
+		if(!this.scrolling)if(this.prevNew==null)this.prevNew = i>0 ? i-1 : null;
 
-		$j('#down').html(this.newItems.length-i);
+		$j('#down').text(this.newItems.length-i);
 		for(; i<this.newItems.length && this.newItems[i].offset().top<=offset; ++i);
-		this.nextNew = i<this.newItems.length ? i : null;
+		if(!this.scrolling)this.nextNew = i<this.newItems.length ? i : 0; //turnaround for mine items
 	},
 		
 	drawButtons: function()
 	{
 			document.body.insertBefore(d3.newDiv(
 			{style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'}
-			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;" onselectstart="return false"></div>'
-					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;" onselectstart="return false"></div>'
-					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;" onselectstart="return false"></div>'
-					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;" onselectstart="return false"></div>'
+			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
+					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
+					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
+					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
 			}), document.body.firstChild);
 			var ids=['home','up','mine','down'];
 			for(var i=0;i<ids.length;++i)

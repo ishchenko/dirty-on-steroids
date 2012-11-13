@@ -31,7 +31,10 @@ d3.addModule(
 			}
 		});
 		
-		d3.page={inbox: window.location.pathname.substr(0,10)=="/my/inbox/"};
+		d3.page={
+			inbox: window.location.pathname.substr(0,10)=="/my/inbox/",
+			user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0)
+		};
 	},
 	
 	countItems: function()
