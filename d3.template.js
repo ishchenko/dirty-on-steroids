@@ -67,7 +67,7 @@ var d3=
 		return loadedValue;
 	},
 	//shortcut for backward compability
-	localStorGetItem: function(itemName, defaultValue){this.localStorageGetItem(itemName, defaultValue);},
+	localStorGetItem: function(itemName, defaultValue){ return this.localStorageGetItem(itemName, defaultValue);},
 	
 	/// Get element(s) of page
 	get:
