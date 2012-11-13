@@ -8,13 +8,7 @@ d3.addModule(
 
 	run: function()
 	{
-		if ( document.location.href.indexOf('inbox') < 0 && document.location.href.indexOf('#new') > -1)
-		{
-			var script2run = document.createElement('script');
-			script2run.type = 'text/javascript';
-			script2run.text = 'commentsHandler.switchNew();';
-			document.body.appendChild( script2run );
-		}
+		if(!d3.page.inbox && d3.page.onlyNew) d3.window.commentsHandler.switchNew();
 	},	
 	
 });

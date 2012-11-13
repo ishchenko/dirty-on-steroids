@@ -31,7 +31,10 @@ d3.addModule(
 			}
 		});
 		
-		d3.page={inbox: window.location.pathname.substr(0,10)=="/my/inbox/"};
+		d3.page=
+		{inbox: document.location.pathname.substr(0,10)=="/my/inbox/"
+		,onlyNew: (document.location.href.indexOf('#new') > -1)
+		};
 	},
 	
 	countItems: function()

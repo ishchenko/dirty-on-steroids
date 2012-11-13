@@ -553,7 +553,10 @@ d3.addModule(
 			}
 		});
 		
-		d3.page={inbox: window.location.pathname.substr(0,10)=="/my/inbox/"};
+		d3.page=
+		{inbox: document.location.pathname.substr(0,10)=="/my/inbox/"
+		,onlyNew: (document.location.href.indexOf('#new') > -1)
+		};
 	},
 	
 	countItems: function()
@@ -1434,7 +1437,7 @@ d3.addModule(
 	  	var time1 = new Date();
 
 		var vUserName = d3.user.name;
-		if( vUserName != null || vUserName.length > 0 )
+		if( vUserName != null && vUserName.length > 0 )
 		{
 			var lastCheckinTimestamp = d3.localStorGetItem('lastCheckinTimestamp', 0 );
 			var drawStuff = function()
@@ -1733,6 +1736,130 @@ d3.addModule(
 
 });
 
+// Показывать все комментарии в посте, даже если зашли по ссылке с #new
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Показывать все комментарии в посте',
+	author: 'crea7or',
+	config: {active:{type:'checkbox',value:true}},
+
+	run: function()
+	{
+		if(!d3.page.inbox && d3.page.onlyNew) d3.window.commentsHandler.switchNew();
+	},	
+	
+});
+	
+// Предпросмотр для комментариев
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Добавлять предпросмотр для комментариев',
+	author: 'crea7or',
+	config: {active:{type:'checkbox',value:true}},
+
+	run: function()
+	{
+		// div.comments_add_yarrr
+		var previewCont = document.querySelector('div.comments_add_pics');
+		if ( previewCont )
+		{
+			previewCont.parentNode.insertBefore(d3.newDiv(
+				{style:{marginRight: '30px', float: 'right'}
+				,innerHTML:'<a href="#" id="prevLink" class="dashed" style="color: black; font-size: 11px;">предпросмотр</a>'
+			}), previewCont);
+
+			$j('#prevLink').click( function(e){
+				var previewCont = document.getElementById('js-comments_reply_block');
+				var previewTextArea = document.getElementById('comment_textarea');
+				if ( previewTextArea && previewCont )
+				{
+					var previewDiv = document.getElementById('sp3previewDiv');
+					if ( previewDiv == null )
+					{
+						previewDiv = document.createElement('div');
+						previewDiv.setAttribute('style', 'padding: 5px 5px 5px 5px; margin-left: 0px !important; border: 1px dashed grey;');
+						previewDiv.setAttribute('id', 'sp3previewDiv');
+						previewDiv.setAttribute('class', 'comment');
+						previewCont.appendChild( previewDiv );
+					}
+					previewDiv.innerHTML = previewTextArea.value.replace(/\n/g,'<br>');
+					
+				}
+				e.preventDefault();
+				return false;
+			});
+
+			$j('#js-post-yarrr').click( function(e){
+  				var previewDiv = document.getElementById('sp3previewDiv');
+  				if( previewDiv )
+  				{
+  					previewDiv.parentNode.removeChild( previewDiv );
+  				}
+  				return true;
+			});
+		}
+	},
+});
+	
+// Активные ссылки для картинок
+
+/**
+ * @todo: во-первых, доделать под фичи сервис-пака, во-вторых, расширение еще не значит картинку, например:
+ * http://en.wikipedia.org/wiki/File:8863-Project-Whirlwind-CRMI.JPG
+ * По-хорошему надо запрашивать HEAD для ресурса и смотреть возвращаемый mime-тип. И если image/*, тогда переделывать
+ * @todo: сделать опцию не подменять линк картинкой, а показывать каринку в попапе.
+ */
+
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Раскрытие картинок по клику на ссылке',
+	author: 'crea7or',
+	config: {active:{type:'checkbox',value:true}},
+	
+	run: function()
+	{
+		var me = this;
+		this.imagesPreview( document.body );
+
+		d3.content.onNewComment(function(comment){
+			me.imagesPreview(comment.container);
+		});
+	},
+
+	clickOnImageLink: function(e)
+	{
+		var imgPreview = document.createElement('img');
+		imgPreview.setAttribute('src', e.target.href );
+		var imgLink = document.createElement('a');
+		imgLink.setAttribute('href', '#');
+		imgLink.setAttribute('onclick', "this.previousSibling.setAttribute('style', this.previousSibling.getAttribute('bkpstyle')); this.parentNode.removeChild(this); return false;");
+		imgLink.appendChild( imgPreview );
+		e.target.parentNode.insertBefore(imgLink, e.target.nextSibling);
+		e.target.setAttribute('bkpstyle', e.target.getAttribute('style'));
+		e.target.setAttribute('style', 'display: none');
+		e.preventDefault();
+		return false;
+	},
+
+	imagesPreview: function( baseElement )
+	{
+		var me = this;
+		d3.xpath.each('//a', function(a){
+			if(a.href.match(/\.(gif|png|jpg|jpeg)$/i))
+			{
+				$j(a).click(
+						function(e){
+							me.clickOnImageLink(e);
+						});
+			}
+			
+		}, baseElement);
+	},
+});
+	
 	
 }catch(e)
 {

@@ -1,4 +1,12 @@
 // Активные ссылки для картинок
+
+/**
+ * @todo: во-первых, доделать под фичи сервис-пака, во-вторых, расширение еще не значит картинку, например:
+ * http://en.wikipedia.org/wiki/File:8863-Project-Whirlwind-CRMI.JPG
+ * По-хорошему надо запрашивать HEAD для ресурса и смотреть возвращаемый mime-тип. И если image/*, тогда переделывать
+ * @todo: сделать опцию не подменять линк картинкой, а показывать каринку в попапе.
+ */
+
 d3.addModule(
 {
 	type: "Содержание",
@@ -12,7 +20,7 @@ d3.addModule(
 		this.imagesPreview( document.body );
 
 		d3.content.onNewComment(function(comment){
-			me.imagesPreview(comment);
+			me.imagesPreview(comment.container);
 		});
 	},
 
@@ -31,41 +39,19 @@ d3.addModule(
 		return false;
 	},
 
-	imagesPreview: function( baseelement )
+	imagesPreview: function( baseElement )
 	{
 		var me = this;
-		var allLinksArray = baseelement.getElementsByTagName('a');
-		for (var i = 0; i < allLinksArray.length; i++)
-		{
-			if (allLinksArray[i].href.length > 5)
+		d3.xpath.each('//a', function(a){
+			if(a.href.match(/\.(gif|png|jpg|jpeg)$/i))
 			{
-				addEvent = false;
-				linkext3 = allLinksArray[i].href.substr(allLinksArray[i].href.length - 4);
-				if (linkext3.search(/\.gif/i) == 0)
-				{
-					addEvent = true;
-				}
-				else if (linkext3.search(/\.jpg/i) == 0)
-				{
-					addEvent = true;
-				}
-				else if (linkext3.search(/\.png/i) == 0)
-				{
-					addEvent = true;
-				}
-				else if (linkext3.search(/jpeg/i) == 0)
-				{
-					addEvent = true;
-				}
-				if ( addEvent )
-				{
-					$j(allLinksArray[i]).click(
-					function(e){
-						me.clickOnImageLink(e);
-					});
-				}
+				$j(a).click(
+						function(e){
+							me.clickOnImageLink(e);
+						});
 			}
-		}	
+			
+		}, baseElement);
 	},
 });
 	
