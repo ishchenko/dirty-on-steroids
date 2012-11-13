@@ -29,3 +29,4 @@ extra/dirty.tooltip.js
 extra/show.all.comments.js
 extra/preview.for.comments.js
 extra/hotlinks.for.images.js
+extra/favicons.js

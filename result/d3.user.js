@@ -70,7 +70,7 @@ var d3=
 		return loadedValue;
 	},
 	//shortcut for backward compability
-	localStorGetItem: function(itemName, defaultValue){this.localStorageGetItem(itemName, defaultValue);},
+	localStorGetItem: function(itemName, defaultValue){ return this.localStorageGetItem(itemName, defaultValue);},
 	
 	/// Get element(s) of page
 	get:
@@ -639,21 +639,18 @@ d3.addModule(
 		
 		var me=this;
 		$j(window).scroll(function(event){me.onScroll();});
-		$j('#home').mousedown(function(){me.scrollToPosition(0);});
-		$j('#down').mousedown(function(){
+		$j('#home').mousedown(function(e){e.preventDefault(); me.scrollToPosition(0);});
+		$j('#down').mousedown(function(e){
+			e.preventDefault(); 
 			me.scrollToItem(me.newItems[me.nextNew]); 
-			if(me.nextNew<me.newItems.length-1)me.nextNew++;
-			if(me.prevNew<me.newItems.length-1 && me.prevNew != 0)me.prevNew++;
 		});
-		$j('#up').mousedown(function(){
+		$j('#up').mousedown(function(e){
+			e.preventDefault(); 
 			me.scrollToItem(me.newItems[me.prevNew]);
-			if(me.nextNew>0)me.nextNew--;
-			if(me.prevNew>0)me.prevNew--;
 		});
-		$j('#mine').mousedown(function(){
+		$j('#mine').mousedown(function(e){
+			e.preventDefault(); 
 			me.scrollToItem(me.mineItems[me.nextMine]);
-			me.nextMine++;
-			if(me.nextMine==me.mineItems.length-1)me.nextMine=0;
 		});
 		
 		d3.content.onNewComment(function(comment)
@@ -706,7 +703,7 @@ d3.addModule(
 			Math.round(current+(distance/4.5))
 		);
 		var me = this;
-		window.setTimeout(function(){me.scrollDaemon();}, 35);
+		window.setTimeout(function(){me.scrollDaemon();}, 30);
 	},
 
 
@@ -799,36 +796,50 @@ d3.addModule(
 	newPosition: function()
 	{
 		var offset = this.getCurrentOffset();
-		var height=$j(window).height();
+		//--handling own posts
+		for(i=0; i<this.mineItems.length && this.mineItems[i].offset().top<offset; ++i);
+		$j("#mine").text(this.mineItems.length-i);
+		this.nextMine = i%this.mineItems.length;
 
-		for(var i=0; i< this.mineItems.length && this.mineItems[i].offset().top<=offset; ++i);
-		$j('#mine').text(this.mineItems.length-i);
-		if(!this.scrolling)this.nextMine = i<this.mineItems.length ? i : null;
+		//--handling new posts
+		//scroll down until one post's top is below the viewpoint
+		for(i=0; i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
+		//go one post up if possible
+		if(i>0)i--;
+		//item is the last active element which top is above the current view
+		var item = this.newItems[i];
+		if(item){
+			if(item.offset().top+item.height() > offset){
+				//we are currently viewing the item
+				this.prevNew = (i>0) ? i-1 : null;
+				$j("#up").text(i);
+			}else{
+				//item is above the current position
+				this.prevNew = i;
+				$j("#up").text(i+1);
+			}
+			this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
+			$j("#down").text(this.newItems.length-1-i);
+		}else{
+			$j("#up").text(0);
+			$j("#down").text(0);
+		}
 
-		for(i=0; i<this.newItems.length && this.newItems[i].offset().top+this.newItems[i].height()<offset; ++i);
-		if(!this.scrolling)this.prevNew = i>0 ? i-1 : null;
-		
-		for(;i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
-		$j('#up ').text(i);
-		if(!this.scrolling)if(this.prevNew==null)this.prevNew = i>0 ? i-1 : null;
 
-		$j('#down').text(this.newItems.length-i);
-		for(; i<this.newItems.length && this.newItems[i].offset().top<=offset; ++i);
-		if(!this.scrolling)this.nextNew = i<this.newItems.length ? i : 0; //turnaround for mine items
 	},
 		
 	drawButtons: function()
 	{
 			document.body.insertBefore(d3.newDiv(
 			{style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'}
-			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
-					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
-					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
-					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
+			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;"></div>'
+					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
+					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
+					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
 			}), document.body.firstChild);
-			var ids=['home','up','mine','down'];
-			for(var i=0;i<ids.length;++i)
-				$j('#'+ids[i]).unselectable();
+			//var ids=['home','up','mine','down'];
+			//for(var i=0;i<ids.length;++i)
+			//	$j('#'+ids[i]).unselectable();
 	}
 });
 
@@ -1481,11 +1492,10 @@ d3.addModule(
 			if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 			{
 				$j(document).ready(function(){
-					var checkinScript = document.createElement("script");
-					checkinScript.setAttribute("src", "http://api.d3search.ru/checkin/" + vUserName );
-					document.body.appendChild(checkinScript);
-					localStorage.setItem('lastCheckinTimestamp', now);
-					checkinScript.load(drawStuff);
+					$j.getScript("http://api.d3search.ru/checkin/" + vUserName, function() {
+						drawStuff();
+						localStorage.setItem('lastCheckinTimestamp', now);
+					});
 				});
 			}else{
 				drawStuff();
@@ -1875,6 +1885,93 @@ d3.addModule(
 	},
 });
 	
+// Favicons
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Показывать favicons доменов',
+	author: 'Stasik0, NickJr',
+	config: {
+		active:{type:'checkbox',value:true},
+		mouseover:{type:'radio',options:{"перед ссылками":"false","при навидении":"true"},caption:'Показывать иконки',value:"false"},
+		domainWhitelist:{caption:'Список доменов', type: 'text', value:'dirty.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net'
+		},
+	},
+	faviconService: 'http://favicon.yandex.net/favicon/',
+
+	extractDomain: function(domain){
+		if(typeof(domain) === 'undefined'){
+			return "";
+		}
+		//cut off protocol 
+		domain = domain.toLowerCase().replace(/^([a-zA-Z]+):\/\//, "");
+		//extract domain
+		if(domain.indexOf('/')>0)domain = domain.split('/')[0];
+		//normalize, 'www.ru' will not work ;)
+		domain = domain.toLowerCase().replace(/^www\./, "");
+		//more work, extract root domain
+		var s = domain.split('.');
+		//let us hope that it works, do not want to check all TLDs
+		if(s.length > 2){
+			if(s[s.length-2].length == 2){
+				//form like blabla.**.blabla
+				//domain has 3 segments
+				domain = s.slice(-3).join('.');
+			}else{
+				domain = s.slice(-2).join('.');
+			}
+		}
+		return domain;		
+	},
+
+	hideFavicon: function(e){
+		$j(e.target).css('background-image', 'none');
+	},
+
+	showFavicon: function(e, me){
+		var faviconUrl = me.faviconService+me.extractDomain(e.target.toString());
+		$j(e.target).css('padding-top', '16px');
+		$j(e.target).css('background-image', 'url('+faviconUrl+')');
+		$j(e.target).css('background-repeat', 'no-repeat');
+	},
+	
+	inWhiteList: function(domain){
+		if(domain.length==0)return false;
+		if(this.config.domainWhitelist == "*")return true;
+
+		var whitelist = this.config.domainWhitelist.value.replace(/\s+/g, '');
+		whitelist = whitelist+",";
+		
+		if(whitelist.indexOf(domain+",")>-1) {
+			return true;
+		}
+
+		return false;
+	},
+
+	run: function(){
+		if(d3.page.user)return;
+		var me=this;
+		var links = $j('div.dt > a, div.c_body > a');
+		//iterate over links
+		var domain = "";
+		for(var i=0;i<links.length;i++)
+		{
+			domain = this.extractDomain(links[i].toString());
+			if(links[i].toString().indexOf('http://')!=-1 && this.inWhiteList(domain)){
+				if(this.config.mouseover.value == 'true'){
+					$j(links[i]).mouseover(function(e){me.showFavicon(e,me);})
+					.mouseout(this.hideFavicon);
+				}else{
+					$j(links[i]).css('padding-left', '19px')
+					.css('background-repeat', 'no-repeat')
+					.css('background-image', 'url('+this.faviconService+domain+')');
+				}
+			}
+		}
+	}
+});
+
 	
 }catch(e)
 {
