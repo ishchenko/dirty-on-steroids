@@ -28,20 +28,20 @@ d3.addModule(
 		$j('#down').mousedown(function(e){
 			e.preventDefault(); 
 			me.scrollToItem(me.newItems[me.nextNew]); 
-			if(me.nextNew<me.newItems.length-1)me.nextNew++;
-			if(me.prevNew<me.newItems.length-1 && me.prevNew != 0)me.prevNew++;
+			//if(me.nextNew<me.newItems.length-1)me.nextNew++;
+			//if(me.prevNew<me.newItems.length-1 && me.prevNew != 0)me.prevNew++;
 		});
 		$j('#up').mousedown(function(e){
 			e.preventDefault(); 
 			me.scrollToItem(me.newItems[me.prevNew]);
-			if(me.nextNew>0)me.nextNew--;
-			if(me.prevNew>0)me.prevNew--;
+			//if(me.nextNew>0)me.nextNew--;
+			//if(me.prevNew>0)me.prevNew--;
 		});
 		$j('#mine').mousedown(function(e){
 			e.preventDefault(); 
 			me.scrollToItem(me.mineItems[me.nextMine]);
-			me.nextMine++;
-			if(me.nextMine==me.mineItems.length-1)me.nextMine=0;
+			//me.nextMine++;
+			//if(me.nextMine==me.mineItems.length-1)me.nextMine=0;
 		});
 		
 		d3.content.onNewComment(function(comment)
@@ -187,22 +187,31 @@ d3.addModule(
 	newPosition: function()
 	{
 		var offset = this.getCurrentOffset();
-		var height=$j(window).height();
+		//handling own posts
+		for(i=0; i<this.mineItems.length && this.mineItems[i].offset().top<offset; ++i);
+		$j("#mine").text(this.mineItems.length-i);
+		this.nextMine = i%this.mineItems.length;
 
-		for(var i=0; i< this.mineItems.length && this.mineItems[i].offset().top<=offset; ++i);
-		$j('#mine').text(this.mineItems.length-i);
-		if(!this.scrolling)this.nextMine = i<this.mineItems.length ? i : null;
+		//handling new posts
+		for(i=0; i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
+		i--;
+		//item is the last active element which top is above the current view
+		var item = this.newItems[i];
+		if(item){
+			if(item.offset().top+item.height() > offset){
+				//we are currently viewing the item
+				this.prevNew = (i>0) ? i-1 : null;
+				$j("#up").text(i);
+			}else{
+				//item is above the current position
+				this.prevNew = i;
+				$j("#up").text(i+1);
+			}
+			this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
+			$j("#down").text(this.newItems.length-1-i);
+		}
 
-		for(i=0; i<this.newItems.length && this.newItems[i].offset().top+this.newItems[i].height()<offset; ++i);
-		if(!this.scrolling)this.prevNew = i>0 ? i-1 : null;
-		
-		for(;i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
-		$j('#up ').text(i);
-		if(!this.scrolling)if(this.prevNew==null)this.prevNew = i>0 ? i-1 : null;
 
-		$j('#down').text(this.newItems.length-i);
-		for(; i<this.newItems.length && this.newItems[i].offset().top<=offset; ++i);
-		if(!this.scrolling)this.nextNew = i<this.newItems.length ? i : 0; //turnaround for mine items
 	},
 		
 	drawButtons: function()
