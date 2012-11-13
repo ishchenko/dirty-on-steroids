@@ -24,18 +24,21 @@ d3.addModule(
 		
 		var me=this;
 		$j(window).scroll(function(event){me.onScroll();});
-		$j('#home').mousedown(function(){me.scrollToPosition(0);});
-		$j('#down').mousedown(function(){
+		$j('#home').mousedown(function(e){e.preventDefault(); me.scrollToPosition(0);});
+		$j('#down').mousedown(function(e){
+			e.preventDefault(); 
 			me.scrollToItem(me.newItems[me.nextNew]); 
 			if(me.nextNew<me.newItems.length-1)me.nextNew++;
 			if(me.prevNew<me.newItems.length-1 && me.prevNew != 0)me.prevNew++;
 		});
-		$j('#up').mousedown(function(){
+		$j('#up').mousedown(function(e){
+			e.preventDefault(); 
 			me.scrollToItem(me.newItems[me.prevNew]);
 			if(me.nextNew>0)me.nextNew--;
 			if(me.prevNew>0)me.prevNew--;
 		});
-		$j('#mine').mousedown(function(){
+		$j('#mine').mousedown(function(e){
+			e.preventDefault(); 
 			me.scrollToItem(me.mineItems[me.nextMine]);
 			me.nextMine++;
 			if(me.nextMine==me.mineItems.length-1)me.nextMine=0;
@@ -206,13 +209,13 @@ d3.addModule(
 	{
 			document.body.insertBefore(d3.newDiv(
 			{style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'}
-			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
-					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
-					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
-					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px; -webkit-user-select: none; -moz-user-select: none; -khtml-user-select: none; -o-user-select: none; user-select: none;"></div>'
+			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;"></div>'
+					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
+					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
+					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
 			}), document.body.firstChild);
-			var ids=['home','up','mine','down'];
-			for(var i=0;i<ids.length;++i)
-				$j('#'+ids[i]).unselectable();
+			//var ids=['home','up','mine','down'];
+			//for(var i=0;i<ids.length;++i)
+			//	$j('#'+ids[i]).unselectable();
 	}
 });
