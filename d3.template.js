@@ -338,9 +338,7 @@ try
 {
 
 // @modules@
-	
 }catch(e)
 {
 	console.log(e);
-	alert("Problem in modular service pack: "+e);
 }
