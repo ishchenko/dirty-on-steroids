@@ -71,7 +71,7 @@ var d3=
 	get:
 	{
 		logoutLink: function(){return $j('#js-header_logout_link');},
-		leftNavigation: function(){return $j('.left_col_nav');},
+		leftNavigation: function(){return $j('.b-footer_nav_section_user');},
 		items: function(){return d3.content.items();}
 	},
 	/// JSON helper
@@ -103,7 +103,7 @@ var d3=
 		/// Add link to config box
 		run: function()
 		{
-			d3.get.leftNavigation().append('<li><a href="#" id="configLink">Настройки</a></li>');
+			d3.get.leftNavigation().append('<li><a href="#" id="configLink"><span>Сервиспак</span></a></li>');
 			$j('#configLink').click(function(event){d3.config.getBox().show();return false;});
 		},
 		/// Init and return config box
