@@ -336,8 +336,7 @@ d3.initCore();
 try
 {
 // @modules@
-	
 }catch(e)
 {
-	alert("Problem in modular service pack: "+e);
+	console.log(e);
 }
