@@ -336,10 +336,10 @@ var d3=
 
 d3.initCore();
 
-/*
+
 try
 {
-*/
+
 
 /*   
 =============================================================================== 
@@ -1938,7 +1938,6 @@ d3.addModule(
 		var me=this;
 		//iterate over links
 		$j.each($j('div.dt > a, div.c_body > a, div.dt > div.post_video > div > a'), function(index, link){
-			console.log(link.hostname);
 			var faviconUrl = me.faviconService+link.hostname;
 			if(me.inWhiteList(link.hostname))
 			{
@@ -1968,16 +1967,13 @@ d3.addModule(
 		{
 			var script2run = document.createElement('script');
 			script2run.type = 'text/javascript';
-			script2run.text = 'if(postsCutHandler) postsCutHandler.max_lines = 5000;';
+			script2run.text = 'postsCutHandler.max_lines = 5000;';
 			document.body.appendChild( script2run );
 		}
 	},
 });
 
-/*	
 }catch(e)
 {
 	console.log(e);
-	alert("Problem in modular service pack: "+e);
 }
-*/
