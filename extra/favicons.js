@@ -7,7 +7,7 @@ d3.addModule(
 	config: {
 		active:{type:'checkbox',value:true},
 		mouseover:{type:'radio',caption:'Показывать иконки',options:{"перед ссылками":"false","при наведении":"true"},value:"false"},
-		domainWhitelist:{type: 'text', caption:'Список доменов', value:'dirty.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net,youtube.com'
+		domainWhitelist:{type: 'text', caption:'Список доменов', value:'dirty.ru,*.d3.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,*.wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net,youtube.com'
 		},
 	},
 	
@@ -18,7 +18,7 @@ d3.addModule(
 		return this.config.domainWhitelist.value
 			.split(/[\s,]+/)
 			.map(function(item){
-				return new RegExp('^.*'+item.replace(/\./g,'\\.').replace(/\*/g,'.*')+'$','i');
+				return new RegExp('^(www\.)?'+item.replace(/\./g,'\\.').replace(/\*/g,'.*')+'$','i');
 			});
 	},
 	
@@ -52,7 +52,7 @@ d3.addModule(
 		//iterate over links
 		$j.each($j('div.dt > a, div.c_body > a'), function(index, link){
 			var faviconUrl = me.faviconService+link.hostname;
-			if(link.protocol == 'http:' && me.inWhiteList(link.hostname))
+			if(me.inWhiteList(link.hostname))
 			{
 				if(me.config.mouseover.value == 'true'){
 					$j(link)
