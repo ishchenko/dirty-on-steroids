@@ -333,11 +333,14 @@ var d3=
 
 d3.initCore();
 
+
 try
 {
+
 // @modules@
 	
 }catch(e)
 {
+	console.log(e);
 	alert("Problem in modular service pack: "+e);
 }
