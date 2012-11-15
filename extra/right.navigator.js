@@ -184,7 +184,7 @@ d3.addModule(
 		//item is the last active element which top is above the current view
 		var item = this.newItems[i];
 		if(item){
-			if(item.offset().top+item.height() > offset){
+			if(item.offset().top+item.height() > offset && item.offset().top <= offset){
 				//we are currently viewing the item
 				this.prevNew = (i>0) ? i-1 : null;
 				$j("#up").text(i);
@@ -194,7 +194,7 @@ d3.addModule(
 				//the item is below the current position (this is the first one)
 				this.prevNew = null;
 				$j("#up").text(0);
-				this.nextNew = (i<this.newItems.length-1) ? i : null;
+				this.nextNew = i;
 				$j("#down").text(this.newItems.length-i);
 			}else{
 				//item is above the current position
