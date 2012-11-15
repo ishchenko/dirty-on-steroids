@@ -20,7 +20,11 @@ d3.addModule(
 			$j(previewInput).insertBefore( yarrButton );
 
 			$j(yarrButton).click( function(e){
-				e.target.parentNode.removeChild( e.target.previousSibling );
+				var previewDiv = e.target.parentNode.parentNode.querySelector('div.sp3previewDiv');
+				if ( previewDiv )
+				{
+					previewDiv.parentNode.removeChild( previewDiv );					
+				}
 				return true;
 			});
 
