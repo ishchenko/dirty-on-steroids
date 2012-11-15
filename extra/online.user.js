@@ -8,8 +8,6 @@ d3.addModule(
 
 	run: function()
 	{
-	  	var time1 = new Date();
-
 		var vUserName = d3.user.name;
 		if( vUserName != null && vUserName.length > 0 )
 		{
