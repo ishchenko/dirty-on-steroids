@@ -801,13 +801,21 @@ d3.addModule(
 				//we are currently viewing the item
 				this.prevNew = (i>0) ? i-1 : null;
 				$j("#up").text(i);
+				this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
+				$j("#down").text(this.newItems.length-1-i);
+			}else if(item.offset().top > offset){
+				//the item is below the current position (this is the first one)
+				this.prevNew = null;
+				$j("#up").text(0);
+				this.nextNew = (i<this.newItems.length-1) ? i : null;
+				$j("#down").text(this.newItems.length-i);
 			}else{
 				//item is above the current position
 				this.prevNew = i;
 				$j("#up").text(i+1);
+				this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
+				$j("#down").text(this.newItems.length-1-i);
 			}
-			this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
-			$j("#down").text(this.newItems.length-1-i);
 		}else{
 			$j("#up").text(0);
 			$j("#down").text(0);
