@@ -88,7 +88,7 @@ var d3=
 	{
 		this.modules.push(module);
 		if(this.modulesByName[module.name] != undefined)
-			console.log('Duplicate module '+module.name);
+			if(console)console.log('Duplicate module '+module.name);
 		this.modulesByName[module.name] = module;
 		this.config.addModule(module);
 		if(module.config == undefined || module.config.active == undefined || module.config.active.value)
@@ -1953,5 +1953,5 @@ d3.addModule(
 
 }catch(e)
 {
-	console.log(e);
+	if(console)console.log(e);
 }
