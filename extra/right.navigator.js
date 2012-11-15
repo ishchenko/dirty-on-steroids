@@ -91,7 +91,6 @@ d3.addModule(
 		window.setTimeout(function(){me.scrollDaemon();}, 30);
 	},
 
-
 	countItems: function()
 	{
 		var items = d3.get.items();
@@ -105,18 +104,11 @@ d3.addModule(
 		}
 		return true;
 	},
-/*
-	onNewComment: function(comment)
-	{
-		this.countItems();
-		this.newPosition();
-	},
-*/	
-
-
 
 	scrollToItem: function(item)
 	{
+		if(item==null) return false;
+		
 		var highlightColor = "#fff48d";
 		var colorToHex =  function(color) {
 		    if (color.substr(0, 1) === '#') {
@@ -146,7 +138,6 @@ d3.addModule(
 			}
 			return "unknown";
 		};
-		if(item==null) return false;
 		this.scrolling=true;
 		this.scrollToPosition(Math.floor(item.offset().top+(item.height()-$j(window).height())/2));
 		this.currentItem=item;
@@ -157,27 +148,26 @@ d3.addModule(
 		*/
 		var content=item.container;
 		var inner = $j(".comment_inner", content);
-		if(inner==null || inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
+		if(inner!=null && inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
 			content = inner;
 		}
 		var oldColor=content.css('background-color');
-		if(colorToHex(oldColor) == highlightColor)return;
-		window.setTimeout(function(){content.css('background-color',oldColor);}, 650);
-		content.css('background-color',highlightColor);
+		if(colorToHex(oldColor) != highlightColor){
+			window.setTimeout(function(){content.css('background-color',oldColor);}, 650);
+			content.css('background-color',highlightColor);
+		}
 	},
 	
 	getCurrentOffset: function() {return this.currentItem ? this.currentItem.offset().top+this.currentItem.height()/2 : $j(window).scrollTop()+$j(window).height()/2;},
 	
 	onScroll: function()
 	{
-	
 		if(!this.scrolling){
 			this.currentItem=null;
 		}
 		this.newPosition();
 	},
 	
-
 	newPosition: function()
 	{
 		var offset = this.getCurrentOffset();
@@ -209,8 +199,6 @@ d3.addModule(
 			$j("#up").text(0);
 			$j("#down").text(0);
 		}
-
-
 	},
 		
 	drawButtons: function()
@@ -222,8 +210,5 @@ d3.addModule(
 					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
 					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
 			}), document.body.firstChild);
-			//var ids=['home','up','mine','down'];
-			//for(var i=0;i<ids.length;++i)
-			//	$j('#'+ids[i]).unselectable();
 	}
 });

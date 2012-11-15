@@ -1,4 +1,4 @@
-// Половой вопрос
+// User's online visiblity
 d3.addModule(
 {
 	type: "Прочее",
