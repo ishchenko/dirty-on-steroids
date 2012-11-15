@@ -18,7 +18,7 @@
 element.style[i]=style[i];},newElement:function(tagName,parms)
 {var e=document.createElement(tagName);var i;if(parms.style!==undefined)this.setStyle(e,parms.style);if(parms.attributes!==undefined)for(i in parms.attributes)e.setAttribute(i,parms.attributes[i]);if(parms.innerHTML!==undefined)e.innerHTML=parms.innerHTML;return e;},newDiv:function(parms){return this.newElement('div',parms);},localStorageGetItem:function(itemName,defaultValue){var loadedValue=localStorage.getItem(itemName);return loadedValue==null?defaultValue:loadedValue;},localStorGetItem:function(itemName,defaultValue){return this.localStorageGetItem(itemName,defaultValue);},get:{logoutLink:function(){return $j('#js-header_logout_link');},leftNavigation:function(){return $j('.b-footer_nav_section_user');},items:function(){return d3.content.items();}},json:{encode:function(value){return(JSON.stringify!=undefined?JSON.stringify:JSON.encode)(value);},decode:function(value){return(JSON.parse!=undefined?JSON.parse:JSON.decode)(value);}},addModule:function(module)
 {this.modules.push(module);if(this.modulesByName[module.name]!=undefined)
-console.log('Duplicate module '+module.name);this.modulesByName[module.name]=module;this.config.addModule(module);if(module.config==undefined||module.config.active==undefined||module.config.active.value)
+if(console)console.log('Duplicate module '+module.name);this.modulesByName[module.name]=module;this.config.addModule(module);if(module.config==undefined||module.config.active==undefined||module.config.active.value)
 module.run();},config:{type:"Настройки",author:'crimaniak',name:'config core module',data:{},controls:{},run:function()
 {d3.get.leftNavigation().append('<li><a href="#" id="configLink"><span>Сервиспак</span></a></li>');$j('#configLink').click(function(event){d3.config.getBox().show();return false;});},getBox:function()
 {if(this.box==undefined)
@@ -101,15 +101,14 @@ $j(window).scrollTop(Math.round(current+(distance/4.5)));var me=this;window.setT
 {var items=d3.get.items();this.newItems=[];this.mineItems=[];for(var i=0;i<items.length;++i)
 {if(items[i].isNew)this.newItems.push(items[i]);if(items[i].isMine)this.mineItems.push(items[i]);}
 return true;},scrollToItem:function(item)
-{var highlightColor="#fff48d";var colorToHex=function(color){if(color.substr(0,1)==='#'){return color;}
+{if(item==null)return false;var highlightColor="#fff48d";var colorToHex=function(color){if(color.substr(0,1)==='#'){return color;}
 if(color.substr(0,3)!=="rgb"){return"unknown";}
 if(color.substr(0,4)==="rgba"){var digits=/(.*?)rgba\((\d+), (\d+), (\d+), (\d+)\)/.exec(color);var red=parseInt(digits[2]);var green=parseInt(digits[3]);var blue=parseInt(digits[4]);var alpha=parseInt(digits[5]);return'#'+(256+red).toString(16).substr(1)+((1<<24)+(green<<16)|(blue<<8)|alpha).toString(16).substr(1);}else if(color.substr(0,3)==="rgb"){var digits=/(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);var red=parseInt(digits[2]);var green=parseInt(digits[3]);var blue=parseInt(digits[4]);var rgb=blue|(green<<8)|(red<<16);return digits[1]+'#'+rgb.toString(16);}
-return"unknown";};if(item==null)return false;this.scrolling=true;this.scrollToPosition(Math.floor(item.offset().top+(item.height()-$j(window).height())/2));this.currentItem=item;this.newPosition();var content=item.container;var inner=$j(".comment_inner",content);if(inner==null||inner.length>0){content=inner;}
-var oldColor=content.css('background-color');if(colorToHex(oldColor)==highlightColor)return;window.setTimeout(function(){content.css('background-color',oldColor);},650);content.css('background-color',highlightColor);},getCurrentOffset:function(){return this.currentItem?this.currentItem.offset().top+this.currentItem.height()/2:$j(window).scrollTop()+$j(window).height()/2;},onScroll:function()
+return"unknown";};this.scrolling=true;this.scrollToPosition(Math.floor(item.offset().top+(item.height()-$j(window).height())/2));this.currentItem=item;this.newPosition();var content=item.container;var inner=$j(".comment_inner",content);if(inner!=null&&inner.length>0){content=inner;}
+var oldColor=content.css('background-color');if(colorToHex(oldColor)!=highlightColor){window.setTimeout(function(){content.css('background-color',oldColor);},650);content.css('background-color',highlightColor);}},getCurrentOffset:function(){return this.currentItem?this.currentItem.offset().top+this.currentItem.height()/2:$j(window).scrollTop()+$j(window).height()/2;},onScroll:function()
 {if(!this.scrolling){this.currentItem=null;}
 this.newPosition();},newPosition:function()
-{var offset=this.getCurrentOffset();for(i=0;i<this.mineItems.length&&this.mineItems[i].offset().top<offset;++i);$j("#mine").text(this.mineItems.length-i);this.nextMine=i%this.mineItems.length;for(i=0;i<this.newItems.length&&this.newItems[i].offset().top<offset;++i);if(i>0)i--;var item=this.newItems[i];if(item){if(item.offset().top+item.height()>offset){this.prevNew=(i>0)?i-1:null;$j("#up").text(i);}else{this.prevNew=i;$j("#up").text(i+1);}
-this.nextNew=(i<this.newItems.length-1)?i+1:null;$j("#down").text(this.newItems.length-1-i);}else{$j("#up").text(0);$j("#down").text(0);}},drawButtons:function()
+{var offset=this.getCurrentOffset();for(i=0;i<this.mineItems.length&&this.mineItems[i].offset().top<offset;++i);$j("#mine").text(this.mineItems.length-i);this.nextMine=i%this.mineItems.length;for(i=0;i<this.newItems.length&&this.newItems[i].offset().top<offset;++i);if(i>0)i--;var item=this.newItems[i];if(item){if(item.offset().top+item.height()>offset&&item.offset().top<=offset){this.prevNew=(i>0)?i-1:null;$j("#up").text(i);this.nextNew=(i<this.newItems.length-1)?i+1:null;$j("#down").text(this.newItems.length-1-i);}else if(item.offset().top>offset){this.prevNew=null;$j("#up").text(0);this.nextNew=i;$j("#down").text(this.newItems.length-i);}else{this.prevNew=i;$j("#up").text(i+1);this.nextNew=(i<this.newItems.length-1)?i+1:null;$j("#down").text(this.newItems.length-1-i);}}else{$j("#up").text(0);$j("#down").text(0);}},drawButtons:function()
 {document.body.insertBefore(d3.newDiv({style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'},innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;"></div>'
 +'<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
 +'<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
@@ -182,7 +181,7 @@ href=href.replace(/www.dirty.ru/,'dirty.ru');}});d3.addModule({type:"Тесты"
 {var me=this;d3.get.leftNavigation().append('<li><a href="#" id="d3ConfigLink">Тест конфига</a></li>');$j('#d3ConfigLink').click(function(event){me.showInfo();return false;});},showInfo:function()
 {alert("Радиокнопки: "+this.config.testRadio.value+"\nТекст: "+this.config.testText.value
 +"\nСелект: "+this.config.testSelect.value+"\nЧекбокс: "+this.config.testCheckbox.value);}});d3.addModule({type:"Прочее",name:'Показываться онлайн через d3search',author:'crea7or, Stasik0',config:{active:{type:'checkbox',value:true}},run:function()
-{var time1=new Date();var vUserName=d3.user.name;if(vUserName!=null&&vUserName.length>0)
+{var vUserName=d3.user.name;if(vUserName!=null&&vUserName.length>0)
 {var lastCheckinTimestamp=d3.localStorGetItem('lastCheckinTimestamp',0);var drawStuff=function()
 {var divContentLeft=document.querySelector("div.content_left");if(divContentLeft)
 {var checkinsMarkup=localStorage.getItem('checkinsMarkup');var newdiv=document.createElement('div');newdiv.innerHTML=checkinsMarkup;divContentLeft.appendChild(newdiv);var module=d3.getModule("Dirty tooltip");if(module!=null){module.processLinks.call(module,divContentLeft);}}
@@ -236,4 +235,4 @@ d3.addModule({type:"Содержание",name:'Показывать посты 
 {var script2run=document.createElement('script');script2run.type='text/javascript';script2run.text='postsCutHandler = null;';document.body.appendChild(script2run);var cutPosts=document.querySelectorAll('div.post_cut');if(cutPosts)
 {for(var i=0;i<cutPosts.length;i++)
 {cutPosts[i].querySelector('.dt').setAttribute('style','');cutPosts[i].removeChild(cutPosts[i].querySelector('.b-cut'));}}}},});}catch(e)
-{console.log(e);}
+{if(console)console.log(e);}
