@@ -8,12 +8,22 @@ d3.addModule(
 
 	run: function()
 	{
-		if( d3.content.posts.length > 0 )
+		if( document.getElementById('js-posts_holder'))
 		{
 			var script2run = document.createElement('script');
 			script2run.type = 'text/javascript';
-			script2run.text = 'postsCutHandler.max_lines = 5000;';
+			script2run.text = 'postsCutHandler = null;';
 			document.body.appendChild( script2run );
+
+			var cutPosts = document.querySelectorAll('div.post_cut');
+			if ( cutPosts )
+			{
+				for ( var i = 0; i < cutPosts.length; i++)
+				{
+					cutPosts[i].querySelector('.dt').setAttribute('style', '');
+					cutPosts[i].removeChild( cutPosts[i].querySelector('.b-cut'));
+				}
+			}
 		}
 	},
 });

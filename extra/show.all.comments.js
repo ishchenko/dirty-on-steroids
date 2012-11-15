@@ -9,7 +9,7 @@ d3.addModule(
 	run: function()
 	{
 		if(!d3.page.inbox && d3.page.onlyNew) d3.window.commentsHandler.switchNew();
-	},	
+	},
 	
 });
 	

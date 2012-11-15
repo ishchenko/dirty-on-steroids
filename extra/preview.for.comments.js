@@ -8,81 +8,77 @@ d3.addModule(
 
 	run: function()
 	{
-		// div.comments_add_yarrr
-		var previewCont = document.querySelector('div.b-textarea_editor');
+		var previewCont = document.querySelector('div.b-comments_reply_block');
 		if ( previewCont )
 		{
-			newLink = document.createElement('a');
-			newLink.href = '#';
-			newLink.id = 'prevLink';
-			newLink.innerHTML = 'Preview';
-			previewCont.appendChild( newLink );
+			var previewInput = document.createElement('input');
+			previewInput.type = 'image';
+			previewInput.src = '/i/probe.gif';
+			previewInput.setAttribute('style', 'margin-right: 10px;');
+			var yarrButton = previewCont.querySelector('input.b-comments_reply_block_yarrr');
+			
+			$j(previewInput).insertBefore( yarrButton );
 
-			if ( document.location.href.indexOf('/inbox/write/') == -1 )
-			{
-				$j('#prevLink').click( function(e){
-					var previewCont = document.querySelector('div.b-comments_reply_block');
-					var previewTextArea = document.querySelector('textarea.i-form_text_input');
-					if ( previewTextArea && previewCont )
+			$j(yarrButton).click( function(e){
+				e.target.parentNode.removeChild( e.target.previousSibling );
+				return true;
+			});
+
+			$j(previewInput).click( function(e){
+				var previewCont = e.target.parentNode.parentNode; 
+				var previewTextArea = previewCont.querySelector('textarea.i-form_text_input');
+				if ( previewTextArea && previewCont )
+				{
+					var previewDiv = previewCont.querySelector('div.sp3previewDiv');
+					if ( previewDiv == null )
 					{
-						var previewDiv = document.getElementById('sp3previewDiv');
-						if ( previewDiv == null )
-						{
-							previewDiv = document.createElement('div');
-							previewDiv.setAttribute('style', 'padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');
-							previewDiv.setAttribute('id', 'sp3previewDiv');
-							previewDiv.setAttribute('class', 'comment');
-							previewCont.appendChild( previewDiv );
-						}
-						previewDiv.innerHTML = previewTextArea.value.replace(/\n/g,'<br>');
-						
+						previewDiv = document.createElement('div');
+						previewDiv.setAttribute('style', 'padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');
+						previewDiv.setAttribute('class', 'comment sp3previewDiv');
+						previewCont.appendChild( previewDiv );
 					}
-					e.preventDefault();
-					return false;
-				});
-
-				$j('input.b-comments_reply_block_yarrr').click( function(e){
-	  				var previewDiv = document.getElementById('sp3previewDiv');
-	  				if( previewDiv )
-	  				{
-	  					previewDiv.parentNode.removeChild( previewDiv );
-	  				}
-	  				return true;
-				});
-			}
-			else // wrinting new inbox
-			{
-				$j('#prevLink').click( function(e){
-					var previewCont = document.getElementById('js-new_inbox_form');
-					var previewTextArea = document.getElementById('js-new_inbox_body');
-					if ( previewTextArea && previewCont )
-					{
-						var previewDiv = document.getElementById('sp3previewDiv');
-						if ( previewDiv == null )
-						{
-							previewDiv = document.createElement('div');
-							previewDiv.setAttribute('style', 'padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');
-							previewDiv.setAttribute('id', 'sp3previewDiv');
-							previewDiv.setAttribute('class', 'comment');
-							previewCont.appendChild( previewDiv );
-						}
-						previewDiv.innerHTML = previewTextArea.value.replace(/\n/g,'<br>');
-						
-					}
-					e.preventDefault();
-					return false;
-				});
-
-				$j('#js-new_inbox_submit').click( function(e){
-	  				var previewDiv = document.getElementById('sp3previewDiv');
-	  				if( previewDiv )
-	  				{
-	  					previewDiv.parentNode.removeChild( previewDiv );
-	  				}
-	  				return true;
-				});
-			}
+					previewDiv.innerHTML = previewTextArea.value.replace(/\n/g,'<br>');
+				}
+				e.preventDefault();
+				return false;
+			});
 		}
+
+		document.addEventListener("DOMNodeInserted", function(e){
+    		if ( e.target.tagName == "DIV")
+    		{
+    			var previewCont = e.target.querySelector('div.b-textarea_editor');
+    			if ( previewCont )
+    			{
+					var previewInput = document.createElement('input');
+					previewInput.type = 'image';
+					previewInput.src = '/i/probe.gif';
+					previewInput.setAttribute('style', 'margin-right: 10px;');
+
+					var yarrButton = e.target.querySelector('input.b-comments_reply_block_yarrr');
+					$j(previewInput).insertBefore( yarrButton );
+
+					$j(previewInput).click( function(e){
+					var previewCont = e.target.parentNode.parentNode.parentNode;
+					var previewTextArea = previewCont.querySelector('textarea.i-form_text_input');
+					if ( previewTextArea && previewCont )
+					{
+						var previewDiv = previewCont.querySelector('div.sp3previewDiv');
+						if ( previewDiv == null )
+						{
+							previewDiv = document.createElement('div');
+							previewDiv.setAttribute('style', 'padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');
+							previewDiv.setAttribute('class', 'comment sp3previewDiv');
+							previewCont.appendChild( previewDiv );
+						}
+						previewDiv.innerHTML = previewTextArea.value.replace(/\n/g,'<br>');
+					}
+					e.preventDefault();
+					return false;
+					});
+				}
+    		}
+		});
 	},
 });
 	

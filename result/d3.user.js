@@ -134,12 +134,7 @@ this.processPost(posts[i]);if(this.config.moderation.value)
 {value[id]=undefined;content.show();}else
 {value[id]=Number(new Date());content.hide();}
 _control.update();}
-d3.config.save();return false;}});d3.addModule({type:"Содержание",name:'Кнопка цитатника',author:'crimaniak',url:'http://quotes-dirty.ru/write',config:{active:{type:'checkbox',value:true}},run:function()
-{var i;for(i=0;i<d3.content.comments.length;++i)with(d3.content.comments[i])
-$j('.vote',getFooter()).before
-('<a href="'
-+URL.make(this.url).add('username',userName).add('text',getContent().text()).add('source',d3.page.inbox?'':document.location).hash(d3.page.inbox?'':id)
-+'">в цитатник</a>');}});d3.addModule({type:"Социализм",name:'Анонимные авторы постов',author:'crimaniak',config:{posts:{type:'checkbox',value:false,caption:"Анонимные авторы постов"},comments:{type:'checkbox',value:false,caption:"Анонимные комментаторы"},mark:{type:'text',value:'?????',caption:"Менять никнеймы на:"}},run:function()
+d3.config.save();return false;}});d3.addModule({type:"Социализм",name:'Анонимные авторы постов',author:'crimaniak',config:{posts:{type:'checkbox',value:false,caption:"Анонимные авторы постов"},comments:{type:'checkbox',value:false,caption:"Анонимные комментаторы"},mark:{type:'text',value:'?????',caption:"Менять никнеймы на:"}},run:function()
 {if(this.config.posts.value)
 $j('.post .dd a[href^="/user/"]').html(this.config.mark.value);var mark=this.config.mark.value;if(this.config.comments.value)
 {$j('.comment .c_footer a[href^="/user/"]').html(mark);d3.xpath.each("//div[contains(@class,'c_body')]//text()",function(node)
@@ -213,23 +208,19 @@ else dup_note='';}else{var dup_note='';}
 dup_output='<table cellspacing="0" cellpadding="0" border="0"><tr><td align="center" valign="top" style="padding-right:10px">'+dup_userpic+'<span style="color:#444">№'+dup_user_id+'</span><br>'+dup_parent+'<div style="margin-top:10px;font-size:10px"><b>Регистрация:</b><br>'+dup_date+'</div><div style="margin-top:5px; font-size: 130%;"><b>Карма: <span style="color:'+((dup_karma>=0)?'green':'red')+'">'+dup_karma+'</span></b></div></td>';dup_output+='<td valign="top"><div style="float:left;margin-bottom:5px">'+dup_name+'<br><span style="font-size:10px"><b>'+dup_country+'</b></span></div>';dup_output+='<div style="float:right;margin-left:5px;margin-bottom:5px"><span style="display:block'+((me.config.useImages.value)?';background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png);background-repeat:no-repeat':'')+';width:36px;height:20px;line-height:20px;text-align:center;color:#fff;background-color:#999"><b>'+dup_prop+'</b></span></div>';dup_output+='<div style="clear:both">Автор <b>'+dup_posts+'</b> постов и <b>'+dup_comments+'</b> комментариев<br>Заработал'+((dup_sex=='f')?'а':'')+' голос <span style="color:#0069ac; font-size:130%;"><b>'+dup_vote+'</b></span> и рейтинг '+dup_raiting+'</div>';dup_output+='<div style="margin-top:10px">'+dup_votes_him+'</div><div id="dup_my_vote"></div><div id="dup_his_vote"></div><div style="margin-top:10px">'+dup_note+'</div></td></tr></table>';$j('#dup_current_id').val(obj.href);me.dup_getKarma(dup_output,dup_user_id,dup_sex,dup_user_name);});}},dup_getKarma:function(dup_text,dup_user_id,dup_sex,dup_user_name){if(dup_user_id!=d3.user.id){var url='/karmactl';var data='view='+d3.user.id;$j.post(url,data,function(data){var dup_temp=data;if(dup_temp.indexOf('{"uid":"'+dup_user_id+'"')>0){dup_temp=dup_temp.split('{"uid":"'+dup_user_id+'"')[1].split('","login"')[0].split('"');dup_temp=dup_temp[dup_temp.length-1];dup_temp='<b>'+((dup_sex=='f')?'Её':'Его')+' оценка вас: <span style="color:'+((dup_temp>0)?'green">+':'red">')+dup_temp+'</span></b>';$j('#dup_his_vote').html(dup_temp);}else{$j('#dup_his_vote').html('<span style="color:#999"><b>Е'+((dup_sex=='f')?'ё':'го')+' оценок нет в вашей карме</b></span>');}});var url='/karmactl';var data='view='+dup_user_id;$j.post(url,data,function(data){var dup_temp=data;if(dup_temp.indexOf('{"uid":"'+d3.user.id+'"')>0){dup_temp=dup_temp.split('{"uid":"'+d3.user.id+'"')[1].split('","login"')[0].split('"');dup_temp=dup_temp[dup_temp.length-1];dup_temp='<b>Ваша оценка '+((dup_sex=='f')?'её':'его')+': <span style="color:'+((dup_temp>0)?'green">+':'red">')+dup_temp+'</span></b>';$j('#dup_my_vote').html(dup_temp);}else{$j('#dup_my_vote').html('<span style="color:#999"><b>Ваших оценок нет в е'+((dup_sex=='f')?'ё':'го')+' карме</b></span>');}});}
 $j('#dup_data_td').html(dup_text);}});d3.addModule({type:"Содержание",name:'Показывать все комментарии в посте',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
 {if(!d3.page.inbox&&d3.page.onlyNew)d3.window.commentsHandler.switchNew();},});d3.addModule({type:"Содержание",name:'Добавлять предпросмотр для комментариев',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
-{var previewCont=document.querySelector('div.b-textarea_editor');if(previewCont)
-{newLink=document.createElement('a');newLink.href='#';newLink.id='prevLink';newLink.innerHTML='Preview';previewCont.appendChild(newLink);if(document.location.href.indexOf('/inbox/write/')==-1)
-{$j('#prevLink').click(function(e){var previewCont=document.querySelector('div.b-comments_reply_block');var previewTextArea=document.querySelector('textarea.i-form_text_input');if(previewTextArea&&previewCont)
-{var previewDiv=document.getElementById('sp3previewDiv');if(previewDiv==null)
-{previewDiv=document.createElement('div');previewDiv.setAttribute('style','padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');previewDiv.setAttribute('id','sp3previewDiv');previewDiv.setAttribute('class','comment');previewCont.appendChild(previewDiv);}
+{var previewCont=document.querySelector('div.b-comments_reply_block');if(previewCont)
+{var previewInput=document.createElement('input');previewInput.type='image';previewInput.src='/i/probe.gif';previewInput.setAttribute('style','margin-right: 10px;');var yarrButton=previewCont.querySelector('input.b-comments_reply_block_yarrr');$j(previewInput).insertBefore(yarrButton);$j(yarrButton).click(function(e){e.target.parentNode.removeChild(e.target.previousSibling);return true;});$j(previewInput).click(function(e){var previewCont=e.target.parentNode.parentNode;var previewTextArea=previewCont.querySelector('textarea.i-form_text_input');if(previewTextArea&&previewCont)
+{var previewDiv=previewCont.querySelector('div.sp3previewDiv');if(previewDiv==null)
+{previewDiv=document.createElement('div');previewDiv.setAttribute('style','padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');previewDiv.setAttribute('class','comment sp3previewDiv');previewCont.appendChild(previewDiv);}
 previewDiv.innerHTML=previewTextArea.value.replace(/\n/g,'<br>');}
-e.preventDefault();return false;});$j('input.b-comments_reply_block_yarrr').click(function(e){var previewDiv=document.getElementById('sp3previewDiv');if(previewDiv)
-{previewDiv.parentNode.removeChild(previewDiv);}
-return true;});}
-else
-{$j('#prevLink').click(function(e){var previewCont=document.getElementById('js-new_inbox_form');var previewTextArea=document.getElementById('js-new_inbox_body');if(previewTextArea&&previewCont)
-{var previewDiv=document.getElementById('sp3previewDiv');if(previewDiv==null)
-{previewDiv=document.createElement('div');previewDiv.setAttribute('style','padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');previewDiv.setAttribute('id','sp3previewDiv');previewDiv.setAttribute('class','comment');previewCont.appendChild(previewDiv);}
+e.preventDefault();return false;});}
+document.addEventListener("DOMNodeInserted",function(e){if(e.target.tagName=="DIV")
+{var previewCont=e.target.querySelector('div.b-textarea_editor');if(previewCont)
+{var previewInput=document.createElement('input');previewInput.type='image';previewInput.src='/i/probe.gif';previewInput.setAttribute('style','margin-right: 10px;');var yarrButton=e.target.querySelector('input.b-comments_reply_block_yarrr');$j(previewInput).insertBefore(yarrButton);$j(previewInput).click(function(e){var previewCont=e.target.parentNode.parentNode.parentNode;var previewTextArea=previewCont.querySelector('textarea.i-form_text_input');if(previewTextArea&&previewCont)
+{var previewDiv=previewCont.querySelector('div.sp3previewDiv');if(previewDiv==null)
+{previewDiv=document.createElement('div');previewDiv.setAttribute('style','padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');previewDiv.setAttribute('class','comment sp3previewDiv');previewCont.appendChild(previewDiv);}
 previewDiv.innerHTML=previewTextArea.value.replace(/\n/g,'<br>');}
-e.preventDefault();return false;});$j('#js-new_inbox_submit').click(function(e){var previewDiv=document.getElementById('sp3previewDiv');if(previewDiv)
-{previewDiv.parentNode.removeChild(previewDiv);}
-return true;});}}},});d3.addModule({type:"Содержание",name:'Раскрытие картинок по клику на ссылке',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
+e.preventDefault();return false;});}}});},});d3.addModule({type:"Содержание",name:'Раскрытие картинок по клику на ссылке',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
 {var me=this;this.imagesPreview(document.body);d3.content.onNewComment(function(comment){me.imagesPreview(comment.container);});},clickOnImageLink:function(e)
 {var imgPreview=document.createElement('img');imgPreview.setAttribute('src',e.target.href);var imgLink=document.createElement('a');imgLink.setAttribute('href','#');imgLink.setAttribute('onclick',"this.previousSibling.setAttribute('style', this.previousSibling.getAttribute('bkpstyle')); this.parentNode.removeChild(this); return false;");imgLink.appendChild(imgPreview);e.target.parentNode.insertBefore(imgLink,e.target.nextSibling);e.target.setAttribute('bkpstyle',e.target.getAttribute('style'));e.target.setAttribute('style','display: none');e.preventDefault();return false;},imagesPreview:function(baseElement)
 {var me=this;d3.xpath.each('//a',function(a){if(a.href.match(/\.(gif|png|jpg|jpeg)$/i))
@@ -239,6 +230,8 @@ return true;});}}},});d3.addModule({type:"Содержание",name:'Раскр
 {return true;}},run:function(){if(d3.page.user)return;var me=this;$j.each($j('div.dt > a, div.c_body > a, div.dt > div.post_video > div > a'),function(index,link){var faviconUrl=me.faviconService+link.hostname;if(me.inWhiteList(link.hostname))
 {if(me.config.mouseover.value=='true'){$j(link).mouseover(function(e){me.showFavicon(e,faviconUrl);}).mouseout(me.hideFavicon);}else{$j(link).css({'padding-left':'19px','background-repeat':'no-repeat','background-image':'url('+faviconUrl+')'});}}});}});﻿
 d3.addModule({type:"Содержание",name:'Показывать посты целиком без свернуть/развернуть',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
-{if(d3.content.posts.length>0)
-{var script2run=document.createElement('script');script2run.type='text/javascript';script2run.text='postsCutHandler.max_lines = 5000;';document.body.appendChild(script2run);}},});}catch(e)
+{if(document.getElementById('js-posts_holder'))
+{var script2run=document.createElement('script');script2run.type='text/javascript';script2run.text='postsCutHandler = null;';document.body.appendChild(script2run);var cutPosts=document.querySelectorAll('div.post_cut');if(cutPosts)
+{for(var i=0;i<cutPosts.length;i++)
+{cutPosts[i].querySelector('.dt').setAttribute('style','');cutPosts[i].removeChild(cutPosts[i].querySelector('.b-cut'));}}}},});}catch(e)
 {console.log(e);}
