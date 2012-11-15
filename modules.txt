@@ -10,7 +10,6 @@ core/content.js
 extra/right.navigator.js
 extra/mark.as.read.js
 extra/ignorator.js
-extra/quotes.js
 extra/hidden.author.js
 extra/colored.rating.js
 extra/replace.username.js
