@@ -12,9 +12,8 @@ d3.addModule(
 		{
 			var script2run = document.createElement('script');
 			script2run.type = 'text/javascript';
-			script2run.text = 'postsCutHandler = null;';
-			document.body.appendChild( script2run );
-
+			script2run.text = 'postsCutHandler = { 	cutPost : function (post, animation) {},	cut : function () {},	showPost : function (post_dt) {},	addCutLink : function (post_dt) {}};';
+			document.getElementsByTagName('script')[0].appendChild( script2run );
 			var cutPosts = document.querySelectorAll('div.post_cut');
 			if ( cutPosts )
 			{
