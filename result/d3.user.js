@@ -1434,13 +1434,14 @@ d3.addModule(
 
 	run: function()
 	{
-		var vUserName = d3.user.name;
+		var vUserName = d3.window.globals.current_user; //d3.user.name;
+
 		if( vUserName != null && vUserName.length > 0 )
 		{
 			var lastCheckinTimestamp = d3.localStorGetItem('lastCheckinTimestamp', 0 );
 			var drawStuff = function()
 			{
-				var divContentLeft = document.querySelector("div.content_left");
+				var divContentLeft = document.querySelector("div.l-content_aside");
 				if ( divContentLeft )
 				{
 					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
@@ -1465,6 +1466,7 @@ d3.addModule(
 			{
 				$j(document).ready(function(){
 					$j.getScript("http://api.d3search.ru/checkin/" + vUserName, function() {
+
 						drawStuff();
 						localStorage.setItem('lastCheckinTimestamp', now);
 					});
@@ -1743,7 +1745,14 @@ d3.addModule(
 
 	run: function()
 	{
-		if(!d3.page.inbox && d3.page.onlyNew) d3.window.commentsHandler.switchNew();
+		if(!d3.page.inbox && d3.page.onlyNew)
+		{
+			// d3.window.commentsHandler.switchNew();
+			var script2run = document.createElement('script');
+			script2run.type = 'text/javascript';
+			script2run.text = 'commentsHandler.switchNew();';
+			document.body.appendChild( script2run );
+		}
 	},
 	
 });
@@ -1965,7 +1974,7 @@ d3.addModule(
 d3.addModule(
 {
 	type: "Содержание",
-	name: 'Показывать посты целиком без свернуть/развернуть',
+	name: 'Показывать посты целиком без "развернуть"',
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true}},
 
