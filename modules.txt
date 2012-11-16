@@ -1,12 +1,3 @@
-core/crc32.js
-core/regexp.escape.js
-core/tabsheets.js
-core/jquery.unselectable.min.js
-core/url.js
-core/item.js
-core/post.js
-core/comment.js
-core/content.js
 extra/right.navigator.js
 extra/mark.as.read.js
 extra/ignorator.js

@@ -21,6 +21,7 @@ var d3=
 {
 	modules: [],
 	modulesByName : {},
+	contentModules: [],
 	/// Search module by name
 	getModule: function(name){
 		return (this.modulesByName[name] == undefined) ? null : this.modulesByName[name];
@@ -67,19 +68,27 @@ var d3=
 	//shortcut for backward compability
 	localStorGetItem: function(itemName, defaultValue){ return this.localStorageGetItem(itemName, defaultValue);},
 	
-	/// Get element(s) of page
-	get:
-	{
-		logoutLink: function(){return $j('#js-header_logout_link');},
-		leftNavigation: function(){return $j('.b-footer_nav_section_user');},
-		items: function(){return d3.content.items();}
-	},
 	/// JSON helper
 	json:
 	{
 		encode: function(value) {return (JSON.stringify != undefined ? JSON.stringify:JSON.encode)(value);},
 		decode: function(value)	{return (JSON.parse != undefined ? JSON.parse:JSON.decode)(value);}		
 	},
+	
+	/// Add content module
+	addContentModule: function(mask, module)
+	{
+		this.contentModules.push({mask:mask, module: module});
+	},
+	
+	initContentModules: function()
+	{
+		this.contentModules.forEach(function(item){
+			if(document.location.hostname.match(item.mask))
+				item.module.run();
+		});
+	},
+	
 	/// Add and run d3 module
 	addModule: function(module)
 	{
@@ -103,7 +112,7 @@ var d3=
 		/// Add link to config box
 		run: function()
 		{
-			d3.get.leftNavigation().append('<li><a href="#" id="configLink"><span>Сервиспак</span></a></li>');
+			d3.content.addConfigLink('configLink');
 			$j('#configLink').click(function(event){d3.config.getBox().show();return false;});
 		},
 		/// Init and return config box
@@ -276,23 +285,15 @@ var d3=
 	
 	initCore: function()
 	{
-		this.collectInfo();
 		this.getOriginal();
+		this.initContentModules();
+		this.user = this.content.findUser();
 		this.config.load();
 		this.addModule(d3.config);
 		
 		this.window.d3=this;
 	},
-	// collect d3-specific info
-	collectInfo: function()
-	{
-		var e=$j('.header_tagline_inner>a[href^="http://dirty.ru/users/"]');
-		if(e.length)
-		{
-			this.user.id=Math.floor(e.attr('href').replace(/[^\d]+/,''));
-			this.user.name=e.get(0).firstChild.data;
-		}
-	},
+
 	/// Get original window and document objects
 	getOriginal: function()
 	{
@@ -331,12 +332,13 @@ var d3=
 	}
 };
 
-d3.initCore();
+// @corelibs@
+// @contentModules@
 
+d3.initCore();
 
 try
 {
-
 // @modules@
 }catch(e)
 {

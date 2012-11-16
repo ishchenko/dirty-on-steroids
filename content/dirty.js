@@ -1,13 +1,25 @@
-/**
- * 
- */
+// content interface module for dirty.ru
 
-// content interface module
-d3.addModule(
+d3.page=
+{
+	inbox: document.location.pathname.substr(0,10)=="/my/inbox/",
+	onlyNew: (document.location.href.indexOf('#new') > -1),
+	user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0)
+};
+
+/// Get element(s) of page
+d3.get =
+{
+	logoutLink: function(){return $j('#js-header_logout_link');},
+	leftNavigation: function(){return $j('.left_col_nav');},
+	items: function(){return d3.content.items();}
+};
+
+d3.addContentModule(/(.*\.)?dirty.ru/i,
 {
 	type: "Ядро",
 	author: 'crimaniak',
-	name: 'Интерфейс к содержимому страницы',
+	name: 'Интерфейс к содержимому dirty.ru',
 	posts: [],
 	comments: [],
 	listeners: [],
@@ -30,13 +42,6 @@ d3.addModule(
 					me.listeners[i](comment);
 			}
 		});
-		
-		d3.page=
-		{
-			inbox: document.location.pathname.substr(0,10)=="/my/inbox/",
-			onlyNew: (document.location.href.indexOf('#new') > -1),
-			user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0)
-		};
 	},
 	
 	countItems: function()
@@ -60,5 +65,21 @@ d3.addModule(
 			processor(items[i]);
 		
 		this.onNewComment(processor);
+	},
+	
+	addConfigLink: function(id)
+	{
+		d3.get.leftNavigation().append($j('<li><a href="#" id="'+id+'"><span>Сервис-пак</span></a></li>'));
+	},
+	
+	// collect user info
+	findUser: function()
+	{
+		var e=$j('.header_tagline_inner>a[href^="http://dirty.ru/users/"]');
+		if(e.length)
+		{
+			return {id: Math.floor(e.attr('href').replace(/[^\d]+/,'')), name: e.get(0).firstChild.data};
+		}
+		return {};
 	}
 });
