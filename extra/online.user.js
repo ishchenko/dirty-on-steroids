@@ -8,13 +8,14 @@ d3.addModule(
 
 	run: function()
 	{
-		var vUserName = d3.user.name;
+		var vUserName = d3.window.globals.current_user; //d3.user.name;
+
 		if( vUserName != null && vUserName.length > 0 )
 		{
 			var lastCheckinTimestamp = d3.localStorGetItem('lastCheckinTimestamp', 0 );
 			var drawStuff = function()
 			{
-				var divContentLeft = document.querySelector("div.content_left");
+				var divContentLeft = document.querySelector("div.l-content_aside");
 				if ( divContentLeft )
 				{
 					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
@@ -39,6 +40,7 @@ d3.addModule(
 			{
 				$j(document).ready(function(){
 					$j.getScript("http://api.d3search.ru/checkin/" + vUserName, function() {
+
 						drawStuff();
 						localStorage.setItem('lastCheckinTimestamp', now);
 					});

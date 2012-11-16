@@ -2,7 +2,7 @@
 d3.addModule(
 {
 	type: "Содержание",
-	name: 'Показывать посты целиком без свернуть/развернуть',
+	name: 'Показывать посты целиком без "развернуть"',
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true}},
 
