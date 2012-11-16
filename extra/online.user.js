@@ -7,10 +7,8 @@ d3.addModule(
 	config: {active:{type:'checkbox',value:true}},
 
 	run: function()
-	{
-		var vUserName = d3.window.globals.current_user; //d3.user.name;
-
-		if( vUserName != null && vUserName.length > 0 )
+	{		
+		if( d3.user.name != null && d3.user.name.length > 0 )
 		{
 			var lastCheckinTimestamp = d3.localStorGetItem('lastCheckinTimestamp', 0 );
 			var drawStuff = function()
@@ -39,7 +37,7 @@ d3.addModule(
 			if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
 			{
 				$j(document).ready(function(){
-					$j.getScript("http://api.d3search.ru/checkin/" + vUserName, function() {
+					$j.getScript("http://api.d3search.ru/checkin/" + d3.user.name, function() {
 
 						drawStuff();
 						localStorage.setItem('lastCheckinTimestamp', now);

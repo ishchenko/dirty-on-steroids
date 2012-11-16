@@ -8,9 +8,8 @@ d3.addModule(
 
 	run: function()
 	{
-		if(!d3.page.inbox && d3.page.onlyNew)
+		if(d3.page.onlyNew)
 		{
-			// d3.window.commentsHandler.switchNew();
 			var script2run = document.createElement('script');
 			script2run.type = 'text/javascript';
 			script2run.text = 'commentsHandler.switchNew();';
