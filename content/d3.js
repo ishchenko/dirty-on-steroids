@@ -107,12 +107,7 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	// collect user info
 	findUser: function()
 	{
-		var e=$j('.header_tagline_inner>a[href^="http://dirty.ru/users/"]');
-		if(e.length)
-		{
-			return {id: Math.floor(e.attr('href').replace(/[^\d]+/,'')), name: e.get(0).firstChild.data};
-		}
-		return {};
+		return {id: 0, name: d3.window.globals.current_user};
 	},
 	
 	createLeftNavigator: function()
