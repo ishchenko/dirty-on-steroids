@@ -22,6 +22,7 @@ var d3=
 	modules: [],
 	modulesByName : {},
 	contentModules: [],
+	runTimeTotal: 0,
 	/// Search module by name
 	getModule: function(name){
 		return (this.modulesByName[name] == undefined) ? null : this.modulesByName[name];
@@ -98,7 +99,13 @@ var d3=
 		this.modulesByName[module.name] = module;
 		this.config.addModule(module);
 		if(module.config == undefined || module.config.active == undefined || module.config.active.value)
+		{
+			var timeBefore = new Date();
 			module.run();
+			var moduleRunTime = (new Date()) - timeBefore;
+			this.runTimeTotal += moduleRunTime;
+			if(console)console.log( module.name + ": " + moduleRunTime + "ms" );
+		}
 	},
 	// Config core module
 	config:
@@ -344,3 +351,5 @@ try
 {
 	if(console)console.log(e);
 }
+
+if(console)console.log('runtime: ' + d3.runTimeTotal + 'ms');
