@@ -21,3 +21,4 @@ extra/favicons.js
 extra/remove.cut.in.posts.js
 extra/gender.color.js
 extra/wide.frontpage.js
+extra/canonical.gertrudes.js
