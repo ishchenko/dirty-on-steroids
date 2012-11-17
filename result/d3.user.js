@@ -256,5 +256,19 @@ d3.addModule({type:"Содержание",name:'Показывать посты 
 {if(document.getElementById('js-posts_holder'))
 {var script2run=document.createElement('script');script2run.type='text/javascript';script2run.text='postsCutHandler = {  cutPost : function (post, animation) {}, cut : function () {}, showPost : function (post_dt) {}, addCutLink : function (post_dt) {}};';document.getElementsByTagName('script')[0].appendChild(script2run);var cutPosts=document.querySelectorAll('div.post_cut');if(cutPosts)
 {for(var i=0;i<cutPosts.length;i++)
-{cutPosts[i].querySelector('.dt').setAttribute('style','');cutPosts[i].removeChild(cutPosts[i].querySelector('.b-cut'));}}}},});}catch(e)
+{cutPosts[i].querySelector('.dt').setAttribute('style','');cutPosts[i].removeChild(cutPosts[i].querySelector('.b-cut'));}}}},});d3.addModule({type:"Социализм",name:'Цветовая дифференциация полов',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
+{if(document.getElementById('js-commentsHolder')||document.getElementById('js-posts_holder'))
+{var males=0;var females=0;var allusers=document.querySelectorAll('a.c_user');if(allusers)
+{for(var i=0;i<allusers.length;i++)
+{if(allusers[i].previousSibling.nodeValue.indexOf('Написала')>-1)
+{allusers[i].style.borderBottom='1px solid #ff78f7';females++;}
+else
+{allusers[i].style.borderBottom='1px solid #5086ff';males++;}
+allusers[i].style.textDecoration='none';}}
+var headerInner=document.querySelector('div.comments_header_threshhold_inner');if(headerInner)
+{headerInner.appendChild(document.createTextNode('м: '+males+' / ж: '+females));}}},});d3.addModule({type:"Навигация",name:'Широкая главная',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
+{var postHolder=document.getElementById('js-posts_holder');if(postHolder)
+{var banner=document.getElementById('js-random_interests');if(banner)
+{banner.parentNode.removeChild(banner);}
+postHolder.setAttribute('style','padding-right: 30px;');postHolder.setAttribute('class','');}},});}catch(e)
 {if(console)console.log(e);}
