@@ -19,3 +19,7 @@ extra/preview.for.comments.js
 extra/hotlinks.for.images.js
 extra/favicons.js
 extra/remove.cut.in.posts.js
+extra/gender.color.js
+extra/wide.frontpage.js
+extra/canonical.gertrudes.js
+extra/hotlinks.for.video.js
