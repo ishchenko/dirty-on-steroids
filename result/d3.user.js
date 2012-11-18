@@ -2392,6 +2392,7 @@ d3.addModule(
 			var newIframeDiv = document.createElement('div');
 			newIframeDiv.setAttribute('style', 'width: 640px; height: 400px;' );
 			var newDivToolbar = document.createElement('div');
+			$j(newDivToolbar).css('width','640px');
 			
 			var videoTargetId = 'vi' + (new Date()).getTime().toString();
 			thisObject.id = videoTargetId;
@@ -2405,20 +2406,13 @@ d3.addModule(
 	
 			newIframeDiv.appendChild( iframeObj );
 
-			var newA = document.createElement('a');
-			newA.href = '#';
-			newA.setAttribute('orgObj', videoTargetId );
-			newA.appendChild( document.createTextNode('закрыть плеер'));
-			$j(newA).bind('click', function (e) { var orgObj = document.getElementById( e.target.getAttribute('orgObj')); orgObj.setAttribute('style', orgObj.getAttribute('bkpstyle')); orgObj.setAttribute('class', orgObj.getAttribute('bkpclass')); orgObj.parentNode.removeChild( e.target.parentNode.parentNode ); orgObj.parentNode.setAttribute('class', orgObj.parentNode.getAttribute('bkpclass')); e.preventDefault(); return false;});
-			newDivToolbar.appendChild( newA );
-			newDivToolbar.appendChild( document.createTextNode('\u00A0'));
-			newDivToolbar.appendChild( document.createTextNode('\u00A0'));
 			newDivToolbar.appendChild( document.createTextNode(' размер видео: '));
 
-			newA = document.createElement('a');
+			var newA = document.createElement('a');
 			newA.href = '#';
 			newA.appendChild( document.createTextNode('нормальный'));
 			$j(newA).bind('click', function (e) {
+				$j(newDivToolbar).css('width','640px');
 				e.target.parentNode.nextSibling.setAttribute('style', 'width: 640px; height: 400px;' );
 			 	e.preventDefault(); return false; 
 			});
@@ -2429,10 +2423,23 @@ d3.addModule(
 			newA.href = '#';
 			newA.appendChild( document.createTextNode('большой'));
 			$j(newA).bind('click', function (e) {
+				$j(newDivToolbar).css('width','860px');
 				e.target.parentNode.nextSibling.setAttribute('style', 'width: 860px; height: 500px;' );
 			 	e.preventDefault(); return false; 
 			});
 			newDivToolbar.appendChild( newA );
+
+
+			newDivToolbar.appendChild( document.createTextNode('\u00A0'));
+			newDivToolbar.appendChild( document.createTextNode('\u00A0'));
+			newA = document.createElement('a');
+			$j(newA).css('float','right');
+			newA.href = '#';
+			newA.setAttribute('orgObj', videoTargetId );
+			newA.appendChild( document.createTextNode('закрыть плеер'));
+			$j(newA).bind('click', function (e) { var orgObj = document.getElementById( e.target.getAttribute('orgObj')); orgObj.setAttribute('style', orgObj.getAttribute('bkpstyle')); orgObj.setAttribute('class', orgObj.getAttribute('bkpclass')); orgObj.parentNode.removeChild( e.target.parentNode.parentNode ); orgObj.parentNode.setAttribute('class', orgObj.parentNode.getAttribute('bkpclass')); e.preventDefault(); return false;});
+			newDivToolbar.appendChild( newA );			
+
 			playerMainDiv.appendChild( newDivToolbar );
 			playerMainDiv.appendChild( newIframeDiv );
 
@@ -2450,6 +2457,7 @@ d3.addModule(
 		}
 	},
 });
+
 }catch(e)
 {
 	if(console)console.log(e);
