@@ -9,7 +9,6 @@ d3.addModule(
 			
 	run: function()
 	{
-		
 		with(d3.content) 
 			for(var i=0;i<posts.length;++i) // process every post
 				if(posts[i].isNew)this.processNewPost(posts[i]);
@@ -18,6 +17,7 @@ d3.addModule(
 	
 	processNewPost: function(post)
 	{
+		//d3.content.variant
 		var footer=post.getFooter();
 		var me=this;
 		var span = $j("span",footer).first();
@@ -39,7 +39,8 @@ d3.addModule(
 			post.isNew = false;
 			var content = div.parent().html();
 			content = content.replace(/(\r\n|\n|\r)/gm,"");
-			content = content.replace(/ \/ <a(.+)<\/a>(.+)<div(.+)<\/div>/,"");
+			content = content.replace(/(\s)\/ <a(.+)<\/a>/, "");
+			content = content.replace(/<div(.+)<\/div>/g,"");
 			div.parent().html(content);
 			var module = d3.getModule("Навигация по новым");
 			if(module != null){
