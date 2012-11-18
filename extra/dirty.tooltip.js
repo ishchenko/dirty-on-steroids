@@ -213,9 +213,9 @@ d3.addModule(
 				dup_output += '<div style="margin-top:10px">'+dup_votes_him+'</div><div id="dup_my_vote"></div><div id="dup_his_vote"></div><div style="margin-top:10px">'+dup_note+'</div></td></tr></table>';
 
 				$j('#dup_current_id').val(obj.href);
-				
 				//FIXME: get incoming votes				
 				//me.dup_getKarma(dup_output,dup_user_id,dup_sex,dup_user_name);
+				$j('#dup_data_td').html(dup_output);
 			});
 		}
 	},
