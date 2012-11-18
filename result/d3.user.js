@@ -799,7 +799,8 @@ d3.addModule(
 		this.scrollDaemon();
 	},
 
-	scrollDaemon: function(){
+	scrollDaemon: function(lastPosition){
+		lastPosition = typeof lastPosition !== 'undefined' ? lastPosition : -1;
 		var destination = this.scrollDestination;
 		if(this.scrolling == false){
 			scrolling = false;
@@ -808,7 +809,7 @@ d3.addModule(
 		}
 		current = $j(window).scrollTop();
 		distance = destination - current;
-		if ( Math.abs(distance) < 5 || Math.round(current+(distance/4.5)) < 0) {
+		if (current==lastPosition || Math.abs(distance) < 5 || Math.round(current+(distance/4.5)) < 0) {
 			$j(window).scrollTop(destination);
 			this.resetScrolling();
 			this.newPosition();
@@ -818,7 +819,7 @@ d3.addModule(
 			Math.round(current+(distance/4.5))
 		);
 		var me = this;
-		window.setTimeout(function(){me.scrollDaemon();}, 30);
+		window.setTimeout(function(){me.scrollDaemon(current);}, 30);
 	},
 
 	countItems: function()
