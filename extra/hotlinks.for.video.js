@@ -131,8 +131,6 @@ d3.addModule(
 			newDivToolbar.appendChild( newA );
 
 
-			newDivToolbar.appendChild( document.createTextNode('\u00A0'));
-			newDivToolbar.appendChild( document.createTextNode('\u00A0'));
 			newA = document.createElement('a');
 			$j(newA).css('float','right');
 			newA.href = '#';
