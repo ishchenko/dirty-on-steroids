@@ -76,6 +76,7 @@ this.sheets[0].show();},hideAll:function(){this.sheets.forEach(function(item){it
 .tbsHeader{padding: 1ex 2ex;border: 1px grey solid;border-right-style: none;margin-bottom: 5px;margin-right: 0;cursor: pointer;background-color: #FFFFFF;width:100px}\
 .tbsActive{position: relative;left: 1px;}\
 .tbsSheet{background-color: #FFFFFF;border: 1px solid grey;padding: 0 1ex;position: absolute; left: 140px; top:20px; z-index:-1; width:454px;height: 272px; overflow: auto;margin: 0;}\
+<<<<<<< HEAD
 </style>');(function($){$.fn.unselectable=function(){return this.each(function(){$(this).css('-moz-user-select','none').css('-khtml-user-select','none').css('user-select','none');if($.browser.msie){$(this).each(function(){this.ondrag=function(){return false}});$(this).each(function(){this.onselectstart=function(){return(false)}})}else if($.browser.opera){$(this).attr('unselectable','on')}})}})(jQuery);function URL(base)
 {this.base=base!=undefined?base:'';this.parms=[];this._hash='';};URL.prototype={setBase:function(newBase){this.base=newBase;return this;},addBase:function(part){this.base+=part;return this;},add:function(name,value){this.parms.push({name:name,value:value});return this;},hash:function(hash){this._hash=hash;return this;},toString:function()
 {return this.base+this.getParms()+(this._hash!=''?'#'+this._hash:'');},getParms:function()
@@ -258,3 +259,1592 @@ d3.addModule({type:"Содержание",name:'Показывать посты 
 {for(var i=0;i<cutPosts.length;i++)
 {cutPosts[i].querySelector('.dt').setAttribute('style','');cutPosts[i].removeChild(cutPosts[i].querySelector('.b-cut'));}}}},});}catch(e)
 {if(console)console.log(e);}
+=======
+</style>');
+
+(function($){$.fn.unselectable=function(){return this.each(function(){$(this).css('-moz-user-select','none').css('-khtml-user-select','none').css('user-select','none');if($.browser.msie){$(this).each(function(){this.ondrag=function(){return false}});$(this).each(function(){this.onselectstart=function(){return(false)}})}else if($.browser.opera){$(this).attr('unselectable','on')}})}})(jQuery);
+// URL creator helper class
+function URL(base)
+{
+	this.base = base!=undefined ? base : '';
+	this.parms = [];
+	this._hash = '';
+};
+URL.prototype=
+{
+		setBase: function(newBase){this.base=newBase;return this;},
+		addBase: function(part){this.base+=part;return this;},
+		add: function(name,value){this.parms.push({name:name,value:value});return this;},
+		hash: function(hash){this._hash=hash;return this;},
+		toString: function()
+		{
+			return this.base+this.getParms()+(this._hash!='' ? '#'+this._hash : '');
+		},
+		getParms: function()
+		{
+			var parms='';
+			var i;
+			for(i=0;i<this.parms.length;++i) with(this.parms[i])
+				parms+=(parms==''?'?':'&')+encodeURIComponent(name)+'='+encodeURIComponent(value);
+			return parms;
+		}
+};
+URL.make=function(base){return new URL(base);};
+var Item=function(o){for(var i in o) this[i]=o[i];};
+Item.prototype=
+{
+	offset: function(){return this.container.offset();},
+	height: function(){return this.container.height();},
+	getContent: function(){return $j(this.contentClass,this.container);},
+	getContentText: function(){return this.getContent().text();},
+	ratingContainer: function(){return $j('.vote_result',this.container);},
+	ratingValue: function(){return parseInt(this.ratingContainer().text(),10);},
+	getFooter: function(){return $j(this.footerClass,this.container);}
+};
+
+
+
+var Post=function(container)
+{
+	this.container=container;
+	this.container.get(0).post=this;
+	this.info=$j('.dd',this.container);
+	var a=$j('a[href*="/comments/"]',this.info);
+	this.id=parseInt(this._idMask.exec(a.length<1 ? document.location.href : a.first().attr('href'))[1],10);
+	this.userName = $j('a[href*="/user/"]',this.info).text();
+	this.isNew = $j('a[href*="#new"]',this.info).length;
+	this.isMine = this.userName==d3.user.name;
+};
+
+Post.prototype=new Item
+({
+	contentClass: '.dt',
+	footerClass: '.dd',
+	getClass: function(){return 'post';},
+	_idMask: /(\d+)\/?(#.*)?$/,
+	
+	switchBody: function()
+	{
+		with(this.container.style) if(display=='') display='none'; else display='';
+		return false;
+	}
+});
+
+d3.Post=Post;
+
+/**
+ * 
+ */
+
+var Comment=function(container)
+{
+	this.container=container;
+	container.get(0).comment=this;
+	this.id=this.container.attr('id');
+	this.isNew=this.container.hasClass('new');
+	this.isMine=this.container.hasClass('mine');
+	this.userId=parseInt(/u(\d+)/.exec(this.container.attr('class'))[1],10);
+	this.indent=parseInt(/indent_(\d+)/.exec(this.container.attr('class'))[1],10);
+	this.userName=$j('.c_user',this.container).text();
+};
+Comment.prototype=new Item
+({
+	contentClass: '.c_body',
+	footerClass: '.c_footer',
+	getAuthor: function(){return new User(this.userName,this.userId);},
+	getClass: function(){return 'comment';}
+});
+
+d3.Comment=Comment;
+// content interface module for *.d3.ru
+
+d3.page=
+{
+	inbox: document.location.pathname.substr(0,10)=="/my/inbox/",
+	onlyNew: (document.location.href.indexOf('#new') > -1),
+	user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0)
+};
+/// Get element(s) of page
+d3.get =
+{
+	logoutLink: function(){return $j('#js-header_logout_link');},
+	leftNavigation: function(){return $j('#leftNavigator');},
+	items: function(){return d3.content.items();}
+};
+
+d3.addContentModule(/(.*\.)?d3.ru/i,
+{
+	type: "Ядро",
+	author: 'crimaniak',
+	name: 'Интерфейс к содержимому d3.ru',
+	posts: [],
+	comments: [],
+	listeners: [],
+	run: function()
+	{
+		var me=this;
+
+		this.countItems();
+
+		//d3.window.d3=d3;
+		d3.content=this;
+		$j(document).bind("DOMNodeInserted",function(event)
+		{
+			var container=$j(event.target);
+			if(container.hasClass('comment'))
+			{
+				var comment=new Comment(container);
+				me.countItems();
+				for(var i=0;i<me.listeners.length;++i)
+					me.listeners[i](comment);
+			}
+		});
+		
+		this.createLeftNavigator();
+	},
+	
+	countItems: function()
+	{
+		this.posts=[];
+		this.comments=[];
+		var me=this;
+		$j('.post').each(function(){me.posts.push(new Post($j(this)));});
+		$j('.comment').each(function(){me.comments.push(new Comment($j(this)));});
+	},
+	
+	items: function(){return this.comments.length ? this.comments : this.posts.length ? this.posts : [];},
+	
+	onNewComment: function(fn){this.listeners.push(fn);},
+	
+	addItemsProcessor: function(processor)
+	{
+		var items = this.items();
+
+		for(var i=0;i<items.length;++i)
+			processor(items[i]);
+		
+		this.onNewComment(processor);
+	},
+	
+	addToHeaderNav: function(item, after)
+	{
+		var nav = $j('#js-header_nav_user_menu');
+		var list = $j('ul', nav);
+		if(after !== undefined)
+		{
+			after = $j('li:contains("'+after+'")',list);
+			console.log(after);
+			console.log(after.text());
+			item.insertAfter(after);
+		} else
+			list.append(item);
+		nav.height(nav.height()+item.height());
+		
+	},
+	
+	addToLeftNav: function(item, after)
+	{
+		var nav = $j('#leftNavigator');
+		var list = $j('ul', nav);
+		if(after !== undefined)
+		{
+			after = $j('li:contains("'+after+'")',list);
+			console.log(after);
+			console.log(after.text());
+			item.insertAfter(after);
+		} else
+			list.append(item);
+	},
+
+	addConfigLink: function(id)
+	{
+		this.addToLeftNav($j('<li class="b-header_nav_user_menu_item"><a href="#" id="'+id+'">сервис-пак</a></li>'));
+	},
+	
+	// collect user info
+	findUser: function()
+	{
+		var e=$j('.header_tagline_inner>a[href^="http://dirty.ru/users/"]');
+		if(e.length)
+		{
+			return {id: Math.floor(e.attr('href').replace(/[^\d]+/,'')), name: e.get(0).firstChild.data};
+		}
+		return {};
+	},
+	
+	createLeftNavigator: function()
+	{
+		$j('div.l-content_aside').append('<div id="leftNavigator"><ul style="list-style-type: none;"></ul></div>');
+	}
+	
+});
+
+// content interface module for dirty.ru
+
+d3.page=
+{
+	inbox: document.location.pathname.substr(0,10)=="/my/inbox/",
+	onlyNew: (document.location.href.indexOf('#new') > -1),
+	user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0)
+};
+
+/// Get element(s) of page
+d3.get =
+{
+	logoutLink: function(){return $j('#js-header_logout_link');},
+	leftNavigation: function(){return $j('.left_col_nav');},
+	items: function(){return d3.content.items();}
+};
+
+d3.addContentModule(/(.*\.)?dirty.ru/i,
+{
+	type: "Ядро",
+	author: 'crimaniak',
+	name: 'Интерфейс к содержимому dirty.ru',
+	posts: [],
+	comments: [],
+	listeners: [],
+	run: function()
+	{
+		var me=this;
+
+		this.countItems();
+
+		//d3.window.d3=d3;
+		d3.content=this;
+		$j(document).bind("DOMNodeInserted",function(event)
+		{
+			var container=$j(event.target);
+			if(container.hasClass('comment'))
+			{
+				var comment=new Comment(container);
+				me.countItems();
+				for(var i=0;i<me.listeners.length;++i)
+					me.listeners[i](comment);
+			}
+		});
+	},
+	
+	countItems: function()
+	{
+		this.posts=[];
+		this.comments=[];
+		var me=this;
+		$j('.post').each(function(){me.posts.push(new Post($j(this)));});
+		$j('.comment').each(function(){me.comments.push(new Comment($j(this)));});
+	},
+	
+	items: function(){return this.comments.length ? this.comments : this.posts.length ? this.posts : [];},
+	
+	onNewComment: function(fn){this.listeners.push(fn);},
+	
+	addItemsProcessor: function(processor)
+	{
+		var items = this.items();
+
+		for(var i=0;i<items.length;++i)
+			processor(items[i]);
+		
+		this.onNewComment(processor);
+	},
+	
+	addConfigLink: function(id)
+	{
+		d3.get.leftNavigation().append($j('<li><a href="#" id="'+id+'"><span>Сервис-пак</span></a></li>'));
+	},
+	
+	// collect user info
+	findUser: function()
+	{
+		var e=$j('.header_tagline_inner>a[href^="http://dirty.ru/users/"]');
+		if(e.length)
+		{
+			return {id: Math.floor(e.attr('href').replace(/[^\d]+/,'')), name: e.get(0).firstChild.data};
+		}
+		return {};
+	}
+});
+
+
+d3.initCore();
+
+try
+{
+// Hавигатор справа
+d3.addModule(
+{
+	type: "Навигация",
+	name: 'Навигация по новым',
+	author: 'crimaniak, Stasik0',
+	config: {
+		active:{type:'checkbox',value:true},
+		smoothScroll:{type:'checkbox',value:true,caption:'Плавная прокрутка'}
+	},
+	newItems: [],
+	mineItems: [],
+	nextMine: null,
+	nextNew: null,
+	prevNew: null,
+	currentItem: null,
+	scrolling: false,
+	scrollDestination: 0,
+	run: function()
+	{
+		if(!this.countItems()) return;
+		
+		this.drawButtons();
+		
+		var me=this;
+		$j(window).scroll(function(event){me.onScroll();});
+		$j('#home').mousedown(function(e){e.preventDefault(); me.scrollToPosition(0);});
+		$j('#down').mousedown(function(e){
+			e.preventDefault(); 
+			me.scrollToItem(me.newItems[me.nextNew]); 
+		});
+		$j('#up').mousedown(function(e){
+			e.preventDefault(); 
+			me.scrollToItem(me.newItems[me.prevNew]);
+		});
+		$j('#mine').mousedown(function(e){
+			e.preventDefault(); 
+			me.scrollToItem(me.mineItems[me.nextMine]);
+		});
+		
+		d3.content.onNewComment(function(comment)
+		{
+			me.countItems();
+			me.newPosition();
+		});
+		
+		this.newPosition();
+	},
+
+	scrollToPosition: function(position)
+	{
+		if(this.config.smoothScroll.value){
+			this.smoothScroll(position);
+		}else{
+			$j(window).scrollTop(
+				position
+			);
+			this.resetScrolling();
+		}
+	},
+
+	resetScrolling: function() {
+		this.scrolling = false;
+	},
+
+	smoothScroll: function(destination){
+		this.scrollDestination = destination;
+		this.scrolling = true;
+		this.scrollDaemon();
+	},
+
+	scrollDaemon: function(lastPosition){
+		lastPosition = typeof lastPosition !== 'undefined' ? lastPosition : -1;
+		var destination = this.scrollDestination;
+		if(this.scrolling == false){
+			scrolling = false;
+			this.newPosition();
+			return;
+		}
+		current = $j(window).scrollTop();
+		distance = destination - current;
+		if (current==lastPosition || Math.abs(distance) < 5 || Math.round(current+(distance/4.5)) < 0) {
+			$j(window).scrollTop(destination);
+			this.resetScrolling();
+			this.newPosition();
+			return;
+		}
+		$j(window).scrollTop(
+			Math.round(current+(distance/4.5))
+		);
+		var me = this;
+		window.setTimeout(function(){me.scrollDaemon(current);}, 30);
+	},
+
+	countItems: function()
+	{
+		var items = d3.get.items();
+		this.newItems=[];
+		this.mineItems=[];
+		// select new and mine items
+		for(var i=0;i<items.length;++i)
+		{
+			if(items[i].isNew) this.newItems.push(items[i]);
+			if(items[i].isMine)this.mineItems.push(items[i]);
+		}
+		return true;
+	},
+
+	scrollToItem: function(item)
+	{
+		if(item==null) return false;
+		
+		var highlightColor = "#fff48d";
+		var colorToHex =  function(color) {
+		    if (color.substr(0, 1) === '#') {
+			return color;
+		    }
+		    if(color.substr(0, 3) !== "rgb"){
+			return "unknown";
+		    }
+
+			if(color.substr(0, 4) === "rgba"){
+				var digits = /(.*?)rgba\((\d+), (\d+), (\d+), (\d+)\)/.exec(color);
+				
+				var red = parseInt(digits[2]);
+				var green = parseInt(digits[3]);
+				var blue = parseInt(digits[4]);
+				var alpha = parseInt(digits[5]);
+				return '#'+(256 + red).toString(16).substr(1) +((1 << 24) + (green << 16) | (blue << 8) | alpha).toString(16).substr(1);
+			}else if(color.substr(0, 3) === "rgb"){
+				var digits = /(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);
+				
+				var red = parseInt(digits[2]);
+				var green = parseInt(digits[3]);
+				var blue = parseInt(digits[4]);
+				
+				var rgb = blue | (green << 8) | (red << 16);
+				return digits[1] + '#' + rgb.toString(16);
+			}
+			return "unknown";
+		};
+		this.scrolling=true;
+		this.scrollToPosition(Math.floor(item.offset().top+(item.height()-$j(window).height())/2));
+		this.currentItem=item;
+		this.newPosition();
+		/*
+		item.getContent().get(0).style.opacity=0.1;
+		item.getContent().animate({opacity: 1},400);
+		*/
+		var content=item.container;
+		var inner = $j(".comment_inner", content);
+		if(inner!=null && inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
+			content = inner;
+		}
+		var oldColor=content.css('background-color');
+		if(colorToHex(oldColor) != highlightColor){
+			window.setTimeout(function(){content.css('background-color',oldColor);}, 650);
+			content.css('background-color',highlightColor);
+		}
+	},
+	
+	getCurrentOffset: function() {return this.currentItem ? this.currentItem.offset().top+this.currentItem.height()/2 : $j(window).scrollTop()+$j(window).height()/2;},
+	
+	onScroll: function()
+	{
+		if(!this.scrolling){
+			this.currentItem=null;
+		}
+		this.newPosition();
+	},
+	
+	newPosition: function()
+	{
+		var offset = this.getCurrentOffset();
+		//--handling own posts
+		for(i=0; i<this.mineItems.length && this.mineItems[i].offset().top<offset; ++i);
+		$j("#mine").text(this.mineItems.length-i);
+		this.nextMine = i%this.mineItems.length;
+
+		//--handling new posts
+		//scroll down until one post's top is below the viewpoint
+		for(i=0; i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
+		//go one post up if possible
+		if(i>0)i--;
+		//item is the last active element which top is above the current view
+		var item = this.newItems[i];
+		if(item){
+			if(item.offset().top+item.height() > offset && item.offset().top <= offset){
+				//we are currently viewing the item
+				this.prevNew = (i>0) ? i-1 : null;
+				$j("#up").text(i);
+				this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
+				$j("#down").text(this.newItems.length-1-i);
+			}else if(item.offset().top > offset){
+				//the item is below the current position (this is the first one)
+				this.prevNew = null;
+				$j("#up").text(0);
+				this.nextNew = i;
+				$j("#down").text(this.newItems.length-i);
+			}else{
+				//item is above the current position
+				this.prevNew = i;
+				$j("#up").text(i+1);
+				this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
+				$j("#down").text(this.newItems.length-1-i);
+			}
+		}else{
+			$j("#up").text(0);
+			$j("#down").text(0);
+		}
+	},
+		
+	drawButtons: function()
+	{
+			document.body.insertBefore(d3.newDiv(
+			{style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'}
+			,innerHTML:'<div id="home" title="В начало страницы" style="height:36px; width:36px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204632-bb73ad97827cd6adc734021bf511df3b.png); cursor: pointer; cursor: hand; text-align:center;"></div>'
+					+  '<div id="up" title="Предыдущий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-204624-e6ddb7dc3df674a675eb1342db0b529a.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
+					+  '<div id="mine" title="Следующий мой" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205202-7f74bf0a90bf664faa43d98952774908.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
+					+  '<div id="down" title="Следующий новый" style="height:22px; width:24px; color:#999999; background-image: url(http://pit.dirty.ru/dirty/1/2010/10/30/28281-205411-ceb943a765914621d0558fed8e5c5400.png); cursor: pointer; cursor: hand; text-align:center; padding: 14px 0px 0px 12px;"></div>'
+			}), document.body.firstChild);
+	}
+});
+
+
+// Mark as read button
+d3.addModule(
+{
+	type: "Навигация",
+	name: 'Помечать как прочитанное',
+	author: 'Stasik0',
+	config: {active:{type:'checkbox',value:true}},
+			
+	run: function()
+	{
+		
+		with(d3.content) 
+			for(var i=0;i<posts.length;++i) // process every post
+				if(posts[i].isNew)this.processNewPost(posts[i]);
+		
+	},
+	
+	processNewPost: function(post)
+	{
+		var footer=post.getFooter();
+		var me=this;
+		var span = $j("span",footer).first();
+		var url = $j('a',span).eq(1).attr("href");
+		span.append('<div class="markasread" style="display:inline-block;"><a href="#" title="Пометить комментарии как прочтённые" style="text-decoration:none; font-weight: bold">[x]</a></div>');
+		$j('.markasread',footer).click(function(e){e.preventDefault(); return me.processClick(url,post);});
+	},
+	
+	processClick: function(url, post)
+	{
+		var div = $j('.markasread', post.getFooter());
+		$j("a", div).first().remove();
+		div.append('<img alt="" src="data:image/gif;base64,R0lGODlhEAALAPQAAP///wAAANra2tDQ0Orq6gYGBgAAAC4uLoKCgmBgYLq6uiIiIkpKSoqKimRkZL6+viYmJgQEBE5OTubm5tjY2PT09Dg4ONzc3PLy8ra2tqCgoMrKyu7u7gAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA" />');
+		$j.ajax({
+        	  	type: "HEAD",
+        	  	async: true,
+		  	url: url,
+		}).done(function () {
+			post.isNew = false;
+			var content = div.parent().html();
+			content = content.replace(/(\r\n|\n|\r)/gm,"");
+			content = content.replace(/ \/ <a(.+)<\/a>(.+)<div(.+)<\/div>/,"");
+			div.parent().html(content);
+			var module = d3.getModule("Навигация по новым");
+			if(module != null){
+				module.countItems.call(module);
+				module.newPosition.call(module);
+			}
+		});
+		return false;
+	}
+});
+
+
+// Ignore posts by ...
+d3.addModule(
+{
+	type: "Социализм",
+	name: 'Игноратор',
+	author: 'crimaniak,Stasik0',
+	config: {active:{type:'checkbox',value:true}
+			,ignored:{type:'hidden',value:{}}
+			,hideAtAll:{type:'checkbox',value:true,caption:'скрывать посты совсем'}
+			,moderation:{type:'checkbox',value:false,caption:'модерация от d3search'}
+//			,postByAuthor:{type:'text'}
+//			,commentByAuthor:{type:'text'}
+			},
+			
+	run: function()
+	{
+		if(Math.random()<0.05)
+		{
+			var rubicon=Number(new Date())-5184000000;
+			for(var i in this.config.ignored)
+				if(this.config.ignored[i]<rubicon)
+					this.config.ignored[i]=undefined;
+		}
+		
+		with(d3.content) if(comments.length==0 && posts.length>0) // Main page
+			for(var i=0;i<posts.length;++i) // process every post
+				this.processPost(posts[i]);
+		
+		if(this.config.moderation.value)
+		{
+		    var moderation = document.createElement('script');
+		    moderation.setAttribute('type', 'text/javascript');
+		    moderation.setAttribute('src', 'http://api.d3search.ru/moderation/list?t=' + new Date().getTime());
+		    document.getElementsByTagName('head')[0].appendChild(moderation);
+		}
+	},
+	
+	processPost: function(post)
+	{
+		var footer=post.getFooter();
+		var me=this;
+		var id=''+post.id;
+	
+		if(this.config.ignored.value[id]!=undefined)
+			(this.config.hideAtAll.value  ? post.container : $j('div.dt',post.container)).hide();
+		
+		footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold">[игнорировать]</a>');
+		$j('.ignorator',footer).click(function(){return me.processClick(post);});
+	},
+	
+	processClick: function(post)
+	{
+		var content=$j('div.dt',post.container);
+		var id=''+post.id;
+
+		with(this.config.ignored)
+		{
+			if(value[id]!=undefined)
+			{
+				value[id]=undefined;
+				content.show();
+			}else
+			{
+				value[id]=Number(new Date());
+				content.hide();
+			}
+			_control.update();
+		}
+		d3.config.save();
+		return false;
+	}
+});
+
+
+// Hidden authors
+d3.addModule(
+{
+	type: "Социализм",
+	name: 'Анонимные авторы постов',
+	author: 'crimaniak',
+	config: {posts:   {type:'checkbox',value:false,caption:"Анонимные авторы постов"}
+			,comments:{type:'checkbox',value:false,caption:"Анонимные комментаторы"}
+			,mark:	  {type:'text',value:'?????',caption:"Менять никнеймы на:"}
+			},
+	run: function()
+	{
+		// anonymize posts 
+		if(this.config.posts.value)
+			$j('.post .dd a[href^="/user/"]').html(this.config.mark.value);
+
+		var mark=this.config.mark.value;
+		
+		// anonymize comments
+		if(this.config.comments.value)
+		{
+			// footers
+			$j('.comment .c_footer a[href^="/user/"]').html(mark);
+			// bodies
+			d3.xpath.each("//div[contains(@class,'c_body')]//text()", //text()[matches(string(),'[^ ]+:[\\s\\S]*')]", 
+					function(node)
+					{
+						if(node.data != undefined) ///< opera fix
+							node.data=node.data.replace(/^[^ ]+:/,mark+':');
+					});
+
+			// remove ?????: from answer form
+			var searchMask=new RegExp(RegExp.escape(mark)+': ','g');
+			with(d3.window.commentsHandler)
+			{
+				var old=toggleCommentForm;
+				toggleCommentForm=function(button,id)
+				{
+					old(button,id);
+					with($j('#comment_textarea').get(0))
+						value=value.replace(searchMask,'');
+				};
+			}
+		}
+		
+		// Don't work! I don't know why.
+		// replace ????? back to nickname before sending form
+		/*
+		var mask2=new RegExp('^'+RegExp.escape(mark)+':','g');
+		$j('#js-comments_reply_form').submit(function(event)
+			{
+				with(event.target)
+				{
+					var r=elements['replyto'].value;
+					if(r)
+					{
+						var u=$j('#'+r).get(0).comment.userName;
+						elements['comment'].value=elements['comment'].value.replace(mask2,u+':');
+					}
+				}
+			});
+			*/
+	}
+});
+// Цветной рейтинг
+d3.addModule(
+{
+	type: "Социализм",
+	name: 'Цветной рейтинг',
+	author: 'crimaniak',
+	config: 
+		{active:{type:'checkbox',value:true}
+		,ratingPower: {type:'text',value:1,caption:'Коэффициент увеличения шрифта'}
+		},
+	colors:
+		[{l:-250, c:'#993333'}
+		,{l:-150, c:'#aa5533'}
+		,{l:-100, c:'#aa7733'}
+		,{l: -42, c:'#bb8833'}	
+		,{l:  -5, c:'#aaaa33'}
+		,{l:  64, c:'#666666'}
+		,{l: 156, c:'#333333'}
+		,{l: 255, c:'#000000'}
+		,{l: 512, c:'#990000'}
+		,{l: 999, c:'#cc0000'}
+		,{l:64000,c:'#ff0000'}
+		],
+		
+	run: function()
+	{
+		var items=d3.get.items();
+		
+		for(var i=0;i<items.length;++i)
+			this.process(items[i]);
+		
+		//d3.content.onNewComment(this.process);
+	},
+
+	process: function(item)
+	{
+		var container=item.ratingContainer();
+		var rating=item.ratingValue();
+		
+		if(rating > 0)
+			container.css('font-size', Math.min(16,9+Math.round(0.3*Math.sqrt(Math.abs(rating*this.config.ratingPower.value)))) + "px");
+
+		for(var i=0;i<this.colors.length;++i) with(this.colors[i])
+			if(rating < l)
+			{
+				container.css('color',c);
+				break;
+			}
+	}
+});
+// Replace %username% to username
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Замена %username%',
+	author: 'crimaniak',
+	config: {active:{type:'checkbox',value:false}},
+	run: function()
+	{
+		if(d3.user.name==null) return;
+		
+		d3.xpath.each("//body//text()[contains(string(),'%username%')]", 
+			function(node)
+			{
+				if(node.data != undefined) ///< opera fix
+					node.data=node.data.replace('%username%',d3.user.name);
+			});
+	}
+});
+
+// Redirect search to d3search.ru
+d3.addModule(
+{
+	type: "Поиск",
+	name: 'Поиск на d3search.ru',
+	author: 'crimaniak',
+	config: {active:{type:'checkbox',value:true}},
+	run: function()
+	{
+		$j('form[name="simple-search"]').attr('action','http://d3search.ru/search');
+	}
+});
+
+// Спрятать КДПВ
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Спрятать картинки в постах',
+	author: 'crimaniak',
+	config: {active:{type:'checkbox',value:false}},
+		
+	run: function()
+	{
+		var items=d3.content.posts;
+		
+		if(items.length>1)
+			for(var i=0;i<items.length;++i)
+				this.process(items[i]);
+	},
+
+	process: function(item)
+	{
+		var img=$j('p img',item.container).first();
+		var p=img.parent();
+		var opener=$j('<a href="#">Показать картинку</a>');
+		img.css('display','none');
+		opener.prependTo(p);
+		p.click(function(){img.css('display','');opener.remove();return false;});
+	}
+});
+// Update link in config
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Линк на последнюю версию',
+	author: 'crimaniak',
+	config: {link:{type:'html',value:'<a href="https://github.com/crimaniak/dirty-on-steroids/raw/master/result/d3.user.js">Установить последнюю версию скрипта</a>'}},
+	run: function(){}
+});
+// Спрятать рейтинг постов
+d3.addModule(
+{
+	type: "Социализм",
+	name: 'Пряталки рейтинга',
+	author: 'crimaniak',
+	config:
+		{postRating:   {type:'checkbox',value:false,caption:'Спрятать рейтинг постов'}
+		,commentRating:{type:'checkbox',value:false,caption:'Спрятать рейтинг комментариев'}
+		,voteButtons:  {type:'checkbox',value:false,caption:'Спрятать кнопки голосования'}
+		},
+		
+	run: function()
+	{
+		with(this.config)
+		{
+			if(postRating.value ) $j('.post .vote_result').html('');
+			if(commentRating.value) $j('.c_vote .vote_result').html('');
+			if(voteButtons.value) $j('.vote_button').remove();
+			if(d3.page.inbox){
+				$j('.post .vote_result').remove();
+				$j('.c_vote .vote_result').remove();
+				$j('.vote_button').remove();
+			}
+		}
+	}
+
+});
+
+// browser info
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Информация о браузере',
+	author: 'crimaniak',
+	config: {active:{type:'checkbox',value:false}},
+	run: function()
+	{
+		var info='';
+		$j.each($j.browser, function(i, val) {
+		      info += i+" : <span>"+val+"</span><br>";
+		    });
+		d3.get.leftNavigation().append('<li>'+info+'</li>');
+	}
+});
+﻿
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Фотогалерея поста',
+	author: 'maniak,crimaniak',
+	config: {active:{type:'checkbox',value:true},height:{type:'text',value:'200px',caption:'Высота картинок в фотогалерее'}},
+	run: function()
+	{
+		if(!d3.content.comments.length || !(this.imgs=$j('.c_body img')).length) return;
+
+		$j("body").prepend
+			("<div id='fotkiMain' style='background-color:black;'>"
+			+"<div id='fotkiShow' style='padding:7px;'><a href='#' id='aFotkiShow' style='color:white'><b>Показать все картинки</b></a></div>"
+			+"<div id='fotkiHide1' style='padding:7px;color:white'>"
+			+"<a href='#' id='aFotkiHide1' style='color:white'><b>Убрать картинки, буду читать</b></a>"
+			+" &nbsp; Размеры: " + function(){var t='';$j.each([50,75,100,125,150,200,250],function(i,s){t+=' &nbsp; <a href="#" style="color:white" class="newSize">'+s+'px</a>';});return t;}()
+			+"</div>"
+			+"<div id='fotkiFotki' style='line-height:0px;background-color:white;'></div>"
+			+"<div id='fotkiHide2' style='padding:7px;'><a href='#' id='aFotkiHide2'  style='color:white'><b>Убрать картинки, буду читать</b></a></div></div>");
+		
+		var me=this;
+		
+		$j("#aFotkiShow").click(function(){me.fotkiShow(me.config.height.value);});
+		$j("#aFotkiHide1").click(this.fotkiHide);
+		$j("#aFotkiHide2").click(this.fotkiHide);
+		$j('.newSize').click(function(){return me.setNewSize($j(this).text());});
+
+		this.fotkiHide();
+	},
+	
+	setNewSize: function(size)
+	{
+		this.config.height._control.setValue(size);
+		d3.config.save();			
+		
+		$j('#fotkiFotki img').each(function(){this.setAttribute('height',size);});
+		return false;
+	},
+
+	fotkiHide: function()
+	{	$j('#fotkiFotki').hide();
+		$j('#fotkiShow').show();
+		$j('#fotkiHide1').hide();  
+		$j('#fotkiHide2').hide();  
+	},
+
+	fotkiShow: function(h)
+	{
+		var found=[];
+		var needToSort=false;
+		$j.each(d3.content.comments,function(index,c)
+		{
+			$j('img',c.container).each(function(index)
+			{
+				if(this.src=='http://img.dirty.ru/pics/lapata.gif') return;
+				found.push({src:this.src,id:c.id,rating:c.ratingValue()});
+				var r=c.ratingValue();
+				if(r!=0 && r==r) needToSort=true;
+			});
+		});
+		if(needToSort) found.sort(function(a,b){return b.rating-a.rating;});
+		
+		var text = "";
+		$j.each(found,function(index,image)
+		{
+			text+="<a href='#"+image.id+"'><img src='"+image.src+"' height='"+h+(needToSort ? "' title='Рейтинг "+image.rating : '')+"'></a>";
+		});
+		$j("#fotkiFotki").html(text);
+		
+		$j('#fotkiShow').hide();
+		$j('#fotkiHide1').show();
+		$j('#fotkiHide2').show();
+		$j('#fotkiFotki').show();
+	}
+});
+
+// redirect from www.dirty.ru to dirty.ru
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Редирект с www.dirty.ru на dirty.ru',
+	author: 'crimaniak',
+	config: {active:{type:'checkbox',value:true}},
+	run: function()
+	{
+		with(window.location)
+			if(hostname=='www.dirty.ru')
+				href=href.replace(/www.dirty.ru/, 'dirty.ru');
+	}
+});
+
+// test module
+d3.addModule(
+{
+	type: "Тесты",
+	author: 'crimaniak',
+	name: 'Тест конфига',
+	config: 
+		{active:{type:'checkbox',value:false}
+		,testRadio:{type:'radio',options:{"Опция 1":1,"Опция 2":2,"Опция 3":3,"Опция 4":4,"Опция 5":5,"Опция 6":6},caption:'Тестовые радиокнопки',value:6}
+		,testText:{type:'text',value:'test text',caption:'Тестовое поле: '}
+		,testSelect:{type:'select',value:'value 2',options:{'опция 1':'value 1','опция 2':'value 2'},caption:'Тестовый селект:'}
+		,testCheckbox:{type:'checkbox',caption:'Тестовый чекбокс'}
+		},
+	run: function()
+	{
+		var me=this;
+		d3.get.leftNavigation().append('<li><a href="#" id="d3ConfigLink">Тест конфига</a></li>');
+		$j('#d3ConfigLink').click(function(event){me.showInfo();return false;});
+	},
+	showInfo: function()
+	{
+		alert("Радиокнопки: "+this.config.testRadio.value+"\nТекст: "+this.config.testText.value
+			+"\nСелект: "+this.config.testSelect.value+"\nЧекбокс: "+this.config.testCheckbox.value);
+	}
+});
+// User's online visiblity
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Показываться онлайн через d3search',
+	author: 'crea7or, Stasik0',
+	config: {active:{type:'checkbox',value:true}},
+
+	run: function()
+	{
+		var vUserName = d3.window.globals.current_user; //d3.user.name;
+
+		if( vUserName != null && vUserName.length > 0 )
+		{
+			var lastCheckinTimestamp = d3.localStorGetItem('lastCheckinTimestamp', 0 );
+			var drawStuff = function()
+			{
+				var divContentLeft = document.querySelector("div.l-content_aside");
+				if ( divContentLeft )
+				{
+					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
+					var newdiv = document.createElement('div');
+					newdiv.innerHTML =  checkinsMarkup;
+					divContentLeft.appendChild( newdiv );
+					var module = d3.getModule("Dirty tooltip");
+					if(module != null){
+						module.processLinks.call(module, divContentLeft);
+					}
+				}
+				var highlightsStyles = localStorage.getItem('checkinsHighlights');
+				if (highlightsStyles != null)
+				{
+					var highlightsDiv = document.createElement('div');
+					highlightsDiv.innerHTML = highlightsStyles;
+					document.body.appendChild(highlightsDiv);
+				}
+			};
+			var now = new Date().getTime();
+			if ((now - lastCheckinTimestamp) > 1000 * 60 * 2 )
+			{
+				$j(document).ready(function(){
+					$j.getScript("http://api.d3search.ru/checkin/" + vUserName, function() {
+
+						drawStuff();
+						localStorage.setItem('lastCheckinTimestamp', now);
+					});
+				});
+			}else{
+				drawStuff();
+			}
+		}
+	}
+});
+	
+
+// Dirty tooltip
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Dirty tooltip',
+	author: 'NickJr, Stasik0, and the rest of gang',
+	config: {
+		active:{type:'checkbox',value:true},
+		useImages:{type:'checkbox',value:true,caption:'Картинки для tooltip'}
+		},
+
+	showing: 0,
+	processing: 0,
+
+	run: function(){
+		this.processLinks($j(document.body));
+	},
+
+	processLinks: function(elem){
+		if(!this.config.active.value)return;
+		var me = this;
+		var links = $j('a', elem);
+		for(var i=0; i<links.length; i++){
+			var href = links[i].href.toString();
+			//either /user/ or /users/ appers in link, /users/ must not be the ending
+			if((href.indexOf('/user/')>0 || (href.indexOf('/users/')>0 && href.lastIndexOf('/users/') != href.length-7)) &&
+			//but none of theres
+			  	href.indexOf('/posts/')<0 && href.indexOf('/comments/')<0 && href.indexOf('/favs/')<0 &&
+			//and this is no button
+				links[i].className.indexOf("button") < 0
+			){
+				$j(links[i]).mouseover(
+					function(e){
+						clearTimeout(me.showing);
+						me.showBaloon(e.target);
+					}
+				)
+				.mouseout(
+					function(){
+					clearTimeout(me.showing);
+					me.processing = 0;
+					}
+				);
+			}
+		}
+	},
+
+	showBaloon: function(obj){
+		var dup_div = $j('#dup_div');
+		//create div if not jet created
+		if(dup_div.length == 0){
+			$j(document.body).append('<div id="dup_div" style="position: absolute; z-index: 1300;"></div>');
+			dup_div = $j('#dup_div');
+			$j(document).click(function(){
+					$j('#dup_div').css('display', 'none');
+				}
+			);
+		}
+
+		//populate the div
+		if(this.config.useImages.value){
+			dup_div.html('<input type="hidden" id="dup_current_id" value=""><table cellspacing="0" cellpadding="0" border="0"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"><div style="width:100px;height:35px;background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:-20px 0"></div></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" id="dup_data_td"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table>');
+		}else{
+			dup_div.html('<input type="hidden" id="dup_current_id" value=""><div style="border-right:1px solid #a1a1a1;border-bottom:1px solid #a1a1a1"><div style="background-color:#fff;border:1px solid #505050;font-size:10px;padding:14px;line-height:16px" id="dup_data_td"></div></div>');
+		}
+
+		//caching
+		if($j("#dup_current_id").val()!=obj.toString()){
+			dup_div.css('display', 'none');
+			if(this.config.useImages.value){
+				$j("#dup_data_td").html('<center><div style="width:150px;height:60px;background-repeat:no-repeat;background-position:center;background-image:url(http://pit.dirty.ru/dirty/1/2010/04/23/11119-023914-a435e3f34c6e355b6bef6594195f3bd7.gif)">&nbsp;</div></center>');
+			}else{
+				 $j("#dup_data_td").html('<center><div style="width:150px;height:60px;line-height:60px">...</div></center>');
+			}
+			this.processing = 1;
+		}
+
+		var dup_pos = $j(obj).offset();
+		var dup_leftOffset = (this.config.useImages.value)?35:10;
+
+		dup_div.css('top', (dup_pos.top+obj.offsetHeight+5)+'px');
+		dup_div.css('left', (dup_pos.left-dup_leftOffset)+'px');
+
+		var me=this;
+		this.showing = setTimeout(function(){
+				$j("#dup_div").css('display', 'block');
+				me.dup_getData(obj);
+		},700);
+	},
+
+	dup_getData: function(obj){
+		if(this.processing==1){
+			var me=this;
+			$j.get(obj.href, function(data){
+				var dup_text = data;
+				if(dup_text.indexOf(' onclick="voteHandler.vote(this, \'')==-1){
+					var dup_user_id = d3.user.name;
+					var dup_user_name = d3.user.name;
+				}
+				else{
+					var dup_user_id = dup_text.split(' onclick="voteHandler.vote(this, \'')[1].split('\'')[0];
+					var dup_user_name = obj.href.split('/');
+					dup_user_name = dup_user_name[dup_user_name.length-2];
+				}
+
+				if(dup_text.split('<span>с нами с ').length < 2){
+					var dup_date = "неизвестно";
+				}else{
+					var dup_date = dup_text.split('<span>с нами с ')[1].split(' года')[0];
+				}
+				var dup_karma = dup_text.split(' onclick="voteDetailsHandler.show({type:\'karma\'')[1].split('>')[1].split('<')[0];
+				var dup_pluses = dup_text.split('plus voted').length-1;
+				var dup_minuses = dup_text.split('minus voted').length-1;
+
+				dup_pluses = (dup_pluses>0)?'<span style="color:green;"><b>+'+dup_pluses+'</b></span>':0;
+				dup_minuses = (dup_minuses>0)?'<span style="color:red;"><b>-'+dup_minuses+'</b></span>':0;
+
+				var dup_votes_him = '';
+				if(dup_minuses!==0) dup_votes_him += dup_minuses;
+				if(dup_minuses!==0&&dup_pluses!==0) dup_votes_him += ' <span style="color:#ccc">/</span> ';
+				if(dup_pluses!==0) dup_votes_him += dup_pluses;
+
+				var dup_parent = dup_text.split(' по приглашению ')[1].split('</div>')[0];
+
+				var dup_name = dup_text.split('<div class="userbasicinfo">')[1].split('<h3>')[1].split('</div>')[0];
+				dup_name = dup_name.split('</h3>').join('');
+				for(var i=0;i<2;i++) dup_name = dup_name.split('&#35;').join('#').split('&#59;').join(';').split('&amp;').join('&');
+
+				var dup_country = dup_name.split('<div class="userego">')[1];
+
+				var dup_raitdata = dup_text.split('<div class="userstat userrating">')[1];
+				dup_raitdata = dup_raitdata.split('<div class="clear">')[0];
+
+				var dup_sex = (dup_raitdata.indexOf('аписала')>-1)?'f':'m';
+				var dup_posts = (dup_raitdata.indexOf('/posts/">')>-1)?parseInt(dup_raitdata.split('/posts/">')[1].split(' ')[0]):0;
+				var dup_comments = (dup_raitdata.indexOf('/comments/">')>-1)?parseInt(dup_raitdata.split('/comments/">')[1].split(' ')[0]):0;
+				var dup_vote = dup_raitdata.split(' голоса&nbsp;&#8212; ')[1].split('<')[0];
+
+				if(dup_posts!=0||dup_comments!=0){
+					var dup_raiting = parseInt(dup_raitdata.split('рейтинг ')[1].split('<')[0]);
+				}
+				else var dup_raiting = 0;
+
+				dup_name = dup_name.split('<div class="userego">')[0];
+				dup_name = '<span style="font-size:130%;color:#'+((dup_sex=='m')?'009ced':'ff4fdc')+'"><b>'+dup_name+'</b></span>';
+
+	//			dup_votes_him = (dup_votes_him!='')?'<b>Ваша оценка:</b> '+dup_votes_him:'<span style="color:#999"><b>Ваших оценок нет в '+((dup_sex=='f')?'её':'его')+' карме</b></span>';
+				dup_votes_him = '';
+
+				var dup_prop = Math.round((dup_raiting/(dup_posts+dup_comments))*10)/10;
+
+				var dup_userpic = '';
+
+				if(me.config.useImages.value){
+					if(dup_text.indexOf('alt="Dirty Avatar"')>0){
+						dup_userpic = dup_text.split('alt="Dirty Avatar"')[0];
+						dup_userpic = dup_userpic.split('src="');
+						dup_userpic = dup_userpic[dup_userpic.length-1].split('"')[0];
+					}
+					else if(dup_text.indexOf('#Dirty Avatar#')>0){
+						dup_userpic = dup_text.split('#Dirty Avatar#')[1].split('src="')[1].split('"')[0];
+					}
+					else{
+						dup_check_avatar = dup_text.split('<table class="userpic">')[1].split('<td>')[1].split('</td>')[0];
+						if(dup_check_avatar.indexOf('<img')>0){
+							dup_userpic = dup_check_avatar.split('src="')[1].split('"')[0];
+						}
+					}
+
+					if(dup_userpic!='') dup_userpic = '<img src="http://www.amaryllis.nl/cmm/tools/thumb.php?src='+dup_userpic+'&maxw=70&maxh=100" border="0" alt=""><br>';
+					else dup_userpic = '<div style="width:75px;height:75px;background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-074626-d60640dc88fd86bcef83e920d94a8797.png);background-position:'+((dup_sex=='m')?'left':'-75px')+' top">&nbsp;</div>';
+				}
+				else{
+					if($j.browser.opera){
+						if(dup_sex=='m') dup_userpic = '<div style="width:66px;height:70px;color:#d2dae2;border:1px solid #919191;font-family:Verdana;text-align:center;font-size:50px;line-height:70px">♂</div>';
+						else dup_userpic = '<div style="width:66px;height:70px;color:#e2d2d9;border:1px solid #919191;text-align:center;font-size:50px;line-height:70px">♀</div>';
+					}
+					else{
+						if(dup_sex=='m') dup_userpic = '<div style="width:66px;color:#d2dae2;border:1px solid #919191;text-align:center;font-size:4px;line-height:4px"><pre>  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~~~~       ~~~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                  ~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~~                ~~~~~~  '+"\r\n"+'  ~~~~~~~~              ~~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~~~~~~~           ~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~                      ~~~~  </pre></div>';
+						else dup_userpic = '<div style="width:66px;color:#e2d2d9;border:1px solid #919191;text-align:center;font-size:4px;line-height:4px"><pre>  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~~~~       ~~~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~~           ~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                ~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~                    ~~~~~  '+"\r\n"+'  ~~~~~                  ~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~                      ~~~~  '+"\r\n"+'</pre></div>';
+						dup_userpic = dup_userpic.split('~').join('█');
+					}
+				}
+
+
+				if(dup_text.split('id="js-usernote">').length >= 2){
+					var dup_note = dup_text.split('id="js-usernote">')[1].split('</em>')[0];
+					if(dup_note!='Место для заметок о пользователе. Заметки видны только вам.'){
+
+						dup_temp_body_mini = (dup_note.length>32)?dup_note.substring(0,32)+'...':dup_note;
+
+						if(dup_temp_body_mini!=dup_note){
+							dup_note = '<b>Ваша заметка:</b><div style="font-size:130%; cursor:help;background-color:#eee;padding:10px;font-family:Times New Roman" title="'+dup_note+'"><i>'+dup_temp_body_mini+'</i></div>';
+						}
+						else{
+							dup_note = '<b>Ваша заметка:</b><div style="font-size:130%; background-color:#eee;padding:10px;font-family:Times New Roman"><i>'+dup_temp_body_mini+'</i></div>';
+						}
+					}
+					else dup_note = '';
+				}else{
+					var dup_note = '';
+				}
+
+				dup_output = '<table cellspacing="0" cellpadding="0" border="0"><tr><td align="center" valign="top" style="padding-right:10px">'+dup_userpic+'<span style="color:#444">№'+dup_user_id+'</span><br>'+dup_parent+'<div style="margin-top:10px;font-size:10px"><b>Регистрация:</b><br>'+dup_date+'</div><div style="margin-top:5px; font-size: 130%;"><b>Карма: <span style="color:'+((dup_karma>=0)?'green':'red')+'">'+dup_karma+'</span></b></div></td>';
+				dup_output += '<td valign="top"><div style="float:left;margin-bottom:5px">'+dup_name+'<br><span style="font-size:10px"><b>'+dup_country+'</b></span></div>';
+				dup_output += '<div style="float:right;margin-left:5px;margin-bottom:5px"><span style="display:block'+((me.config.useImages.value)?';background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png);background-repeat:no-repeat':'')+';width:36px;height:20px;line-height:20px;text-align:center;color:#fff;background-color:#999"><b>'+dup_prop+'</b></span></div>';
+				dup_output += '<div style="clear:both">Автор <b>'+dup_posts+'</b> постов и <b>'+dup_comments+'</b> комментариев<br>Заработал'+((dup_sex=='f')?'а':'')+' голос <span style="color:#0069ac; font-size:130%;"><b>'+dup_vote+'</b></span> и рейтинг '+dup_raiting+'</div>';
+				dup_output += '<div style="margin-top:10px">'+dup_votes_him+'</div><div id="dup_my_vote"></div><div id="dup_his_vote"></div><div style="margin-top:10px">'+dup_note+'</div></td></tr></table>';
+
+				$j('#dup_current_id').val(obj.href);
+
+				me.dup_getKarma(dup_output,dup_user_id,dup_sex,dup_user_name);
+			});
+		}
+	},
+
+	dup_getKarma: function(dup_text,dup_user_id,dup_sex,dup_user_name){
+		if(dup_user_id!=d3.user.id){
+			//incoming karma
+			var url = '/karmactl';
+			var data = 'view='+d3.user.id;
+			$j.post(url,data,function(data){
+				var dup_temp = data;
+				if(dup_temp.indexOf('{"uid":"'+dup_user_id+'"')>0){
+					dup_temp = dup_temp.split('{"uid":"'+dup_user_id+'"')[1].split('","login"')[0].split('"');
+					dup_temp = dup_temp[dup_temp.length-1];
+					dup_temp = '<b>'+((dup_sex=='f')?'Её':'Его')+' оценка вас: <span style="color:'+((dup_temp>0)?'green">+':'red">')+dup_temp+'</span></b>';
+
+					$j('#dup_his_vote').html(dup_temp);
+				}else{
+					$j('#dup_his_vote').html('<span style="color:#999"><b>Е'+((dup_sex=='f')?'ё':'го')+' оценок нет в вашей карме</b></span>');
+				}
+			});
+			//outgoing karma
+			var url = '/karmactl';
+			var data = 'view='+dup_user_id;
+			$j.post(url,data,function(data){
+				var dup_temp = data;
+				if(dup_temp.indexOf('{"uid":"'+d3.user.id+'"')>0){
+					dup_temp = dup_temp.split('{"uid":"'+d3.user.id+'"')[1].split('","login"')[0].split('"');
+					dup_temp = dup_temp[dup_temp.length-1];
+					dup_temp = '<b>Ваша оценка '+((dup_sex=='f')?'её':'его')+': <span style="color:'+((dup_temp>0)?'green">+':'red">')+dup_temp+'</span></b>';
+
+					$j('#dup_my_vote').html(dup_temp);
+				}else{
+					$j('#dup_my_vote').html('<span style="color:#999"><b>Ваших оценок нет в е'+((dup_sex=='f')?'ё':'го')+' карме</b></span>');
+				}
+			});
+		}
+		$j('#dup_data_td').html(dup_text);
+	}
+
+
+
+});
+
+// Показывать все комментарии в посте, даже если зашли по ссылке с #new
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Показывать все комментарии в посте',
+	author: 'crea7or',
+	config: {active:{type:'checkbox',value:true}},
+
+	run: function()
+	{
+		if(!d3.page.inbox && d3.page.onlyNew)
+		{
+			// d3.window.commentsHandler.switchNew();
+			var script2run = document.createElement('script');
+			script2run.type = 'text/javascript';
+			script2run.text = 'commentsHandler.switchNew();';
+			document.body.appendChild( script2run );
+		}
+	},
+	
+});
+	
+// Предпросмотр для комментариев
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Добавлять предпросмотр для комментариев',
+	author: 'crea7or',
+	config: {active:{type:'checkbox',value:true}},
+
+	run: function()
+	{
+		var previewCont = document.querySelector('div.b-comments_reply_block');
+		if ( previewCont )
+		{
+			var previewInput = document.createElement('input');
+			previewInput.type = 'image';
+			previewInput.src = '/i/probe.gif';
+			previewInput.setAttribute('style', 'margin-right: 10px;');
+			var yarrButton = previewCont.querySelector('input.b-comments_reply_block_yarrr');
+			
+			$j(previewInput).insertBefore( yarrButton );
+
+			$j(yarrButton).click( function(e){
+				var previewDiv = e.target.parentNode.parentNode.querySelector('div.sp3previewDiv');
+				if ( previewDiv )
+				{
+					previewDiv.parentNode.removeChild( previewDiv );					
+				}
+				return true;
+			});
+
+			$j(previewInput).click( function(e){
+				var previewCont = e.target.parentNode.parentNode; 
+				var previewTextArea = previewCont.querySelector('textarea.i-form_text_input');
+				if ( previewTextArea && previewCont )
+				{
+					var previewDiv = previewCont.querySelector('div.sp3previewDiv');
+					if ( previewDiv == null )
+					{
+						previewDiv = document.createElement('div');
+						previewDiv.setAttribute('style', 'padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');
+						previewDiv.setAttribute('class', 'comment sp3previewDiv');
+						previewCont.appendChild( previewDiv );
+					}
+					previewDiv.innerHTML = previewTextArea.value.replace(/\n/g,'<br>');
+				}
+				e.preventDefault();
+				return false;
+			});
+		}
+
+		document.addEventListener("DOMNodeInserted", function(e){
+    		if ( e.target.tagName == "DIV")
+    		{
+    			var previewCont = e.target.querySelector('div.b-textarea_editor');
+    			if ( previewCont )
+    			{
+					var previewInput = document.createElement('input');
+					previewInput.type = 'image';
+					previewInput.src = '/i/probe.gif';
+					previewInput.setAttribute('style', 'margin-right: 10px;');
+
+					var yarrButton = e.target.querySelector('input.b-comments_reply_block_yarrr');
+					$j(previewInput).insertBefore( yarrButton );
+
+					$j(previewInput).click( function(e){
+					var previewCont = e.target.parentNode.parentNode.parentNode;
+					var previewTextArea = previewCont.querySelector('textarea.i-form_text_input');
+					if ( previewTextArea && previewCont )
+					{
+						var previewDiv = previewCont.querySelector('div.sp3previewDiv');
+						if ( previewDiv == null )
+						{
+							previewDiv = document.createElement('div');
+							previewDiv.setAttribute('style', 'padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');
+							previewDiv.setAttribute('class', 'comment sp3previewDiv');
+							previewCont.appendChild( previewDiv );
+						}
+						previewDiv.innerHTML = previewTextArea.value.replace(/\n/g,'<br>');
+					}
+					e.preventDefault();
+					return false;
+					});
+				}
+    		}
+		});
+	},
+});
+	
+// Активные ссылки для картинок
+
+/**
+ * @todo: во-первых, доделать под фичи сервис-пака, во-вторых, расширение еще не значит картинку, например:
+ * http://en.wikipedia.org/wiki/File:8863-Project-Whirlwind-CRMI.JPG
+ * По-хорошему надо запрашивать HEAD для ресурса и смотреть возвращаемый mime-тип. И если image/*, тогда переделывать
+ * @todo: сделать опцию не подменять линк картинкой, а показывать каринку в попапе.
+ */
+
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Раскрытие картинок по клику на ссылке',
+	author: 'crea7or',
+	config: {active:{type:'checkbox',value:true}},
+	
+	run: function()
+	{
+		var me = this;
+		this.imagesPreview( document.body );
+
+		d3.content.onNewComment(function(comment){
+			me.imagesPreview(comment.container);
+		});
+	},
+
+	clickOnImageLink: function(e)
+	{
+		var imgPreview = document.createElement('img');
+		imgPreview.setAttribute('src', e.target.href );
+		var imgLink = document.createElement('a');
+		imgLink.setAttribute('href', '#');
+		imgLink.setAttribute('onclick', "this.previousSibling.setAttribute('style', this.previousSibling.getAttribute('bkpstyle')); this.parentNode.removeChild(this); return false;");
+		imgLink.appendChild( imgPreview );
+		e.target.parentNode.insertBefore(imgLink, e.target.nextSibling);
+		e.target.setAttribute('bkpstyle', e.target.getAttribute('style'));
+		e.target.setAttribute('style', 'display: none');
+		e.preventDefault();
+		return false;
+	},
+
+	imagesPreview: function( baseElement )
+	{
+		var me = this;
+		d3.xpath.each('//a', function(a){
+			if(a.href.match(/\.(gif|png|jpg|jpeg)$/i))
+			{
+				$j(a).click(
+						function(e){
+							me.clickOnImageLink(e);
+						});
+			}
+			
+		}, baseElement);
+	},
+});
+	
+// Favicons
+d3.addModule(
+{
+	type: "Прочее",
+	name: 'Показывать favicons доменов',
+	author: 'Stasik0, NickJr, crimaniak',
+	config: {
+		active:{type:'checkbox',value:true},
+		mouseover:{type:'radio',caption:'Показывать иконки',options:{"перед ссылками":"false","при наведении":"true"},value:"false"},
+		domainWhitelist:{type: 'text', caption:'Список доменов', value:'dirty.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net,youtube.com'
+		},
+	},
+	
+	faviconService: 'http://favicon.yandex.net/favicon/',
+
+	getDomainMasks: function()
+	{
+		return this.config.domainWhitelist.value
+			.split(/[\s,]+/)
+			.map(function(item){
+				return new RegExp('^(.*\.)?'+item.replace(/\./g,'\\.').replace(/\*/g,'.*')+'$','i');
+			});
+	},
+	
+	hideFavicon: function(e){
+		$j(e.target).css('background-image', 'none');
+	},
+
+	showFavicon: function(e, faviconUrl){
+		$j(e.target).css({'padding-top':'16px', 'background-image':'url('+faviconUrl+')', 'background-repeat':'no-repeat'});
+	},
+	
+	inWhiteList: function(domain){
+		if(domain.length==0) return false;
+		if(this.config.domainWhitelist.value === "*") return true;
+		if(this.inWhiteList.masks == undefined) this.inWhiteList.masks = this.getDomainMasks();
+		try
+		{
+			this.inWhiteList.masks.forEach(function(mask){
+				if(mask.test(domain)) {	throw true;	}
+			});
+			return false;
+		} catch(e)
+		{
+			return true;
+		}
+	},
+
+	run: function(){
+		if(d3.page.user) return;
+		var me=this;
+		//iterate over links
+		$j.each($j('div.dt > a, div.c_body > a, div.dt > div.post_video > div > a'), function(index, link){
+			var faviconUrl = me.faviconService+link.hostname;
+			if(me.inWhiteList(link.hostname))
+			{
+				if(me.config.mouseover.value == 'true'){
+					$j(link)
+						.mouseover(function(e){me.showFavicon(e, faviconUrl);})
+						.mouseout(me.hideFavicon);
+				}else{
+					$j(link).css({'padding-left':'19px', 'background-repeat':'no-repeat', 'background-image':'url('+faviconUrl+')'});
+				}
+			}
+		});
+	}
+});
+
+﻿// Показывать посты целиком, без дебильной ссылки - свернуть/развернуть
+d3.addModule(
+{
+	type: "Содержание",
+	name: 'Показывать посты целиком без "развернуть"',
+	author: 'crea7or',
+	config: {active:{type:'checkbox',value:true}},
+
+	run: function()
+	{
+		if( document.getElementById('js-posts_holder'))
+		{
+			var script2run = document.createElement('script');
+			script2run.type = 'text/javascript';
+			script2run.text = 'postsCutHandler = null;';
+			document.body.appendChild( script2run );
+
+			var cutPosts = document.querySelectorAll('div.post_cut');
+			if ( cutPosts )
+			{
+				for ( var i = 0; i < cutPosts.length; i++)
+				{
+					cutPosts[i].querySelector('.dt').setAttribute('style', '');
+					cutPosts[i].removeChild( cutPosts[i].querySelector('.b-cut'));
+				}
+			}
+		}
+	},
+});
+
+}catch(e)
+{
+	if(console)console.log(e);
+}
+>>>>>>> refs/heads/master
