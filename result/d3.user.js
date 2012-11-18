@@ -288,6 +288,34 @@ newLink.appendChild(newImage);newImage=document.createElement('img');newImage.sr
 {newImage.src='http://pit.dirty.ru/dirty/1/2010/11/13/14466-162231-5b8c44f94625c1247474ce40292ffa14.gif'}
 else
 {newImage.src='http://dirty.ru/i/img_under_gertruda.gif';}
-newLink.appendChild(newImage);gerLink[0].parentNode.removeChild(gerLink[0]);gertrudaDiv.appendChild(newLink);}}}}},});}catch(e)
+newLink.appendChild(newImage);gerLink[0].parentNode.removeChild(gerLink[0]);gertrudaDiv.appendChild(newLink);}}}}},});d3.addModule({type:"Содержание",name:'Просмотр видео по клику на ссылке',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
+{var container=document.getElementById('js-commentsHolder');if(container)
+{this.setPlayer(container);}
+else
+{container=document.getElementById('js-posts_holder');if(container)
+{this.setPlayer(container);}}
+var me=this;document.addEventListener("DOMNodeInserted",function(e){me.setPlayer(e.target)});},setPlayer:function(container)
+{var me=this;var allLinksArray=container.getElementsByTagName('a');for(var i=0;i<allLinksArray.length;i++)
+{if(allLinksArray[i].href.match(/(youtube\.com|youtu\.be|vimeo\.com)/i))
+{$j(allLinksArray[i]).bind('click',function(event){me.clickOnVideoLink(event)});}}},clickOnVideoLink:function(e)
+{var thisObject=e.target;if(thisObject.nodeName=='IMG')
+{thisObject=thisObject.parentNode;}
+var videoId;if((thisObject.href.search(/youtube.com/i)>-1)&&(thisObject.href.search(/v=/i)>-1))
+{videoTime=0;videoId=thisObject.href.slice(thisObject.href.search(/v=/i)+2);if(videoId.indexOf('&')>1)
+{if(videoId.indexOf('&t=')>-1)
+{videoTime=videoId.slice(videoId.indexOf('&t=')+3);if(videoTime.indexOf('&')>-1)
+{videoTime=videoTime.slice(0,videoTime.indexOf('&'));}}
+else if(videoId.indexOf('&start=')>-1)
+{videoTime=videoId.slice(videoId.indexOf('&start=')+7);if(videoTime.indexOf('&')>-1)
+{videoTime=videoTime.slice(0,videoTime.indexOf('&'));}}
+videoId=videoId.slice(0,videoId.indexOf('&'));}
+videoId='http://www.youtube.com/embed/'+videoId+'?autoplay=1&fs=1&start='+videoTime;}
+else if(thisObject.href.search(/youtu.be/i)>-1)
+{videoId=thisObject.href.slice(thisObject.href.search(/youtu.be/i)+9);videoId='http://www.youtube.com/embed/'+videoId+'?autoplay=1&fs=1';}
+else if(thisObject.href.search(/vimeo.com/i)>-1)
+{videoId=thisObject.href.slice(thisObject.href.search(/vimeo.com/i)+10);if(!isNaN(parseFloat(videoId))&&isFinite(videoId))
+{videoId='http://player.vimeo.com/video/'+videoId+'?autoplay=1';}}
+if(videoId.length>0)
+{var playerMainDiv=document.createElement('div');var newIframeDiv=document.createElement('div');newIframeDiv.setAttribute('style','width: 640px; height: 400px;');var newDivToolbar=document.createElement('div');var videoTargetId='vi'+(new Date()).getTime().toString();thisObject.id=videoTargetId;var iframeObj=document.createElement('iframe');iframeObj.width='100%';iframeObj.height='100%';iframeObj.frameBorder='0';iframeObj.class='inlineVideo';iframeObj.src=videoId;newIframeDiv.appendChild(iframeObj);var newA=document.createElement('a');newA.href='#';newA.setAttribute('orgObj',videoTargetId);newA.appendChild(document.createTextNode('закрыть плеер'));$j(newA).bind('click',function(e){var orgObj=document.getElementById(e.target.getAttribute('orgObj'));orgObj.setAttribute('style',orgObj.getAttribute('bkpstyle'));orgObj.setAttribute('class',orgObj.getAttribute('bkpclass'));orgObj.parentNode.removeChild(e.target.parentNode.parentNode);orgObj.parentNode.setAttribute('class',orgObj.parentNode.getAttribute('bkpclass'));e.preventDefault();return false;});newDivToolbar.appendChild(newA);newDivToolbar.appendChild(document.createTextNode('\u00A0'));newDivToolbar.appendChild(document.createTextNode('\u00A0'));newDivToolbar.appendChild(document.createTextNode(' размер видео: '));newA=document.createElement('a');newA.href='#';newA.appendChild(document.createTextNode('нормальный'));$j(newA).bind('click',function(e){e.target.parentNode.nextSibling.setAttribute('style','width: 640px; height: 400px;');e.preventDefault();return false;});newDivToolbar.appendChild(newA);newDivToolbar.appendChild(document.createTextNode(' | '));newA=document.createElement('a');newA.href='#';newA.appendChild(document.createTextNode('большой'));$j(newA).bind('click',function(e){e.target.parentNode.nextSibling.setAttribute('style','width: 860px; height: 500px;');e.preventDefault();return false;});newDivToolbar.appendChild(newA);playerMainDiv.appendChild(newDivToolbar);playerMainDiv.appendChild(newIframeDiv);$j(playerMainDiv).insertAfter(thisObject);thisObject.setAttribute('bkpstyle',thisObject.getAttribute('style'));thisObject.parentNode.setAttribute('bkpclass',thisObject.parentNode.getAttribute('class'));thisObject.parentNode.setAttribute('class','dti');thisObject.setAttribute('style','display: none');thisObject.setAttribute('bkpclass',thisObject.getAttribute('class'));e.preventDefault();return false;}},});}catch(e)
 {if(console)console.log(e);}
 if(console)console.log('runtime: '+d3.runTimeTotal+'ms');
