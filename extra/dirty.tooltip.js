@@ -104,10 +104,7 @@ d3.addModule(
 	dup_getData_d3: function(obj){
 		if(this.processing==1){
 			var me=this;
-			$j.get(obj.href, function(data){})
-			.error(function(XMLHttpRequest){
-				var data = XMLHttpRequest.responseText;
-				console.log("--------"+data);
+			$j.get(obj.href, function(data){
 				//clear all line breaks and spaces
 				var dup_text = data.replace(/(\r\n|\n|\r)/gm,' ').replace(/\s\s+/g,' ');
 				//splits are for better performance! :p
