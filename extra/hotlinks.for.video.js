@@ -28,6 +28,7 @@ d3.addModule(
 
 	setPlayer: function( container )
 	{
+		if(!container.getElementsByTagName) return;
 		var me = this;
 		var allLinksArray = container.getElementsByTagName('a');
 		for (var i = 0; i < allLinksArray.length; i++)
