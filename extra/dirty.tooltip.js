@@ -49,7 +49,7 @@ d3.addModule(
 		var dup_div = $j('#dup_div');
 		//create div if not jet created
 		if(dup_div.length == 0){
-			$j(document.body).append('<div id="dup_div" style="position: absolute; z-index: 1300;"></div>');
+			$j(document.body).append('<div id="dup_div" style="position: absolute; z-index: 1300; color: #000;"></div>');
 			dup_div = $j('#dup_div');
 			$j(document).click(function(){
 					$j('#dup_div').css('display', 'none');
