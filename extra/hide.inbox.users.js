@@ -1,7 +1,7 @@
 // Убирает пользователей инбокса под ссылку
 d3.addModule(
 {
-	type: "Социализм",
+	type: "Содержание",
 	name: 'Прятать пользователей инбокса под ссылку',
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true}},

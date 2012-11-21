@@ -23,4 +23,4 @@ extra/gender.color.js
 extra/wide.frontpage.js
 extra/canonical.gertrudes.js
 extra/hotlinks.for.video.js
-extra/inbox.users.link.js
+extra/hide.inbox.users.js
