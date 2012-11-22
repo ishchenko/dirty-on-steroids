@@ -355,6 +355,6 @@ d3.addModule({type:"Стилизация",name:'Рестайлинг сайта 
 {style.styleSheet.cssText=css;}
 else
 {style.appendChild(document.createTextNode(css));}
-head.appendChild(style);}});}catch(e)
+head.appendChild(style);}});d3.addModule({type:"Содержание",name:'Прятать посты с низким рейтингом',author:'Aivean',config:{active:{type:'checkbox',value:false},rating:{type:'select',value:0,options:{'10':10,'5':5,'0':0,'-5':-5,'-10':-10},caption:'Рейтинг меньше, чем:'}},run:function(){d3.content.posts.forEach(function(p){if(p.ratingValue()<this.config.rating.value){p.container.hide();}},this);}});}catch(e)
 {if(console)console.log(e);}
 if(console)console.log('runtime: '+d3.runTimeTotal+'ms');

@@ -13,12 +13,10 @@ d3.addModule(
             }
         },
         run: function () {
-            var posts = d3.content.posts;
-            for (var i in posts) {
-                var p = posts[i];
-                if (p.ratingValue() < this.config.rating.value) {
+        	d3.content.posts.forEach(function(p) {
+        		if (p.ratingValue() < this.config.rating.value) {
                     p.container.hide();
                 }
-            }
+        	}, this);
         }
     });
