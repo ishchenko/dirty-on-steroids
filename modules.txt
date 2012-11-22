@@ -13,7 +13,7 @@ extra/fotki.js
 extra/www.redirector.js
 extra/test.js
 extra/online.user.js
-extra/dirty.tooltip.js
+extra/tooltip.js
 extra/show.all.comments.js
 extra/preview.for.comments.js
 extra/hotlinks.for.images.js
@@ -24,4 +24,4 @@ extra/wide.frontpage.js
 extra/canonical.gertrudes.js
 extra/hotlinks.for.video.js
 extra/hide.inbox.users.js
-extra/dirty.tort.js
+extra/tort.js
