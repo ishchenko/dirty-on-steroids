@@ -24,3 +24,4 @@ extra/wide.frontpage.js
 extra/canonical.gertrudes.js
 extra/hotlinks.for.video.js
 extra/hide.inbox.users.js
+extra/dirty.tort.js
