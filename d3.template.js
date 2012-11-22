@@ -304,23 +304,20 @@ var d3=
 	/// Get original window and document objects
 	getOriginal: function()
 	{
-		if($j.browser.webkit)
+		if($j.browser.opera)
+		{
+			this.window=window;
+			this.document=document;
+		}else if($j.browser.mozilla)
+		{
+			this.window=unsafeWindow;
+			this.document=document.wrappedJSObject;
+		}else
 		{
 			var retval=d3.newElement('div',{attributes:{onclick:"return {window:window,document:document};"}}).onclick();
 			this.window=retval.window;
 			this.document=retval.document;
 		}
-		else if($j.browser.mozilla)
-		{
-			this.window=unsafeWindow;
-			this.document=document.wrappedJSObject;
-		}
-		else if($j.browser.opera)
-		{
-			this.window=window;
-			this.document=document;
-		}else
-			alert("Don't know method to get original window for this browser");
 	},
 	xpath:
 	{
