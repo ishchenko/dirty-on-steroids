@@ -48,7 +48,7 @@ d3.addModule(
 		if(d3.page.user) return;
 		var me=this;
 		//iterate over links
-		$j.each($j('div.dt > a, div.c_body > a, div.dt > div.post_video > div > a, div.dt > h3 > a'), function(index, link){
+		$j.each($j('div.dt > h3 > a').not('a[href*="'+window.location.hostname+'"]').add('div.dt > a, div.c_body > a, div.dt > div.post_video > div > a').not('a[class*="b-controls_button"]'), function(index, link){
 			if(me.inWhiteList(link.hostname))
 			{
 				if(link.hostname.indexOf('d3.ru', link.hostname.length - 'd3.ru'.length)!==-1){
