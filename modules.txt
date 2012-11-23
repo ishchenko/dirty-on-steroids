@@ -26,3 +26,5 @@ extra/hotlinks.for.video.js
 extra/hide.inbox.users.js
 extra/tort.js
 extra/hide.posts.by.rating.js
+extra/hide.elements.js
+
