@@ -11,8 +11,6 @@ d3.addModule(
 		},
 	},
 	
-	faviconService: 'http://favicon.yandex.net/favicon/',
-
 	getDomainMasks: function()
 	{
 		return this.config.domainWhitelist.value
@@ -50,16 +48,25 @@ d3.addModule(
 		if(d3.page.user) return;
 		var me=this;
 		//iterate over links
-		$j.each($j('div.dt > a, div.c_body > a, div.dt > div.post_video > div > a'), function(index, link){
-			var faviconUrl = me.faviconService+link.hostname;
+		$j.each($j('div.dt > a, div.c_body > a, div.dt > div.post_video > div > a, div.dt > h3 > a'), function(index, link){
 			if(me.inWhiteList(link.hostname))
 			{
+				if(link.hostname.indexOf('d3.ru', link.hostname.length - 'd3.ru'.length)!==-1){
+					//yandex has no d3.ru icon yet
+					var faviconUrl = 'http://www.google.com/s2/favicons?domain='+link.hostname;				
+				}else{
+					var faviconUrl = 'http://favicon.yandex.net/favicon/'+link.hostname;
+				}
+
 				if(me.config.mouseover.value == 'true'){
 					$j(link)
 						.mouseover(function(e){me.showFavicon(e, faviconUrl);})
 						.mouseout(me.hideFavicon);
 				}else{
-					$j(link).css({'padding-left':'19px', 'background-repeat':'no-repeat', 'background-image':'url('+faviconUrl+')'});
+					$j(link).css('padding-left','19px')
+							.css('background-repeat','no-repeat')
+							.css('background-image','url('+faviconUrl+')')
+							.css('background-position','left center');
 				}
 			}
 		});
