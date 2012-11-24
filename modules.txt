@@ -10,7 +10,6 @@ extra/update.link.js
 extra/no.rating.js
 extra/browser.js
 extra/fotki.js
-extra/test.js
 extra/online.user.js
 extra/tooltip.js
 extra/show.all.comments.js
