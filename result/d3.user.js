@@ -143,7 +143,7 @@ this.config.ignored[i]=undefined;}
 with(d3.content)if(comments.length==0&&posts.length>0)
 for(var i=0;i<posts.length;++i)
 this.processPost(posts[i]);if(this.config.moderation.value)
-{var moderation=document.createElement('script');moderation.setAttribute('type','text/javascript');moderation.setAttribute('src','http://api.d3search.ru/moderation/list?t='+new Date().getTime());document.getElementsByTagName('head')[0].appendChild(moderation);}},processPost:function(post)
+{var moderation=document.createElement('script');moderation.setAttribute('type','text/javascript');moderation.setAttribute('src','http://api.d3search.ru/moderation/list?t='+new Date().getTime());$j('head').get(0).appendChild(moderation);}},processPost:function(post)
 {var footer=post.getFooter();var me=this;var id=''+post.id;if(this.config.ignored.value[id]!=undefined)
 (this.config.hideAtAll.value?post.container:$j('div.dt',post.container)).hide();footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold">[игнорировать]</a>');$j('.ignorator',footer).click(function(){return me.processClick(post);});},processClick:function(post)
 {var content=$j('div.dt',post.container);var id=''+post.id;with(this.config.ignored)
@@ -169,8 +169,7 @@ if(rating<l)
 {if(d3.user.name==null)return;d3.xpath.each("//body//text()[contains(string(),'%username%')]",function(node)
 {if(node.data!=undefined)
 node.data=node.data.replace('%username%',d3.user.name);});}});d3.addModule({type:"Поиск",name:'Поиск на d3search.ru',author:'crimaniak, crea7or',config:{active:{type:'checkbox',value:true}},run:function()
-{var script2run=document.createElement('script');script2run.type='text/javascript';script2run.text="searchHandler = {"
-+"submitQuery : function (search_form) {"
+{var script2run=document.createElement('script');script2run.type='text/javascript';script2run.text="searchHandler.submitQuery = function (search_form) {"
 +" if (search_form.getParent('.b-header_search')) {"
 +"  var input_holder = $('js-header_search_input').getParent('.b-header_search_input_holder');"
 +"  var search_holder = $('js-header_search_input').getParent('.b-header_search');"
@@ -180,15 +179,8 @@ node.data=node.data.replace('%username%',d3.user.name);});}});d3.addModule({type
 +"   input_holder.set('morph', {duration:333, onComplete : function () {"
 +"    $('js-header_search_input').focus();"
 +"    (function () {document.addEvent('click', searchHandler.shrinkHeaderSearch);}).delay(200); }}); input_holder.morph({ width : 250 });"
-+"  } else { var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query);}"
-+" } else { var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query); }},"
-+"shrinkHeaderSearch : function () {"
-+" var input_holder = $('js-header_search_input').getParent('.b-header_search_input_holder');"
-+" var search_holder = $('js-header_search_input').getParent('.b-header_search');"
-+" input_holder.get('morph').removeEvents('complete');"
-+" input_holder.set('morph', {duration:333, onComplete : function () {"
-+"  search_holder.addClass('b-header_search_input_shrinked'); }});"
-+" input_holder.morph({ width : 0 }); document.removeEvent('click', searchHandler.shrinkHeaderSearch); }};";head=(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]);head.appendChild(script2run);}});d3.addModule({type:"Содержание",name:'Спрятать картинки в постах',author:'crimaniak',config:{active:{type:'checkbox',value:false}},run:function()
++"      return ;}}"
++" var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query); };";$j('head').get(0).appendChild(script2run);}});d3.addModule({type:"Содержание",name:'Спрятать картинки в постах',author:'crimaniak',config:{active:{type:'checkbox',value:false}},run:function()
 {var items=d3.content.posts;if(items.length>1)
 for(var i=0;i<items.length;++i)
 this.process(items[i]);},process:function(item)
@@ -347,11 +339,11 @@ d3.addModule({type:"Стилизация",name:'Рестайлинг сайта 
 +'.comments_indent_holder .indent_25 { padding-left:415px !important;} .indent_26 { padding-left:430px !important;} .indent_27 { padding-left:445px !important;} .indent_28 { padding-left:460px !important;}'
 +'.comments_indent_holder .indent_29 { padding-left:475px !important;} .indent_30 { padding-left:490px !important;}'
 +'div.b-comments_controls_new_nav { padding: 14px 5px 14px 5px; min-width: 650px; background-repeat: repeat-x repeat-y; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpiuHnzZgNAgAEACCYDDGx4O28AAAAASUVORK5CYII=);}'
-+'.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}';head=(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]),style=document.createElement('style');style.type='text/css';if(style.styleSheet)
++'.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}';style=document.createElement('style');style.type='text/css';if(style.styleSheet)
 {style.styleSheet.cssText=css;}
 else
 {style.appendChild(document.createTextNode(css));}
-head.appendChild(style);var socBut=document.querySelector('div.b-comments_controls_social');if(socBut)
+$j('head').append(style);var socBut=document.querySelector('div.b-comments_controls_social');if(socBut)
 {var socParent=socBut.parentNode;socParent.removeChild(socBut);socParent.appendChild(socBut);}}});d3.addModule({type:"Содержание",name:'Прятать посты с низким рейтингом',author:'Aivean',config:{active:{type:'checkbox',value:false},rating:{type:'select',value:0,options:{'10':10,'5':5,'0':0,'-5':-5,'-10':-10},caption:'Рейтинг меньше, чем:'}},run:function(){d3.content.posts.forEach(function(p){if(p.ratingValue()<this.config.rating.value){p.container.hide();}},this);}});d3.addModule({type:"Стилизация",author:'crimaniak',name:'Спрятать лишнее',config:{active:{type:'checkbox',value:true},hideSocialLinks:{type:'checkbox',caption:'Спрятать кнопки социальных сетей',value:false}},run:function()
 {if(this.config.hideSocialLinks.value)$j('.b-post_social_link').hide();}});d3.addModule({type:"Содержание",name:'Показывать внешние ссылки из заголовков постов',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
 {var anyPosts=document.getElementById('js-posts_holder')||document.querySelector('div.h-post_comment_page');if(anyPosts)
