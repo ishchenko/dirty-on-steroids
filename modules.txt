@@ -10,7 +10,6 @@ extra/update.link.js
 extra/no.rating.js
 extra/browser.js
 extra/fotki.js
-extra/www.redirector.js
 extra/test.js
 extra/online.user.js
 extra/tooltip.js
@@ -27,4 +26,5 @@ extra/hide.inbox.users.js
 extra/tort.js
 extra/hide.posts.by.rating.js
 extra/hide.elements.js
+extra/post.header.link.js
 

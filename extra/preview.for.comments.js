@@ -62,6 +62,15 @@ d3.addModule(
 					var yarrButton = e.target.querySelector('input.b-comments_reply_block_yarrr');
 					$j(previewInput).insertBefore( yarrButton );
 
+					var cancelButton = e.target.querySelector('a.b-comments_reply_block_delete_file');
+					if (cancelButton)
+					{
+						cancelParent = cancelButton.parentNode;
+						cancelParent.removeChild( cancelButton );
+						cancelParent.appendChild( cancelButton );
+						cancelButton.setAttribute('style', 'position: relative;font-size: 13px; margin-left: 15px; right: 0px; top: 0px;');
+					}
+
 					$j(previewInput).click( function(e){
 					var previewCont = e.target.parentNode.parentNode.parentNode;
 					var previewTextArea = previewCont.querySelector('textarea.i-form_text_input');
