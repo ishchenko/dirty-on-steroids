@@ -37,13 +37,6 @@ d3.addModule(
 			var socParent = socBut.parentNode;
 			socParent.removeChild( socBut );
 			socParent.appendChild( socBut );
-<<<<<<< HEAD
 		}
-=======
-
-		}
-		
-
->>>>>>> refs/heads/master
 	}
 });
