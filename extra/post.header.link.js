@@ -20,7 +20,7 @@ d3.addModule(
 				for ( var i = 0; i < headersArr.length; i++)
 				{
 					headerLinks = headersArr[i].getElementsByTagName('a');
-					if ( headerLinks.length == 1 )s
+					if ( headerLinks.length == 1 )
 					{
 						if ( headerLinks[0].href.indexOf('d3.ru/comments/') == -1)
 						{
