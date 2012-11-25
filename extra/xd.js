@@ -74,7 +74,11 @@ d3.addModule(
 			this.callback = callback;
 			var me=this;
 			$j("#xd_frame").unbind().load(function(){
-				me.XD.postMessage(msg, src, frames[0]);
+				if(!$j.browser.chrome()){
+					me.XD.postMessage(msg, src, frames[0]);
+				}else{
+					//no support in chrome: http://code.google.com/p/chromium/issues/detail?id=20773
+				}
 			});
 			document.getElementById("xd_frame").src = src;
 		},
