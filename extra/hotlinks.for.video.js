@@ -86,6 +86,10 @@ d3.addModule(
 			{
 				videoId = 'http://player.vimeo.com/video/' + videoId + '?autoplay=1';
 			}
+			else
+			{
+				videoId = '';
+			}
 		}
 
 		if ( videoId.length > 0 )

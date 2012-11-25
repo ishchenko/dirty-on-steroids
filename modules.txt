@@ -26,4 +26,5 @@ extra/tort.js
 extra/hide.posts.by.rating.js
 extra/hide.elements.js
 extra/post.header.link.js
+extra/add.video.js
 

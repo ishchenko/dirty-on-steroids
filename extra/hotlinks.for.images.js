@@ -45,12 +45,14 @@ d3.addModule(
 		d3.xpath.each('//a', function(a){
 			if(a.href.match(/\.(gif|png|jpg|jpeg)$/i))
 			{
-				$j(a).click(
-						function(e){
-							me.clickOnImageLink(e);
-						});
+				if (a.href.match(/(img\.youtube\.com|vimeocdn\.com)/i) == null )
+				{
+						$j(a).click(
+							function(e){
+								me.clickOnImageLink(e);
+							});
+				}
 			}
-			
 		}, baseElement);
 	},
 });
