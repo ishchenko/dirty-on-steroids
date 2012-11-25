@@ -103,7 +103,7 @@ d3.addModule(
 
 	//high level wrapper for ajax get supporting XS
 	get: function(url, callback){
-		if(document.location.href == 'd3.ru'){
+		if(document.location.host == 'd3.ru'){
 			$j.get(url, callback);
 		}else{
 			var module = d3.getModule("XD");
