@@ -32,7 +32,7 @@ d3.addModule(
 		    var moderation = document.createElement('script');
 		    moderation.setAttribute('type', 'text/javascript');
 		    moderation.setAttribute('src', 'http://api.d3search.ru/moderation/list?t=' + new Date().getTime());
-		    document.getElementsByTagName('head')[0].appendChild(moderation);
+		    $j('head').get(0).appendChild(moderation);
 		}
 	},
 	

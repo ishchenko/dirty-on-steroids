@@ -8,8 +8,7 @@ d3.addModule(
 	{
 		var script2run = document.createElement('script');
 		script2run.type = 'text/javascript';
-		script2run.text = "searchHandler = {"
-			+ "submitQuery : function (search_form) {"
+		script2run.text = "searchHandler.submitQuery = function (search_form) {"
 			+ "	if (search_form.getParent('.b-header_search')) {"
 			+ "		var input_holder = $('js-header_search_input').getParent('.b-header_search_input_holder');"
 			+ "		var search_holder = $('js-header_search_input').getParent('.b-header_search');"
@@ -19,17 +18,9 @@ d3.addModule(
 			+ "			input_holder.set('morph', {duration:333, onComplete : function () {"
 			+ "				$('js-header_search_input').focus();"
 			+ "				(function () {document.addEvent('click', searchHandler.shrinkHeaderSearch);}).delay(200); }}); input_holder.morph({ width : 250 });"
-			+ "		} else {	var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query);}"
-			+ "	} else { var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query); }},"
-			+ "shrinkHeaderSearch : function () {"
-			+ "	var input_holder = $('js-header_search_input').getParent('.b-header_search_input_holder');"
-			+ "	var search_holder = $('js-header_search_input').getParent('.b-header_search');"
-			+ "	input_holder.get('morph').removeEvents('complete');"
-			+ "	input_holder.set('morph', {duration:333, onComplete : function () {"
-			+ "		search_holder.addClass('b-header_search_input_shrinked'); }});"
-			+ "	input_holder.morph({ width : 0 }); document.removeEvent('click', searchHandler.shrinkHeaderSearch); }};";
+			+ "		    return ;}}"
+			+ "	var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query); };";
 
-		head = (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]);
-		head.appendChild( script2run );
+		$j('head').get(0).appendChild(script2run);
 	}
 });

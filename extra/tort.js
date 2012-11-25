@@ -18,7 +18,6 @@ d3.addModule(
 		+ 'div.b-comments_controls_new_nav { padding: 14px 5px 14px 5px; min-width: 650px; background-repeat: repeat-x repeat-y; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpiuHnzZgNAgAEACCYDDGx4O28AAAAASUVORK5CYII=);}'
 		+ '.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}';
 
-		head = (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]),
 		style = document.createElement('style');
 		style.type = 'text/css';
 		if(style.styleSheet)
@@ -29,7 +28,7 @@ d3.addModule(
 		{
 	    	style.appendChild(document.createTextNode(css));
 		}
-		head.appendChild(style);
+		$j('head').append(style);
 
 		var socBut = document.querySelector('div.b-comments_controls_social');
 		if ( socBut )
@@ -37,9 +36,6 @@ d3.addModule(
 			var socParent = socBut.parentNode;
 			socParent.removeChild( socBut );
 			socParent.appendChild( socBut );
-
 		}
-		
-
 	}
 });

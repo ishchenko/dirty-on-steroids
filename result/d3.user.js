@@ -72,7 +72,7 @@ this.sheets[0].show();},hideAll:function(){this.sheets.forEach(function(item){it
 .tbsTabs{float:left;}\
 .tbsHeader{padding: 1ex 2ex;border: 1px grey solid;border-right-style: none;margin-bottom: 5px;margin-right: 0;cursor: pointer;background-color: #FFFFFF;width:100px}\
 .tbsActive{position: relative;left: 1px;}\
-.tbsSheet{background-color: #FFFFFF;border: 1px solid grey;padding: 0 1ex;position: absolute; left: 140px; top:20px; z-index:-1; width:454px;height: 272px; overflow: auto;margin: 0;}\
+.tbsSheet{background-color: #FFFFFF;border: 1px solid grey;padding: 0 1ex;position: absolute; left: 136px; top:19px; z-index:-1; width:454px;height: 272px; overflow: auto;margin: 0;}\
 </style>');(function($){$.fn.unselectable=function(){return this.each(function(){$(this).css('-moz-user-select','none').css('-khtml-user-select','none').css('user-select','none');if($.browser.msie){$(this).each(function(){this.ondrag=function(){return false}});$(this).each(function(){this.onselectstart=function(){return(false)}})}else if($.browser.opera){$(this).attr('unselectable','on')}})}})(jQuery);function URL(base)
 {this.base=base!=undefined?base:'';this.parms=[];this._hash='';};URL.prototype={setBase:function(newBase){this.base=newBase;return this;},addBase:function(part){this.base+=part;return this;},add:function(name,value){this.parms.push({name:name,value:value});return this;},hash:function(hash){this._hash=hash;return this;},toString:function()
 {return this.base+this.getParms()+(this._hash!=''?'#'+this._hash:'');},getParms:function()
@@ -143,7 +143,7 @@ this.config.ignored[i]=undefined;}
 with(d3.content)if(comments.length==0&&posts.length>0)
 for(var i=0;i<posts.length;++i)
 this.processPost(posts[i]);if(this.config.moderation.value)
-{var moderation=document.createElement('script');moderation.setAttribute('type','text/javascript');moderation.setAttribute('src','http://api.d3search.ru/moderation/list?t='+new Date().getTime());document.getElementsByTagName('head')[0].appendChild(moderation);}},processPost:function(post)
+{var moderation=document.createElement('script');moderation.setAttribute('type','text/javascript');moderation.setAttribute('src','http://api.d3search.ru/moderation/list?t='+new Date().getTime());$j('head').get(0).appendChild(moderation);}},processPost:function(post)
 {var footer=post.getFooter();var me=this;var id=''+post.id;if(this.config.ignored.value[id]!=undefined)
 (this.config.hideAtAll.value?post.container:$j('div.dt',post.container)).hide();footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold">[игнорировать]</a>');$j('.ignorator',footer).click(function(){return me.processClick(post);});},processClick:function(post)
 {var content=$j('div.dt',post.container);var id=''+post.id;with(this.config.ignored)
@@ -169,8 +169,7 @@ if(rating<l)
 {if(d3.user.name==null)return;d3.xpath.each("//body//text()[contains(string(),'%username%')]",function(node)
 {if(node.data!=undefined)
 node.data=node.data.replace('%username%',d3.user.name);});}});d3.addModule({type:"Поиск",name:'Поиск на d3search.ru',author:'crimaniak, crea7or',config:{active:{type:'checkbox',value:true}},run:function()
-{var script2run=document.createElement('script');script2run.type='text/javascript';script2run.text="searchHandler = {"
-+"submitQuery : function (search_form) {"
+{var script2run=document.createElement('script');script2run.type='text/javascript';script2run.text="searchHandler.submitQuery = function (search_form) {"
 +" if (search_form.getParent('.b-header_search')) {"
 +"  var input_holder = $('js-header_search_input').getParent('.b-header_search_input_holder');"
 +"  var search_holder = $('js-header_search_input').getParent('.b-header_search');"
@@ -180,15 +179,8 @@ node.data=node.data.replace('%username%',d3.user.name);});}});d3.addModule({type
 +"   input_holder.set('morph', {duration:333, onComplete : function () {"
 +"    $('js-header_search_input').focus();"
 +"    (function () {document.addEvent('click', searchHandler.shrinkHeaderSearch);}).delay(200); }}); input_holder.morph({ width : 250 });"
-+"  } else { var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query);}"
-+" } else { var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query); }},"
-+"shrinkHeaderSearch : function () {"
-+" var input_holder = $('js-header_search_input').getParent('.b-header_search_input_holder');"
-+" var search_holder = $('js-header_search_input').getParent('.b-header_search');"
-+" input_holder.get('morph').removeEvents('complete');"
-+" input_holder.set('morph', {duration:333, onComplete : function () {"
-+"  search_holder.addClass('b-header_search_input_shrinked'); }});"
-+" input_holder.morph({ width : 0 }); document.removeEvent('click', searchHandler.shrinkHeaderSearch); }};";head=(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]);head.appendChild(script2run);}});d3.addModule({type:"Содержание",name:'Спрятать картинки в постах',author:'crimaniak',config:{active:{type:'checkbox',value:false}},run:function()
++"      return ;}}"
++" var query = $(search_form).getElement('input[type=\"text\"]').value; window.location.href = 'http://d3search.ru/search?query=' + encodeURIComponent(query); };";$j('head').get(0).appendChild(script2run);}});d3.addModule({type:"Содержание",name:'Спрятать картинки в постах',author:'crimaniak',config:{active:{type:'checkbox',value:false}},run:function()
 {var items=d3.content.posts;if(items.length>1)
 for(var i=0;i<items.length;++i)
 this.process(items[i]);},process:function(item)
@@ -211,13 +203,7 @@ d3.addModule({type:"Содержание",name:'Фотогалерея пост�
 {var found=[];var needToSort=false;$j.each(d3.content.comments,function(index,c)
 {$j('img',c.container).each(function(index)
 {if(this.src=='http://img.dirty.ru/pics/lapata.gif')return;found.push({src:this.src,id:c.id,rating:c.ratingValue()});var r=c.ratingValue();if(r!=0&&r==r)needToSort=true;});});if(needToSort)found.sort(function(a,b){return b.rating-a.rating;});var text="";$j.each(found,function(index,image)
-{text+="<a href='#"+image.id+"'><img src='"+image.src+"' height='"+h+(needToSort?"' title='Рейтинг "+image.rating:'')+"'></a>";});$j("#fotkiFotki").html(text);$j('#fotkiShow').hide();$j('#fotkiHide1').show();$j('#fotkiHide2').show();$j('#fotkiFotki').show();}});d3.addModule({type:"Прочее",name:'Редирект с www.dirty.ru на dirty.ru',author:'crimaniak',config:{active:{type:'checkbox',value:true}},run:function()
-{with(window.location)
-if(hostname=='www.dirty.ru')
-href=href.replace(/www.dirty.ru/,'dirty.ru');}});d3.addModule({type:"Тесты",author:'crimaniak',name:'Тест конфига',config:{active:{type:'checkbox',value:false},testRadio:{type:'radio',options:{"Опция 1":1,"Опция 2":2,"Опция 3":3,"Опция 4":4,"Опция 5":5,"Опция 6":6},caption:'Тестовые радиокнопки',value:6},testText:{type:'text',value:'test text',caption:'Тестовое поле: '},testSelect:{type:'select',value:'value 2',options:{'опция 1':'value 1','опция 2':'value 2'},caption:'Тестовый селект:'},testCheckbox:{type:'checkbox',caption:'Тестовый чекбокс'}},run:function()
-{var me=this;d3.get.leftNavigation().append('<li><a href="#" id="d3ConfigLink">Тест конфига</a></li>');$j('#d3ConfigLink').click(function(event){me.showInfo();return false;});},showInfo:function()
-{alert("Радиокнопки: "+this.config.testRadio.value+"\nТекст: "+this.config.testText.value
-+"\nСелект: "+this.config.testSelect.value+"\nЧекбокс: "+this.config.testCheckbox.value);}});d3.addModule({type:"Прочее",name:'Показываться онлайн через d3search',author:'crea7or, Stasik0',config:{active:{type:'checkbox',value:true}},run:function()
+{text+="<a href='#"+image.id+"'><img src='"+image.src+"' height='"+h+(needToSort?"' title='Рейтинг "+image.rating:'')+"'></a>";});$j("#fotkiFotki").html(text);$j('#fotkiShow').hide();$j('#fotkiHide1').show();$j('#fotkiHide2').show();$j('#fotkiFotki').show();}});d3.addModule({type:"Прочее",name:'Показываться онлайн через d3search',author:'crea7or, Stasik0',config:{active:{type:'checkbox',value:true}},run:function()
 {if(d3.user.name!=null&&d3.user.name.length>0)
 {var lastCheckinTimestamp=d3.localStorGetItem('lastCheckinTimestamp',0);var drawStuff=function()
 {var divContentLeft=document.querySelector("div.l-content_aside");if(divContentLeft)
@@ -261,7 +247,9 @@ previewDiv.innerHTML=previewTextArea.value.replace(/\n/g,'<br>');}
 e.preventDefault();return false;});}
 document.addEventListener("DOMNodeInserted",function(e){if(e.target.tagName=="DIV")
 {var previewCont=e.target.querySelector('div.b-textarea_editor');if(previewCont)
-{var previewInput=document.createElement('input');previewInput.type='image';previewInput.src='/i/probe.gif';previewInput.setAttribute('style','margin-right: 10px;');var yarrButton=e.target.querySelector('input.b-comments_reply_block_yarrr');$j(previewInput).insertBefore(yarrButton);$j(previewInput).click(function(e){var previewCont=e.target.parentNode.parentNode.parentNode;var previewTextArea=previewCont.querySelector('textarea.i-form_text_input');if(previewTextArea&&previewCont)
+{var previewInput=document.createElement('input');previewInput.type='image';previewInput.src='/i/probe.gif';previewInput.setAttribute('style','margin-right: 10px;');var yarrButton=e.target.querySelector('input.b-comments_reply_block_yarrr');$j(previewInput).insertBefore(yarrButton);var cancelButton=e.target.querySelector('a.b-comments_reply_block_delete_file');if(cancelButton)
+{cancelParent=cancelButton.parentNode;cancelParent.removeChild(cancelButton);cancelParent.appendChild(cancelButton);cancelButton.setAttribute('style','position: relative;font-size: 13px; margin-left: 15px; right: 0px; top: 0px;');}
+$j(previewInput).click(function(e){var previewCont=e.target.parentNode.parentNode.parentNode;var previewTextArea=previewCont.querySelector('textarea.i-form_text_input');if(previewTextArea&&previewCont)
 {var previewDiv=previewCont.querySelector('div.sp3previewDiv');if(previewDiv==null)
 {previewDiv=document.createElement('div');previewDiv.setAttribute('style','padding: 5px; margin: 5px 0px 0px 0px !important; border: 1px dashed grey;');previewDiv.setAttribute('class','comment sp3previewDiv');previewCont.appendChild(previewDiv);}
 previewDiv.innerHTML=previewTextArea.value.replace(/\n/g,'<br>');}
@@ -351,12 +339,26 @@ d3.addModule({type:"Стилизация",name:'Рестайлинг сайта 
 +'.comments_indent_holder .indent_25 { padding-left:415px !important;} .indent_26 { padding-left:430px !important;} .indent_27 { padding-left:445px !important;} .indent_28 { padding-left:460px !important;}'
 +'.comments_indent_holder .indent_29 { padding-left:475px !important;} .indent_30 { padding-left:490px !important;}'
 +'div.b-comments_controls_new_nav { padding: 14px 5px 14px 5px; min-width: 650px; background-repeat: repeat-x repeat-y; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpiuHnzZgNAgAEACCYDDGx4O28AAAAASUVORK5CYII=);}'
-+'.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}';head=(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]),style=document.createElement('style');style.type='text/css';if(style.styleSheet)
++'.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}';style=document.createElement('style');style.type='text/css';if(style.styleSheet)
 {style.styleSheet.cssText=css;}
 else
 {style.appendChild(document.createTextNode(css));}
-head.appendChild(style);var socBut=document.querySelector('div.b-comments_controls_social');if(socBut)
+$j('head').append(style);var socBut=document.querySelector('div.b-comments_controls_social');if(socBut)
 {var socParent=socBut.parentNode;socParent.removeChild(socBut);socParent.appendChild(socBut);}}});d3.addModule({type:"Содержание",name:'Прятать посты с низким рейтингом',author:'Aivean',config:{active:{type:'checkbox',value:false},rating:{type:'select',value:0,options:{'10':10,'5':5,'0':0,'-5':-5,'-10':-10},caption:'Рейтинг меньше, чем:'}},run:function(){d3.content.posts.forEach(function(p){if(p.ratingValue()<this.config.rating.value){p.container.hide();}},this);}});d3.addModule({type:"Стилизация",author:'crimaniak',name:'Спрятать лишнее',config:{active:{type:'checkbox',value:true},hideSocialLinks:{type:'checkbox',caption:'Спрятать кнопки социальных сетей',value:false}},run:function()
-{if(this.config.hideSocialLinks.value)$j('.b-post_social_link').hide();}});}catch(e)
+{if(this.config.hideSocialLinks.value)$j('.b-post_social_link').hide();}});d3.addModule({type:"Содержание",name:'Показывать внешние ссылки из заголовков постов',author:'crea7or',config:{active:{type:'checkbox',value:true}},run:function()
+{var anyPosts=document.getElementById('js-posts_holder')||document.querySelector('div.h-post_comment_page');if(anyPosts)
+{var headersArr=anyPosts.getElementsByTagName('h3');if(headersArr)
+{var headerLinks;var linkHref;var linkPreview;for(var i=0;i<headersArr.length;i++)
+{headerLinks=headersArr[i].getElementsByTagName('a');if(headerLinks.length==1)
+{if(headerLinks[0].href.indexOf('d3.ru/comments/')==-1)
+{linkHref=headerLinks[0].href;if(linkHref.indexOf('http://')==0)
+{linkHref=linkHref.slice(7);}
+else if(linkHref.indexOf('https://')==0)
+{linkHref=linkHref.slice(8);}
+if(linkHref.indexOf('www.')==0)
+{linkHref=linkHref.slice(4);}
+if(linkHref.indexOf('/')>-1)
+{linkHref=linkHref.slice(0,linkHref.indexOf('/'));}
+linkPreview=document.createElement('a');linkPreview.href=headerLinks[0].href;linkPreview.innerHTML=linkHref;linkPreview.setAttribute('style','margin-left: 20px; opacity: 0.5;');headersArr[i].appendChild(linkPreview);}}}}}},});}catch(e)
 {if(console)console.log(e);}
 if(console)console.log('runtime: '+d3.runTimeTotal+'ms');
