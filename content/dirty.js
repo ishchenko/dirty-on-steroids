@@ -23,7 +23,7 @@ d3.addContentModule(/(.*\.)?dirty.ru/i,
 	variant: 'dirty.ru',
 	posts: [],
 	comments: [],
-	listeners: [],
+	commentListeners: [],
 	run: function()
 	{
 		var me=this;
@@ -39,8 +39,8 @@ d3.addContentModule(/(.*\.)?dirty.ru/i,
 			{
 				var comment=new Comment(container);
 				me.countItems();
-				for(var i=0;i<me.listeners.length;++i)
-					me.listeners[i](comment);
+				for(var i=0;i<me.commentListeners.length;++i)
+					me.commentListeners[i](comment);
 			}
 		});
 	},
@@ -56,7 +56,8 @@ d3.addContentModule(/(.*\.)?dirty.ru/i,
 	
 	items: function(){return this.comments.length ? this.comments : this.posts.length ? this.posts : [];},
 	
-	onNewComment: function(fn){this.listeners.push(fn);},
+	onNewComment: function(fn){this.commentListeners.push(fn);},
+	onNewPost: function(fn){},
 	
 	addItemsProcessor: function(processor)
 	{

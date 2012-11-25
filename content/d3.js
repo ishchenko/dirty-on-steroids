@@ -22,7 +22,8 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	variant: 'd3.ru',
 	posts: [],
 	comments: [],
-	listeners: [],
+	commentListeners: [],
+	postListeners: [],
 	run: function()
 	{
 		var me=this;
@@ -31,18 +32,48 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 
 		//d3.window.d3=d3;
 		d3.content=this;
-		$j(document).bind("DOMNodeInserted",function(event)
-		{
-			var container=$j(event.target);
-			if(container.hasClass('comment'))
-			{
-				var comment=new Comment(container);
-				me.countItems();
-				for(var i=0;i<me.listeners.length;++i)
-					me.listeners[i](comment);
-			}
+
+		function processPost($post) {
+			var post = new Post($post);
+			me.countPost(post);
+			me.postListeners.forEach(function (listener) {
+				try {
+					listener(post);
+				} catch (e) {
+					if(console) console.log(e);
+				}
+			});
+		}
+
+		function processComment($comment) {
+			var comment = new Comment($comment);
+			me.countComment(comment);
+			me.commentListeners.forEach(function (listener) {
+				try {
+					listener(comment);
+				} catch (e) {
+					if(console) console.log(e);
+				}
+			});
+		}
+
+		$j(document).on('DOMNodeInserted', function (event) {
+			var $current = $j(event.target);
+			if ($current.is(".comment")) processComment($current);
+			if ($current.is(".post")) processPost($current);
+
+			$j("div.post", event.target).each(
+				function () {
+					processPost($j(this));
+				}
+			);
+			$j("div.comment", event.target).each(
+				function () {
+					processComment($j(this));
+				}
+			);
 		});
-		
+
 		this.createLeftNavigator();
 	},
 	
@@ -51,14 +82,27 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 		this.posts=[];
 		this.comments=[];
 		var me=this;
-		$j('.post').each(function(){me.posts.push(new Post($j(this)));});
-		$j('.comment').each(function(){me.comments.push(new Comment($j(this)));});
+		$j('.post').each(function () {
+			me.countPost(new Post($j(this)));
+		});
+		$j('.comment').each(function () {
+			me.countComment(new Comment($j(this)));
+		});
+	},
+
+	countPost: function(post) {
+		this.posts.push(post);
+	},
+
+	countComment: function(comment) {
+		this.comments.push(comment);
 	},
 	
 	items: function(){return this.comments.length ? this.comments : this.posts.length ? this.posts : [];},
 	
-	onNewComment: function(fn){this.listeners.push(fn);},
-	
+	onNewComment: function(fn){this.commentListeners.push(fn);},
+	onNewPost: function(fn){this.postListeners.push(fn);},
+
 	addItemsProcessor: function(processor)
 	{
 		var items = this.items();

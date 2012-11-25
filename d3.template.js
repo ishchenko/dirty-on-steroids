@@ -101,11 +101,46 @@ var d3=
 		if(module.config == undefined || module.config.active == undefined || module.config.active.value)
 		{
 			var timeBefore = new Date();
-			try {
-				module.run();
-			} catch (e) {
-				if (console) console.log("Error in module '" + module.name + "'", e);
+			if (module.run != undefined) {
+				try {
+					module.run();
+				} catch (e) {
+					if (console) console.log("Error in module '" + module.name + "'", e);
+				}
 			}
+
+			try {
+				if (module.onPost != undefined) {
+					var startTime = new Date();
+					d3.content.onNewPost(function (post) {
+						module.onPost(post);
+					});
+					d3.content.posts.forEach(function (post) {
+						module.onPost(post);
+					});
+					if (console) console.log("Posts processor for module '" + module.name + "' registered. " +
+						"Processing time " + ((new Date) - startTime));
+				}
+			} catch (e) {
+				if (console) console.log("Error processing posts in module '" + module.name + "'", e);
+			}
+
+			try {
+				if (module.onComment != undefined) {
+					var startTime = new Date();
+					d3.content.onNewComment(function (comment) {
+						module.onComment(comment);
+					});
+					d3.content.comments.forEach(function (comment) {
+						module.onComment(comment);
+					});
+					if (console) console.log("Comments processor for module '" + module.name + "' registered. " +
+						"Processing time " + ((new Date) - startTime));
+				}
+			} catch (e) {
+				if (console) console.log("Error processing comments in module '" + module.name + "'", e);
+			}
+
 			var moduleRunTime = (new Date()) - timeBefore;
 			this.runTimeTotal += moduleRunTime;
 			if(console)console.log( module.name + ": " + moduleRunTime + "ms" );
