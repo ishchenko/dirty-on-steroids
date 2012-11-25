@@ -20,28 +20,11 @@ d3.addModule(
 				for ( var i = 0; i < headersArr.length; i++)
 				{
 					headerLinks = headersArr[i].getElementsByTagName('a');
-					if ( headerLinks.length == 1 )
+					if ( headerLinks.length == 1 )s
 					{
 						if ( headerLinks[0].href.indexOf('d3.ru/comments/') == -1)
 						{
-							linkHref = headerLinks[0].href;
-							if ( linkHref.indexOf('http://') == 0)
-							{
-								linkHref = linkHref.slice( 7 );
-							}
-							else if ( linkHref.indexOf('https://') == 0)
-							{
-								linkHref = linkHref.slice( 8 );
-							}
-							if ( linkHref.indexOf('www.') == 0 )
-							{
-								linkHref = linkHref.slice( 4 );
-							}
-
-							if ( linkHref.indexOf('/') > -1 )
-							{
-								linkHref = linkHref.slice( 0, linkHref.indexOf('/'));
-							}
+							linkHref = headerLinks[0].hostname.replace(/^www\./,'');
 							linkPreview = document.createElement('a');
 							linkPreview.href = headerLinks[0].href;
 							linkPreview.innerHTML = linkHref;
