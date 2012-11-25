@@ -74,7 +74,7 @@ d3.addModule(
 			this.callback = callback;
 			var me=this;
 			$j("#xd_frame").unbind().load(function(){
-				if(!$j.browser.chrome()){
+				if(!$j.browser.chrome){
 					me.XD.postMessage(msg, src, frames[0]);
 				}else{
 					//no support in chrome: http://code.google.com/p/chromium/issues/detail?id=20773
