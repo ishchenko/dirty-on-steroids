@@ -101,10 +101,22 @@ d3.addModule(
 		return (string.split(pre)[1].split(post)[0]);
 	},
 
+	//high level wrapper for ajax get supporting XS
+	get: function(url, callback){
+		if(document.location.href == 'd3.ru'){
+			$j.get(url, callback);
+		}else{
+			var module = d3.getModule("XD");
+			if(module != null){
+				module.send.call(module, url, '{"service":"bodyHtml"}', callback);
+			}
+		}
+	},	
+
 	dup_getData_d3: function(obj){
 		if(this.processing==1){
 			var me=this;
-			$j.get(obj.href, function(data){
+			this.get(obj.href, function(data){
 				//clear all line breaks and spaces
 				var dup_text = data.replace(/(\r\n|\n|\r)/gm,' ').replace(/\s\s+/g,' ');
 				//splits are for better performance! :p
