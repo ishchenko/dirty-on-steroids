@@ -14,14 +14,12 @@ d3.addModule(
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true}},
 	
-	run: function()
-	{
-		var me = this;
-		this.imagesPreview( document.body );
+	onPost: function(post) {
+		this.imagesPreview(post.container.get(0))
+	},
 
-		d3.content.onNewComment(function(comment){
-			me.imagesPreview(comment.container);
-		});
+	onComment: function(comment) {
+		this.imagesPreview(comment.container.get(0))
 	},
 
 	clickOnImageLink: function(e)
@@ -42,7 +40,8 @@ d3.addModule(
 	imagesPreview: function( baseElement )
 	{
 		var me = this;
-		d3.xpath.each('//a', function(a){
+		$j("a", baseElement).each(function(){
+			var a = this;
 			if(a.href.match(/\.(gif|png|jpg|jpeg)$/i))
 			{
 				if (a.href.match(/(img\.youtube\.com|vimeocdn\.com)/i) == null )
@@ -53,7 +52,7 @@ d3.addModule(
 							});
 				}
 			}
-		}, baseElement);
-	},
+		});
+	}
 });
 	

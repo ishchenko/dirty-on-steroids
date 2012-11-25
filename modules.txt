@@ -28,3 +28,4 @@ extra/hide.elements.js
 extra/xd.js
 extra/post.header.link.js
 extra/add.video.js
+extra/mute.deleted.comments.js
