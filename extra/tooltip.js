@@ -16,14 +16,22 @@ d3.addModule(
 		this.processLinks($j(document.body));
 	},
 
+	onPost: function(post) {
+		this.processLinks(post.container.get(0))
+	},
+
+	onComment: function(comment) {
+		this.processLinks(comment.container.get(0))
+	},
+
 	processLinks: function(elem){
 		if(!this.config.active.value)return;
 		var me = this;
 		var links = $j('a', elem);
+		var pattern = /(.*)d3.ru\/user\/(.*)/g;
 		for(var i=0; i<links.length; i++){
 			var href = links[i].href.toString();
-			//either /user/ or /users/ appers in link, /users/ must not be the ending
-			if((href.indexOf('/user/')>0 || (href.indexOf('/users/')>0 && href.lastIndexOf('/users/') != href.length-7)) &&
+			if(	pattern.test(href) &&
 			//but none of theres
 			  	href.indexOf('/posts/')<0 && href.indexOf('/comments/')<0 && href.indexOf('/favs/')<0 &&
 			//and this is no button

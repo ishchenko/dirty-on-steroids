@@ -1,12 +1,15 @@
-// Ставит видео плеер вместо картинки на главной
+// Добавляет кастомные гертруды
 d3.addModule(
 {
 	type: "Прочее",
 	name: 'Каноничные гертруды',
 	author: 'crea7or',
-	config: {active:{type:'checkbox',value:false}
-	,mixCheckbox:{type:'checkbox',caption:'Смешивать с оригинальными',value:true}},
-	
+	config: {
+		active: {type: 'checkbox', value: false},
+		mixCheckbox: {type: 'checkbox', caption: 'Смешивать с оригинальными', value: true},
+		mainPageOnly: {type: 'checkbox', caption: 'Только для главной', value: true}
+	},
+
 	run: function()
 	{
 		// fetching data from d3search - every 24 hours
@@ -23,8 +26,10 @@ d3.addModule(
 		}
 		// end of loading data
 
+		var isMainPage = document.location.hostname.match(/^(www\.)?\w+\.ru$/i);
 		var gertrudaDiv = document.querySelector('div.b-gertruda');
-		if ( gertrudaDiv )
+
+		if ( gertrudaDiv && (isMainPage || !this.config.mainPageOnly.value))
 		{
 			var gerLink = gertrudaDiv.getElementsByTagName('a');
 			if ( gerLink.length == 1 )
