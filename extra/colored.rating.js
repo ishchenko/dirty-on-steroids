@@ -22,29 +22,29 @@ d3.addModule(
 		,{l:64000,c:'#ff0000'}
 		],
 		
-	run: function()
-	{
-		var items=d3.get.items();
-		
-		for(var i=0;i<items.length;++i)
-			this.process(items[i]);
-		
-		//d3.content.onNewComment(this.process);
+	onComment: function (comment) {
+		this.process(comment);
 	},
 
-	process: function(item)
-	{
-		var container=item.ratingContainer();
-		var rating=item.ratingValue();
-		
-		if(rating > 0)
-			container.css('font-size', Math.min(16,9+Math.round(0.3*Math.sqrt(Math.abs(rating*this.config.ratingPower.value)))) + "px");
+	onPost: function (post) {
+		this.process(post);
+	},
 
-		for(var i=0;i<this.colors.length;++i) with(this.colors[i])
-			if(rating < l)
-			{
-				container.css('color',c);
+	process: function (item) {
+		var container = item.ratingContainer();
+		var rating = item.ratingValue();
+
+		if (rating > 0) {
+			container.css('font-size',
+				Math.min(16, 9 + Math.round(0.3 * Math.sqrt(Math.abs(rating * this.config.ratingPower.value)))) + "px");
+		}
+
+		for (var i in this.colors) {
+			var color = this.colors[i];
+			if (rating < color.l) {
+				container.css('color', color.c);
 				break;
 			}
+		}
 	}
 });
