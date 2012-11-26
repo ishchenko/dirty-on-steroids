@@ -38,12 +38,16 @@ d3.addModule(
 			me.scrollToItem(me.mineItems[me.nextMine]);
 		});
 		
-		d3.content.onNewComment(function(comment)
-		{
-			me.countItems();
-			me.newPosition();
-		});
-		
+		this.newPosition();
+	},
+
+	onPost: function(){
+		if(!this.countItems()) return;
+		this.newPosition();
+	},
+
+	onComment: function(){
+		if(!this.countItems()) return;
 		this.newPosition();
 	},
 

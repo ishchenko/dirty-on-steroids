@@ -13,9 +13,13 @@ d3.addModule(
 			this.calculate();
 		
 		var me = this;
-		d3.content.onNewComment(function(){me.calculate();});
 	},
-	
+
+	onComment: function()
+	{
+		this.calculate();
+	},
+
 	calculate: function()
 	{
 		var maleCount=0,femaleCount=0;

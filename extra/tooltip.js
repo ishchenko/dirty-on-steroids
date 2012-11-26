@@ -16,6 +16,14 @@ d3.addModule(
 		this.processLinks($j(document.body));
 	},
 
+	onPost: function(post) {
+		this.processLinks(post.container.get(0))
+	},
+
+	onComment: function(comment) {
+		this.processLinks(comment.container.get(0))
+	},
+
 	processLinks: function(elem){
 		if(!this.config.active.value)return;
 		var me = this;
