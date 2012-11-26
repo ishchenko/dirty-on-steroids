@@ -41,7 +41,7 @@ d3.addModule(
 		{
 			//var males = 0;
 			//var females = 0;
-			processElements(document.querySelectorAll('a.c_user'));
+			this.processElements(document.querySelectorAll('a.c_user'));
 			
 /** seems to be broken anyways
 			var headerInner = document.querySelector('div.comments_header_threshhold_inner');
