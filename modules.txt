@@ -1,3 +1,4 @@
+extra/redirect.to.new.js
 extra/right.navigator.js
 extra/mark.as.read.js
 extra/ignorator.js
