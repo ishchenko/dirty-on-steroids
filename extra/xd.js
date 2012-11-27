@@ -18,6 +18,9 @@ d3.addModule(
 		callback: null,
 
         run: function () {
+			String.prototype.endsWith = function(suffix) {
+				return this.indexOf(suffix, this.length - suffix.length) !== -1;
+			};
 			//receiving facility
 			var me = this;
 			this.XD.receiveMessage(
@@ -69,16 +72,14 @@ d3.addModule(
 		},
 
 		send: function(url, msg, callback){
+			//no support in chrome: http://code.google.com/p/chromium/issues/detail?id=20773
+			if($j.browser.webkit)return;
 			msg = msg.substring(0,msg.length-1)+',"parentUrl":"'+document.location.href.replace(/#.*$/, '')+'"}';
 			var src = url;
 			this.callback = callback;
 			var me=this;
 			$j("#xd_frame").unbind().load(function(){
-				if(!$j.browser.chrome){
-					me.XD.postMessage(msg, src, frames[0]);
-				}else{
-					//no support in chrome: http://code.google.com/p/chromium/issues/detail?id=20773
-				}
+				me.XD.postMessage(msg, src, frames[0]);
 			});
 			document.getElementById("xd_frame").src = src;
 		},

@@ -8,6 +8,10 @@ d3.addModule(
 
 	run: function()
 	{
+		String.prototype.endsWith = function(suffix) {
+			return this.indexOf(suffix, this.length - suffix.length) !== -1;
+		};
+
 		if(document.location.pathname == '/' && document.location.href.indexOf('?')==-1){
 			document.location.href = document.location.href+"new";
 			return;
@@ -18,11 +22,13 @@ d3.addModule(
 				$j(this).attr('href', '/?');
 		});
 
+console.log("xy");
 		//modify old links
 		$j('a[href$="d3.ru"], a[href$="d3.ru/"], a[href="/"]').not('a[href^="mailto:"]').each(function(link){
 			var href = $j(this).attr('href');
+console.log(href);
 			if(href.indexOf('write')==-1){
-				if(href.endsWith('/')){
+				if(href.toString().endsWith('/')){
 					$j(this).attr('href', $j(this).attr('href')+'new');
 				}else{
 					$j(this).attr('href', $j(this).attr('href')+'/new');
