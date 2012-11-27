@@ -9,20 +9,22 @@ d3.addModule(
 		,commentRating:{type:'checkbox',value:false,caption:'Спрятать рейтинг комментариев'}
 		,voteButtons:  {type:'checkbox',value:false,caption:'Спрятать кнопки голосования'}
 		},
-		
-	run: function()
-	{
-		with(this.config)
-		{
-			if(postRating.value ) $j('.post .vote_result').html('');
-			if(commentRating.value) $j('.c_vote .vote_result').html('');
-			if(voteButtons.value) $j('.vote_button').remove();
-			if(d3.page.inbox){
-				$j('.post .vote_result').remove();
-				$j('.c_vote .vote_result').remove();
-				$j('.vote_button').remove();
-			}
+
+	onPost: function(post) {
+		if(d3.page.inbox || this.config.postRating.value) {
+			$j('.vote_result', post.container).remove();
+		}
+		if(d3.page.inbox || this.config.voteButtons.value) {
+			$j('.vote_button', post.container).remove();
+		}
+	},
+
+	onComment: function(comment) {
+		if(d3.page.inbox || this.config.commentRating.value) {
+			$j('.c_vote .vote_result', comment.container).remove();
+		}
+		if(d3.page.inbox || this.config.voteButtons.value) {
+			$j('.vote_button', comment.container).remove();
 		}
 	}
-
 });
