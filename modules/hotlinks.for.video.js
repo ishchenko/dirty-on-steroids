@@ -5,25 +5,13 @@ d3.addModule(
 	name: 'Просмотр видео по клику на ссылке',
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true}},
-	
-	run: function()
-	{
-		var container = document.getElementById('js-commentsHolder');
-		if ( container )
-		{
-			this.setPlayer( container );
-		}
-		else
-		{
-			container = document.getElementById('js-posts_holder');
-			if ( container )
-			{
-				this.setPlayer( container );
-			}
-		}
 
-		var me = this;
-		document.addEventListener("DOMNodeInserted", function(e){ me.setPlayer( e.target )});
+	onPost: function(post) {
+		this.setPlayer(post.container.get(0));
+	},
+
+	onComment: function(comment) {
+		this.setPlayer(comment.container.get(0));
 	},
 
 	setPlayer: function( container )
@@ -43,9 +31,8 @@ d3.addModule(
 	clickOnVideoLink: function( e )
 	{
 		var thisObject = e.target;
-		if ( thisObject.nodeName == 'IMG')
-		{
-			thisObject = thisObject.parentNode;
+		if ( thisObject.nodeName != 'A') {
+			thisObject = $j(thisObject).parents("a").get(0);
 		}
 		var videoId;
 		if (( thisObject.href.search(/youtube.com/i) > -1 ) && ( thisObject.href.search(/v=/i) > -1 ))
@@ -159,5 +146,5 @@ d3.addModule(
 			e.preventDefault();
 			return false;
 		}
-	},
+	}
 });
