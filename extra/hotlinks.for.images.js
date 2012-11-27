@@ -1,12 +1,4 @@
 // Активные ссылки для картинок
-
-/**
- * @todo: во-первых, доделать под фичи сервис-пака, во-вторых, расширение еще не значит картинку, например:
- * http://en.wikipedia.org/wiki/File:8863-Project-Whirlwind-CRMI.JPG
- * По-хорошему надо запрашивать HEAD для ресурса и смотреть возвращаемый mime-тип. И если image/*, тогда переделывать
- * @todo: сделать опцию не подменять линк картинкой, а показывать каринку в попапе.
- */
-
 d3.addModule(
 {
 	type: "Содержание",
@@ -24,15 +16,38 @@ d3.addModule(
 
 	clickOnImageLink: function(e)
 	{
-		var imgPreview = document.createElement('img');
-		imgPreview.setAttribute('src', e.target.href );
-		var imgLink = document.createElement('a');
-		imgLink.setAttribute('href', '#');
-		imgLink.setAttribute('onclick', "this.previousSibling.setAttribute('style', this.previousSibling.getAttribute('bkpstyle')); this.parentNode.removeChild(this); return false;");
-		imgLink.appendChild( imgPreview );
-		e.target.parentNode.insertBefore(imgLink, e.target.nextSibling);
-		e.target.setAttribute('bkpstyle', e.target.getAttribute('style'));
-		e.target.setAttribute('style', 'display: none');
+		var newImageForPreview = new Image();
+		newImageForPreview.src = e.target.href;
+		$j(newImageForPreview).bind('load', {x: e.target.offsetLeft, y: e.target.offsetTop}, function(e)
+		{
+			if ( e.target.complete )
+			{
+				var data = e.data;
+				var imgPreview = document.createElement('img');
+				imgPreview.setAttribute('src', e.target.src );
+				var posy = data.y - (e.target.height)/2;
+				if (posy < d3.window.getScroll().y) 
+				{
+					posy = d3.window.getScroll().y;
+				}
+				var posx = data.x - (e.target.width)/2;
+				if (posx < d3.window.getScroll().x) 
+				{
+					posx = d3.window.getScroll().x;
+				}
+				imgPreview.setAttribute('style', 'position: absolute; cursor: pointer; z-index: 2; zoom: 1; left:' + posx + 'px ; top:' + posy + 'px; width:' + e.target.width + 'px; height:' + e.target.height + 'px;');
+				document.body.appendChild( imgPreview );
+
+				$j(imgPreview).bind('click', function(e)
+					{
+						e.target.parentNode.removeChild( e.target );
+					});
+			}
+		});
+		$j(newImageForPreview).bind('error', {href: e.target.href}, function(e)
+		{
+			window.location.href = e.data.href;
+		});
 		e.preventDefault();
 		return false;
 	},
