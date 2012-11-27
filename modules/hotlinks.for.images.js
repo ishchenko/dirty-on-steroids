@@ -18,23 +18,38 @@ d3.addModule(
 	{
 		var newImageForPreview = new Image();
 		newImageForPreview.src = e.target.href;
-		$j(newImageForPreview).bind('load', {x: e.target.offsetLeft, y: e.target.offsetTop}, function(e)
+
+		var posx = 0;
+		var posy = 0;
+		if (!e) var e = window.event;
+		if (e.pageX || e.pageY)
+		{
+			posx = e.pageX;
+			posy = e.pageY;
+		}
+		else if (e.clientX || e.clientY) 	
+		{
+			posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+			posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+		}
+
+		$j(newImageForPreview).bind('load', {x: posx, y: posy}, function(e)
 		{
 			if ( e.target.complete )
 			{
 				var data = e.data;
 				var imgPreview = document.createElement('img');
 				imgPreview.setAttribute('src', e.target.src );
-				var posy = data.y - (e.target.height)/2;
-				if (posy < d3.window.getScroll().y) 
+				var posy = data.y - (e.target.height / 2 );
+				if (posy < 0) 
 				{
 					posy = d3.window.getScroll().y;
 				}
-				var posx = data.x - (e.target.width)/2;
-				if (posx < d3.window.getScroll().x) 
+				var posx = data.x - (e.target.width /2 );
+				if (posx < 0) 
 				{
 					posx = d3.window.getScroll().x;
-				}
+				}				
 				imgPreview.setAttribute('style', 'position: absolute; cursor: pointer; z-index: 2; zoom: 1; left:' + posx + 'px ; top:' + posy + 'px; width:' + e.target.width + 'px; height:' + e.target.height + 'px;');
 				document.body.appendChild( imgPreview );
 
