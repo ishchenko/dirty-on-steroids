@@ -23,10 +23,6 @@ d3.addModule(
 					this.config.ignored[i]=undefined;
 		}
 		
-		with(d3.content) if(comments.length==0 && posts.length>0) // Main page
-			for(var i=0;i<posts.length;++i) // process every post
-				this.processPost(posts[i]);
-		
 		if(this.config.moderation.value)
 		{
 		    var moderation = document.createElement('script');
@@ -35,18 +31,22 @@ d3.addModule(
 		    $j('head').get(0).appendChild(moderation);
 		}
 	},
-	
-	processPost: function(post)
+
+	onPost: function(post)
 	{
-		var footer=post.getFooter();
-		var me=this;
-		var id=''+post.id;
-	
-		if(this.config.ignored.value[id]!=undefined)
-			(this.config.hideAtAll.value  ? post.container : $j('div.dt',post.container)).hide();
-		
-		footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold">[игнорировать]</a>');
-		$j('.ignorator',footer).click(function(){return me.processClick(post);});
+		if (d3.content.comments.length == 0) { // main page //TODO replace this with user location in d3.content issue #31
+			var footer = post.getFooter();
+			var me = this;
+			var id = '' + post.id;
+
+			if (this.config.ignored.value[id] != undefined)
+				(this.config.hideAtAll.value ? post.container : $j('div.dt', post.container)).hide();
+
+			footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold">[игнорировать]</a>');
+			$j('.ignorator', footer).click(function () {
+				return me.processClick(post);
+			});
+		}
 	},
 	
 	processClick: function(post)
