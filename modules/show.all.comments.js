@@ -6,16 +6,11 @@ d3.addModule(
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true}},
 
-	run: function()
-	{
-		if(d3.page.onlyNew)
-		{
-			var script2run = document.createElement('script');
-			script2run.type = 'text/javascript';
-			script2run.text = 'commentsHandler.switchNew();';
-			document.body.appendChild( script2run );
+	run: function () {
+		if (d3.page.onlyNew) {
+			$j(function () {
+				d3.window.commentsHandler.switchNew();
+			});
 		}
-	},
-	
+	}
 });
-	
