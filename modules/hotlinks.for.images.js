@@ -5,7 +5,19 @@ d3.addModule(
 	name: 'Раскрытие картинок по клику на ссылке',
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true}},
-	
+
+	run: function()
+	{
+		var head = (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]);
+   		var script = document.createElement( 'script' );
+   		script.type = 'text/javascript';
+   		script.textContent ="function morphingSp3( imgObjectId, targetX, targetY, targetWidth, targetHeight  )"
+			+ "{ var image_copy = document.id( imgObjectId ); image_copy.get('morph').removeEvents('complete');"
+			+ "image_copy.set('morph', { duration : 333, link : 'cancel'});"
+			+ "image_copy.morph({'height' : targetHeight,'width' : targetWidth,'top' : targetY,'left' : targetX}); }";
+		head.appendChild( script );
+	},
+
 	onPost: function(post) {
 		this.imagesPreview(post.container.get(0))
 	},
@@ -49,14 +61,21 @@ d3.addModule(
 				if (posx < 0) 
 				{
 					posx = d3.window.getScroll().x;
-				}				
-				imgPreview.setAttribute('style', 'position: absolute; cursor: pointer; z-index: 2; zoom: 1; left:' + posx + 'px ; top:' + posy + 'px; width:' + e.target.width + 'px; height:' + e.target.height + 'px;');
+				}
+				var imgId = 'imgsp3' + new Date().getTime();
+				imgPreview.setAttribute('id', imgId );
+				imgPreview.setAttribute('style', 'position: absolute; cursor: pointer; z-index: 2; zoom: 1; left:' + data.x + 'px ; top:' + data.y + 'px; width:' + 8 + 'px; height:' + 8 + 'px;');
 				document.body.appendChild( imgPreview );
 
 				$j(imgPreview).bind('click', function(e)
 					{
 						e.target.parentNode.removeChild( e.target );
 					});
+
+   				var script = document.createElement( 'script' );
+   				script.type = 'text/javascript';
+   				script.textContent ="morphingSp3( " + imgId + "," + posx  + "," + posy + "," + e.target.width + "," +  e.target.height + ");"
+				document.body.appendChild( script )
 			}
 		});
 		$j(newImageForPreview).bind('error', {href: e.target.href}, function(e)
