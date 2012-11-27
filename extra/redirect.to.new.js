@@ -13,8 +13,13 @@ d3.addModule(
 			return;
 		}
 
+		$j('a.b-blog_nav_sort_link').each(function(link){
+			if($j(this).attr('href')=='/')
+				$j(this).attr('href', '/?');
+		});
+
 		//modify old links
-		$j('a[href$="d3.ru"], a[href$="d3.ru/"], a[href="/"]').not('a[href^="mailto:"]').not('a[class="b-blog_nav_sort_link"]').each(function(link){
+		$j('a[href$="d3.ru"], a[href$="d3.ru/"], a[href="/"]').not('a[href^="mailto:"]').each(function(link){
 			var href = $j(this).attr('href');
 			if(href.indexOf('write')==-1){
 				if(href.endsWith('/')){
@@ -23,9 +28,6 @@ d3.addModule(
 					$j(this).attr('href', $j(this).attr('href')+'/new');
 				}
 			}
-		});
-		$j('a.b-blog_nav_sort_link[href="/"]').each(function(link){
-			$j(this).attr('href', $j(this).attr('href')+'?');
 		});
 	}
 
