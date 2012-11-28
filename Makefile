@@ -1,5 +1,5 @@
 all:
-	php d3merge.php	
+	php build/d3merge.php	
 
 release:
-	php d3merge.php release
+	php build/d3merge.php release
