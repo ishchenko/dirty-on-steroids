@@ -22,11 +22,9 @@ d3.addModule(
 				$j(this).attr('href', '/?');
 		});
 
-console.log("xy");
 		//modify old links
 		$j('a[href$="d3.ru"], a[href$="d3.ru/"], a[href="/"]').not('a[href^="mailto:"]').each(function(link){
 			var href = $j(this).attr('href');
-console.log(href);
 			if(href.indexOf('write')==-1){
 				if(href.toString().endsWith('/')){
 					$j(this).attr('href', $j(this).attr('href')+'new');
