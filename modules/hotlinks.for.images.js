@@ -28,9 +28,9 @@ d3.addModule(
 
 	clickOnImageLink: function(e)
 	{
+		document.body.style.cursor = 'wait';
 		var newImageForPreview = new Image();
 		newImageForPreview.src = e.target.href;
-
 		var posx = 0;
 		var posy = 0;
 		if (!e) var e = window.event;
@@ -43,22 +43,22 @@ d3.addModule(
 		{
 			posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
 			posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-		}
-
+		}		
 		$j(newImageForPreview).bind('load', {x: posx, y: posy}, function(e)
 		{
+			document.body.style.cursor = 'auto';
 			if ( e.target.complete )
 			{
 				var data = e.data;
 				var imgPreview = document.createElement('img');
 				imgPreview.setAttribute('src', e.target.src );
 				var posy = data.y - (e.target.height / 2 );
-				if (posy < 0) 
+				if (posy < d3.window.getScroll().y) 
 				{
 					posy = d3.window.getScroll().y;
 				}
 				var posx = data.x - (e.target.width /2 );
-				if (posx < 0) 
+				if (posx < d3.window.getScroll().x) 
 				{
 					posx = d3.window.getScroll().x;
 				}
@@ -80,6 +80,7 @@ d3.addModule(
 		});
 		$j(newImageForPreview).bind('error', {href: e.target.href}, function(e)
 		{
+			document.body.style.cursor = 'auto';
 			window.location.href = e.data.href;
 		});
 		e.preventDefault();
