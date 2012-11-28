@@ -69,8 +69,12 @@ d3.addModule(
 	processItem: function(container) {
 		var me=this;
 		//iterate over links
-		$j.each($j('div.dt > h3 > a', container).not('a[href*="' + window.location.hostname + '"]')
-			.add('div.dt a, div.c_body a, div.dt div.post_video a', container).not('a[class*="b-controls_button"]'),
+		$j.each($j('div.dt > h3 > a', container)
+			.add('div.dt a, div.c_body a, div.dt div.post_video a', container)
+			.not('a[class*="b-controls_button"]')
+			.not(':has(img)')
+			.not('a[href=#]')
+			.not('a[href*="' + window.location.hostname + '"]'),
 			function (index, link) {
 				if (me.inWhiteList(link.hostname)) {
 					var faviconUrl;
