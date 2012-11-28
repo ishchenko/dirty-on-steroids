@@ -5,6 +5,8 @@ d3.addModule(
 	name: 'Цветовая дифференциация полов',
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true}},
+	malesCount: 0,
+	femalesCount: 0,
 	
 	onPost: function(post){
 		this.processElements(post.container.get(0).querySelectorAll('a.c_user'));
@@ -23,13 +25,13 @@ d3.addModule(
 					{
 						//female
 						elemArray[i].style.borderBottom = '1px solid #ff78f7';
-						//females++;
+						this.femalesCount++;
 					}
 					else
 					{
 						//male
 						elemArray[i].style.borderBottom = '1px solid #5086ff';
-						//males++;
+						this.malesCount++;
 					}
 					elemArray[i].style.textDecoration = 'none';
 			}
@@ -39,17 +41,12 @@ d3.addModule(
 	{
 		if ( document.getElementById('js-commentsHolder') || document.getElementById('js-posts_holder'))
 		{
-			//var males = 0;
-			//var females = 0;
 			this.processElements(document.querySelectorAll('a.c_user'));
-			
-/** seems to be broken anyways
-			var headerInner = document.querySelector('div.comments_header_threshhold_inner');
+			var headerInner = document.querySelector('div.b-comments_controls_new_nav');
 			if ( headerInner )
 			{
-				headerInner.appendChild( document.createTextNode('м: '+males+' / ж: '+females));
+				headerInner.appendChild( document.createTextNode('м: '+this.malesCount+' / ж: '+this.femalesCount));
 			}
-**/
 		}
 	},
 });
