@@ -145,7 +145,7 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 
 	addConfigLink: function(id)
 	{
-		this.addToLeftNav($j('<li class="b-header_nav_user_menu_item"><a href="#" id="'+id+'">сервис-пак</a></li>'));
+		this.addToLeftNav($j('<li><a href="#" id="'+id+'"><div style="background: #fff url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAqCAMAAAD79pkTAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAGBQTFRF1Y4gt3kezZtS6ejo////0Lid38iv1NDPyHkD5+v9mYl0rqSZ8fHx6fL+7tjBkHdS7OTa8fP9+Pj48/n+4Of7+f7/4dzt3t7e/fz0+fn++Pb87e38/Pz8qH48+/Xv3rV8NTFhnAAAAtBJREFUeNqklYuy4iAQRCdweeQBCSaIGCL//5c7QxKN0drarTuWlpaHzkA3AD//VfArPO31D3hK8bJX/D7ihSPbHepy+TYAjjDnPAiRpR2skDjic8CGpwIHK4fH43a7pfSwWYQupm94QpqEs715nCa+o/fxYS0/87Bp8xCkHHwkMHk/jvE+epvDF7zQKtsfn2L0I7e283HEumc48bBrZ4ma0XcCdKV1Hsa7c6MEdknfcAmDf4x+QLhv20WzYXRYGcQZj9QK5Dt22zHdq4A/BUiiDYele8eLuGB8dCM+fFEdtaZYns04uzlXb90XPAQmvEPesqbbcOnM3LmaaXH5wBWgOjY7MFZwpdhgzGyM0LrtDubuuBZId84ygX5xXFVXm7lGWjfHMDzxjGq1czZnIYQcTI1FNBusfIXhpe7mejYoiTnjxky1M1eGeE43NHdf/X2qml2Nc/Xs6r1mo5AGi6Gwedj0YXdJgyJmftLTKu7TPfqbtGv/5CqtHP5ViZo6NjhmmgRjmAUg9Yj+JaHSMQTYPfLTVQl5nZDWVFD1lZaUtWgZT2+JrGgZ6PlMqI1eeqUAMD330UKxC/bdEdSi96o26TYELkGiI+MAC8m/dlNQ7QKwDQCAvlGUBsUshW3OWux44WnCbYMcYwx3d14CJ1wyjuIG09emw0mw8jhjVtcjxoXj1i60RbsxbBaaA743hHMVxhUDlFS4TkP5buqs+/h2iq1+4UTRL3LXGD50pvhLeaiad3zdVijPil2rvzMFc8q4VtWx9zd5gUaRuzV9OjORG7rvzidwLKuDPC6OuJZn7DlG8XjGt9mui88wDIqxVghyreqfITjxod14WcDV5/4ZsTNP54IG/SqMQxPSN3y3S7AKqCgO1dK0/Lk9zvx60CvVNsuy9H3ftCI8N/fnVYb20jVCVwO+qC4x/e3mK3fU69KJb+fM10qH+sW9+keAAQCgNU1m/YtzgwAAAABJRU5ErkJggg==) 7px 4px no-repeat; height:50px;border-top:1px solid #e9e9e9;border-bottom:1px solid #e9e9e9"><span style="cursor:pointer;text-decoration:underline;line-height:50px;margin-left:62px">Настройки</span></div></a></li>'));
 	},
 	
 	// collect user info
@@ -156,7 +156,7 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	
 	createLeftNavigator: function()
 	{
-		$j('div.l-content_aside').append('<div id="leftNavigator"><ul style="list-style-type: none;"></ul></div>');
+		$j('div.l-content_aside').append('<div id="leftNavigator"><ul style="list-style-type: none; padding: 0px 0px 0px 5px; font-size: 0.85em;"></ul></div>');
 	}
 	
 });
