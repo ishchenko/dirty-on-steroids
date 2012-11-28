@@ -18,11 +18,13 @@ class d3merge
 		chdir(self::$buildDir.'..');
 
 		$release = ($arg=='release') || (file_exists(self::gitHead) && preg_match('!/master$!', file_get_contents(self::gitHead)));
-		echo ($release ? 'Release' : 'Dev')." mode\n";
+		$buildMode = $release ? 'Release' : 'Dev';
+		echo "$buildMode mode\n";
 
 		$buildTime = date('Y-m-d H:i:s');
 		$code = strtr(file_get_contents(self::core), array
 				('@buildTime@'         => $buildTime
+				,'@buildMode@'         => $buildMode
 				,'// @corelibs@'       => self::sourcesByList('corelibs.txt','core/')
 				,'// @contentModules@' => self::sourcesByList('contentModules.txt','content/')
 				,'// @modules@'        => self::sourcesByList('modules.txt','modules/')

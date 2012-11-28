@@ -23,6 +23,8 @@ var d3=
 	modulesByName : {},
 	contentModules: [],
 	runTimeTotal: 0,
+	buildMode: '@buildMode@',
+	
 	/// Search module by name
 	getModule: function(name){
 		return (this.modulesByName[name] == undefined) ? null : this.modulesByName[name];
@@ -103,6 +105,8 @@ var d3=
 	/// Add and run d3 module
 	addModule: function(module)
 	{
+		var log = console && this.buildMode=='Dev';
+		
 		this.modules.push(module);
 		if(this.modulesByName[module.name] != undefined)
 			if(console)console.log('Duplicate module '+module.name);
@@ -115,7 +119,7 @@ var d3=
 				try {
 					module.run();
 				} catch (e) {
-					if (console) console.log("Error in module '" + module.name + "'", e);
+					if (log) console.log("Error in module '" + module.name + "'", e);
 				}
 			}
 
@@ -128,11 +132,11 @@ var d3=
 					d3.content.posts.forEach(function (post) {
 						module.onPost(post);
 					});
-					if (console) console.log("Posts processor for module '" + module.name + "' registered. " +
+					if (log) console.log("Posts processor for module '" + module.name + "' registered. " +
 						"Processing time " + ((new Date) - startTime));
 				}
 			} catch (e) {
-				if (console) console.log("Error processing posts in module '" + module.name + "'", e);
+				if (log) console.log("Error processing posts in module '" + module.name + "'", e);
 			}
 
 			try {
@@ -144,16 +148,16 @@ var d3=
 					d3.content.comments.forEach(function (comment) {
 						module.onComment(comment);
 					});
-					if (console) console.log("Comments processor for module '" + module.name + "' registered. " +
+					if (log) console.log("Comments processor for module '" + module.name + "' registered. " +
 						"Processing time " + ((new Date) - startTime));
 				}
 			} catch (e) {
-				if (console) console.log("Error processing comments in module '" + module.name + "'", e);
+				if (log) console.log("Error processing comments in module '" + module.name + "'", e);
 			}
 
 			var moduleRunTime = (new Date()) - timeBefore;
 			this.runTimeTotal += moduleRunTime;
-			if(console)console.log( module.name + ": " + moduleRunTime + "ms" );
+			if (log) console.log( module.name + ": " + moduleRunTime + "ms" );
 		}
 	},
 	// Config core module
@@ -311,12 +315,12 @@ var d3=
 		/// Save config to storage
 		save: function()
 		{
-			localStorage.setItem('dirtySpm',d3.json.encode(this.data));
+			d3.storage.set('dirtySpm',d3.json.encode(this.data));
 		},
 		/// Load config from storage
 		load: function()
 		{
-			var saved=localStorage.getItem('dirtySpm');
+			var saved=d3.storage.get('dirtySpm', null);
 			if(saved !== null)
 				this.data=d3.json.decode(saved);
 		},
@@ -395,7 +399,7 @@ try
 // @modules@
 }catch(e)
 {
-	if(console)console.log(e);
+	if(console) console.log(e);
 }
 
-if(console)console.log('runtime: ' + d3.runTimeTotal + 'ms');
+if (console) console.log('runtime: ' + d3.runTimeTotal + 'ms');
