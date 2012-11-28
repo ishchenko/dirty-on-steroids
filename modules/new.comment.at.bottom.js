@@ -18,11 +18,7 @@ d3.addModule(
         		var fakeBottomParent = fakeBottomComment.parentNode;
         		fakeBottomParent.removeChild( fakeBottomComment );
         		fakeBottomParent.appendChild( fakeBottomComment );
-        		var newCommentA = document.createElement('a');
-        		newCommentA.href ='#';
-        		newCommentA.setAttribute('class', 'b-comments_controls_new_comment');
-        		newCommentA.setAttribute('onclick', newCommentButton.getAttribute('onclick'));
-        		newCommentA.textContent = "написать новый";
+        		var newCommentA = newCommentButton.cloneNode(true);
         		fakeBottomComment.parentNode.appendChild( newCommentA );
 			}
 		},
