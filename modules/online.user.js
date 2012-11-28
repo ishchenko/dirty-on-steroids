@@ -10,13 +10,13 @@ d3.addModule(
 	{		
 		if( d3.user.name != null && d3.user.name.length > 0 )
 		{
-			var lastCheckinTimestamp = d3.localStorGetItem('lastCheckinTimestamp', 0 );
+			var lastCheckinTimestamp = d3.storage.get('lastCheckinTimestamp', 0 );
 			var drawStuff = function()
 			{
 				var divContentLeft = document.querySelector("div.l-content_aside");
 				if ( divContentLeft )
 				{
-					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
+					var checkinsMarkup = d3.storage.get('checkinsMarkup');
 					var newdiv = document.createElement('div');
 					newdiv.innerHTML =  checkinsMarkup;
 					divContentLeft.appendChild( newdiv );
@@ -25,7 +25,7 @@ d3.addModule(
 						module.processLinks.call(module, divContentLeft);
 					}
 				}
-				var highlightsStyles = localStorage.getItem('checkinsHighlights');
+				var highlightsStyles = d3.storage.get('checkinsHighlights');
 				if (highlightsStyles != null)
 				{
 					var highlightsDiv = document.createElement('div');
@@ -40,7 +40,7 @@ d3.addModule(
 					$j.getScript("http://api.d3search.ru/checkin/" + d3.user.name, function() {
 
 						drawStuff();
-						localStorage.setItem('lastCheckinTimestamp', now);
+						d3.storage.set('lastCheckinTimestamp', now);
 					});
 				});
 			}else{

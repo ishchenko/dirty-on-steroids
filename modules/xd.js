@@ -61,9 +61,10 @@ d3.addModule(
 			);
 			
 			//sending facility
-			var iframe = d3.newElement('iframe',{style:{visibility:'hidden',display:'none',width:'0',height:'0'},attributes:{id:'xd_frame',allowtransparency:'true'}});
-			$j('body').append(iframe);
-
+			$j('body').append(d3.newElement( 'iframe',
+					{style:     {visibility:'hidden', display:'none', width:'0', height:'0'}
+					,attributes:{id:'xd_frame', allowtransparency:'true'}}
+			));
         },
 
 		//reply should be only called if the replyer is inside of the iframe

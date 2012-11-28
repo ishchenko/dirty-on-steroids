@@ -6,6 +6,7 @@ class d3merge
 {
 	const core      = 'd3.template.js';
 	const output    = 'result/d3.user.js';
+	const revisor   = 'result/pack.version.json';
 	const devOutput = 'result/dev.d3.user.js';
 	const gitHead   = '.git/HEAD';
 
@@ -19,8 +20,9 @@ class d3merge
 		$release = ($arg=='release') || (file_exists(self::gitHead) && preg_match('!/master$!', file_get_contents(self::gitHead)));
 		echo ($release ? 'Release' : 'Dev')." mode\n";
 
+		$buildTime = date('Y-m-d H:i:s');
 		$code = strtr(file_get_contents(self::core), array
-				('@buildTime@'         => date('Y-m-d H:i:s')
+				('@buildTime@'         => $buildTime
 				,'// @corelibs@'       => self::sourcesByList('corelibs.txt','core/')
 				,'// @contentModules@' => self::sourcesByList('contentModules.txt','content/')
 				,'// @modules@'        => self::sourcesByList('modules.txt','modules/')
@@ -29,6 +31,8 @@ class d3merge
 
 		if($release)
 		{
+			preg_match('!^//\\s+@version\\s+(\\S+)!m', $code, $result);
+			file_put_contents(self::revisor, json_encode(array('buildTime' => $buildTime, 'version' => $result[1])));
 			echo "Compressing...\n";
 			require_once self::$buildDir.'jsmin.php';
 			$parts=explode('==/UserScript==',$code);

@@ -14,7 +14,7 @@ d3.addModule(
 	{
 		// fetching data from d3search - every 24 hours
 		var d3sCurDate = new Date();
-		if (( d3sCurDate.getTime() - d3.localStorageGetItem('lastD3sFetchTimestamp', 0 )) > 1000 * 60 * 60 * 12 )
+		if (( d3sCurDate.getTime() - d3.storage.get('lastD3sFetchTimestamp', 0 )) > 1000 * 60 * 60 * 12 )
 		{
 			// add script to the page and fetch new gertrudas
 			var s = document.createElement("script");
@@ -22,7 +22,7 @@ d3.addModule(
     		s.src = "http://api.d3search.ru/integration";
     		var scriptTag = document.getElementsByTagName('script')[0]; 
     		scriptTag.parentNode.insertBefore(s, scriptTag);
-			localStorage.setItem('lastD3sFetchTimestamp', d3sCurDate.getTime());
+			d3.storage.set('lastD3sFetchTimestamp', d3sCurDate.getTime());
 		}
 		// end of loading data
 
@@ -45,7 +45,7 @@ d3.addModule(
 
 				if ( grtShow )
 				{
-					var imgsArr = d3.json.decode( d3.localStorageGetItem( "gertrudasJson", "[]" ));
+					var imgsArr = d3.json.decode( d3.storage.get( "gertrudasJson", "[]" ));
 					if ( imgsArr.length > 0 )
 					{
 						var randomGrt = imgsArr[ Math.floor( Math.random() * imgsArr.length ) ];

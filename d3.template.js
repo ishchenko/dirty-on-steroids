@@ -10,7 +10,7 @@
 // @include         http://d3.ru/*
 // @include         http://*.d3.ru/*
 // @run-at          document-end
-// @version         0.0.2
+// @version         0.0.3
 // ==/UserScript==
 
 // @jQuery@
@@ -31,6 +31,24 @@ var d3=
 	{
 		id: null,
 		name: null
+	},
+	
+	// storage will be cross-domain in future
+	storage:
+	{
+		get: function(key, defaultValue)
+		{
+			var value = localStorage.getItem(key);
+			return value === null ? defaultValue : value;
+		},
+		set: function(key, value)
+		{
+			return localStorage.setItem(key, value);
+		},
+		remove: function(key)
+		{
+			return localStorage.removeItem(key);
+		}
 	},
 
 	/// Set style properties
@@ -60,14 +78,6 @@ var d3=
 
 	/// newElement('div',...) shortcut
 	newDiv: function(parms) { return this.newElement('div', parms); },
-
-	/// Local Storage get item with a default fallback (localStorGetItem from the old code) 
-	localStorageGetItem: function(itemName, defaultValue){
-		var loadedValue = localStorage.getItem( itemName );
-		return loadedValue == null ? defaultValue : loadedValue;
-	},
-	//shortcut for backward compability
-	localStorGetItem: function(itemName, defaultValue){ return this.localStorageGetItem(itemName, defaultValue);},
 	
 	/// JSON helper
 	json:
