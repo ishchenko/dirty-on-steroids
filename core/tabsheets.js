@@ -44,7 +44,7 @@ TabSheets.prototype=
 
 jQuery('head').append('<style>\
 .tbsTabs{float:left;}\
-.tbsHeader{padding: 1ex 2ex;border: 1px grey solid;border-right-style: none;margin-bottom: 5px;margin-right: 0;cursor: pointer;background-color: #FFFFFF;width:100px}\
-.tbsActive{position: relative;left: 1px;}\
+.tbsHeader{padding: 1ex 2ex;border: 1px grey solid;border-right-style: none;margin-bottom: 5px;margin-right: 0;cursor: pointer;width:100px}\
+.tbsActive{position: relative;left: 1px;background-color: #FFFFFF;}\
 .tbsSheet{background-color: #FFFFFF;border: 1px solid grey;padding: 0 1ex;position: absolute; left: 136px; top:19px; z-index:-1; width:454px;height: 272px; overflow: auto;margin: 0;}\
 </style>');
