@@ -14,15 +14,12 @@ d3.addModule(
 			script2run.type = 'text/javascript';
 			script2run.text = 'postsCutHandler = { 	cutPost : function (post, animation) {},	cut : function () {},	showPost : function (post_dt) {},	addCutLink : function (post_dt) {}};';
 			document.getElementsByTagName('script')[0].appendChild( script2run );
-			var cutPosts = document.querySelectorAll('div.post_cut');
-			if ( cutPosts )
-			{
-				for ( var i = 0; i < cutPosts.length; i++)
-				{
-					cutPosts[i].querySelector('.dt').setAttribute('style', '');
-					cutPosts[i].removeChild( cutPosts[i].querySelector('.b-cut'));
-				}
-			}
 		}
 	},
+
+	onPost: function(post) {
+		if (!post.container.hasClass("post_cut")) return;
+		post.container.find('.dt').removeAttr("style");
+		cutPosts[i].removeChild(cutPosts[i].querySelector('.b-cut'));
+	}
 });
