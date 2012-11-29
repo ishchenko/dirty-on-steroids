@@ -19,7 +19,8 @@ d3.addModule(
 
 	onPost: function(post) {
 		if (!post.container.hasClass("post_cut")) return;
-		post.container.find('.dt').removeAttr("style");
-		cutPosts[i].removeChild(cutPosts[i].querySelector('.b-cut'));
+		post.container.find('.dt').css("height", "");
+		post.container.find('.b-cut').remove();
+		post.container.removeClass("post_cut");
 	}
 });
