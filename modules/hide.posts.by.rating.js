@@ -14,7 +14,7 @@ d3.addModule(
 		},
 
 		onPost: function (post) {
-			if (post.ratingValue() < this.config.rating.value) {
+			if (post.ratingValue() < this.config.rating.value && !d3.page.postComments && !d3.page.inbox) {
 				post.container.hide();
 			}
 		}

@@ -9,7 +9,6 @@ d3.search.js
 kdpv.js
 update.link.js
 no.rating.js
-browser.js
 fotki.js
 online.user.js
 tooltip.js

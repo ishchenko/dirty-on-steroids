@@ -6,8 +6,11 @@ d3.addModule(
 	author: 'crea7or',
 	config: {active:{type:'checkbox',value:true},
 			 sexyHeader: {type:'checkbox', value:true, caption:'Показывать общее количество м/ж'}},
-	malesCount: 0,
-	femalesCount: 0,
+	malesCommentsCount: 0,
+	femalesCommentsCount: 0,
+	femalesNames: new Array(),
+	malesNames: new Array(),
+
 	
 	onPost: function(post){
 		this.processElements(post.container.get(0).querySelectorAll('a.c_user'));
@@ -23,19 +26,27 @@ d3.addModule(
 		for(var i = 0; i < elemArray.length; i++)
 		{
 			if (elemArray[i].previousSibling.nodeValue.indexOf('Написала') > -1 )
-					{
-						//female
-						elemArray[i].style.borderBottom = '1px solid #ff78f7';
-						this.femalesCount++;
-					}
-					else
-					{
-						//male
-						elemArray[i].style.borderBottom = '1px solid #5086ff';
-						this.malesCount++;
-					}
-					elemArray[i].style.textDecoration = 'none';
+			{
+				//female
+				elemArray[i].style.borderBottom = '1px solid #ff78f7';
+				this.femalesCommentsCount++;
+				if ( $j.inArray( elemArray[i].textContent, this.femalesNames ) == -1 )
+				{
+					this.femalesNames.push( elemArray[i].textContent );
+				}
 			}
+			else
+			{
+				//male
+				elemArray[i].style.borderBottom = '1px solid #5086ff';
+				this.malesCommentsCount++;
+				if ( $j.inArray( elemArray[i].textContent, this.malesNames ) == -1 )
+				{
+					this.malesNames.push( elemArray[i].textContent );
+				}
+			}
+			elemArray[i].style.textDecoration = 'none';
+		}
 	},
 
 	run: function()
@@ -46,7 +57,7 @@ d3.addModule(
 			var headerInner = document.querySelector('div.b-comments_controls_new_nav');
 			if ( headerInner )
 			{
-				headerInner.appendChild( document.createTextNode('м: '+this.malesCount+' / ж: '+this.femalesCount));
+				headerInner.appendChild( document.createTextNode('м: '+this.malesNames.length+' ('+this.malesCommentsCount+') / ж: '+this.femalesNames.length+' ('+this.femalesCommentsCount+')'));
 			}
 		}
 	},

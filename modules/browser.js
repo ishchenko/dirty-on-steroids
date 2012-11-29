@@ -11,6 +11,6 @@ d3.addModule(
 		$j.each($j.browser, function(i, val) {
 		      info += i+" : <span>"+val+"</span><br>";
 		    });
-		d3.get.leftNavigation().append('<li>'+info+'</li>');
+		d3.content.addToLeftNav('<li>'+info+'</li>');
 	}
 });

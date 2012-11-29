@@ -18,7 +18,7 @@ d3.addModule(
 		+ 'div.b-comments_controls_new_nav { padding: 14px 5px 14px 5px; min-width: 750px; background-repeat: repeat-x repeat-y; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpiuHnzZgNAgAEACCYDDGx4O28AAAAASUVORK5CYII=);}'
 		+ '.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}' 
 
-		if ( document.location.href.indexOf('/comments/') > -1 )
+		if ( d3.page.postComments )
 		{
 			css += ' .b-ads { width: 0px; display: hidden;}'
 		}

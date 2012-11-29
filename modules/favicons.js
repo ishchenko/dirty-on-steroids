@@ -51,7 +51,7 @@ d3.addModule(
 				    background-repeat:no-repeat; \n\
 					background-position:left center; \n\
 				} \n\
-			</style>").appendTo("head");
+			</style>").appendTo($j('head'));
 	},
 
 	onPost: function(post) {
@@ -70,7 +70,8 @@ d3.addModule(
 			.not('a[class*="b-controls_button"]')
 			.not(':has(img)')
 			.not('a[href=#]')
-			.not('a[href*="' + window.location.hostname + '"]'),
+//			.not('a[href*="' + window.location.hostname + '"]')
+			,
 			function (index, link) {
 				if (me.inWhiteList(link.hostname)) {
 					var faviconUrl;
@@ -85,8 +86,8 @@ d3.addModule(
 						$j(link).mouseover(function () {
 							me.showFavicon($j(this), faviconUrl);
 						}).mouseout(function () {
-								me.hideFavicon($j(this))
-							});
+							me.hideFavicon($j(this))
+						});
 					} else {
 						me.showFavicon($j(link), faviconUrl);
 					}
