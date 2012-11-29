@@ -28,7 +28,7 @@ d3.addModule(
 		if(!this.config.active.value)return;
 		var me = this;
 		var links = $j('a', elem);
-		var pattern = /(.*)d3.ru\/user\/(.*)/g;
+		var pattern = /(.*)d3.ru\/user\/(.+)/g;
 		for(var i=0; i<links.length; i++){
 			var href = links[i].href.toString();
 			if(	pattern.test(href) &&
