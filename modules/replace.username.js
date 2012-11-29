@@ -5,15 +5,29 @@ d3.addModule(
 	name: 'Замена %username%',
 	author: 'crimaniak',
 	config: {active:{type:'checkbox',value:false}},
-	run: function()
-	{
-		if(d3.user.name==null) return;
-		
-		d3.xpath.each("//body//text()[contains(string(),'%username%')]", 
-			function(node)
-			{
-				if(node.data != undefined) ///< opera fix
-					node.data=node.data.replace('%username%',d3.user.name);
-			});
+
+	noUserName: d3.user.name == null,
+
+	process: function (contextNode) {
+		d3.xpath.each("//text()[contains(string(),'%username%')]",
+			function (node) {
+				if (node.data != undefined) ///< opera fix
+					node.data = node.data.replace('%username%', d3.user.name);
+			}, contextNode);
+	},
+
+	run: function() {
+		if(this.noUserName) return;
+		this.process();
+	},
+
+	onPost: function(post) {
+		if(this.noUserName) return;
+		this.process(post.container.get(0));
+	},
+
+	onComment: function(comment) {
+		if(this.noUserName) return;
+		this.process(comment.container.get(0));
 	}
 });
