@@ -45,8 +45,6 @@ d3.addModule(
 	},
 
 	run: function(){
-		if(d3.page.user) return;
-
 		$j("<style type='text/css'> \n\
 				.faviconized { \n\
 				 	padding-left:19px; \n\
@@ -54,8 +52,6 @@ d3.addModule(
 					background-position:left center; \n\
 				} \n\
 			</style>").appendTo("head");
-
-
 	},
 
 	onPost: function(post) {
