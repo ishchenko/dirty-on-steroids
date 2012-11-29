@@ -10,6 +10,7 @@
 // @include         http://d3.ru/*
 // @include         http://*.d3.ru/*
 // @run-at          document-end
+// @all_frames      true
 // @version         0.0.3
 // ==/UserScript==
 

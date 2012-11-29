@@ -69,18 +69,30 @@ d3.addModule(
 
 		//reply should be only called if the replyer is inside of the iframe
 		reply: function(msg, parent_url){
-        	this.XD.postMessage(msg, parent_url);
+			d3.document.XD = this.XD;
+        	//this.XD.postMessage(msg, parent_url);
+var script2run = d3.document.createElement('script');
+script2run.type = 'text/javascript';
+script2run.text = "document.XD.postMessage('"+msg.replace(/'/g,"\\'")+"','"+parent_url+"');";
+d3.document.head.appendChild(script2run);
 		},
 
 		send: function(url, msg, callback){
-			//no support in chrome: http://code.google.com/p/chromium/issues/detail?id=20773
-			if($j.browser.webkit)return;
+
 			msg = msg.substring(0,msg.length-1)+',"parentUrl":"'+document.location.href.replace(/#.*$/, '')+'"}';
 			var src = url;
 			this.callback = callback;
 			var me=this;
+			//inject XD
+			d3.document.XD = this.XD;
+
+//			if($j.browser.webkit)return;
 			$j("#xd_frame").unbind().load(function(){
-				me.XD.postMessage(msg, src, frames[0]);
+				//me.XD.postMessage(msg, src, frames[0]);
+var script2run = d3.document.createElement('script');
+script2run.type = 'text/javascript';
+script2run.text = "document.XD.postMessage('"+msg+"','"+src+"',window.frames[0]);";
+d3.document.head.appendChild(script2run);
 			});
 			document.getElementById("xd_frame").src = src;
 		},
@@ -100,7 +112,7 @@ d3.addModule(
 				        return;
 				    }
 				    target = target || parent;  // default to parent
-				    if (window['postMessage'] && target_url.indexOf('http://d3.ru')!=0 ) { //(for some reason d3.ru does not accept postMessages)
+				    if (target_url.indexOf('http://d3.ru')!=0 && window['postMessage']) { //(for some reason d3.ru does not accept postMessages)
 				        // the browser supports window.postMessage, so call it with a targetOrigin
 				        // set appropriately, based on the target_url parameter.
 				        target['postMessage'](message, target_url.replace( /([^:]+:\/\/[^\/]+).*/, '$1'));
