@@ -9,11 +9,12 @@ d3.addModule(
 		//this.send("http://wtf.d3.ru",  '{"service":"ping"}');
 		//this.send("http://wtf.d3.ru",  '{"service":"bodyHtml"}', function(re){window.alert(re);});
 		//this.send("http://wtf.d3.ru",  '{"service":"localStorage"}', function(re){window.alert(re);});
-
+        
+/*	// always switched on
         config: {
             active: {type: 'checkbox', value: true}
         },
-
+*/
 		parent_url: null,
 		callback: null,
 

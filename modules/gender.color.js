@@ -4,7 +4,8 @@ d3.addModule(
 	type: "Социализм",
 	name: 'Цветовая дифференциация полов',
 	author: 'crea7or',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:true},
+			 sexyHeader: {type:'checkbox', value:true, caption:'Показывать общее количество м/ж'}},
 	malesCount: 0,
 	femalesCount: 0,
 	
@@ -39,7 +40,7 @@ d3.addModule(
 
 	run: function()
 	{
-		if ( document.getElementById('js-commentsHolder') || document.getElementById('js-posts_holder'))
+		if (this.config.sexyHeader.value && (document.getElementById('js-commentsHolder') || document.getElementById('js-posts_holder')))
 		{
 			this.processElements(document.querySelectorAll('a.c_user'));
 			var headerInner = document.querySelector('div.b-comments_controls_new_nav');
