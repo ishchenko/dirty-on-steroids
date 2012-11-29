@@ -9,7 +9,7 @@ d3.addModule(
 	commentSelector: 'a[href*=comments],a[href*="my/inbox"]',
 			
 	onPost: function(post) {
-		post.container.append("<b>" + post.isNew + "</b>");
+		if (!post.isNew) return;
 		var footer=post.getFooter();
 		var me=this;
 		var span = $j("span",footer).first();
