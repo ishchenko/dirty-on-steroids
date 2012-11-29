@@ -6,10 +6,10 @@ d3.addModule(
 	name: 'Помечать как прочитанное',
 	author: 'Stasik0',
 	config: {active:{type:'checkbox',value:true}},
-	commentSelector: 'a[href*=comments]',
+	commentSelector: 'a[href*=comments],a[href*="my/inbox"]',
 			
 	onPost: function(post) {
-		if (!post.isNew) return;
+		post.container.append("<b>" + post.isNew + "</b>");
 		var footer=post.getFooter();
 		var me=this;
 		var span = $j("span",footer).first();
