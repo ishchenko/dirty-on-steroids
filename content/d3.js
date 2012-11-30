@@ -16,6 +16,7 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 		d3.page=
 		{
 			inbox: document.location.pathname.substr(0,10)=="/my/inbox/",
+			my: document.location.pathname.substr(0,4)=="/my/",
 			postComments: (window.location.pathname.indexOf("/comments/") >= 0),
 			onlyNew: (document.location.href.indexOf('#new') > -1),
 			user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0)
