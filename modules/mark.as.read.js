@@ -34,8 +34,8 @@ d3.addModule(
 		    	  	async: true,
 			  		url: url
 			}).done(function () {
-						this.markAsRead(div, post);
-						this.updateRightNavigator();
+						me.markAsRead(me, div, post);
+						me.updateRightNavigator();
 			});
 		}else{
 			//XD call
@@ -43,8 +43,8 @@ d3.addModule(
 			if(module != null){
 				module.send.call(module, url, '{"service":"head"}', 
 					function(){
-						this.markAsRead(div, post);
-						this.updateRightNavigator();
+						me.markAsRead(me, div, post);
+						me.updateRightNavigator();
 					}
 				);
 			}
@@ -52,7 +52,7 @@ d3.addModule(
 		return false;
 	},
 
-	markAsRead: function(div, post){
+	markAsRead: function(me, div, post){
 		post.isNew = false;
 		var parent = div.parent();
 		var firstA = $j(me.commentSelector, parent).first();
