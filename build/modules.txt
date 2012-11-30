@@ -29,5 +29,3 @@ xd.js
 post.header.link.js
 add.video.js
 mute.deleted.comments.js
-new.comment.at.bottom.js
-delete.from.my.js
