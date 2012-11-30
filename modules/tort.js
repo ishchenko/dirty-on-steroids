@@ -19,7 +19,7 @@ d3.addModule(
 		+ 'div.b-comments_controls { padding: 14px 0px 10px 5px; min-width: 800px; background-repeat: repeat-x repeat-y; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpiuHnzZgNAgAEACCYDDGx4O28AAAAASUVORK5CYII=);}'
 		+ '.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}' 
 
-		if ( d3.page.postComments )
+		if ( d3.page.postComments ||  d3.page.inboxComments )
 		{
 			css += ' .b-ads { width: 0px; display: hidden;}'
 			if ( this.config.postInfoMove.value == true )

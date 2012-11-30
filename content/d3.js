@@ -18,6 +18,7 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 			inbox: document.location.pathname.substr(0,10)=="/my/inbox/",
 			my: document.location.pathname.substr(0,4)=="/my/",
 			postComments: (window.location.pathname.indexOf("/comments/") >= 0),
+			inboxComments: (( document.location.pathname.indexOf("/inbox/") > 0 ) && ( window.location.pathname.length > 15 )),
 			onlyNew: (document.location.href.indexOf('#new') > -1),
 			user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0)
 		};
