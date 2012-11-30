@@ -1,20 +1,5 @@
 // content interface module for dirty.ru
 
-d3.page=
-{
-	inbox: document.location.pathname.substr(0,10)=="/my/inbox/",
-	onlyNew: (document.location.href.indexOf('#new') > -1),
-	user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0)
-};
-
-/// Get element(s) of page
-d3.get =
-{
-	logoutLink: function(){return $j('#js-header_logout_link');},
-	leftNavigation: function(){return $j('.left_col_nav');},
-	items: function(){return d3.content.items();}
-};
-
 d3.addContentModule(/(.*\.)?dirty.ru/i,
 {
 	type: "Ядро",
@@ -26,6 +11,22 @@ d3.addContentModule(/(.*\.)?dirty.ru/i,
 	commentListeners: [],
 	run: function()
 	{
+		d3.page=
+		{
+			inbox: document.location.pathname.substr(0,10)=="/my/inbox/",
+			onlyNew: (document.location.href.indexOf('#new') > -1),
+			postComments: (window.location.pathname.indexOf("/comments/") >= 0),
+			user: (window.location.pathname.indexOf("/user/")>=0) || (window.location.pathname.indexOf("/users/")>=0),
+		};
+
+		/// Get element(s) of page
+		d3.get =
+		{
+			logoutLink: function(){return $j('#js-header_logout_link');},
+			leftNavigation: function(){return $j('.left_col_nav');},
+			items: function(){return d3.content.items();}
+		};
+
 		var me=this;
 
 		this.countItems();

@@ -10,7 +10,7 @@ d3.addModule(
 	
 	run: function()
 	{
-		if ( document.location.href.indexOf('/comments/') > -1 )
+		if ( d3.page.postComments )
 		{
 			var me = this;
 
