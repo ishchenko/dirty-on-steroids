@@ -159,9 +159,8 @@ d3.addModule(
 				var dup_country = me.extractBetween(dup_text, '<div class="b-user_residence">', '</div>');
 
 				var dup_sex = (dup_text.indexOf('стрирована')>-1)?'f':'m';
-				var aux = me.extractBetween(dup_text, '<span class="b-menu_item-stat">', '</span>').split('/');
-				var dup_posts = aux[0];
-				var dup_comments = aux[1];
+				var dup_posts = me.extractBetween(dup_text, 'посты <span class="b-menu_item-stat">', '</span>');
+				var dup_comments = me.extractBetween(dup_text, 'комментарии <span class="b-menu_item-stat">', '</span>');
 
 				dup_votes_him = (dup_votes_him!='')?'<b>Ваша оценка:</b> '+dup_votes_him:'<span style="color:#999"><b>Ваших оценок нет в '+((dup_sex=='f')?'её':'его')+' карме</b></span>';
 
