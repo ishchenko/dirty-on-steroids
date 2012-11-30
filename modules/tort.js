@@ -6,6 +6,7 @@ d3.addModule(
 	author: 'crea7or',
 	config: {
 		active:{type:'checkbox',value:true}
+		,postInfoMove:{type:'checkbox',caption:'Информация о посте внизу',value:true}
 	},
 
 	run: function()
@@ -15,12 +16,19 @@ d3.addModule(
 		+ '.comments_indent_holder .indent_21 { padding-left:355px !important;} .indent_22 { padding-left:370px !important;} .indent_23 { padding-left:385px !important;} .indent_24 { padding-left:400px !important;}'
 		+ '.comments_indent_holder .indent_25 { padding-left:415px !important;} .indent_26 { padding-left:430px !important;} .indent_27 { padding-left:445px !important;} .indent_28 { padding-left:460px !important;}'
 		+ '.comments_indent_holder .indent_29 { padding-left:475px !important;} .indent_30 { padding-left:490px !important;}'
-		+ 'div.b-comments_controls_new_nav { padding: 14px 5px 14px 5px; min-width: 750px; background-repeat: repeat-x repeat-y; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpiuHnzZgNAgAEACCYDDGx4O28AAAAASUVORK5CYII=);}'
+		+ 'div.b-comments_controls_new_nav { padding: 14px 5px 14px 5px; min-width: 800px; background-repeat: repeat-x repeat-y; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpiuHnzZgNAgAEACCYDDGx4O28AAAAASUVORK5CYII=);}'
 		+ '.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}' 
 
 		if ( d3.page.postComments )
 		{
 			css += ' .b-ads { width: 0px; display: hidden;}'
+			if ( this.config.postInfoMove.value == true )
+			{
+				var postInfo = document.querySelector('div.dd');
+				var postParent = postInfo.parentNode;
+				postParent.removeChild( postInfo );
+				postParent.appendChild( postInfo );
+			}
 		}
 
 		style = document.createElement('style');
@@ -35,12 +43,13 @@ d3.addModule(
 		}
 		$j('head').append(style);
 
-		var socBut = document.querySelector('div.b-comments_controls_social');
-		if ( socBut )
+		var socBut = document.querySelector('span.b-comments_controls_social');
+		var socButTarget = document.querySelector('div.b-comments_controls_new_nav');
+		if ( socBut && socButTarget)
 		{
 			var socParent = socBut.parentNode;
 			socParent.removeChild( socBut );
-			socParent.appendChild( socBut );
+			socButTarget.appendChild( socBut );
 		}
 	}
 });
