@@ -37,6 +37,10 @@ d3.addModule(
 					if(data.service === "bodyHtml"){
 						me.reply('{"service":"callback","value":"'+encodeURIComponent($j('body').html())+'"}',data.parentUrl);
 					}
+					//returns does the page load with empty callback
+					if(data.service === "head"){
+						me.reply('{"service":"callback","value":""}',data.parentUrl);
+					}
 					//returns the localStorage object as JSON string
 					if(data.service === "localStorage"){
 						if(localStorage)
