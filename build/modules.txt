@@ -29,3 +29,4 @@ xd.js
 post.header.link.js
 add.video.js
 mute.deleted.comments.js
+infinite.paging.js
