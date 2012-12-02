@@ -104,6 +104,9 @@ d3.addModule(
 		// select new and mine items
 		for(var i=0;i<items.length;++i)
 		{
+			if (items[i].container.is(":hidden")) {
+				continue;
+			}
 			if(items[i].isNew) this.newItems.push(items[i]);
 			if(items[i].isMine)this.mineItems.push(items[i]);
 		}

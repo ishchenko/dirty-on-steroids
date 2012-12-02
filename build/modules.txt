@@ -1,4 +1,5 @@
 redirect.to.new.js
+hide.posts.by.rating.js
 right.navigator.js
 mark.as.read.js
 ignorator.js
@@ -23,7 +24,6 @@ canonical.gertrudes.js
 hotlinks.for.video.js
 hide.inbox.users.js
 tort.js
-hide.posts.by.rating.js
 hide.elements.js
 xd.js
 post.header.link.js
