@@ -24,7 +24,8 @@ d3.addModule(
 			return false;
 		},
 
-		enableScroll: function(me, loadMoreButton, main) {
+		enableScroll: function (me, loadMoreButton) {
+			if (console) console.log("Infinite paging is active.");
 			var $doc = $j(document);
 			var $body = $j("body");
 			var $footer = $j("#js-footer");
@@ -51,10 +52,8 @@ d3.addModule(
 
 		run: function(){
 			var loadMoreButton = this.getLoadMoreButton();
-			var main = $j(".l-content_main");
-
-			if (loadMoreButton.length && main.length) {
-				this.enableScroll(this, loadMoreButton, main);
+			if (loadMoreButton.length) {
+				this.enableScroll(this, loadMoreButton);
 			}
 		}
 	});
