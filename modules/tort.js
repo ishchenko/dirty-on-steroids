@@ -16,7 +16,7 @@ d3.addModule(
 		+ '.comments_indent_holder .indent_21 { padding-left:355px !important;} .indent_22 { padding-left:370px !important;} .indent_23 { padding-left:385px !important;} .indent_24 { padding-left:400px !important;}'
 		+ '.comments_indent_holder .indent_25 { padding-left:415px !important;} .indent_26 { padding-left:430px !important;} .indent_27 { padding-left:445px !important;} .indent_28 { padding-left:460px !important;}'
 		+ '.comments_indent_holder .indent_29 { padding-left:475px !important;} .indent_30 { padding-left:490px !important;}'
-		+ '.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}'
+		+ '.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;}'
 		+ 'div.b-comments_controls { padding: 14px 0px 10px 5px; min-width: 800px;}';
 
 		if ( d3.page.postComments ||  d3.page.inboxComments )
