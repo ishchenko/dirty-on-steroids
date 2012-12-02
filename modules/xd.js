@@ -27,12 +27,13 @@ d3.addModule(
 			this.XD.receiveMessage(
 				function(message){
 					//service function dispatcher
-					if (message.data === null || message.data === undefined)return;
+					if (message.data === null || message.data === undefined) return;
 					//the data should be in json format
 					try{
 						var data = d3.json.decode(message.data);
 					}catch(e){return;}
 					if(data.service === undefined)return;
+					
 					//returns the body.html as plain text
 					if(data.service === "bodyHtml"){
 						me.reply('{"service":"callback","value":"'+encodeURIComponent($j('body').html())+'"}',data.parentUrl);
@@ -87,7 +88,7 @@ d3.document.head.appendChild(script2run);
 			msg = msg.substring(0,msg.length-1)+',"parentUrl":"'+document.location.href.replace(/#.*$/, '')+'"}';
 			var src = url;
 			this.callback = callback;
-			var me=this;
+//			var me=this;
 			//inject XD
 			d3.document.XD = this.XD;
 
@@ -105,8 +106,8 @@ d3.document.head.appendChild(script2run);
 		//slightly modified code from http://www.onlineaspect.com/2010/01/15/backwards-compatible-postmessage/ follows
 		// everything is wrapped in the XD function to reduce namespace collisions
 		XD: function(){
-			var interval_id,
-			last_hash,
+			var interval_id = null,
+			last_hash = null,
 			cache_bust = 1,
 			attached_callback,
 			window = this;
@@ -160,7 +161,7 @@ d3.document.head.appendChild(script2run);
 				         }
 				     }
 				 }
-			}
+			};
 		}()
 	}
 );
