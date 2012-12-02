@@ -35,6 +35,6 @@ d3.addModule(
 		},
 
 		onPost: function (post) {
-			$j('a[href^="http://"][href$=".d3.ru"]', post.info).addClass(this.styleName);
+			$j('a[href^="http://"][href*=".d3.ru"]:contains(.d3.ru)', post.info).addClass(this.styleName);
 		}
 	});
