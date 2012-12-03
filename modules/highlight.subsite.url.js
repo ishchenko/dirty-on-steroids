@@ -20,10 +20,10 @@ d3.addModule(
 		styleName: "subsite-link-highlighted",
 		styles: {
 			'border': "border: 1px solid #888888;\n" +
-				"padding-left:2px; padding-right:2px;" +
+				"padding: 0px 2px 1px 2px;" +
 				"-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;",
 			'yellow-back': "background-color: #E9DFC3;" +
-				"padding-left:2px; padding-right:2px;"
+				"padding: 0px 2px 1px 2px;"
 		},
 
 		run: function() {
