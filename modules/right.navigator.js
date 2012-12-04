@@ -35,19 +35,18 @@ d3.addModule(
 			me.scrollToItem(me.mineItems[me.nextMine]);
 		});
 		
+	},
+
+	onItemsUpdated: function () {
 		this.newPosition();
 	},
 
 	onPost: function (post) {
-		if (this.countItem(post)) {
-			this.newPosition();
-		}
+		this.countItem(post);
 	},
 
 	onComment: function (comment) {
-		if (this.countItem(comment)) {
-			this.newPosition();
-		}
+		this.countItem(comment);
 	},
 
 	scrollToPosition: function(position)

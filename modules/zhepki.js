@@ -50,6 +50,7 @@ d3.addModule({
 		// sort by rating
 		var elements = [];
 		for (var el in this.zheps) {
+			if (this.zheps[el].text == undefined) continue;
 			elements.push(this.zheps[el]);
 		}
 		elements.sort(function(a,b){return b.rating - a.rating;});

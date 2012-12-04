@@ -10,6 +10,10 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	comments: [],
 	commentListeners: [],
 	postListeners: [],
+	postsUpdatedHandler: new DelayedEventHandler(),
+	commentsUpdatedHandler: new DelayedEventHandler(),
+	itemsUpdatedHandler: new DelayedEventHandler(),
+
 	run: function()
 	{
 
@@ -36,6 +40,12 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 
 		//d3.window.d3=d3;
 		d3.content=this;
+		this.onCommentsUpdated(function () {
+			me.itemsUpdatedHandler.trigger()
+		});
+		this.onPostsUpdated(function () {
+			me.itemsUpdatedHandler.trigger()
+		});
 
 		function processPost($post) {
 			var post = new Post($post);
@@ -47,6 +57,7 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 					if(console) console.log(e);
 				}
 			});
+			me.postsUpdatedHandler.trigger();
 		}
 
 		function processComment($comment) {
@@ -80,7 +91,7 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 
 		this.createLeftNavigator();
 	},
-	
+
 	countItems: function()
 	{
 		this.posts=[];
@@ -106,6 +117,9 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	
 	onNewComment: function(fn){this.commentListeners.push(fn);},
 	onNewPost: function(fn){this.postListeners.push(fn);},
+	onPostsUpdated: function(fn){this.postsUpdatedHandler.addListener(fn);},
+	onCommentsUpdated: function(fn){this.commentsUpdatedHandler.addListener(fn);},
+	onItemsUpdated: function(fn){this.itemsUpdatedHandler.addListener(fn);},
 
 	addItemsProcessor: function(processor)
 	{

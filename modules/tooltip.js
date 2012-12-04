@@ -95,12 +95,7 @@ d3.addModule(
 		var me=this;
 		this.showing = setTimeout(function(){
 				$j("#dup_div").css('display', 'block');
-				//differences between dirty.ru and d3.ru begin	
-				if(d3.content.variant == 'd3.ru'){
-					me.dup_getData_d3(obj);
-				}else{
-					me.dup_getData(obj);
-				}
+				me.dup_getData_d3(obj);
 		},700);
 	},
 
@@ -132,10 +127,10 @@ d3.addModule(
 				var dup_user_name = obj.href.split('/');
 				dup_user_name = dup_user_name[dup_user_name.length-2];
 
-				if(dup_text.split(' Зарегистрирован ').length > 1){
-					var dup_date = me.extractBetween(dup_text, '> Зарегистрирован ','&nbsp;г.');
-				}else if(dup_text.split(' Зарегистрирована ').length > 1){
-					var dup_date = me.extractBetween(dup_text, '> Зарегистрирована ','&nbsp;г.');
+				if(dup_text.split('<span class="js-date" date-epoque="').length > 1){
+					var timestamp = me.extractBetween(dup_text, '<span class="js-date" date-epoque="','"></span>');
+					var date = new Date(timestamp*1000);
+					var dup_date = date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear();
 				}else{
 					var dup_date = "неизвестно";
 				}
@@ -158,7 +153,7 @@ d3.addModule(
 
 				var dup_country = me.extractBetween(dup_text, '<div class="b-user_residence">', '</div>');
 
-				var dup_sex = (dup_text.indexOf('стрирована')>-1)?'f':'m';
+				var dup_sex = (dup_text.indexOf('Она с нами')>-1)?'f':'m';
 				var dup_posts = me.extractBetween(dup_text, 'посты <span class="b-menu_item-stat">', '</span>');
 				var dup_comments = me.extractBetween(dup_text, 'комментарии <span class="b-menu_item-stat">', '</span>');
 
@@ -237,182 +232,6 @@ d3.addModule(
 				$j('#dup_data_td').html(dup_output);
 			});
 		}
-	},
-
-
-	dup_getData: function(obj){
-		if(this.processing==1){
-			var me=this;
-			$j.get(obj.href, function(data){
-				var dup_text = data;
-				//differences between dirty.ru and d3.ru begin	
-				if(d3.content.variant == 'd3.ru'){
-					//splits are for better performance! :p
-					var dup_user_id = dup_text.split("voteResultsHandler.showVoteResult('")[1].split("'")[0];
-					var dup_user_name = obj.href.split('/');
-					dup_user_name = dup_user_name[dup_user_name.length-2];
-				}else{
-					if(dup_text.indexOf(' onclick="voteHandler.vote(this, \'')==-1){
-						var dup_user_id = d3.user.id;
-						var dup_user_name = d3.user.name;
-					}else{
-						var dup_user_id = dup_text.split(' onclick="voteHandler.vote(this, \'')[1].split('\'')[0];
-						var dup_user_name = obj.href.split('/');
-						dup_user_name = dup_user_name[dup_user_name.length-2];
-					}
-				}
-
-				if(dup_text.split('<span>с нами с ').length < 2){
-					var dup_date = "неизвестно";
-				}else{
-					var dup_date = dup_text.split('<span>с нами с ')[1].split(' года')[0];
-				}
-				var dup_karma = dup_text.split(' onclick="voteDetailsHandler.show({type:\'karma\'')[1].split('>')[1].split('<')[0];
-				var dup_pluses = dup_text.split('plus voted').length-1;
-				var dup_minuses = dup_text.split('minus voted').length-1;
-
-				dup_pluses = (dup_pluses>0)?'<span style="color:green;"><b>+'+dup_pluses+'</b></span>':0;
-				dup_minuses = (dup_minuses>0)?'<span style="color:red;"><b>-'+dup_minuses+'</b></span>':0;
-
-				var dup_votes_him = '';
-				if(dup_minuses!==0) dup_votes_him += dup_minuses;
-				if(dup_minuses!==0&&dup_pluses!==0) dup_votes_him += ' <span style="color:#ccc">/</span> ';
-				if(dup_pluses!==0) dup_votes_him += dup_pluses;
-
-				var dup_parent = dup_text.split(' по приглашению ')[1].split('</div>')[0];
-
-				var dup_name = dup_text.split('<div class="userbasicinfo">')[1].split('<h3>')[1].split('</div>')[0];
-				dup_name = dup_name.split('</h3>').join('');
-				for(var i=0;i<2;i++) dup_name = dup_name.split('&#35;').join('#').split('&#59;').join(';').split('&amp;').join('&');
-
-				var dup_country = dup_name.split('<div class="userego">')[1];
-
-				var dup_raitdata = dup_text.split('<div class="userstat userrating">')[1];
-				dup_raitdata = dup_raitdata.split('<div class="clear">')[0];
-
-				var dup_sex = (dup_raitdata.indexOf('аписала')>-1)?'f':'m';
-				var dup_posts = (dup_raitdata.indexOf('/posts/">')>-1)?parseInt(dup_raitdata.split('/posts/">')[1].split(' ')[0]):0;
-				var dup_comments = (dup_raitdata.indexOf('/comments/">')>-1)?parseInt(dup_raitdata.split('/comments/">')[1].split(' ')[0]):0;
-				var dup_vote = dup_raitdata.split(' голоса&nbsp;&#8212; ')[1].split('<')[0];
-
-				if(dup_posts!=0||dup_comments!=0){
-					var dup_raiting = parseInt(dup_raitdata.split('рейтинг ')[1].split('<')[0]);
-				}
-				else var dup_raiting = 0;
-
-				dup_name = dup_name.split('<div class="userego">')[0];
-				dup_name = '<span style="font-size:130%;color:#'+((dup_sex=='m')?'009ced':'ff4fdc')+'"><b>'+dup_name+'</b></span>';
-
-				//dup_votes_him = (dup_votes_him!='')?'<b>Ваша оценка:</b> '+dup_votes_him:'<span style="color:#999"><b>Ваших оценок нет в '+((dup_sex=='f')?'её':'его')+' карме</b></span>';
-				dup_votes_him = '';
-
-				var dup_prop = Math.round((dup_raiting/(dup_posts+dup_comments))*10)/10;
-
-				var dup_userpic = '';
-
-				if(me.config.useImages.value){
-					if(dup_text.indexOf('alt="Dirty Avatar"')>0){
-						dup_userpic = dup_text.split('alt="Dirty Avatar"')[0];
-						dup_userpic = dup_userpic.split('src="');
-						dup_userpic = dup_userpic[dup_userpic.length-1].split('"')[0];
-					}
-					else if(dup_text.indexOf('#Dirty Avatar#')>0){
-						dup_userpic = dup_text.split('#Dirty Avatar#')[1].split('src="')[1].split('"')[0];
-					}
-					else{
-						dup_check_avatar = dup_text.split('<table class="userpic">')[1].split('<td>')[1].split('</td>')[0];
-						if(dup_check_avatar.indexOf('<img')>0){
-							dup_userpic = dup_check_avatar.split('src="')[1].split('"')[0];
-						}
-					}
-
-					if(dup_userpic!='') dup_userpic = '<img src="http://www.amaryllis.nl/cmm/tools/thumb.php?src='+dup_userpic+'&maxw=70&maxh=100" border="0" alt=""><br>';
-					else {
-						var image4 = 'data:image/png;base64,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%3D';
-						dup_userpic = '<div style="width:75px;height:75px;background-image:url('+image4+');background-position:'+((dup_sex=='m')?'left':'-75px')+' top">&nbsp;</div>';
-						}
-				}
-				else{
-					if($j.browser.opera){
-						if(dup_sex=='m') dup_userpic = '<div style="width:66px;height:70px;color:#d2dae2;border:1px solid #919191;font-family:Verdana;text-align:center;font-size:50px;line-height:70px">♂</div>';
-						else dup_userpic = '<div style="width:66px;height:70px;color:#e2d2d9;border:1px solid #919191;text-align:center;font-size:50px;line-height:70px">♀</div>';
-					}
-					else{
-						if(dup_sex=='m') dup_userpic = '<div style="width:66px;color:#d2dae2;border:1px solid #919191;text-align:center;font-size:4px;line-height:4px"><pre>  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~~~~       ~~~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                  ~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~~                ~~~~~~  '+"\r\n"+'  ~~~~~~~~              ~~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~~~~~~~           ~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~                      ~~~~  </pre></div>';
-						else dup_userpic = '<div style="width:66px;color:#e2d2d9;border:1px solid #919191;text-align:center;font-size:4px;line-height:4px"><pre>  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~~~~       ~~~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~~           ~~~~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                 ~~~~~~  '+"\r\n"+'  ~~~~~~                ~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~~~~               ~~~~~~~  '+"\r\n"+'  ~~~~                    ~~~~~  '+"\r\n"+'  ~~~~~                  ~~~~~~  '+"\r\n"+'  ~~~~~~~~             ~~~~~~~~  '+"\r\n"+'  ~~~                      ~~~~  '+"\r\n"+'</pre></div>';
-						dup_userpic = dup_userpic.split('~').join('█');
-					}
-				}
-
-
-				if(dup_text.split('id="js-usernote">').length >= 2){
-					var dup_note = dup_text.split('id="js-usernote">')[1].split('</em>')[0];
-					if(dup_note!='Место для заметок о пользователе. Заметки видны только вам.'){
-
-						dup_temp_body_mini = (dup_note.length>32)?dup_note.substring(0,32)+'...':dup_note;
-
-						if(dup_temp_body_mini!=dup_note){
-							dup_note = '<b>Ваша заметка:</b><div style="font-size:130%; cursor:help;background-color:#eee;padding:10px;font-family:Times New Roman" title="'+dup_note+'"><i>'+dup_temp_body_mini+'</i></div>';
-						}
-						else{
-							dup_note = '<b>Ваша заметка:</b><div style="font-size:130%; background-color:#eee;padding:10px;font-family:Times New Roman"><i>'+dup_temp_body_mini+'</i></div>';
-						}
-					}
-					else dup_note = '';
-				}else{
-					var dup_note = '';
-				}
-
-				dup_output = '<table cellspacing="0" cellpadding="0" border="0"><tr><td align="center" valign="top" style="padding-right:10px">'+dup_userpic+'<span style="color:#444">№'+dup_user_id+'</span><br>'+dup_parent+'<div style="margin-top:10px;font-size:10px"><b>Регистрация:</b><br>'+dup_date+'</div><div style="margin-top:5px; font-size: 130%;"><b>Карма: <span style="color:'+((dup_karma>=0)?'green':'red')+'">'+dup_karma+'</span></b></div></td>';
-				dup_output += '<td valign="top"><div style="float:left;margin-bottom:5px">'+dup_name+'<br><span style="font-size:10px"><b>'+dup_country+'</b></span></div>';
-				var image5 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAUCAYAAADlep81AAAAYElEQVRIx2P4DwG9QKwLxAwDhLWAuAWI/4A4XQPoEHRcDSLkBpGDOEEE/yByEMOog0YdNOqgUQeNOmjUQaMOooGDFAeRg4RAxORB5KAWBmgTdhEQewOx8QBhDyCeCXIIABULeHq64cd3AAAAAElFTkSuQmCC';
-				dup_output += '<div style="float:right;margin-left:5px;margin-bottom:5px"><span style="display:block'+((me.config.useImages.value)?';background-image:url('+image5+');background-repeat:no-repeat':'')+';width:36px;height:20px;line-height:20px;text-align:center;color:#fff;background-color:#999"><b>'+dup_prop+'</b></span></div>';
-				dup_output += '<div style="clear:both">Автор <b>'+dup_posts+'</b> постов и <b>'+dup_comments+'</b> комментариев<br>Заработал'+((dup_sex=='f')?'а':'')+' голос <span style="color:#0069ac; font-size:130%;"><b>'+dup_vote+'</b></span> и рейтинг '+dup_raiting+'</div>';
-				dup_output += '<div style="margin-top:10px">'+dup_votes_him+'</div><div id="dup_my_vote"></div><div id="dup_his_vote"></div><div style="margin-top:10px">'+dup_note+'</div></td></tr></table>';
-
-				$j('#dup_current_id').val(obj.href);
-
-				me.dup_getKarma(dup_output,dup_user_id,dup_sex,dup_user_name);
-			});
-		}
-	},
-
-	dup_getKarma: function(dup_text,dup_user_id,dup_sex,dup_user_name){
-		if(dup_user_id!=d3.user.id){
-			//incoming karma
-			var url = '/karmactl';
-			var data = 'view='+d3.user.id;
-			$j.post(url,data,function(data){
-				var dup_temp = data;
-				if(dup_temp.indexOf('{"uid":"'+dup_user_id+'"')>0){
-					dup_temp = dup_temp.split('{"uid":"'+dup_user_id+'"')[1].split('","login"')[0].split('"');
-					dup_temp = dup_temp[dup_temp.length-1];
-					dup_temp = '<b>'+((dup_sex=='f')?'Её':'Его')+' оценка вас: <span style="color:'+((dup_temp>0)?'green">+':'red">')+dup_temp+'</span></b>';
-
-					$j('#dup_his_vote').html(dup_temp);
-				}else{
-					$j('#dup_his_vote').html('<span style="color:#999"><b>Е'+((dup_sex=='f')?'ё':'го')+' оценок нет в вашей карме</b></span>');
-				}
-			});
-			//outgoing karma
-			var url = '/karmactl';
-			var data = 'view='+dup_user_id;
-			$j.post(url,data,function(data){
-				var dup_temp = data;
-				if(dup_temp.indexOf('{"uid":"'+d3.user.id+'"')>0){
-					dup_temp = dup_temp.split('{"uid":"'+d3.user.id+'"')[1].split('","login"')[0].split('"');
-					dup_temp = dup_temp[dup_temp.length-1];
-					dup_temp = '<b>Ваша оценка '+((dup_sex=='f')?'её':'его')+': <span style="color:'+((dup_temp>0)?'green">+':'red">')+dup_temp+'</span></b>';
-
-					$j('#dup_my_vote').html(dup_temp);
-				}else{
-					$j('#dup_my_vote').html('<span style="color:#999"><b>Ваших оценок нет в е'+((dup_sex=='f')?'ё':'го')+' карме</b></span>');
-				}
-			});
-		}
-		$j('#dup_data_td').html(dup_text);
 	}
-
-
 
 });
