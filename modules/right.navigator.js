@@ -16,10 +16,7 @@ d3.addModule(
 	currentItem: null,
 	scrolling: false,
 	scrollDestination: 0,
-	run: function()
-	{
-		if(!this.countItems()) return;
-		
+	run: function() {
 		this.drawButtons();
 		
 		var me=this;
@@ -41,14 +38,16 @@ d3.addModule(
 		this.newPosition();
 	},
 
-	onPost: function(){
-		if(!this.countItems()) return;
-		this.newPosition();
+	onPost: function (post) {
+		if (this.countItem(post)) {
+			this.newPosition();
+		}
 	},
 
-	onComment: function(){
-		if(!this.countItems()) return;
-		this.newPosition();
+	onComment: function (comment) {
+		if (this.countItem(comment)) {
+			this.newPosition();
+		}
 	},
 
 	scrollToPosition: function(position)
@@ -96,18 +95,25 @@ d3.addModule(
 		window.setTimeout(function(){me.scrollDaemon(current);}, 30);
 	},
 
-	countItems: function()
-	{
-		var items = d3.get.items();
-		this.newItems=[];
-		this.mineItems=[];
+	countItem: function(item) {
 		// select new and mine items
-		for(var i=0;i<items.length;++i)
-		{
-			if(items[i].isNew) this.newItems.push(items[i]);
-			if(items[i].isMine)this.mineItems.push(items[i]);
+		var hidden = undefined;
+		var changes = false;
+		if (item.isNew) {
+			if (hidden = item.container.is(":hidden")) {
+				return false;
+			}
+			this.newItems.push(item);
+			changes = true;
 		}
-		return true;
+		if (item.isMine) {
+			if (hidden == undefined && item.container.is(":hidden")) {
+				return false;
+			}
+			this.mineItems.push(item);
+			changes = true;
+		}
+		return changes;
 	},
 
 	scrollToItem: function(item)
