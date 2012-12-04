@@ -6,3 +6,4 @@ tabsheets.js
 item.js
 post.js
 comment.js
+delayed.event.handler.js

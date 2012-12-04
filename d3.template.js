@@ -102,7 +102,7 @@ var d3=
 				item.module.run();
 		});
 	},
-	
+
 	/// Add and run d3 module
 	addModule: function(module)
 	{
@@ -115,10 +115,13 @@ var d3=
 		this.config.addModule(module);
 		if(module.config == undefined || module.config.active == undefined || module.config.active.value)
 		{
-			var timeBefore = new Date();
+			var timeBefore = (new Date()).getTime();
+			var moduleTimingInfo = {};
+
 			if (module.run != undefined) {
 				try {
 					module.run();
+					moduleTimingInfo["run"] = ((new Date).getTime() - timeBefore)+"ms";
 				} catch (e) {
 					if (log) console.log("Error in module '" + module.name + "'", e);
 				}
@@ -126,15 +129,14 @@ var d3=
 
 			try {
 				if (module.onPost != undefined) {
-					var startTime = new Date();
+					var startTime = (new Date()).getTime();
 					d3.content.onNewPost(function (post) {
 						module.onPost(post);
 					});
 					d3.content.posts.forEach(function (post) {
 						module.onPost(post);
 					});
-					if (log) console.log("Posts processor for module '" + module.name + "' registered. " +
-						"Processing time " + ((new Date) - startTime));
+					moduleTimingInfo["onPost"] = ((new Date).getTime() - startTime)+"ms";
 				}
 			} catch (e) {
 				if (log) console.log("Error processing posts in module '" + module.name + "'", e);
@@ -142,23 +144,49 @@ var d3=
 
 			try {
 				if (module.onComment != undefined) {
-					var startTime = new Date();
+					var startTime = (new Date()).getTime();
 					d3.content.onNewComment(function (comment) {
 						module.onComment(comment);
 					});
 					d3.content.comments.forEach(function (comment) {
 						module.onComment(comment);
 					});
-					if (log) console.log("Comments processor for module '" + module.name + "' registered. " +
-						"Processing time " + ((new Date) - startTime));
+					moduleTimingInfo["onComment"] = ((new Date).getTime() - startTime)+"ms";
 				}
 			} catch (e) {
 				if (log) console.log("Error processing comments in module '" + module.name + "'", e);
 			}
 
-			var moduleRunTime = (new Date()) - timeBefore;
+			var handleBatchEvent = function(eventName, handler, runNow) {
+				try {
+					if (module[eventName] != undefined) {
+						var startTime = (new Date()).getTime();
+						handler(function () {
+							module[eventName]();
+						});
+						if (runNow) {
+							module[eventName]();
+						}
+						moduleTimingInfo[eventName] = ((new Date).getTime() - startTime)+"ms";
+					}
+				} catch (e) {
+					if (log) console.log("Error running "+eventName+" in module '" + module.name + "'", e);
+				}
+			};
+
+			handleBatchEvent("onPostsUpdated", function (fn) {
+				d3.content.onPostsUpdated(fn);
+			}, d3.content.posts.length);
+			handleBatchEvent("onCommentsUpdated", function (fn) {
+				d3.content.onCommentsUpdated(fn);
+			}, d3.content.comments.length);
+			handleBatchEvent("onItemsUpdated", function (fn) {
+				d3.content.onItemsUpdated(fn);
+			}, d3.content.posts.length || d3.content.comments.length);
+
+			var moduleRunTime = (new Date()).getTime() - timeBefore;
 			this.runTimeTotal += moduleRunTime;
-			if (log) console.log( module.name + ": " + moduleRunTime + "ms" );
+			if (log) console.log( module.name + ": " + moduleRunTime + "ms;  "+JSON.stringify(moduleTimingInfo));
 		}
 	},
 	// Config core module
