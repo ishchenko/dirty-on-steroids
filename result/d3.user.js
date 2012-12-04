@@ -119,14 +119,14 @@ return{};}});d3.initCore();try
 {d3.addModule({type:"Прочее",name:'Переход с / на /new',author:'Stasik0',config:{active:{type:'checkbox',value:true}},run:function()
 {String.prototype.endsWith=function(suffix){return this.indexOf(suffix,this.length-suffix.length)!==-1;};if(document.location.pathname=='/'&&document.location.href.indexOf('?')==-1){document.location.href=document.location.href+"new";return;}
 $j('a.b-blog_nav_sort_link').each(function(link){if($j(this).attr('href')=='/')
-$j(this).attr('href','/?');});$j('a[href$="d3.ru"], a[href$="d3.ru/"], a[href="/"]').not('a[href^="mailto:"]').each(function(link){var href=$j(this).attr('href');if(href.indexOf('write')==-1){if(href.toString().endsWith('/')){$j(this).attr('href',$j(this).attr('href')+'new');}else{$j(this).attr('href',$j(this).attr('href')+'/new');}}});}});d3.addModule({type:"Навигация",name:'Навигация по новым',author:'crimaniak, Stasik0',config:{active:{type:'checkbox',value:true},smoothScroll:{type:'checkbox',value:true,caption:'Плавная прокрутка'}},newItems:[],mineItems:[],nextMine:null,nextNew:null,prevNew:null,currentItem:null,scrolling:false,scrollDestination:0,run:function()
-{if(!this.countItems())return;this.drawButtons();var me=this;$j(window).scroll(function(event){me.onScroll();});$j('#home').mousedown(function(e){e.preventDefault();me.scrollToPosition(0);});$j('#down').mousedown(function(e){e.preventDefault();me.scrollToItem(me.newItems[me.nextNew]);});$j('#up').mousedown(function(e){e.preventDefault();me.scrollToItem(me.newItems[me.prevNew]);});$j('#mine').mousedown(function(e){e.preventDefault();me.scrollToItem(me.mineItems[me.nextMine]);});this.newPosition();},onPost:function(){if(!this.countItems())return;this.newPosition();},onComment:function(){if(!this.countItems())return;this.newPosition();},scrollToPosition:function(position)
+$j(this).attr('href','/?');});$j('a[href$="d3.ru"], a[href$="d3.ru/"], a[href="/"]').not('a[href^="mailto:"]').each(function(link){var href=$j(this).attr('href');if(href.indexOf('write')==-1){if(href.toString().endsWith('/')){$j(this).attr('href',$j(this).attr('href')+'new');}else{$j(this).attr('href',$j(this).attr('href')+'/new');}}});}});d3.addModule({type:"Содержание",name:'Прятать посты с низким рейтингом',author:'Aivean',config:{active:{type:'checkbox',value:false},rating:{type:'select',value:0,options:{'100':100,'40':40,'10':10,'5':5,'0':0,'-5':-5,'-10':-10},caption:'Рейтинг меньше, чем:'}},onPost:function(post){if(post.ratingValue()<this.config.rating.value&&!d3.page.postComments&&!d3.page.inbox){post.container.hide();}}});d3.addModule({type:"Навигация",name:'Навигация по новым',author:'crimaniak, Stasik0',config:{active:{type:'checkbox',value:true},smoothScroll:{type:'checkbox',value:true,caption:'Плавная прокрутка'}},newItems:[],mineItems:[],nextMine:null,nextNew:null,prevNew:null,currentItem:null,scrolling:false,scrollDestination:0,run:function(){this.drawButtons();var me=this;$j(window).scroll(function(event){me.onScroll();});$j('#home').mousedown(function(e){e.preventDefault();me.scrollToPosition(0);});$j('#down').mousedown(function(e){e.preventDefault();me.scrollToItem(me.newItems[me.nextNew]);});$j('#up').mousedown(function(e){e.preventDefault();me.scrollToItem(me.newItems[me.prevNew]);});$j('#mine').mousedown(function(e){e.preventDefault();me.scrollToItem(me.mineItems[me.nextMine]);});this.newPosition();},onPost:function(post){if(this.countItem(post)){this.newPosition();}},onComment:function(comment){if(this.countItem(comment)){this.newPosition();}},scrollToPosition:function(position)
 {if(this.config.smoothScroll.value){this.smoothScroll(position);}else{$j(window).scrollTop(position);this.resetScrolling();}},resetScrolling:function(){this.scrolling=false;},smoothScroll:function(destination){this.scrollDestination=destination;this.scrolling=true;this.scrollDaemon();},scrollDaemon:function(lastPosition){lastPosition=typeof lastPosition!=='undefined'?lastPosition:-1;var destination=this.scrollDestination;if(this.scrolling==false){scrolling=false;this.newPosition();return;}
 current=$j(window).scrollTop();distance=destination-current;if(current==lastPosition||Math.abs(distance)<5||Math.round(current+(distance/4.5))<0){$j(window).scrollTop(destination);this.resetScrolling();this.newPosition();return;}
-$j(window).scrollTop(Math.round(current+(distance/4.5)));var me=this;window.setTimeout(function(){me.scrollDaemon(current);},30);},countItems:function()
-{var items=d3.get.items();this.newItems=[];this.mineItems=[];for(var i=0;i<items.length;++i)
-{if(items[i].isNew)this.newItems.push(items[i]);if(items[i].isMine)this.mineItems.push(items[i]);}
-return true;},scrollToItem:function(item)
+$j(window).scrollTop(Math.round(current+(distance/4.5)));var me=this;window.setTimeout(function(){me.scrollDaemon(current);},30);},countItem:function(item){var hidden=undefined;var changes=false;if(item.isNew){if(hidden=item.container.is(":hidden")){return false;}
+this.newItems.push(item);changes=true;}
+if(item.isMine){if(hidden==undefined&&item.container.is(":hidden")){return false;}
+this.mineItems.push(item);changes=true;}
+return changes;},scrollToItem:function(item)
 {if(item==null)return false;var highlightColor="#fff48d";var colorToHex=function(color){if(color.substr(0,1)==='#'){return color;}
 if(color.substr(0,3)!=="rgb"){return"unknown";}
 if(color.substr(0,4)==="rgba"){var digits=/(.*?)rgba\((\d+), (\d+), (\d+), (\d+)\)/.exec(color);var red=parseInt(digits[2]);var green=parseInt(digits[3]);var blue=parseInt(digits[4]);var alpha=parseInt(digits[5]);return'#'+(256+red).toString(16).substr(1)+((1<<24)+(green<<16)|(blue<<8)|alpha).toString(16).substr(1);}else if(color.substr(0,3)==="rgb"){var digits=/(.*?)rgb\((\d+), (\d+), (\d+)\)/.exec(color);var red=parseInt(digits[2]);var green=parseInt(digits[3]);var blue=parseInt(digits[4]);var rgb=blue|(green<<8)|(red<<16);return digits[1]+'#'+rgb.toString(16);}
@@ -336,7 +336,7 @@ d3.addModule({type:"Стилизация",name:'Рестайлинг сайта 
 +'.comments_indent_holder .indent_21 { padding-left:355px !important;} .indent_22 { padding-left:370px !important;} .indent_23 { padding-left:385px !important;} .indent_24 { padding-left:400px !important;}'
 +'.comments_indent_holder .indent_25 { padding-left:415px !important;} .indent_26 { padding-left:430px !important;} .indent_27 { padding-left:445px !important;} .indent_28 { padding-left:460px !important;}'
 +'.comments_indent_holder .indent_29 { padding-left:475px !important;} .indent_30 { padding-left:490px !important;}'
-+'.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;} .b-menu{display: inline;}'
++'.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;}'
 +'div.b-comments_controls { padding: 14px 0px 10px 5px; min-width: 800px;}';if(d3.page.postComments||d3.page.inboxComments)
 {css+=' .b-ads { width: 0px; display: hidden;}'
 if(this.config.postInfoMove.value==true)
@@ -346,7 +346,7 @@ style=document.createElement('style');style.type='text/css';if(style.styleSheet)
 else
 {style.appendChild(document.createTextNode(css));}
 $j('head').append(style);var socBut=document.querySelector('span.b-comments_controls_social');var socButTarget=document.querySelector('div.b-comments_controls_new_nav');if(socBut&&socButTarget)
-{var socParent=socBut.parentNode;socParent.removeChild(socBut);socButTarget.appendChild(socBut);}}});d3.addModule({type:"Содержание",name:'Прятать посты с низким рейтингом',author:'Aivean',config:{active:{type:'checkbox',value:false},rating:{type:'select',value:0,options:{'100':100,'40':40,'10':10,'5':5,'0':0,'-5':-5,'-10':-10},caption:'Рейтинг меньше, чем:'}},onPost:function(post){if(post.ratingValue()<this.config.rating.value&&!d3.page.postComments&&!d3.page.inbox){post.container.hide();}}});d3.addModule({type:"Стилизация",author:'crimaniak',name:'Спрятать лишнее',config:{active:{type:'checkbox',value:true},hideSocialLinks:{type:'checkbox',caption:'Спрятать кнопки социальных сетей',value:false}},run:function()
+{var socParent=socBut.parentNode;socParent.removeChild(socBut);socButTarget.appendChild(socBut);}}});d3.addModule({type:"Стилизация",author:'crimaniak',name:'Спрятать лишнее',config:{active:{type:'checkbox',value:true},hideSocialLinks:{type:'checkbox',caption:'Спрятать кнопки социальных сетей',value:false}},run:function()
 {if(this.config.hideSocialLinks.value)$j('.b-post_social_link').hide();}});d3.addModule({type:"Прочее",name:'XD',author:'Stasik0',parent_url:null,callback:null,run:function(){String.prototype.endsWith=function(suffix){return this.indexOf(suffix,this.length-suffix.length)!==-1;};var me=this;this.XD.receiveMessage(function(message){if(message.data===null||message.data===undefined)return;try{var data=d3.json.decode(message.data);}catch(e){return;}
 if(data.service===undefined)return;if(data.service==="bodyHtml"){me.reply('{"service":"callback","value":"'+encodeURIComponent($j('body').html())+'"}',data.parentUrl);}
 if(data.service==="head"){me.reply('{"service":"callback","value":""}',data.parentUrl);}
@@ -422,7 +422,40 @@ else if(url.search(/vimeo.com/i)>-1)
 {var preVideoId=url.slice(url.search(/vimeo.com/i)+10);if(!isNaN(parseFloat(preVideoId))&&isFinite(preVideoId))
 {videoId=preVideoId;}}
 return videoId;},});d3.addModule({type:"Стилизация",name:'Приглушать удаленные комментарии',author:'Aivean',config:{active:{type:'checkbox',value:true}},onComment:function(comment){if(comment.container.has("strong:contains([DELETED])").length){$j("strong:contains([DELETED])",comment.container).css("font-weight","100");console.log(comment.container);comment.container.css("opacity","0.5");}}});d3.addModule({type:"Содержание",name:'Бесконечная страница',author:'Aivean',config:{active:{type:'checkbox',value:true}},eventName:"scroll.infinite.paging",lastCheckTime:new Date().getTime(),getLoadMoreButton:function(){return $j("a#js-index_load_more_posts");},needToCheck:function(){if((new Date()).getTime()-this.lastCheckTime>20){this.lastCheckTime=new Date().getTime();return true;}
-return false;},enableScroll:function(me,loadMoreButton,main){var $doc=$j(document);var $body=$j("body");var $footer=$j("#js-footer");if(!$doc.length||!$body.length||!$footer.length){if(console)console.log("One of this elements is undefined: ",$doc,$body,$footer);return;}
-$j(window).on(me.eventName,function(){if(!me.needToCheck())return;if(loadMoreButton.hasClass("js-loading"))return;var right=$doc.height()-$body.height()*2-$footer.height();var loadContent=$doc.scrollTop()>=right;if(loadContent){loadMoreButton=me.getLoadMoreButton();if(loadMoreButton.length&&!(loadMoreButton.hasClass("hidden"))){loadMoreButton.click();}else{$j(window).off(me.eventName);}}});},run:function(){var loadMoreButton=this.getLoadMoreButton();var main=$j(".l-content_main");if(loadMoreButton.length&&main.length){this.enableScroll(this,loadMoreButton,main);}}});}catch(e)
+return false;},enableScroll:function(me,loadMoreButton){if(console)console.log("Infinite paging is active.");var $doc=$j(document);var $body=$j("body");var $footer=$j("#js-footer");if(!$doc.length||!$body.length||!$footer.length){if(console)console.log("One of this elements is undefined: ",$doc,$body,$footer);return;}
+$j(window).on(me.eventName,function(){if(!me.needToCheck())return;if(loadMoreButton.hasClass("js-loading"))return;var right=$doc.height()-$body.height()*2-$footer.height();var loadContent=$doc.scrollTop()>=right;if(loadContent){loadMoreButton=me.getLoadMoreButton();if(loadMoreButton.length&&!(loadMoreButton.hasClass("hidden"))){loadMoreButton.click();}else{$j(window).off(me.eventName);}}});},run:function(){var loadMoreButton=this.getLoadMoreButton();if(loadMoreButton.length){this.enableScroll(this,loadMoreButton);}}});d3.addModule({type:"Стилизация",name:'Выделять ссылки на подсайты в постах',author:'Aivean',config:{active:{type:'checkbox',value:true},style:{type:'select',value:"yellow-back",caption:'Стиль выделения:',options:{"Рамка":"border","Фон":"yellow-back"}}},styleName:"subsite-link-highlighted",styles:{'border':"border: 1px solid #888888;\n"+"padding: 0px 2px 1px 2px; text-decoration: none;"+"-webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;",'yellow-back':"background-color: #E9DFC3;"+"padding: 0px 2px 1px 2px; text-decoration: none;"},run:function(){$j("<style type='text/css'> \n\
+    ."+this.styleName+" { \n\
+      "+this.styles[this.config.style.value]+"\n\
+    } \n\
+   </style>").appendTo('head');},onPost:function(post){$j('a[href^="http://"][href*=".d3.ru"]:contains(.d3.ru)',post.info).addClass(this.styleName);}});d3.addModule({type:"Социализм",name:'Жепки',author:'Aivean',config:{active:{type:'checkbox',value:true},rating:{caption:'Показывать жепки с рейтингом:',type:'select',value:0,options:{"Любым":-32000,"Ноль и больше":-1,"Больше 0":0,"Больше 5":5,"Больше 10":10}}},className:'zhepka',underratedClassName:'zh-underrated',containerClassName:'zheps-container',zheps:[],zhepsContainer:null,run:function(){$j("<style type='text/css'> \n\
+    ."+this.className+" { \n\
+      margin: 0 0 4px;\n\
+      padding: 2px 3px;\n\
+      background-color: #f8eebe;\n\
+     border-bottom: 1px solid #E0E0E0;\n\
+     border-right: 1px solid #E0E0E0;\n\
+     white-space: nowrap;\n\
+    } \n\
+    ."+this.className+"."+this.underratedClassName+" { \n\
+     opacity: 0.5;\n\
+     background-color: #f5f5f5;\n\
+    } \n\
+    ."+this.className+" span {\n\
+     opacity: 0.2; \n\
+    }\n\
+    ."+this.containerClassName+" {\n\
+     margin-top: 0;\n\
+     padding: 0;\n\
+    }\n\
+    .dd ."+this.containerClassName+".b-post_tags a.tag {\n\
+      background-color: #f8eebe;\n\
+    }\n\
+   </style>").appendTo('head');this.zhepsContainer=$j('<ul class="'+this.containerClassName+' b-post_tags"></ul>').appendTo("#js-tags_public");},redrawZheps:function(){var elements=[];for(var el in this.zheps){elements.push(this.zheps[el]);}
+elements.sort(function(a,b){return b.rating-a.rating;});if(elements.length==1){this.zhepsContainer.parents(".hidden").removeClass("hidden");}
+var me=this;this.zhepsContainer.empty();elements.forEach(function(zhep){if(!zhep.element){zhep.element=$j('<li><a class="tag" href="#'+zhep.id+'">'+zhep.text+'</a></li>');}
+zhep.element.appendTo(me.zhepsContainer);me.zhepsContainer.append(" ");});},addZhepka:function(zhepka,rating,commentId){if(!this.zheps[zhepka]){this.zheps[zhepka]={"text":zhepka,"rating":rating,"id":commentId};}else{this.zheps[zhepka].rating+=rating;}
+this.redrawZheps();},validComment:function(comment){var content=comment.getContentText();return content.indexOf("[x]")!=-1||content.indexOf("[X]")!=-1||content.indexOf("[х]")!=-1||content.indexOf("[Х]")!=-1;},onComment:function(comment){if(!this.validComment(comment))return;var underrated=comment.ratingValue()<=this.config.rating.value;var html=comment.getContent().html();var r=/([^:\s\.><][\wа-яёЁ\-–—\s!%\?,]+?)\s?\[[хx]\]/gi;html=html.replace(/(\&nbsp;)/gi,' ');var match;var found=[];while(match=r.exec(html)){found.push({"text":match[1],"all":match[0]});}
+var processed=[];if(found.length){var me=this;found.forEach(function(f){var r2=new RegExp(RegExp.escape(f.all));html=html.replace(r2,'<span class="'+me.className+
+(underrated?" "+me.underratedClassName:"")+'">'+f.text+' <span>[x]</span></span>');if(!underrated&&!processed[f.text]){me.addZhepka(f.text,comment.ratingValue(),comment.id);processed[f.text]=true;}});comment.getContent().html(html);}}});}catch(e)
 {if(console)console.log(e);}
 if(console)console.log('runtime: '+d3.runTimeTotal+'ms');
