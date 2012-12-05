@@ -7,9 +7,10 @@ d3.addModule(
 	config: {active:{type:'checkbox',value:true}},
 
 	onComment: function (comment) {
-		if (comment.container.has("strong:contains([DELETED])").length) {
-			$j("strong:contains([DELETED])", comment.container).css("font-weight", "100");
-			console.log(comment.container);
+		if (comment.container.html().indexOf("[DELETED]") == -1) return;
+		var strong = $j("strong:contains([DELETED])", comment.container);
+		if (strong.length) {
+			strong.css("font-weight", "100");
 			comment.container.css("opacity", "0.5");
 		}
 	}
