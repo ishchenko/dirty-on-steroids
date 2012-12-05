@@ -1,3 +1,4 @@
+libs/util.js
 libs/crc32.js
 libs/regexp.escape.js
 libs/jquery.unselectable.min.js

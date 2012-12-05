@@ -8,10 +8,6 @@ d3.addModule(
 
 	run: function()
 	{
-		String.prototype.endsWith = function(suffix) {
-			return this.indexOf(suffix, this.length - suffix.length) !== -1;
-		};
-
 		if(document.location.pathname == '/' && document.location.href.indexOf('?')==-1){
 			document.location.href = document.location.href+"new";
 			return;

@@ -19,9 +19,6 @@ d3.addModule(
 		callback: null,
 
         run: function () {
-			String.prototype.endsWith = function(suffix) {
-				return this.indexOf(suffix, this.length - suffix.length) !== -1;
-			};
 			//receiving facility
 			var me = this;
 			this.XD.receiveMessage(
