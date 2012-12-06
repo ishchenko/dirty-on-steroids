@@ -16,7 +16,7 @@ d3.addModule(
 				var divContentLeft = document.querySelector("div.l-content_aside");
 				if ( divContentLeft )
 				{
-					var checkinsMarkup = d3.storage.get('checkinsMarkup');
+					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
 					var newdiv = document.createElement('div');
 					newdiv.innerHTML =  checkinsMarkup;
 					divContentLeft.appendChild( newdiv );

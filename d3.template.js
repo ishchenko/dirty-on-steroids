@@ -4,9 +4,6 @@
 // @author          crimaniak
 // @namespace       http://dirty.ru/
 // @description     Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
-// @include         http://dirty.ru/*
-// @include         http://www.dirty.ru/*
-// @include         http://music.dirty.ru/*
 // @include         http://d3.ru/*
 // @include         http://*.d3.ru/*
 // @run-at          document-end
@@ -36,21 +33,21 @@ var d3=
 		name: null
 	},
 	
-	// storage will be cross-domain in future
+	// storage is cross-domain
 	storage:
 	{
 		get: function(key, defaultValue)
 		{
-			var value = localStorage.getItem(key);
+			var value = $j.cookie(key);
 			return value === null ? defaultValue : value;
 		},
 		set: function(key, value)
 		{
-			return localStorage.setItem(key, value);
+			return $j.cookie(key, value, {domain: '.d3.ru', path:'/', expires: 365});
 		},
 		remove: function(key)
 		{
-			return localStorage.removeItem(key);
+			return this.set(key, null);
 		}
 	},
 
@@ -212,7 +209,7 @@ var d3=
 			return this.box;
 		},
 		/// Calculate HTML-friendly id from module and control names
-		controlName: function(module,control){return 'A'+Math.abs(crc32(module))+'_'+control;},
+		controlName: function(module,control){return 'A'+Math.abs(crc32(module)%10000)+'_'+control;},
 		/// Draw config box
 		drawBox: function()
 		{
@@ -275,7 +272,7 @@ var d3=
 				return '<tr><td><input type="checkbox" id="'+this.id+'" name="'+this.id+'"'+(this.value ? ' checked' : '')+'></td><td><label for="'+this.id+'">'+this.caption+'</label></td></tr>';
 			},
 
-			getValue: function() {return $j('#'+this.id).attr('checked') ? true : false;}
+			getValue: function() {return $j('#'+this.id).attr('checked') ? 1 : 0;}
 		},
 		text:
 		{
