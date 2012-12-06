@@ -42,10 +42,10 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 		//d3.window.d3=d3;
 		d3.content=this;
 		this.onCommentsUpdated(function () {
-			me.itemsUpdatedHandler.trigger()
+			me.itemsUpdatedHandler.trigger();
 		});
 		this.onPostsUpdated(function () {
-			me.itemsUpdatedHandler.trigger()
+			me.itemsUpdatedHandler.trigger();
 		});
 
 		function processPost($post) {
@@ -139,13 +139,10 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 		if(after !== undefined)
 		{
 			after = $j('li:contains("'+after+'")',list);
-			console.log(after);
-			console.log(after.text());
 			item.insertAfter(after);
 		} else
 			list.append(item);
 		nav.height(nav.height()+item.height());
-		
 	},
 	
 	addToLeftNav: function(item, after)
@@ -155,8 +152,6 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 		if(after !== undefined)
 		{
 			after = $j('li:contains("'+after+'")',list);
-			console.log(after);
-			console.log(after.text());
 			item.insertAfter(after);
 		} else
 			list.append(item);
@@ -170,7 +165,9 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	// collect user info
 	findUser: function()
 	{
-		return {id: 0, name: d3.window.globals.current_user};
+		var user = d3.window.globals.user;
+		user.name = user.login;
+		return user;
 	},
 	
 	createLeftNavigator: function()

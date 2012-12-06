@@ -86,7 +86,7 @@ d3.addModule(
 						$j(link).mouseover(function () {
 							me.showFavicon($j(this), faviconUrl);
 						}).mouseout(function () {
-							me.hideFavicon($j(this))
+							me.hideFavicon($j(this));
 						});
 					} else {
 						me.showFavicon($j(link), faviconUrl);
