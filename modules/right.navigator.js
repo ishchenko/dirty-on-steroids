@@ -34,7 +34,7 @@ d3.addModule(
 			e.preventDefault(); 
 			me.scrollToItem(me.mineItems[me.nextMine]);
 		});
-		
+
 	},
 
 	onItemsUpdated: function () {
