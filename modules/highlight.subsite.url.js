@@ -26,15 +26,18 @@ d3.addModule(
 				"padding: 0px 2px 1px 2px; text-decoration: none;"
 		},
 
-		run: function() {
-			$j("<style type='text/css'> \n\
-				."+this.styleName+" { \n\
-				 	" + this.styles[this.config.style.value] + "\n\
-				} \n\
-			</style>").appendTo('head');
-		},
-
 		onPost: function (post) {
-			$j('a[href^="http://"][href*=".d3.ru"]:contains(.d3.ru)', post.info).addClass(this.styleName);
+			var linksInInfo = post.info.get(0).getElementsByTagName('a');
+			if ( linksInInfo )
+			{	
+				for ( var i = 0; i < linksInInfo.length; i++ )
+				{
+					if ( linksInInfo[i].textContent.indexOf('.d3.ru') > -1 )
+					{
+						linksInInfo[i].setAttribute('style', this.styles[this.config.style.value] );
+						break;
+					}
+				}
+			}
 		}
 	});
