@@ -44,6 +44,10 @@ var d3=
 		},
 		set: function(key, value)
 		{
+			if (!key || key == undefined) {
+				if (console) console.log("Trying to save invalid cookie! ", value);
+				return;
+			}
 			return $j.cookie(key, value, {domain: '.d3.ru', path:'/', expires: 365});
 		},
 		remove: function(key)
