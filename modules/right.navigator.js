@@ -24,17 +24,18 @@ d3.addModule(
 		$j('#home').mousedown(function(e){e.preventDefault(); me.scrollToPosition(0);});
 		$j('#down').mousedown(function(e){
 			e.preventDefault(); 
-			me.scrollToItem(me.newItems[me.nextNew]); 
+			me.scrollToItem(me.nextNew); 
 		});
 		$j('#up').mousedown(function(e){
 			e.preventDefault(); 
-			me.scrollToItem(me.newItems[me.prevNew]);
+			me.scrollToItem(me.prevNew);
 		});
 		$j('#mine').mousedown(function(e){
 			e.preventDefault(); 
-			me.scrollToItem(me.mineItems[me.nextMine]);
+			me.scrollToItem(me.nextMine);
 		});
-
+		var oldSwitch = d3.window.commentsHandler.switchNew;
+		d3.window.commentsHandler.switchNew = function(){oldSwitch.apply(d3.window.commentsHandler);me.newPosition();};
 	},
 
 	onItemsUpdated: function () {
@@ -42,11 +43,11 @@ d3.addModule(
 	},
 
 	onPost: function (post) {
-		this.countItem(post);
+		//this.countItem(post);
 	},
 
 	onComment: function (comment) {
-		this.countItem(comment);
+		//this.countItem(comment);
 	},
 
 	scrollToPosition: function(position)
@@ -81,14 +82,14 @@ d3.addModule(
 		}
 		current = $j(window).scrollTop();
 		distance = destination - current;
-		if (current==lastPosition || Math.abs(distance) < 5 || Math.round(current+(distance/4.5)) < 0) {
+		if (current==lastPosition || Math.abs(distance) < 5 || Math.round(current+(distance/3)) < 0) {
 			$j(window).scrollTop(destination);
 			this.resetScrolling();
 			this.newPosition();
 			return;
 		}
 		$j(window).scrollTop(
-			Math.round(current+(distance/4.5))
+			Math.round(current+(distance/3))
 		);
 		var me = this;
 		window.setTimeout(function(){me.scrollDaemon(current);}, 30);
@@ -115,9 +116,10 @@ d3.addModule(
 		return changes;
 	},
 
-	scrollToItem: function(item)
+	scrollToItem: function(itemNum)
 	{
-		if(item==null) return false;
+		if(itemNum == null) return false;
+		item = d3.content.items()[itemNum];
 		
 		var highlightColor = "#fff48d";
 		var colorToHex =  function(color) {
@@ -152,10 +154,7 @@ d3.addModule(
 		this.scrollToPosition(Math.floor(item.offset().top+(item.height()-$j(window).height())/2));
 		this.currentItem=item;
 		this.newPosition();
-		/*
-		item.getContent().get(0).style.opacity=0.1;
-		item.getContent().animate({opacity: 1},400);
-		*/
+
 		var content=item.container;
 		var inner = $j(".comment_inner", content);
 		if(inner!=null && inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
@@ -174,56 +173,65 @@ d3.addModule(
 	{
 		if(!this.scrolling){
 			this.currentItem=null;
+			this.newPosition();
 		}
-		this.newPosition();
+	},
+	
+	calculateStatus: function()
+	{
+		var currentOffset = this.getCurrentOffset();
+		var status = {prev:0, next:0, mine:0, prevNew:null, nextNew:null, nextMine:null};
+
+		var firstMine=null;
+
+		$j.each(d3.content.items(), function(index, item){
+			var c = item.container;
+			var top = c.offset().top;
+			var bottom = top+c.height();
+			if(c.is(":hidden")) return;
+			if(item.isNew)
+			{
+				if(bottom < currentOffset)
+				{
+					status.prevNew = index;
+					++status.prev;
+				} 
+				else if(top > currentOffset)
+				{
+					++status.next;
+					if(status.nextNew===null) status.nextNew = index;
+				}
+			}
+			if(item.isMine)
+			{
+				if(!firstMine) firstMine = index;
+				if(top > currentOffset)
+				{
+					++status.mine;
+					if(status.nextMine===null) status.nextMine=index;
+				}
+			}
+		});
+		if(status.nextMine===null && firstMine) status.nextMine = firstMine;
+
+		return status;
 	},
 	
 	newPosition: function()
 	{
-		var offset = this.getCurrentOffset();
-		//--handling own posts
-		for(i=0; i<this.mineItems.length && this.mineItems[i].offset().top<offset; ++i);
-		$j("#mine").text(this.mineItems.length-i);
-		this.nextMine = i%this.mineItems.length;
-
-		//--handling new posts
-		//scroll down until one post's top is below the viewpoint
-		for(i=0; i<this.newItems.length && this.newItems[i].offset().top<offset; ++i);
-		//go one post up if possible
-		if(i>0)i--;
-		//item is the last active element which top is above the current view
-		var item = this.newItems[i];
-		if(item){
-			if(item.offset().top+item.height() > offset && item.offset().top <= offset){
-				//we are currently viewing the item
-				this.prevNew = (i>0) ? i-1 : null;
-				$j("#up").text(i);
-				this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
-				$j("#down").text(this.newItems.length-1-i);
-			}else if(item.offset().top > offset){
-				//the item is below the current position (this is the first one)
-				this.prevNew = null;
-				$j("#up").text(0);
-				this.nextNew = i;
-				$j("#down").text(this.newItems.length-i);
-			}else{
-				//item is above the current position
-				this.prevNew = i;
-				$j("#up").text(i+1);
-				this.nextNew = (i<this.newItems.length-1) ? i+1 : null;
-				$j("#down").text(this.newItems.length-1-i);
-			}
-		}else{
-			$j("#up").text(0);
-			$j("#down").text(0);
-		}
+		var status = this.calculateStatus();
+		$j('#mine').text(status.mine);
+		$j('#up').text(status.prev);
+		$j('#down').text(status.next);
+		this.nextNew = status.nextNew;
+		this.prevNew = status.prevNew;
+		this.nextMine = status.nextMine;
 	},
 		
 	drawButtons: function()
 	{
-			document.body.insertBefore(d3.newDiv(
+		document.body.insertBefore(d3.newDiv(
 			{style:{position:'fixed',top:'50%',marginTop:'-72px',right:'1px',zIndex:'100'}
-
 			,innerHTML: '<div id="home" style="height:32px; width:32px; color:#516f8d; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wLFQ8cDrOs1y8AAACISURBVEjH7dbBCcAgDAXQKO6RoTqJk2QSl3EDFwgxE/QgeK0K6aFNTgHhPxTUBGYGy0oAoKpG6V0kjQ4RLYA6AQBorVkYEYzLAQc+B2QqmYoVMKO3jLibvmvEg/QtI56lrxvPAOXrYOm394DytXIsr+4gMLOqIqLFl9lF/DV1wIExXXeRKmIE3NuqNWx/z730AAAAAElFTkSuQmCC); cursor: pointer; cursor: hand; text-align:center; margin-bottom: 10px;" title="В начало страницы"></div>'
 						+ '<div id="up" style="height:22px; width:32px; color:#516f8d; text-shadow: 1px 1px 1px #fff; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wLFQ8cMHLNyoQAAACkSURBVFjD7dfBDYMwDIXh54p72YAdsv8MmSHeAE/wekBEqkAodUq42DekiP+LcrKQhHdUlQCwLIt4/zH1hG1dt2/ADZmcN97D6IVIyxMcwqqn53bIe57RCrkEtIZ7IKcAb9gD+QL8K/wLREjeFm6BSCmFd4evIEKSo8IHiBleeHgCEIAABCAAAQhAAALwOKDuhjnnoeGUUt0LqKp1Jxg1qgozwweuz31PlPUe0wAAAABJRU5ErkJggg==); cursor: pointer; cursor: hand; text-align:center; padding: 10px 0px 0px 0px;" title="Предыдущий новый"></div>'
 						+ '<div id="mine" style="height:20px; width:32px; color:#516f8d; text-shadow: 1px 1px 1px #fff; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wLFQ8mFGtn8CwAAABvSURBVFjD7dXBCcAwCAVQlW7YSZwkk2QoR3ACe+2hFFoFEf4/5eYjKnJEhJlRR9ydhJozG6Brk67dA7gXziDmtmDp+fj+Gu5ew6NiBjK/IBXFM4MoFcUziHlb8NbrP3PAOEYAAAAAAAAAAAAA3YAL+icySuBzjtIAAAAASUVORK5CYII=); cursor: pointer; cursor: hand; text-align:center; padding: 12px 0px 0px 0px;" title="Следующий мой"></div>'

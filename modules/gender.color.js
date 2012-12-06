@@ -17,7 +17,7 @@ d3.addModule(
 	},
 
 	onComment: function(comment){
-		this.processElements(comment.info.get(0).querySelectorAll('a.c_user'));
+		this.processElements(comment.getFooter().get(0).querySelectorAll('a.c_user'));
 	},
 
 	//expecting array of a.c_user DOM elements
