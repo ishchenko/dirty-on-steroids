@@ -28,15 +28,11 @@ d3.addModule(
 
 		onPost: function (post) {
 			var linksInInfo = post.info.get(0).getElementsByTagName('a');
-			if ( linksInInfo )
+			if ( linksInInfo && linksInInfo.length > 1 )
 			{	
-				for ( var i = 0; i < linksInInfo.length; i++ )
+				if ( linksInInfo[1].textContent.indexOf('.d3.ru') > -1 )
 				{
-					if ( linksInInfo[i].textContent.indexOf('.d3.ru') > -1 )
-					{
-						linksInInfo[i].setAttribute('style', this.styles[this.config.style.value] );
-						break;
-					}
+					linksInInfo[1].setAttribute('style', this.styles[this.config.style.value] );
 				}
 			}
 		}
