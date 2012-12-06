@@ -5,10 +5,10 @@ d3.addModule(
 	type: "Социализм",
 	name: 'Игноратор',
 	author: 'crimaniak,Stasik0',
-	config: {active:{type:'checkbox',value:true}
+	config: {active:{type:'checkbox',value:1}
 			,ignored:{type:'hidden',value:{}}
-			,hideAtAll:{type:'checkbox',value:true,caption:'скрывать посты совсем'}
-			,moderation:{type:'checkbox',value:false,caption:'модерация от d3search'}
+			,hideAtAll:{type:'checkbox',value:1,caption:'скрывать посты совсем'}
+			,moderation:{type:'checkbox',value:0,caption:'модерация от d3search'}
 //			,postByAuthor:{type:'text'}
 //			,commentByAuthor:{type:'text'}
 			},

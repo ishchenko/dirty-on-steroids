@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Добавлять предпросмотр для комментариев',
 	author: 'crea7or',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 
 	run: function()
 	{

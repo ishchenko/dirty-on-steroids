@@ -3,7 +3,7 @@ d3.addModule({
 	type: "Социализм",
 	name: 'Жепки',
 	author: 'Aivean',
-	config: {active: {type: 'checkbox', value: true},
+	config: {active: {type: 'checkbox', value: 1},
 		rating: {
 			caption: 'Показывать жепки с рейтингом:',
 			type: 'select', value: 0,

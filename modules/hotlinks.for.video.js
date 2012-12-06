@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Просмотр видео по клику на ссылке',
 	author: 'crea7or',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 
 	onPost: function(post) {
 		this.setPlayer(post.container.get(0));

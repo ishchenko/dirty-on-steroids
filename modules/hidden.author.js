@@ -4,8 +4,9 @@ d3.addModule(
 	type: "Социализм",
 	name: 'Анонимные авторы постов',
 	author: 'crimaniak',
-	config: {posts:   {type:'checkbox',value:false,caption:"Анонимные авторы постов"}
-			,comments:{type:'checkbox',value:false,caption:"Анонимные комментаторы"}
+	config: {active:  {type:'checkbox',value:0,caption:"Анонимность"}
+			,posts:   {type:'checkbox',value:0,caption:"Анонимные авторы постов"}
+			,comments:{type:'checkbox',value:0,caption:"Анонимные комментаторы"}
 			,mark:	  {type:'text',value:'?????',caption:"Менять никнеймы на:"}
 			},
 

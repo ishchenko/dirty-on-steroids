@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Прочее",
 	name: 'Информация о браузере',
 	author: 'crimaniak',
-	config: {active:{type:'checkbox',value:false}},
+	config: {active:{type:'checkbox',value:0}},
 	run: function()
 	{
 		var info='';

@@ -5,8 +5,8 @@ d3.addModule(
 	name: 'Рестайлинг сайта от dirty tort',
 	author: 'crea7or',
 	config: {
-		active:{type:'checkbox',value:true}
-		,postInfoMove:{type:'checkbox',caption:'Информация о посте внизу',value:true}
+		active:{type:'checkbox',value:1}
+		,postInfoMove:{type:'checkbox',caption:'Информация о посте внизу',value:1}
 	},
 
 	run: function()
@@ -21,8 +21,8 @@ d3.addModule(
 
 		if ( d3.page.postComments ||  d3.page.inboxComments )
 		{
-			css += ' .b-ads { width: 0px; display: hidden;}'
-			if ( this.config.postInfoMove.value == true )
+			css += ' .b-ads { width: 0px; display: hidden;}';
+			if ( this.config.postInfoMove.value )
 			{
 				var postInfo = document.querySelector('div.dd');
 				var postParent = postInfo.parentNode;

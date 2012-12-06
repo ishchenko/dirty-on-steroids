@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Фотогалерея поста',
 	author: 'maniak,crimaniak',
-	config: {active:{type:'checkbox',value:true},height:{type:'text',value:'200px',caption:'Высота картинок в фотогалерее'}},
+	config: {active:{type:'checkbox',value:1},height:{type:'text',value:'200px',caption:'Высота картинок в фотогалерее'}},
 	run: function()
 	{
 		if(!d3.content.comments.length || !(this.imgs=$j('.c_body img')).length) return;

@@ -5,7 +5,7 @@ d3.addModule(
 		name: 'Бесконечная страница',
 		author: 'Aivean',
 		config: {
-			active: {type: 'checkbox', value: true}
+			active: {type: 'checkbox', value: 1}
 		},
 
 		eventName: "scroll.infinite.paging",

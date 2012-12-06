@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Социализм",
 	name: 'Цветовая сегрегация полов',
 	author: 'Constantin, adapted by crimaniak',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 	bar: false,
 
 	run: function()

@@ -33,7 +33,7 @@ var d3=
 		name: null
 	},
 	
-	// storage is cross-domain
+	// storage will be cross-domain in future
 	storage:
 	{
 		get: function(key, defaultValue)
@@ -219,23 +219,29 @@ var d3=
 				 ,innerHTML:'Настройки сервис-пака <a id="configCloser" style="position:absolute;right:1ex;top:0px;cursor:pointer">закрыть</a><div id="configTabs"></div>'}));
 			$j('body').append(box);
 			$j('#configCloser').click(function(event){box.hide();d3.config.readAndSave();return false;});
-			
+
 			this.tabs=new TabSheets($j('#configTabs'));
 			for(var sheetName in this.controls)
 				this.tabs.addSheet(sheetName, this.drawSheet(this.controls[sheetName]));
+
+			var sw = function(node){$j(node).closest('tbody').next()[node.checked ? 'show':'hide']();};
+			
+			$j('.moduleSwitcher input', box)
+				.each(function(index, item){sw(item);})
+				.click(function(event){sw(event.currentTarget);});
 			
 			return box;
 		},
 		/// Draw one control sheet
 		drawSheet: function(data)
 		{
-			var html='<table style="width: 100%; border:0px; border-collapse:collapse; padding: 0px"><col width="24"></col><tbody>';
+			var html='<table style="width: 100%; border:0px none; border-collapse:collapse; padding: 0px"><col width="24"></col><tbody>';
+			var firstModule=0;
 			for(var id in data){
 				if(data[id].name=='active'){
-					html += '<tr><td colspan="2" style="height: 20px;"><div style="padding-top:8px;"><div style="height: 1px; background-color: black;"><span style="background-color: white; position: relative; top: -0.8em; left: 20px;">Модуль "'+data[id].caption+'"</span></div></div></td></tr>';
-					data[id].caption = "Активировать";				
-				}
-				html+=data[id].draw();
+					html += '</tbody><tbody><tr><td colspan="2" style="height:20px;'+(firstModule++ ? 'border-top: 1px dotted grey' : '')+'"><label class="moduleSwitcher" style="font-weight: bold">'+data[id].drawControl()+' '+data[id].caption+'</label></td></tr></tbody><tbody>';
+				} else
+					html+=data[id].draw();
 			}
 			return html+'</tbody></table>';
 		},
@@ -267,9 +273,13 @@ var d3=
 		},
 		checkbox:
 		{
+			drawControl: function()
+			{
+				return '<input type="checkbox" id="'+this.id+'" name="'+this.id+'"'+(this.value ? ' checked' : '')+'>';
+			},
 			draw: function()
 			{
-				return '<tr><td><input type="checkbox" id="'+this.id+'" name="'+this.id+'"'+(this.value ? ' checked' : '')+'></td><td><label for="'+this.id+'">'+this.caption+'</label></td></tr>';
+				return '<tr><td>'+this.drawControl()+'</td><td><label for="'+this.id+'">'+this.caption+'</label></td></tr>';
 			},
 
 			getValue: function() {return $j('#'+this.id).attr('checked') ? 1 : 0;}

@@ -3,7 +3,7 @@ d3.addModule(
 	type: "Поиск",
 	name: 'Поиск на d3search.ru',
 	author: 'crimaniak, crea7or',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 	run: function()
 	{
 		var script2run = document.createElement('script');

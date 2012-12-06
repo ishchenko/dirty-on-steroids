@@ -5,7 +5,7 @@ d3.addModule(
 		name: 'Прятать посты с низким рейтингом',
 		author: 'Aivean',
 		config: {
-			active: {type: 'checkbox', value: false},
+			active: {type: 'checkbox', value: 0},
 			rating: {
 				type: 'select', value: 0,
 				options: {'100': 100, '40': 40, '10': 10, '5': 5, '0': 0, '-5': -5, '-10': -10},

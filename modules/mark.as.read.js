@@ -5,7 +5,7 @@ d3.addModule(
 	type: "Навигация",
 	name: 'Помечать как прочитанное',
 	author: 'Stasik0',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 	commentSelector: 'a[href*=comments],a[href*="my/inbox"]',
 			
 	onPost: function(post) {

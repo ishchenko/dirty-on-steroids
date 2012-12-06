@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Показывать внешние ссылки из заголовков постов',
 	author: 'crea7or',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 
 	onPost: function (post) {
 		var headersArr = $j("h3", post.container).get();

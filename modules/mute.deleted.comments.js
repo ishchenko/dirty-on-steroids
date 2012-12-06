@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Стилизация",
 	name: 'Приглушать удаленные комментарии',
 	author: 'Aivean',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 
 	onComment: function (comment) {
 		if (comment.container.html().indexOf("[DELETED]") == -1) return;

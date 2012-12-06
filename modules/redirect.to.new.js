@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Прочее",
 	name: 'Переход с / на /new',
 	author: 'Stasik0',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 
 	run: function()
 	{

@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Добавление видео к комментариям',
 	author: 'Stasik0, crea7or',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 	youtube_id: "",
 	textarea_id: "",
 	

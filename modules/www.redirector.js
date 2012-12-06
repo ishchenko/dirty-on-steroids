@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Прочее",
 	name: 'Редирект с www.dirty.ru на dirty.ru',
 	author: 'crimaniak',
-	config: {active:{type:'checkbox',value:true}},
+	config: {active:{type:'checkbox',value:1}},
 	run: function()
 	{
 		with(window.location)

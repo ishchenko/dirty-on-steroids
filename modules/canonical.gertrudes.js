@@ -5,9 +5,9 @@ d3.addModule(
 	name: 'Каноничные гертруды',
 	author: 'crea7or',
 	config: {
-		active: {type: 'checkbox', value: false},
-		mixCheckbox: {type: 'checkbox', caption: 'Смешивать с оригинальными', value: true},
-		mainPageOnly: {type: 'checkbox', caption: 'Только для главной', value: true}
+		active: {type: 'checkbox', value: 0},
+		mixCheckbox: {type: 'checkbox', caption: 'Смешивать с оригинальными', value: 1},
+		mainPageOnly: {type: 'checkbox', caption: 'Только для главной', value: 1}
 	},
 
 	run: function()

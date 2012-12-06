@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Спрятать картинки в постах',
 	author: 'crimaniak',
-	config: {active:{type:'checkbox',value:false}},
+	config: {active:{type:'checkbox',value:0}},
 		
 	onPost: function(post)
 	{

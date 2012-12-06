@@ -6,8 +6,8 @@ d3.addModule(
 	author: 'crimaniak',
 	name: 'Спрятать лишнее',
 	config: 
-		{active:{type:'checkbox', value:true}
-		,hideSocialLinks:{type:'checkbox', caption:'Спрятать кнопки социальных сетей', value:false}
+		{active:{type:'checkbox', value:1}
+		,hideSocialLinks:{type:'checkbox', caption:'Спрятать кнопки социальных сетей', value:0}
 		},
 	run: function()
 	{

@@ -5,9 +5,9 @@ d3.addModule(
 	name: 'Пряталки рейтинга',
 	author: 'crimaniak',
 	config:
-		{postRating:   {type:'checkbox',value:false,caption:'Спрятать рейтинг постов'}
-		,commentRating:{type:'checkbox',value:false,caption:'Спрятать рейтинг комментариев'}
-		,voteButtons:  {type:'checkbox',value:false,caption:'Спрятать кнопки голосования'}
+		{postRating:   {type:'checkbox',value:0,caption:'Спрятать рейтинг постов'}
+		,commentRating:{type:'checkbox',value:0,caption:'Спрятать рейтинг комментариев'}
+		,voteButtons:  {type:'checkbox',value:0,caption:'Спрятать кнопки голосования'}
 		},
 
 	onPost: function(post) {

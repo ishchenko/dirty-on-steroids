@@ -6,7 +6,7 @@ d3.addModule(
 	author: 'crimaniak',
 	name: 'Тест конфига',
 	config: 
-		{active:{type:'checkbox',value:false}
+		{active:{type:'checkbox',value:0}
 		,testRadio:{type:'radio',options:{"Опция 1":1,"Опция 2":2,"Опция 3":3,"Опция 4":4,"Опция 5":5,"Опция 6":6},caption:'Тестовые радиокнопки',value:6}
 		,testText:{type:'text',value:'test text',caption:'Тестовое поле: '}
 		,testSelect:{type:'select',value:'value 2',options:{'опция 1':'value 1','опция 2':'value 2'},caption:'Тестовый селект:'}

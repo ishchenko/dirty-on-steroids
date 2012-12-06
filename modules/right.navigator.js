@@ -5,8 +5,8 @@ d3.addModule(
 	name: 'Навигация по новым',
 	author: 'crimaniak, Stasik0',
 	config: {
-		active:{type:'checkbox',value:true},
-		smoothScroll:{type:'checkbox',value:true,caption:'Плавная прокрутка'}
+		active:{type:'checkbox',value:1},
+		smoothScroll:{type:'checkbox',value:1,caption:'Плавная прокрутка'}
 	},
 	newItems: [],
 	mineItems: [],

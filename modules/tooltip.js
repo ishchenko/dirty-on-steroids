@@ -5,8 +5,8 @@ d3.addModule(
 	name: 'Dirty tooltip',
 	author: 'NickJr, Stasik0, and the rest of gang',
 	config: {
-		active:{type:'checkbox',value:true},
-		useImages:{type:'checkbox',value:true,caption:'Картинки для tooltip'}
+		active:{type:'checkbox',value:1},
+		useImages:{type:'checkbox',value:1,caption:'Картинки для tooltip'}
 		},
 
 	showing: 0,
@@ -17,11 +17,11 @@ d3.addModule(
 	},
 
 	onPost: function(post) {
-		this.processLinks(post.container.get(0))
+		this.processLinks(post.container.get(0));
 	},
 
 	onComment: function(comment) {
-		this.processLinks(comment.container.get(0))
+		this.processLinks(comment.container.get(0));
 	},
 
 	processLinks: function(elem){

@@ -5,7 +5,7 @@ d3.addModule(
 	name: 'Цветной рейтинг',
 	author: 'crimaniak',
 	config: 
-		{active:{type:'checkbox',value:true}
+		{active:{type:'checkbox',value:1}
 		,ratingPower: {type:'text',value:1,caption:'Коэффициент увеличения шрифта'}
 		},
 	colors:

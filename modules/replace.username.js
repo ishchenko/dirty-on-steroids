@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Замена %username%',
 	author: 'crimaniak',
-	config: {active:{type:'checkbox',value:false}},
+	config: {active:{type:'checkbox',value:0}},
 
 	noUserName: d3.user.name == null,
 
