@@ -12,10 +12,8 @@ d3.addModule(
 		{
 			var script2run = document.createElement('script');
 			script2run.type = 'text/javascript';
-			script2run.text = 'commentsHandler.switchNew();';
+			script2run.text = 'commentsHandler.switchNew(); document.location.hash = "new";';
 			document.body.appendChild( script2run );
-			//scroll to the first unread comment
-			document.location.hash = "new";
 		}
 	},
 	
