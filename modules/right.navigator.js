@@ -189,7 +189,7 @@ d3.addModule(
 			var top = c.offset().top;
 			var bottom = top+c.height();
 			if(c.is(":hidden")) return;
-			if(c.hasClass('new'))
+			if(item.isNew)
 			{
 				if(bottom < currentOffset)
 				{
@@ -202,7 +202,7 @@ d3.addModule(
 					if(status.nextNew===null) status.nextNew = index;
 				}
 			}
-			if(c.hasClass('mine'))
+			if(item.isMine)
 			{
 				if(!firstMine) firstMine = index;
 				if(top > currentOffset)
