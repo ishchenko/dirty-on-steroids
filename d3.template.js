@@ -8,7 +8,7 @@
 // @include         http://*.d3.ru/*
 // @run-at          document-end
 // @all_frames      true
-// @version         0.0.3
+// @version         @buildTime@
 // ==/UserScript==
 
 // @jQuery@
@@ -22,6 +22,7 @@ var d3=
 	contentModules: [],
 	runTimeTotal: 0,
 	buildMode: '@buildMode@',
+	buildTime: '@buildTime@',
 	
 	/// Search module by name
 	getModule: function(name){

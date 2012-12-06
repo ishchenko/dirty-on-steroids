@@ -6,7 +6,7 @@ d3.addModule(
 	author: 'Stasik0, NickJr, crimaniak',
 	config: {
 		active:{type:'checkbox',value:1},
-		mouseover:{type:'radio',caption:'Показывать иконки',options:{"перед ссылками":0,"при наведении":1},value:0},
+		mouseover:{type:'radio',caption:'Показывать иконки',options:{"перманентно":0,"только при наведении":1},value:0},
 		domainWhitelist:{type: 'text', caption:'Список доменов', value:'dirty.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net,youtube.com'
 		}
 	},

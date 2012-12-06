@@ -23,18 +23,17 @@ class d3merge
 
 		$buildTime = date('Y-m-d H:i:s');
 		$code = strtr(file_get_contents(self::core), array
-				('@buildTime@'         => $buildTime
-				,'@buildMode@'         => $buildMode
-				,'// @corelibs@'       => self::sourcesByList('corelibs.txt','core/')
+				('// @corelibs@'       => self::sourcesByList('corelibs.txt','core/')
 				,'// @contentModules@' => self::sourcesByList('contentModules.txt','content/')
 				,'// @modules@'        => self::sourcesByList('modules.txt','modules/')
+				,'@buildTime@'         => $buildTime
+				,'@buildMode@'         => $buildMode
 				,'// @jQuery@'         => file_get_contents('core/libs/jquery.js')
 				));
 
 		if($release)
 		{
-			preg_match('!^//\\s+@version\\s+(\\S+)!m', $code, $result);
-			file_put_contents(self::revisor, json_encode(array('buildTime' => $buildTime, 'version' => $result[1])));
+			file_put_contents(self::revisor, json_encode(array('buildTime' => $buildTime)));
 			echo "Compressing...\n";
 			require_once self::$buildDir.'jsmin.php';
 			$parts=explode('==/UserScript==',$code);
