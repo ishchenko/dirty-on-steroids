@@ -81,8 +81,7 @@ d3.addModule(
 					} else {
 						faviconUrl = 'http://favicon.yandex.net/favicon/' + link.hostname;
 					}
-
-					if (me.config.mouseover.value) {
+					if (me.config.mouseover.value==1) {
 						$j(link).mouseover(function () {
 							me.showFavicon($j(this), faviconUrl);
 						}).mouseout(function () {
