@@ -6,3 +6,5 @@ dirty.pack.user.old.js
 /.*
 /local
 /result/dev.d3.user.js
+/extensions/chrome/dirtyMSP.pem
+/extensions/chrome/dirtyMSP/d3.user.js
