@@ -24,6 +24,7 @@ wide.frontpage.js
 canonical.gertrudes.js
 hotlinks.for.video.js
 hide.inbox.users.js
+recreate.inbox.js
 hide.elements.js
 xd.js
 post.header.link.js
