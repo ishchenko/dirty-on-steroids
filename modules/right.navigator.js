@@ -16,6 +16,7 @@ d3.addModule(
 	currentItem: null,
 	scrolling: false,
 	scrollDestination: 0,
+	onlyNew: false,
 	run: function() {
 		this.drawButtons();
 		
@@ -35,9 +36,14 @@ d3.addModule(
 			me.scrollToItem(me.nextMine);
 		});
 		var oldSwitch = d3.window.commentsHandler.switchNew;
-		d3.window.commentsHandler.switchNew = function(){oldSwitch.apply(d3.window.commentsHandler);me.newPosition();};
+		d3.window.commentsHandler.switchNew = function(){oldSwitch.apply(d3.window.commentsHandler);me.onlyNewTest();me.processNewPosition();};
 	},
 
+	onlyNewTest: function()
+	{
+		this.onlyNew = $j('#js-comments.new_only').length > 0;
+	},
+	
 	onItemsUpdated: function () {
 		this.newPosition();
 	},
@@ -181,26 +187,31 @@ d3.addModule(
 	{
 		var currentOffset = this.getCurrentOffset();
 		var status = {prev:0, next:0, mine:0, prevNew:null, nextNew:null, nextMine:null};
-
+		
 		var firstMine=null;
-
-		$j.each(d3.content.items(), function(index, item){
-			var c = item.container;
-			var top = c.offset().top;
-			var bottom = top+c.height();
-			var hidden = undefined;
+		var getData = function(item){
+			var retval = {hidden:item.container.is(':hidden')};
+			if(!retval.hidden) 
+			{
+				retval.top = item.container.offset().top;
+				retval.bottom =retval.top + item.height();
+			}	
+			return retval;
+		};
+		
+		$j.each(d3.content.items(), function(index, item)
+		{
+			var data = undefined;
 			if(item.isNew)
 			{
-				if (hidden = item.container.is(":hidden")) {
-					return false;
-				}
-
-				if(bottom < currentOffset)
+				if ((data = getData(item)).hidden) return;
+				
+				if(data.bottom < currentOffset)
 				{
 					status.prevNew = index;
 					++status.prev;
 				} 
-				else if(top > currentOffset)
+				else if(data.top > currentOffset)
 				{
 					++status.next;
 					if(status.nextNew===null) status.nextNew = index;
@@ -208,24 +219,32 @@ d3.addModule(
 			}
 			if(item.isMine)
 			{
-				if (hidden == undefined && item.container.is(":hidden")) {
-					return false;
-				}
+				if(data == undefined && (data = getData(item)).hidden) return;
 
 				if(!firstMine) firstMine = index;
-				if(top > currentOffset)
+				if(data.top > currentOffset)
 				{
 					++status.mine;
 					if(status.nextMine===null) status.nextMine=index;
 				}
 			}
 		});
+		
 		if(status.nextMine===null && firstMine) status.nextMine = firstMine;
 
 		return status;
 	},
+
 	
+	fireTimer: 0,
 	newPosition: function()
+	{
+		var me = this;
+		if(this.fireTimer) clearTimeout(this.fireTimer);
+		this.fireTimer = setTimeout(function(){me.processNewPosition();}, 250);
+	},
+	
+	processNewPosition: function()
 	{
 		var status = this.calculateStatus();
 		$j('#mine').text(status.mine);
