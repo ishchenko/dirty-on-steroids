@@ -1,0 +1,1 @@
+php build/buildFirefoxExtension.php %1

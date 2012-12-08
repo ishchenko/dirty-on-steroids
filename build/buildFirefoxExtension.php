@@ -1,12 +1,12 @@
 <?php
 
-/// Class to create chrome extension from a compiled in release pack
+/// Class to create firefoxe extension from a compiled in release pack
 /// Quick and dirty
-class createChromeExtension
+class createFirefoxExtension
 {
 	const output    = 'result/d3.user.js';
 	const buildnum   = 'result/pack.build.txt';
-	const chromeExt = 'extensions/chrome/dirtyMSP';
+	const firefoxExt = 'extensions/firefox/dirtyMSP';
 
 	static protected $buildDir;
 
@@ -22,16 +22,16 @@ class createChromeExtension
 		}
 		echo "Build number: ".$buldnumber."\n";
 
-		$chrExtMan = json_decode( file_get_contents(self::chromeExt . '/manifest.json' ));
+		$chrExtMan = json_decode( file_get_contents(self::firefoxExt . '/package.json' ));
 		if ( $chrExtMan != FALSE )
 		{
 			$chrExtMan->{'version'} = '3.' . intval($buldnumber / 100 ) . '.' . ($buldnumber - intval($buldnumber / 100 ));
-			file_put_contents(self::chromeExt . '/manifest.json', json_encode( $chrExtMan ));
-			echo "Building chrome extension manifest.\n";
+			file_put_contents(self::firefoxExt . '/package.json', json_encode( $chrExtMan ));
+			echo "Building firefox extension package.json\n";
 		}
 		else
 		{
-			echo "Can't find manifest.json file! Aborting.\n";
+			echo "Can't find package.json file! Aborting.\n";
 			return;
 		}
 
@@ -39,7 +39,7 @@ class createChromeExtension
 		$packRelease = file_get_contents(self::output);
 		if ( $packRelease )
 		{
-			file_put_contents(self::chromeExt.'/d3.user.js', $packRelease);
+			file_put_contents(self::firefoxExt.'/data/d3.user.js', $packRelease);
 			echo "Pack copied to the extension folder.\n";
 		}
 		else
@@ -48,8 +48,9 @@ class createChromeExtension
 			return;
 		}
 
-		$extFile = getcwd().DIRECTORY_SEPARATOR.self::chromeExt.".crx";
+		$extFile = getcwd().DIRECTORY_SEPARATOR.self::firefoxExt.DIRECTORY_SEPARATOR."dirtymsp.xpi";
 
+		chdir(self::$buildDir.'..');
 		if ( file_exists( $extFile ))
 		{
 			echo "Deleting old extension file...\n";
@@ -65,8 +66,11 @@ class createChromeExtension
 			}
 		}
 
-		echo "Invoke chrome to build extension...\n";
-		exec( "chrome.exe --pack-extension=\"" . getcwd().DIRECTORY_SEPARATOR.self::chromeExt . "\" --pack-extension-key=\"" . getcwd().DIRECTORY_SEPARATOR.self::chromeExt . ".pem\"");
+		echo "Invoke cfx command to build extension...\n";
+
+		chdir(getcwd().DIRECTORY_SEPARATOR.self::firefoxExt.DIRECTORY_SEPARATOR);
+
+		exec( "cfx xpi");
 		if ( file_exists( $extFile ))
 		{
 			echo "New extension file has been created.\n";
@@ -79,4 +83,4 @@ class createChromeExtension
 	}
 }
 
-createChromeExtension::run(@$argv[1]);
+createFirefoxExtension::run(@$argv[1]);
