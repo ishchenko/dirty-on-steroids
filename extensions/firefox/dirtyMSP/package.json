@@ -1,0 +1,14 @@
+{
+    "license": "MIT",
+    "name": "dirtymsp",
+    "version": "3.0.0",
+    "fullName": "Модульный Сервис Пак для Дёрти.ру",
+    "contributors": [],
+    "author": "Инбокс суверенных программистов",
+    "keywords": ["dirty.ru","d3.ru","дёрти"],
+    "id": "dirtymsp",
+    "icon": "i48.png",
+    "icon64": "i64.png",
+    "homepage": "http://crimaniak.github.com/dirty-on-steroids",
+    "description": "Модульный Сервис Пак для сайта d3.ru ( dirty.ru )"
+}
