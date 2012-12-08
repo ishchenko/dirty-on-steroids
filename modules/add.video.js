@@ -10,7 +10,7 @@ d3.addModule(
 	
 	run: function()
 	{
-		if ( d3.page.postComments )
+		if ( d3.page.postComments || d3.page.inboxComments)
 		{
 			var me = this;
 
@@ -196,7 +196,11 @@ d3.addModule(
 		var me = this;
 
 		var url = prompt("Введите URL video с youtube или vimeo", "");
-		if ( url == null || url.match(/(youtube\.com|youtu\.be|vimeo\.com)/i) == -1)
+		if ( url == null )
+		{
+			return false;
+		}
+		if ( url.match(/(youtube\.com|youtu\.be|vimeo\.com)/i) == -1)
 		{
 			alert("Поддерживаются только youtube и vimeo видео");
 			return false;
