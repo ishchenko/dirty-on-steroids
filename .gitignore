@@ -1,11 +1,11 @@
 /.idea
-manifest.json
-i128.png
+/result/manifest.json
+/result/i128.png
 dirty.pack.user.old.js
 /.settings/
 /.*
 /local
 /result/dev.d3.user.js
-/extensions/chrome/dirtyMSP.pem
-/extensions/chrome/dirtyMSP/d3.user.js
-/extensions/firefox/dirtyMSP/data/d3.user.js
+/extensions/chrome/dirtymsp.pem
+/extensions/chrome/dirtymsp/d3.user.js
+/extensions/firefox/dirtymsp/data/d3.user.js
