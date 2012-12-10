@@ -24,6 +24,13 @@ class d3merge
 
 		$buildTime = date('Y-m-d H:i:s');
 		$buildNumber = (int)@file_get_contents(self::buildFile);
+		if($release)
+		{
+			// increase release build number for extensions
+			$buildNumber++;
+			echo "Build number: $buildNumber\n";
+			file_put_contents(self::buildFile, $buildNumber);
+		}
 
 		$code = strtr(file_get_contents(self::core), array
 				('// @corelibs@'       => self::sourcesByList('corelibs.txt','core/')
@@ -37,13 +44,6 @@ class d3merge
 
 		if($release)
 		{
-			// increase release build number for extensions
-
-			$buildNumber++;
-			echo "Build number: $buildNumber\n";
-			file_put_contents(self::buildFile, $buildNumber);
-			// increase release build number for extensions
-
 			file_put_contents(self::revisor, json_encode(array('buildTime' => $buildTime)));
 			echo "Compressing...\n";
 			require_once self::$buildDir.'jsmin.php';
