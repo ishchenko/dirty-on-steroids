@@ -23,6 +23,7 @@ var d3=
 	runTimeTotal: 0,
 	buildMode: '@buildMode@',
 	buildTime: '@buildTime@',
+	buildNumber: '@buildNumber@',
 	
 	/// Search module by name
 	getModule: function(name){
@@ -244,7 +245,7 @@ var d3=
 			var firstModule=0;
 			for(var id in data){
 				if(data[id].name=='active'){
-					html += '</tbody><tbody><tr><td colspan="2" style="height:20px;'+(firstModule++ ? 'border-top: 1px dotted grey' : '')+'"><label class="moduleSwitcher" style="font-weight: bold">'+data[id].drawControl()+' '+data[id].caption+'</label></td></tr></tbody><tbody>';
+					html += '</tbody><tbody><tr'+data[id].title()+'><td colspan="2" style="height:20px;'+(firstModule++ ? 'border-top: 1px dotted grey' : '')+'"><label class="moduleSwitcher" style="font-weight: bold">'+data[id].drawControl()+' '+data[id].caption+'</label></td></tr></tbody><tbody>';
 				} else
 					html+=data[id].draw();
 			}
@@ -260,6 +261,7 @@ var d3=
 			this.setValue=function(newValue) {d3.config.data[this.id]=this.module.config[this.name].value=this.value=newValue;};
 			this.getValue=function() {return $j('#'+this.id).val();};
 			this.update=function() {this.setValue(this.getValue());};
+			this.title = function() {return this.description == undefined ? '' : ' title="'+this.description+'"';};
 			
 			// collect properties from config data
 			for(var i in module.config[name])
@@ -284,7 +286,7 @@ var d3=
 			},
 			draw: function()
 			{
-				return '<tr><td>'+this.drawControl()+'</td><td><label for="'+this.id+'">'+this.caption+'</label></td></tr>';
+				return '<tr'+this.title()+'><td>'+this.drawControl()+'</td><td><label for="'+this.id+'">'+this.caption+'</label></td></tr>';
 			},
 
 			getValue: function() {return $j('#'+this.id).attr('checked') ? 1 : 0;}
@@ -293,14 +295,14 @@ var d3=
 		{
 			draw: function()
 			{
-				return '<tr><td colspan="2"><label>'+this.caption+'<input type="text" id="'+this.id+'" name="'+this.id+'" value="'+this.value+'"></label></td></tr>';
+				return '<tr'+this.title()+'><td colspan="2"><label>'+this.caption+'<input type="text" id="'+this.id+'" name="'+this.id+'" value="'+this.value+'"></label></td></tr>';
 			}
 		},
 		html:
 		{
 			draw: function()
 			{
-				return '<tr><td colspan="2">'+this.value+'</td></tr>';
+				return '<tr'+this.title()+'><td colspan="2">'+this.value+'</td></tr>';
 			},
 			getValue: function(){return this.module.config[this.name].value;}
 		},
@@ -319,7 +321,7 @@ var d3=
 					for(var i in this.options) this.columns++; // Opera doesn't support Object.keys
 					this.columns=Math.floor(Math.sqrt(this.columns));
 				}
-				var html='<tr><td colspan="2">'+this.caption+'</td></tr><tr><td></td><td><table><tbody><tr>';
+				var html='<tr'+this.title()+'><td colspan="2">'+this.caption+'</td></tr><tr><td></td><td><table><tbody><tr>';
 				var counter=1;
 				for(var i in this.options)
 				{
@@ -335,7 +337,7 @@ var d3=
 		{
 			draw: function()
 			{
-				var html='<tr><td colspan="2">'+this.caption+' <select name="'+this.id+'" id="'+this.id+'">';
+				var html='<tr'+this.title()+'><td colspan="2">'+this.caption+' <select name="'+this.id+'" id="'+this.id+'">';
 				for(var i in this.options)
 				{
 					html+='<option value="'+this.options[i]+'"'+(this.options[i]==this.value?' selected':'')+'> '+i+'</option>';

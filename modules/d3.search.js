@@ -1,6 +1,6 @@
 d3.addModule(
 {
-	type: "Поиск",
+	type: "Прочее",
 	name: 'Поиск на d3search.ru',
 	author: 'crimaniak, crea7or',
 	config: {active:{type:'checkbox',value:1}},

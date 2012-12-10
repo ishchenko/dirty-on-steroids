@@ -1,10 +1,13 @@
 // Update link in config
 d3.addModule(
 {
-	type: "Прочее",
+	type: "Сервис-пак",
 	name: 'Линк на последнюю версию',
 	author: 'crimaniak',
-	config: {link:{type:'html',value:'<a href="https://github.com/crimaniak/dirty-on-steroids/raw/master/result/d3.user.js">Установить последнюю версию скрипта</a>'}},
+	config: {
+		ver:{type:'html', value:'Текущая версия: '+d3.buildNumber+' '+d3.buildMode+' от '+d3.buildTime},
+		link:{type:'html',value:'<a href="https://github.com/crimaniak/dirty-on-steroids/raw/master/result/d3.user.js">Установить последнюю версию скрипта</a>'}
+	},
 	lastCheckName: 'lastUpdateCheck',
 	interval: 3600000*6,
 	jsonLink: 'https://api.github.com/repos/crimaniak/dirty-on-steroids/contents/result/pack.version.json?callback=checkUpdate',

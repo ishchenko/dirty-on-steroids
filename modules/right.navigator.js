@@ -5,7 +5,7 @@ d3.addModule(
 	name: 'Навигация по новым',
 	author: 'crimaniak, Stasik0',
 	config: {
-		active:{type:'checkbox',value:1},
+		active:{type:'checkbox',value:1, description:'С правой стороны страницы появляется дополнительный навигатор, пользуясь которым, Вы можете перемещаться только по новым комментарим, либо только по своим, а также отмотать страницу вверх.'},
 		smoothScroll:{type:'checkbox',value:1,caption:'Плавная прокрутка'}
 	},
 	newItems: [],

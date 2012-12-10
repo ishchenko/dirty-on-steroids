@@ -2,7 +2,6 @@ hide.posts.by.rating.js
 ignorator.js
 right.navigator.js
 tort.js
-update.link.js
 redirect.to.new.js
 mark.as.read.js
 hidden.author.js
@@ -33,3 +32,4 @@ mute.deleted.comments.js
 infinite.paging.js
 highlight.subsite.url.js
 zhepki.js
+update.link.js

@@ -8,7 +8,7 @@ class d3merge
 	const output    = 'result/d3.user.js';
 	const revisor   = 'result/pack.version.json';
 	const devOutput = 'result/dev.d3.user.js';
-	const buildnum   = 'result/pack.build.txt';	
+	const buildFile = 'result/pack.build.txt';
 	const gitHead   = '.git/HEAD';
 
 	static protected $buildDir;
@@ -23,26 +23,25 @@ class d3merge
 		echo "$buildMode mode\n";
 
 		$buildTime = date('Y-m-d H:i:s');
+		$buildNumber = (int)@file_get_contents(self::buildFile);
+
 		$code = strtr(file_get_contents(self::core), array
 				('// @corelibs@'       => self::sourcesByList('corelibs.txt','core/')
 				,'// @contentModules@' => self::sourcesByList('contentModules.txt','content/')
 				,'// @modules@'        => self::sourcesByList('modules.txt','modules/')
 				,'@buildTime@'         => $buildTime
 				,'@buildMode@'         => $buildMode
+				,'@buildNumber@'       => $buildNumber
 				,'// @jQuery@'         => file_get_contents('core/libs/jquery.js')
 				));
 
 		if($release)
 		{
 			// increase release build number for extensions
-			$buldnumber = file_get_contents(self::buildnum, NULL, NULL, 0, 5 );
-			if ( $buldnumber == FALSE )
-			{
-				$buldnumber = 0;
-			}
-			$buldnumber++;
-			echo "Build number: ".$buldnumber."\n";
-			file_put_contents(self::buildnum, $buldnumber );
+
+			$buildNumber++;
+			echo "Build number: $buildNumber\n";
+			file_put_contents(self::buildFile, $buildNumber);
 			// increase release build number for extensions
 
 			file_put_contents(self::revisor, json_encode(array('buildTime' => $buildTime)));
