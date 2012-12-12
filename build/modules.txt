@@ -17,7 +17,6 @@ show.all.comments.js
 preview.for.comments.js
 hotlinks.for.images.js
 favicons.js
-remove.cut.in.posts.js
 gender.color.js
 wide.frontpage.js
 canonical.gertrudes.js
