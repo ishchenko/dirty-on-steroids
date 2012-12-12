@@ -7,8 +7,6 @@ abstract class BuildExtension {
     const resJs = 'd3.user.js';
     const buildnum = 'pack.build.txt';
 
-    const chromeExt = 'extensions/chrome/dirtyMSP';
-
     public function getBuildDir() {
         return dirname(__FILE__) . DIRECTORY_SEPARATOR;
     }
@@ -32,7 +30,7 @@ abstract class BuildExtension {
 
     public static function createDirForFile($file) {
         $dir = dirname($file);
-        if (!file_exists($file)) {
+        if (!file_exists($dir)) {
             if (!mkdir($dir, 0777, true)) {
                 throw new Exception("Unable to create directory: $dir.");
             }
@@ -83,8 +81,8 @@ abstract class BuildExtension {
 
         @$manifestContentJson = json_decode(file_get_contents($this->getManifestFilePath()));
         if ($manifestContentJson != FALSE) {
-            $majorVersion = intval($buldnumber) / 100;
-            $minorVersion = intval($buldnumber) % 100;
+            $majorVersion = intval($buldnumber / 100 );
+            $minorVersion = $buldnumber - ( $majorVersion * 100 );
             $manifestContentJson->{'version'} = "3.$majorVersion.$minorVersion";
             file_put_contents($this->getManifestFilePath(), json_encode($manifestContentJson));
             echo "Building manifest.\n";

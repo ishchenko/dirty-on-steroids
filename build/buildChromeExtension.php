@@ -5,8 +5,8 @@ include_once "BuildExtension.php";
 class BuildChromeExtension extends BuildExtension {
 
     const extDir = "extensions/chrome/";
-    const extFileName = "dirtyMSP.crx";
-    const innerExtPath = "dirtyMSP";
+    const extFileName = "dirtymsp.crx";
+    const innerExtPath = "dirtymsp";
     const manifestFile = "manifest.json";
 
     public function getExtDir() {

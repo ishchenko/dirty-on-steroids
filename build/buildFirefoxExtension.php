@@ -4,7 +4,7 @@ include_once "BuildExtension.php";
 /// Class to create firefoxe extension from a compiled in release pack
 class BuildFirefoxExtension extends BuildExtension {
 
-    const extDir = "extensions/firefox/dirtyMSP/";
+    const extDir = "extensions/firefox/dirtymsp/";
     const extFileName = "dirtymsp.xpi";
     const resJsPath = "data";
     const manifestFile = "package.json";
