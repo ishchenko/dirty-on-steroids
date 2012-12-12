@@ -12,13 +12,15 @@ class d3merge
 	const gitHead   = '.git/HEAD';
 
 	static protected $buildDir;
+	static public $browser;
 
-	static public function run($arg)
+	static public function run($mode, $browser = 'cross')
 	{
 		self::$buildDir = dirname(__FILE__).DIRECTORY_SEPARATOR;
+		self::$browser = $browser;
 		chdir(self::$buildDir.'..');
 
-		$release = ($arg=='release') || (file_exists(self::gitHead) && preg_match('!/master$!', file_get_contents(self::gitHead)));
+		$release = ($mode=='release') || (file_exists(self::gitHead) && preg_match('!/master$!', file_get_contents(self::gitHead)));
 		$buildMode = $release ? 'Release' : 'Dev';
 		echo "$buildMode mode\n";
 
@@ -64,22 +66,25 @@ class d3merge
 
 	static protected function sourcesByList($list, $directory='')
 	{
+		$browser = self::$browser;
 		return join ("\n", array_map
-				(function($file) use($directory)
+				(function($file) use($directory, $browser)
 				{
-					$full = preg_replace('![\n\r]!','',$directory.$file);
-					echo "Add $full\n";
-					if(file_exists($full))
+					$file = preg_replace('![\n\r]!', '', $directory.$file);
+					$fn = function($file, $browser){return preg_replace('/@browser@/', $browser, $file);};
+
+					if(!file_exists($full = $fn($file, $browser)) && !file_exists($full = $fn($file, 'cross')))
 					{
-						return file_get_contents($full);
-					}else
-					{
+						$full = $fn($file, $browser);
 						echo "File not found: $full\n";
 						return '//'.$full;
 					}
+
+					echo "Add $full\n";
+					return file_get_contents($full);
 				}
 				,file(self::$buildDir.$list)));
 	}
 }
 
-d3merge::run(@$argv[1]);
+d3merge::run(@$argv[1], empty($argv[2])?'cross':$argv[2]);
