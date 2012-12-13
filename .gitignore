@@ -13,4 +13,4 @@ dirtymsp.pem
 /extensions/chrome/dirtyMSP/d3.user.js
 /extensions/firefox/dirtymsp/data/d3.user.js
 /extensions/firefox/dirtyMSP/data/d3.user.js
-/extensions/opera/dirtyMSP/includes/payload.js
+/extensions/opera/.build/*
