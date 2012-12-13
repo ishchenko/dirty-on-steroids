@@ -1,4 +1,4 @@
-// Cross-browser cookie storage
+// Chrome storage
 
 d3.storage = 
 {
@@ -50,7 +50,7 @@ d3.storage =
 		chrome.storage.local.set(object2save, function() {
 				if ( chrome.runtime.lastError != undefined )
 				{
-					if (console) console.log("Error while saveing option: " + key + " error: " + chrome.runtime.lastError );
+					if (console) console.log("Error while saving option: " + key + " error: " + chrome.runtime.lastError );
 				}
 				else
 				{
