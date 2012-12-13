@@ -29,9 +29,11 @@ class d3merge
 		if($release)
 		{
 			// increase release build number for extensions
+			/* Now we can't increate it automatically. Do this manually
 			$buildNumber++;
-			echo "Build number: $buildNumber\n";
 			file_put_contents(self::buildFile, $buildNumber);
+			*/
+			echo "Build number: $buildNumber\n";
 		}
 
 		$code = strtr(file_get_contents(self::core), array
