@@ -25,7 +25,7 @@ d3.addModule(
 
 		if ( document.location.href.indexOf('d3.ru/my/inbox/write/') > -1 )
 		{
-			
+			// do not change localstorage to d3.storage
 			var timeOfUsersCopy = localStorage.getItem('dirtySpmRecInbTime');
 			if ( timeOfUsersCopy )
 			{
@@ -34,14 +34,17 @@ d3.addModule(
 					var inbUsers = document.getElementById('js-new_inbox_to');
 					if ( inbUsers )
 					{
+						// do not change localstorage to d3.storage
 						inbUsers.value = localStorage.getItem('dirtySpmRecInbUsers');
 					}
 					var inbText = document.getElementById('js-new_inbox_body');
 					if ( inbText )
 					{
+						// do not change localstorage to d3.storage
 						inbText.value = localStorage.getItem('dirtySpmRecTxt');
 					}
 				}
+				// do not change localstorage to d3.storage
 				localStorage.removeItem('dirtySpmRecInbTime');
 				localStorage.removeItem('dirtySpmRecInbUsers');
 				localStorage.removeItem('dirtySpmRecTxt');
@@ -68,8 +71,10 @@ d3.addModule(
 				var postTxtDiv = document.querySelector('div.post_body');
 				if ( postTxtDiv)
 				{
+					// do not change localstorage to d3.storage
 					localStorage.setItem('dirtySpmRecTxt', postTxtDiv.innerHTML);
-				}				
+				}
+				// do not change localstorage to d3.storage
 				localStorage.setItem('dirtySpmRecInbUsers', userNames.join());
 				localStorage.setItem('dirtySpmRecInbTime', new Date().getTime());
 				document.location.href = 'http://d3.ru/my/inbox/write/';

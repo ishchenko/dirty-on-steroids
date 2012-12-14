@@ -55,11 +55,15 @@ d3.addModule(
 					+ '}';
 			head.appendChild( script1 );
 
+			/*
+			broke new inbox creation, need rewrite
 			var commentBox = document.querySelector('a.b-textarea_editor_image');
 			if ( commentBox )
 			{
 				me.addVideoLink( commentBox );
 			}
+			*/
+
 
 			document.addEventListener("DOMNodeInserted", function(e){
 			    if ( e.target.nodeName == "A" && e.target.className.indexOf('b-textarea_editor_image') == 0 )

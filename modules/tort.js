@@ -19,7 +19,7 @@ d3.addModule(
 		+ '.b-comments_controls_social {display: inline; padding: 5px 0px 0px 5px;} .b-comments_controls_sort{display: inline;}'
 		+ 'div.b-comments_controls { padding: 14px 0px 10px 5px; min-width: 800px;}';
 
-		if ( d3.page.postComments ||  d3.page.inboxComments )
+		if (( d3.page.postComments ||  d3.page.inboxComments ) && document.location.href.indexOf('write') == -1 )
 		{
 			css += ' .b-ads { width: 0px; display: hidden;}';
 			if ( this.config.postInfoMove.value )
