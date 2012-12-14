@@ -20,8 +20,7 @@ d3.addModule(
 			var s = document.createElement("script");
     		s.type = "text/javascript";
     		s.src = "http://api.d3search.ru/integration";
-    		var scriptTag = document.getElementsByTagName('script')[0]; 
-    		scriptTag.parentNode.insertBefore(s, scriptTag);
+    		document.body.appendChild( s );
 			d3.storage.set('lastD3sFetchTimestamp', d3sCurDate.getTime());
 		}
 		// end of loading data
@@ -45,7 +44,8 @@ d3.addModule(
 
 				if ( grtShow )
 				{
-					var imgsArr = d3.json.decode( d3.storage.get( "gertrudasJson", "[]" ));
+					
+					var imgsArr = d3.json.decode( localStorage.getItem( "gertrudasJson", "[]" ));
 					if ( imgsArr.length > 0 )
 					{
 						var randomGrt = imgsArr[ Math.floor( Math.random() * imgsArr.length ) ];
