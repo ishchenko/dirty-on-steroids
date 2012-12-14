@@ -55,28 +55,39 @@ d3.addModule(
 					+ '}';
 			head.appendChild( script1 );
 
+			var commentBox = document.querySelector('a.b-textarea_editor_image');
+			if ( commentBox )
+			{
+				me.addVideoLink( commentBox );
+			}
+
 			document.addEventListener("DOMNodeInserted", function(e){
 			    if ( e.target.nodeName == "A" && e.target.className.indexOf('b-textarea_editor_image') == 0 )
 			    {
-					var videoLink = document.createElement('a');
-					videoLink.href = '#';
-					videoLink.textContent = 'Video';
-					e.target.parentNode.appendChild( videoLink );
-						$j(videoLink).click( function(e)
-						{
-							me.addVideo( e.target );
-							e.preventDefault();
-							return false;
-						}
-					);
-
-					var txtArea = e.target.parentNode.parentNode.getElementsByTagName('textarea');					
-					if ( txtArea && txtArea.length == 1 )
-					{
-						txtArea[0].setAttribute('id', new Date().getTime());
-					}
+			    	me.addVideoLink( e.target );
 				}
 			});
+		}
+	},
+
+	addVideoLink: function( textareaEditorImage )
+	{
+		var me = this;
+		var videoLink = document.createElement('a');
+		videoLink.href = '#';
+		videoLink.textContent = 'Video';
+		textareaEditorImage.parentNode.appendChild( videoLink );
+			$j(videoLink).click( function(e)
+			{
+				me.addVideo( e.target );
+				e.preventDefault();
+				return false;
+			}
+		);
+		var txtArea = textareaEditorImage.parentNode.parentNode.getElementsByTagName('textarea');					
+		if ( txtArea && txtArea.length == 1 )
+		{
+			txtArea[0].setAttribute('id', new Date().getTime());
 		}
 	},
 
