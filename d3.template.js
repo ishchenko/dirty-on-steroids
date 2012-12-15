@@ -173,16 +173,17 @@ var d3=
 	// Config core module
 	config:
 	{
-		type: "Настройки",
+		type: "Сервис-пак",
 		author: 'crimaniak',
 		name: 'config core module',
 		data: {},	/// config values
 		controls: {}, /// Controls sorted by sheets
+		config: {linkDisposition: {type:'checkbox', caption:"Линк на настройки в заголовке", value:0}},
 
 		/// Add link to config box
 		run: function()
 		{
-			d3.content.addConfigLink('configLink');
+			d3.content.addConfigLink('configLink', this.config.linkDisposition.value);
 			$j('#configLink').click(function(event){d3.config.getBox().show();return false;});
 		},
 		/// Init and return config box
