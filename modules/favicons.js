@@ -5,8 +5,9 @@ d3.addModule(
 	name: 'Показывать favicons доменов',
 	author: 'Stasik0, NickJr, crimaniak',
 	config: {
-		active:{type:'checkbox',value:1},
-		mouseover:{type:'radio',caption:'Показывать иконки',options:{"перманентно":0,"только при наведении":1},value:0},
+		active:{type:'checkbox', value:1},
+		mouseover:{type:'radio', caption:'Когда:', options:{"перманентно":0, "только при наведении":1}, value:0},
+		position:{type:'radio', caption:'Где:', options:{"слева от ссылки":0, "справа от ссылки":1}, value:1},
 		domainWhitelist:{type: 'text', caption:'Список доменов', value:'dirty.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net,youtube.com'
 		}
 	},
@@ -45,13 +46,12 @@ d3.addModule(
 	},
 
 	run: function(){
-		$j("<style type='text/css'> \n\
-				.faviconized { \n\
-				 	padding-left:19px; \n\
-				    background-repeat:no-repeat; \n\
-					background-position:left center; \n\
-				} \n\
-			</style>").appendTo($j('head'));
+		var side = this.config.position.value==1 ? 'right' : 'left';
+		$j('head').append("<style type='text/css'> .faviconized { \
+		 	padding-"+side+":19px; \
+		    background-repeat:no-repeat; \
+			background-position:"+side+" center; \
+		} </style>");
 	},
 
 	onPost: function(post) {
