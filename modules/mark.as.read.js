@@ -65,7 +65,7 @@ d3.addModule(
 			//TODO rewrite module communication!
 			var module = d3.getModule("Навигация по новым");
 			if (module != null) {
-				module.countItems.call(module);
+				module.calculateStatus.call(module);
 				module.newPosition.call(module);
 			}
 		} catch (e) {
