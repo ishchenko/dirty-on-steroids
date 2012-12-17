@@ -241,7 +241,7 @@ d3.addModule(
 	{
 		var me = this;
 		if(this.fireTimer) clearTimeout(this.fireTimer);
-		this.fireTimer = setTimeout(function(){me.processNewPosition();}, 250);
+		this.fireTimer = setTimeout(function(){me.processNewPosition();}, 50);
 	},
 	
 	processNewPosition: function()
