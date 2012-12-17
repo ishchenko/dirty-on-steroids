@@ -49,6 +49,8 @@ class BuildOperaExtension extends BuildExtension {
             exit(self::BUILD_ERROR_CODE);
         }
 
+        shell_exec("php {$this->getBuildDir()}d3merge.php release opera");
+
         $this->copyRecursive($this->getExtDir(), $this->getExtTmpDir());
 
         $js = file_get_contents($this->getSourceJsFilePath());
