@@ -8,7 +8,7 @@ d3.addModule(
 	config: {active:{type:'checkbox',value:1, description: 'Рядом с постами появляется кнопка [игнорировать]. Нажав на нее, Вы можете скрыть пост совсем или минимизировать до полоски статуса.'}
 			,ignored:{type:'hidden',value:{}}
 			,hideAtAll:{type:'checkbox',value:1,caption:'скрывать посты совсем'}
-			,moderation:{type:'checkbox',value:0,caption:'модерация от d3search'}
+//			,moderation:{type:'checkbox',value:0,caption:'модерация от d3search'}
 //			,postByAuthor:{type:'text'}
 //			,commentByAuthor:{type:'text'}
 			},
@@ -22,7 +22,7 @@ d3.addModule(
 				if(this.config.ignored[i]<rubicon)
 					this.config.ignored[i]=undefined;
 		}
-		
+/*		
 		if(this.config.moderation.value)
 		{
 		    var moderation = document.createElement('script');
@@ -30,7 +30,7 @@ d3.addModule(
 		    moderation.setAttribute('src', 'http://api.d3search.ru/moderation/list?t=' + new Date().getTime());
 		    $j('head').get(0).appendChild(moderation);
 		}
-	},
+*/	},
 
 	onPost: function(post)
 	{
