@@ -5,7 +5,7 @@ d3.addModule(
 	type: "Социализм",
 	name: 'Игноратор',
 	author: 'crimaniak,Stasik0',
-	config: {active:{type:'checkbox',value:1, description: 'Рядом с постами появляется кнопка [игнорировать]. Нажав на нее, Вы можете скрыть пост совсем или минимизировать до полоски статуса.'}
+	config: {active:{type:'checkbox',value:0, description: 'Рядом с постами появляется кнопка [игнорировать]. Нажав на нее, Вы можете скрыть пост совсем или минимизировать до полоски статуса.'}
 			,ignored:{type:'hidden',value:{}}
 			,hideAtAll:{type:'checkbox',value:1,caption:'скрывать посты совсем'}
 //			,moderation:{type:'checkbox',value:0,caption:'модерация от d3search'}
