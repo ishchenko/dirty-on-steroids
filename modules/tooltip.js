@@ -4,6 +4,7 @@ d3.addModule(
 	type: "Прочее",
 	name: 'Dirty tooltip',
 	author: 'NickJr, Stasik0, and the rest of gang',
+	variant: ['d3.ru'],
 	config: {
 		active:{type:'checkbox',value:1},
 		useImages:{type:'checkbox',value:1,caption:'Картинки для tooltip'}

@@ -4,6 +4,7 @@ d3.addModule(
 	name: 'Поиск на d3search.ru',
 	author: 'crimaniak, crea7or',
 	config: {active:{type:'checkbox',value:1}},
+	variant: ['d3.ru'],
 	run: function()
 	{
 		var script2run = document.createElement('script');

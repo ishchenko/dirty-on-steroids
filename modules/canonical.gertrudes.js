@@ -4,6 +4,7 @@ d3.addModule(
 	type: "Прочее",
 	name: 'Каноничные гертруды',
 	author: 'crea7or',
+	variant: ['d3.ru'],
 	config: {
 		active: {type: 'checkbox', value: 0},
 		mixCheckbox: {type: 'checkbox', caption: 'Смешивать с оригинальными', value: 1},

@@ -91,6 +91,8 @@ var d3=
 	{
 		var log = console && this.buildMode=='Dev';
 		
+		if(module.variant !== undefined && $j.inArray(this.content.variant, module.variant)===-1) return;
+		
 		this.modules.push(module);
 		if(this.modulesByName[module.name] != undefined)
 			if(console)console.log('Duplicate module '+module.name);
@@ -285,7 +287,8 @@ var d3=
 			{
 				return '<tr'+this.title()+'><td colspan="2">'+this.value+'</td></tr>';
 			},
-			getValue: function(){return this.module.config[this.name].value;}
+			getValue: function(){return this.value;},
+			setValue: function(value){}
 		},
 		hidden:
 		{
