@@ -13,7 +13,7 @@ d3.addModule(
 		{
 			var previewInput = document.createElement('input');
 			previewInput.type = 'image';
-			previewInput.src = '/i/probe.gif';
+			previewInput.src = 'http://d3.ru/i/probe.gif';
 			previewInput.setAttribute('style', 'margin-right: 10px;');
 			var yarrButton = previewCont.querySelector('input.b-comments_reply_block_yarrr');
 			
@@ -56,7 +56,7 @@ d3.addModule(
     			{
 					var previewInput = document.createElement('input');
 					previewInput.type = 'image';
-					previewInput.src = '/i/probe.gif';
+					previewInput.src = 'http://d3.ru/i/probe.gif';
 					previewInput.setAttribute('style', 'margin-right: 10px;');
 
 					var yarrButton = e.target.querySelector('input.b-comments_reply_block_yarrr');
