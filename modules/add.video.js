@@ -24,7 +24,7 @@ d3.addModule(
 			+'<tr><td><div id="youtube_embed" style="width: 340px; float:left;"></div></td>'
 			+'<td><div id="youtube_thumbs"></div></td></tr></table>'
 			+'<div id="youtube_time" style="width: 340px; float:left;">Перемотайте на нужное время. Позиция сейчас: 0 cек. Ссылка будет поставлена именно на эту секунду ролика.</div>'
-			+'<div id="youtube_yarrr" style="cursor: pointer; float: right;"><img src="http://dirty.ru/i/yarrr.gif"/></div>'
+			+'<div id="youtube_yarrr" style="cursor: pointer; float: right;"><img src="http://g2.std3.ru/G/1/30/30/28284-b92398def834090bb8f0fd4af38c1cb0.gif"/></div>'
 			+'</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>'
 			}));
 	

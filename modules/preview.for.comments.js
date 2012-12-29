@@ -13,7 +13,7 @@ d3.addModule(
 		{
 			var previewInput = document.createElement('input');
 			previewInput.type = 'image';
-			previewInput.src = 'http://d3.ru/static/i/probe.gif';
+			previewInput.src = 'http://g2.std3.ru/G/1/F7/FE/28284-441f5b868a323f46a2e3f10cd2fdc028.gif';
 			previewInput.setAttribute('style', 'margin-right: 10px;');
 			var yarrButton = previewCont.querySelector('input.b-comments_reply_block_yarrr');
 			
@@ -56,7 +56,7 @@ d3.addModule(
     			{
 					var previewInput = document.createElement('input');
 					previewInput.type = 'image';
-					previewInput.src = 'http://d3.ru/static/i/probe.gif';
+					previewInput.src = 'http://g2.std3.ru/G/1/F7/FE/28284-441f5b868a323f46a2e3f10cd2fdc028.gif';
 					previewInput.setAttribute('style', 'margin-right: 10px;');
 
 					var yarrButton = e.target.querySelector('input.b-comments_reply_block_yarrr');
