@@ -6,8 +6,6 @@
 // @description     Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
 // @include         http://d3.ru/*
 // @include         http://*.d3.ru/*
-// @include         http://*.leprosorium.ru/*
-// @include         http://leprosorium.ru/*
 // @run-at          document-end
 // @all_frames      true
 // @version         @buildTime@

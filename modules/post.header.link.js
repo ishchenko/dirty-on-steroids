@@ -4,6 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Показывать внешние ссылки из заголовков постов',
 	author: 'crea7or',
+	variant: ['d3.ru'],
 	config: {active:{type:'checkbox',value:1}},
 
 	onPost: function (post) {

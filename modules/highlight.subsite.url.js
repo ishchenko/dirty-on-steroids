@@ -4,6 +4,7 @@ d3.addModule(
 		type: "Стилизация",
 		name: 'Выделять ссылки на подсайты в постах',
 		author: 'Aivean',
+		variant: ['d3.ru'],		
 		config: {
 			active: {type: 'checkbox', value: 1},
 			style: {
