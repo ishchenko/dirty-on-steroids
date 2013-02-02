@@ -60,7 +60,7 @@ d3.addModule(
 						}
 						else
 						{
-							newImage.src = 'http://dirty.ru/i/img_above_gertruda.gif';
+							newImage.src = 'http://g4.std3.ru/G/1/D0/AD/28284-9ca54bd7ae5c83209ff33216ee1427ff.gif';
 						}
 						newLink.appendChild( newImage );
 
@@ -75,7 +75,7 @@ d3.addModule(
 						}
 						else
 						{
-							newImage.src = 'http://dirty.ru/i/img_under_gertruda.gif';
+							newImage.src = 'http://g4.std3.ru/G/1/C9/F7/28284-9075f09f0e9d33944003d45a89bd3771.gif';
 						}
 						newLink.appendChild( newImage );
 
