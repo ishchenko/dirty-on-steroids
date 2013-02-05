@@ -4,6 +4,7 @@ d3.addModule(
 	type: "Стилизация",
 	name: 'Приглушать удаленные комментарии',
 	author: 'Aivean',
+	variant: ['d3.ru'],
 	config: {active:{type:'checkbox',value:1}},
 
 	onComment: function (comment) {

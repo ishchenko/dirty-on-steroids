@@ -4,6 +4,7 @@ d3.addModule(
 		type: "Содержание",
 		name: 'Прятать посты с низким рейтингом',
 		author: 'Aivean',
+		variant: ['d3.ru'],
 		config: {
 			active: {type: 'checkbox', value: 0},
 			rating: {

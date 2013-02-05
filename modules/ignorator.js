@@ -19,9 +19,9 @@ d3.addModule(
 		if(Math.random()<0.05)
 		{
 			var rubicon=Number(new Date())-5184000000;
-			for(var i in this.config.ignored)
-				if(this.config.ignored[i]<rubicon)
-					this.config.ignored[i]=undefined;
+			for(var i in this.config.ignored.value)
+				if(this.config.ignored.value[i]<rubicon)
+					delete this.config.ignored.value[i];
 		}
 /*		
 		if(this.config.moderation.value)
