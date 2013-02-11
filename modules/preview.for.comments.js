@@ -24,7 +24,7 @@ d3.addModule(
 	},
 	addPreview: function( commentNode )
 	{
-		var addPreviewButton = true;		
+		var addPreviewButton = true;
 		var yarrButton = commentNode.querySelector('input.b-comments_reply_block_yarrr');
 		if ( yarrButton.previousSibling != null && yarrButton.previousSibling.nodeName != "INPUT")
 		{
@@ -46,6 +46,7 @@ d3.addModule(
 			}
 
 			$j(previewInput).click( function(e){
+				$j(commentNode).parent().css("max-height", "");
 				var previewCont = e.target.parentNode.parentNode.parentNode;
 				var previewTextArea = previewCont.querySelector('textarea.i-form_text_input');
 				if ( previewTextArea && previewCont )
@@ -64,6 +65,6 @@ d3.addModule(
 				return false;
 			});
 		}
-	},
+	}
 });
 	
