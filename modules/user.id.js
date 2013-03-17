@@ -12,7 +12,6 @@ d3.addModule(
 
 		run: function() {
 			this.idParsed = parseInt(this.config.idThreshold.value);
-			console.log(this.idParsed);
 		},
 
 		mark: function(user, userId) {

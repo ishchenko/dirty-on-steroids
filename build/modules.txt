@@ -30,4 +30,4 @@ infinite.paging.js
 highlight.subsite.url.js
 zhepki.js
 update.link.js
-user_id.js
+user.id.js
