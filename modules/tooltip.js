@@ -128,12 +128,13 @@ d3.addModule(
 				var dup_user_name = obj.href.split('/');
 				dup_user_name = dup_user_name[dup_user_name.length-2];
 
-				if(dup_text.split('<span class="js-date" date-epoque="').length > 1){
-					var timestamp = me.extractBetween(dup_text, '<span class="js-date" date-epoque="','"></span>');
+				var dateSpan = '<span class="js-date';
+				var dup_date = "неизвестно";
+				if(dup_text.indexOf(dateSpan).length != -1) {
+					var timestamp = /data-epoch_date="(\d+)"/.exec(me.extractBetween(dup_text, dateSpan,'</span>'))[1];
 					var date = new Date(timestamp*1000);
-					var dup_date = date.getDate()+"."+(date.getMonth()+1)+"."+date.getFullYear();
-				}else{
-					var dup_date = "неизвестно";
+					var month = ['января','февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+					dup_date = date.getDate()+" "+ month[date.getMonth()]+" "+date.getFullYear();
 				}
 				
 				var dup_karma = me.extractBetween(dup_text, '\'karma\'); return false;">', '<');
