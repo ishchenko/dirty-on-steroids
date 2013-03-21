@@ -19,7 +19,8 @@ d3.addModule(
 				{
 					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
 					var newdiv = document.createElement('div');
-					newdiv.innerHTML =  checkinsMarkup;
+					var fixdomain = checkinsMarkup.replace(/\/user/g, "http://d3.ru/user");
+					newdiv.innerHTML =  fixdomain;
 					divContentLeft.appendChild( newdiv );
 					var module = d3.getModule("Dirty tooltip");
 					if(module != null){
