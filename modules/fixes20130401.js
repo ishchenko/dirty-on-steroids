@@ -21,16 +21,20 @@ d3.addModule(
 		},
 
 		onPost: function(post) {
+			var d = new Date();
+			if(d.getFullYear()!=2013 || d.getMonth()!=4 || d.getDay()!=1) return;
 			this.processItem(post.container);
 		},
 
 		onComment: function(comment) {
+			var d = new Date();
+			if(d.getFullYear()!=2013 || d.getMonth()!=4 || d.getDay()!=1) return;
 			this.processItem(comment.container);
 		},
 
 		processItem: function(container) {
 			$j('img', container).each(function(i, e){
-				if($j(e).width()>100 && $j(e).height() > 100 && crc32(e.src)%10 <= 3){
+				if($j(e).width()>100 && $j(e).height() > 100 && crc32(e.src)%3 == 0){
 					$j(e).addClass('js-jrimage');
 				}
 			});
