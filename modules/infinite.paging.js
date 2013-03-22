@@ -47,7 +47,7 @@ d3.addModule(
 							var scriptToRun = loadMoreButton.attr("onclick");
 							scriptToRun = scriptToRun.replace(/return[^;]+;?/g, "");
 							scriptToRun = scriptToRun.replace(/\bthis\b/g, "$('js-index_load_more_posts')");
-							me.runScript(scriptToRun);
+							d3.service.embedScript(scriptToRun);
 						} catch (e) {
 							if (console) console.log("Infinite page: something went wrong, disabling", e);
 							$j(window).off(me.eventName);
@@ -57,13 +57,6 @@ d3.addModule(
 					}
 				}
 			});
-		},
-
-		runScript: function(text) {
-			var script2run = document.createElement('script');
-			script2run.type = 'text/javascript';
-			script2run.text = text;
-			document.body.appendChild( script2run );
 		},
 
 		run: function(){

@@ -4,8 +4,14 @@ d3.storage =
 {
 	get: function(key, defaultValue)
 	{
-		var value = $j.cookie(key);
-		return value === null ? defaultValue : value;
+		try
+		{
+			var value = $j.cookie(key);
+			if (value !== null)
+				return d3.json.decode(value);
+		} catch(e){}
+		
+		return defaultValue;
 	},
 	set: function(key, value)
 	{
@@ -13,7 +19,7 @@ d3.storage =
 			if (console) console.log("Trying to save invalid cookie! ", value);
 			return;
 		}
-		return $j.cookie(key, value, {domain: '.d3.ru', path:'/', expires: 365});
+		return $j.cookie(key, d3.json.encode(value), {domain: '.d3.ru', path:'/', expires: 365});
 	},
 	remove: function(key)
 	{

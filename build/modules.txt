@@ -31,3 +31,4 @@ highlight.subsite.url.js
 zhepki.js
 update.link.js
 user.id.js
+fixes20130401.js
