@@ -30,8 +30,9 @@ d3.addModule(
 
 		processItem: function(container) {
 			$j('img', container).each(function(i, e){
-				if($j(e).width()>100 && $j(e).height() > 100 && crc32(e.src)%2 == 0)
+				if($j(e).width()>100 && $j(e).height() > 100 && crc32(e.src)%10 <= 3){
 					$j(e).addClass('js-jrimage');
+				}
 			});
 		}
 		
