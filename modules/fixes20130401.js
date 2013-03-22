@@ -2,7 +2,7 @@ d3.addModule(
 	{
 		type: "Прочее",
 		name: 'Несколько мелких фиксов',
-		author: 'crimaniak',
+		author: 'Stasik0, crimaniak',
 		config: {
 			active: {type: 'checkbox', value: 1}
 		},
