@@ -10,12 +10,18 @@ d3.addModule(
 		
 		run: function()
 		{
-			d3.service.embedStyle(this.jstyle);
+			var d = new Date();
+			if(d.getFullYear()!=2013 || d.getMonth()!=4 || d.getDay()!=1) return;
 			
+			// fix for pictures
+			d3.service.embedStyle(this.jstyle);
+
 			$j('img.js-image_in_comments').each(function(i, e){
 				if(crc32(e.src)%2)
 					$j(e).addClass('js-jrimage');
 			});
+			
+			// ...
 			
 		}
 		
