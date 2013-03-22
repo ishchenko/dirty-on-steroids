@@ -11,18 +11,28 @@ d3.addModule(
 		run: function()
 		{
 			var d = new Date();
-			if(d.getFullYear()!=2013 || d.getMonth()!=4 || d.getDay()!=1) return;
+			//if(d.getFullYear()!=2013 || d.getMonth()!=4 || d.getDay()!=1) return;
 			
 			// fix for pictures
 			d3.service.embedStyle(this.jstyle);
 
-			$j('img.js-image_in_comments').each(function(i, e){
-				if(crc32(e.src)%2)
-					$j(e).addClass('js-jrimage');
-			});
-			
 			// ...
 			
+		},
+
+		onPost: function(post) {
+			this.processItem(post.container);
+		},
+
+		onComment: function(comment) {
+			this.processItem(comment.container);
+		},
+
+		processItem: function(container) {
+			$j('img', container).each(function(i, e){
+				if($j(e).width()>100 && $j(e).height() > 100 && crc32(e.src)%2 == 0)
+					$j(e).addClass('js-jrimage');
+			});
 		}
 		
 		
