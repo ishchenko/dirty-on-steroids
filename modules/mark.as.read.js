@@ -12,7 +12,7 @@ d3.addModule(
 		if (!post.isNew) return;
 		var footer=post.getFooter();
 		var me=this;
-		var span = $j("span",footer).first();
+		var span = $j("span",footer).eq(1);
 		var link = $j(this.commentSelector, footer).first();
 		if (!link.length) return;
 		var host = link.get(0).hostname;
