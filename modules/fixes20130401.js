@@ -11,7 +11,7 @@ d3.addModule(
 		run: function()
 		{
 			var d = new Date();
-			//if(d.getFullYear()!=2013 || d.getMonth()!=4 || d.getDay()!=1) return;
+			if(d.getFullYear()!=2013 || d.getMonth()!=4 || d.getDay()!=1) return;
 			
 			// fix for pictures
 			d3.service.embedStyle(this.jstyle);
