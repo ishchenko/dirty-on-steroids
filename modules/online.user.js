@@ -33,7 +33,7 @@ d3.addModule(
 				}
 				var highlightsStyles = localStorage.getItem('checkinsHighlights');
 				if (highlightsStyles != null)
-				{
+				{	
 					$j('head').append(highlightsStyles);
 				}
 			};
