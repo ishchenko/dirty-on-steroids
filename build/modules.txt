@@ -12,6 +12,7 @@ online.user.js
 tooltip.js
 show.all.comments.js
 preview.for.comments.js
+preview.for.inboxes.js
 hotlinks.for.images.js
 favicons.js
 gender.color.js
