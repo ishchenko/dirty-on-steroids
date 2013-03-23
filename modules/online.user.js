@@ -19,6 +19,10 @@ d3.addModule(
 				{
 					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
 					var newdiv = document.createElement('div');
+					if ( document.location.href.indexOf('d3.ru/users') > -1 || document.location.href.indexOf('d3.ru/blogs') > -1 )
+					{
+						newdiv.setAttribute('style', 'margin-top: 300px;');
+					}
 					var fixdomain = checkinsMarkup.replace(/\/user/g, "http://d3.ru/user");
 					newdiv.innerHTML =  fixdomain;
 					divContentLeft.appendChild( newdiv );
