@@ -34,9 +34,9 @@ d3.addModule(
 		},
 
 		processItem: function(container) {
-			$j('img', container).each(function(i, e){
-				var item = $j(e);
-				if(item.width() > 100 && item.height() > 100 && pass(e.src, 35)){
+			$j('img', container).one('load', function(){
+				var item = $j(this);
+				if(item.width() > 100 && item.height() > 100 && pass(this.src, 35)){
 					item.addClass('js-jrimage');
 				}
 			});
@@ -56,7 +56,7 @@ d3.addModule(
 		
 		canWork: function() {
 			var d = new Date();
-			// return true;		// <- for debug
+			//return true;		// <- for debug
 			return (d.getFullYear()==2013) && (d.getMonth()==4) && (d.getDay()==1);
 		}
 		
