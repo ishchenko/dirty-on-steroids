@@ -5,7 +5,6 @@ tort.js
 hidden.author.js
 colored.rating.js
 replace.username.js
-d3.search.js
 kdpv.js
 no.rating.js
 fotki.js
