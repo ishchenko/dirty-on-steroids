@@ -46,6 +46,7 @@ d3.addModule(
 					}
 					//calls the stored callback with the return data string
 					if(data.service === "callback" && data.value !== null){
+window.alert(Object.prototype.toString.call(me.callback));
 						if(me.callback != null && Object.prototype.toString.call(me.callback) === "[object Function]"){
 							me.callback(decodeURIComponent(data.value));
 							//remove the callback

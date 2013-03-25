@@ -50,6 +50,15 @@ d3.addModule(
 						me.updateRightNavigator();
 					}
 				);
+				//dirty workadound for chrome, i have no particular idea why the code above does not work
+				if($j.browser.webkit){
+					window.setTimeout(
+						function(){
+							me.markAsRead(me, div, post);
+							me.updateRightNavigator();
+						}
+					, 1000)
+				}
 			}
 		}
 		return false;
