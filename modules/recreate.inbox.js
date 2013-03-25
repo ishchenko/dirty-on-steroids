@@ -63,7 +63,10 @@ d3.addModule(
 			{
 				for ( var i = 0; i < linksToUsers.length; i++)
 				{
-					userNames.push( linksToUsers[i].textContent );
+					if ( linksToUsers[i].textContent.length > 0 )
+					{
+						userNames.push( linksToUsers[i].textContent );
+					}
 				}
 			}
 			if ( userNames.length > 0 )
