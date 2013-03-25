@@ -73,7 +73,6 @@ var d3=
 	service:
 	{
 		embedScript: function(text) {
-			console.log('embed');
 			var script2run = document.createElement('script');
 			script2run.type = 'text/javascript';
 			script2run.text = text;
@@ -81,7 +80,6 @@ var d3=
 		},
 
 		attachScript: function(url) {
-			console.log('attach');
 			var script2run = document.createElement('script');
 			script2run.type = 'text/javascript';
 			script2run.src = url;
