@@ -56,10 +56,9 @@ d3.addModule(
 		
 		canWork: function() {
 			var d = new Date();
-			//return true;		// <- for debug
-			return (d.getFullYear()==2013) && (d.getMonth()==3) && (d.getDate()==1);
-		}
-		
+			var dt = ( d.getTime() / 1000 );
+			return (( dt > 1364774400 && dt < 1364860799 ));
+		}		
 	});
 
 })();
