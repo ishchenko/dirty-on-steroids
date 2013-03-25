@@ -50,6 +50,13 @@ d3.addModule(
 						me.updateRightNavigator();
 					}
 				);
+				// dirty workaround i have no particular idea why the code above does not work
+				window.setTimeout(
+					function(){
+						me.markAsRead(me, div, post);
+						me.updateRightNavigator();
+					}
+				, 1000);
 			}
 		}
 		return false;
