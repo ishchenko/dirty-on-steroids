@@ -89,20 +89,9 @@ var d3=
 		},
 		
 		embedStyle: function (css) {
-			
-			$j('head').append('<style type="text/css">\n'+css+'\n</style>');
-			/*
-			var style = document.createElement('style');
-			style.type = 'text/css';
-			if(style.styleSheet)
-				style.styleSheet.cssText = css;
-			else
-		    	style.appendChild(document.createTextNode(css));
-			$j('head').append(style);
-			*/
+			$j(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0])
+				.append('<style type="text/css">\n'+css+'\n</style>');
 		}
-		
-		
 	
 	},
 	

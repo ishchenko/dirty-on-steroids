@@ -24,11 +24,11 @@ d3.addModule(
 	},
 
 	onPost: function(post) {
-		this.imagesPreview(post.container.get(0))
+		this.imagesPreview(post.container.get(0));
 	},
 
 	onComment: function(comment) {
-		this.imagesPreview(comment.container.get(0))
+		this.imagesPreview(comment.container.get(0));
 	},
 
 	clickOnImageLink: function(e)
@@ -38,7 +38,7 @@ d3.addModule(
 		newImageForPreview.src = e.target.href;
 		var posx = 0;
 		var posy = 0;
-		if (!e) var e = window.event;
+		if (!e) e = window.event;
 		if (e.pageX || e.pageY)
 		{
 			posx = e.pageX;
@@ -79,8 +79,8 @@ d3.addModule(
 
    				var script = document.createElement( 'script' );
    				script.type = 'text/javascript';
-   				script.textContent ="morphingSp3( " + imgId + "," + posx  + "," + posy + "," + e.target.width + "," +  e.target.height + ");"
-				document.body.appendChild( script )
+   				script.textContent ="morphingSp3( " + imgId + "," + posx  + "," + posy + "," + e.target.width + "," +  e.target.height + ");";
+				document.body.appendChild( script );
 			}
 		});
 		$j(newImageForPreview).bind('error', {href: e.target.href}, function(e)
