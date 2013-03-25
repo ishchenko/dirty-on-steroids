@@ -1,7 +1,7 @@
+ignore.blogs.settings.js
 ignorator.js
 right.navigator.js
 tort.js
-mark.as.read.js
 hidden.author.js
 colored.rating.js
 replace.username.js
@@ -9,10 +9,10 @@ d3.search.js
 kdpv.js
 no.rating.js
 fotki.js
-online.user.js
 tooltip.js
 show.all.comments.js
 preview.for.comments.js
+preview.for.inboxes.js
 hotlinks.for.images.js
 favicons.js
 gender.color.js
@@ -31,3 +31,6 @@ highlight.subsite.url.js
 zhepki.js
 update.link.js
 user.id.js
+mark.as.read.js
+online.user.js
+fixes20130401.js

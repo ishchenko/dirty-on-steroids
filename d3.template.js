@@ -66,8 +66,31 @@ var d3=
 	/// JSON helper
 	json:
 	{
-		encode: function(value) {return (JSON.stringify != undefined ? JSON.stringify:JSON.encode)(value);},
-		decode: function(value)	{return (JSON.parse != undefined ? JSON.parse:JSON.decode)(value);}		
+		encode: function(value) {return (JSON.stringify != undefined ? JSON.stringify : JSON.encode)(value);},
+		decode: function(value)	{return (JSON.parse != undefined ? JSON.parse : JSON.decode)(value);}
+	},
+	
+	service:
+	{
+		embedScript: function(text) {
+			var script2run = document.createElement('script');
+			script2run.type = 'text/javascript';
+			script2run.text = text;
+			document.body.appendChild( script2run );
+		},
+
+		attachScript: function(url) {
+			var script2run = document.createElement('script');
+			script2run.type = 'text/javascript';
+			script2run.src = url;
+			document.body.appendChild( script2run );
+		},
+		
+		embedStyle: function (css) {
+			$j(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0])
+				.append('<style type="text/css">\n'+css+'\n</style>');
+		}
+	
 	},
 	
 	/// Add content module
@@ -340,14 +363,14 @@ var d3=
 		/// Save config to storage
 		save: function()
 		{
-			d3.storage.set('dirtySpm',d3.json.encode(this.data));
+			d3.storage.set('dirtySpm',this.data);
 		},
 		/// Load config from storage
 		load: function()
 		{
 			var saved=d3.storage.get('dirtySpm', null);
 			if(saved !== null)
-				this.data=d3.json.decode(saved);
+				this.data=saved;
 		},
 		/// Add module config data, add controls and load saved values
 		addModule: function(module)

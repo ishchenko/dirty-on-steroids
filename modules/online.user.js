@@ -19,7 +19,12 @@ d3.addModule(
 				{
 					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
 					var newdiv = document.createElement('div');
-					newdiv.innerHTML =  checkinsMarkup;
+					if ( document.location.href.indexOf('d3.ru/users') > -1 || document.location.href.indexOf('d3.ru/blogs') > -1 )
+					{
+						newdiv.setAttribute('style', 'margin-top: 300px;');
+					}
+					var fixdomain = checkinsMarkup.replace(/\/user/g, "http://d3.ru/user");
+					newdiv.innerHTML =  fixdomain;
 					divContentLeft.appendChild( newdiv );
 					var module = d3.getModule("Dirty tooltip");
 					if(module != null){
@@ -28,7 +33,7 @@ d3.addModule(
 				}
 				var highlightsStyles = localStorage.getItem('checkinsHighlights');
 				if (highlightsStyles != null)
-				{
+				{	
 					$j('head').append(highlightsStyles);
 				}
 			};

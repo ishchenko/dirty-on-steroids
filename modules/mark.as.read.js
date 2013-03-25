@@ -9,14 +9,17 @@ d3.addModule(
 	commentSelector: 'a[href*=comments],a[href*="my/inbox"]',
 			
 	onPost: function(post) {
-		if (!post.isNew) return;
+		if (!post.isNew)
+			return;
 		var footer=post.getFooter();
 		var me=this;
-		var span = $j("span",footer).first();
 		var link = $j(this.commentSelector, footer).first();
-		if (!link.length) return;
+		if (!link.length)
+			return;
+		var span = link.parent();
 		var host = link.get(0).hostname;
-		if(d3.getModule("XD")==null && host != document.location.hostname) return;
+		if(d3.getModule("XD")==null && host != document.location.hostname)
+			return;
 		var url = link.attr("href");
 		span.append('<div class="markasread" style="display:inline-block;"><a href="#" title="Пометить комментарии как прочтённые" style="text-decoration:none; font-weight: bold">[x]</a></div>');
 		$j('.markasread',footer).click(function(e){e.preventDefault(); return me.processClick(host, url,post);});

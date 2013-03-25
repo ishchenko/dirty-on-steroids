@@ -16,14 +16,19 @@ d3.addModule(
 			+ "image_copy.set('morph', { duration : 333, link : 'cancel'});"
 			+ "image_copy.morph({'height' : targetHeight,'width' : targetWidth,'top' : targetY,'left' : targetX}); }";
 		head.appendChild( script );
+
+   		script = document.createElement( 'style' );
+   		script.type = 'text/css';
+   		script.textContent =".spHotImgLink { border-bottom: 1px dotted #008000;  text-decoration: none;}";
+		head.appendChild( script );
 	},
 
 	onPost: function(post) {
-		this.imagesPreview(post.container.get(0))
+		this.imagesPreview(post.container.get(0));
 	},
 
 	onComment: function(comment) {
-		this.imagesPreview(comment.container.get(0))
+		this.imagesPreview(comment.container.get(0));
 	},
 
 	clickOnImageLink: function(e)
@@ -33,7 +38,7 @@ d3.addModule(
 		newImageForPreview.src = e.target.href;
 		var posx = 0;
 		var posy = 0;
-		if (!e) var e = window.event;
+		if (!e) e = window.event;
 		if (e.pageX || e.pageY)
 		{
 			posx = e.pageX;
@@ -74,8 +79,8 @@ d3.addModule(
 
    				var script = document.createElement( 'script' );
    				script.type = 'text/javascript';
-   				script.textContent ="morphingSp3( " + imgId + "," + posx  + "," + posy + "," + e.target.width + "," +  e.target.height + ");"
-				document.body.appendChild( script )
+   				script.textContent ="morphingSp3( " + imgId + "," + posx  + "," + posy + "," + e.target.width + "," +  e.target.height + ");";
+				document.body.appendChild( script );
 			}
 		});
 		$j(newImageForPreview).bind('error', {href: e.target.href}, function(e)
@@ -96,6 +101,7 @@ d3.addModule(
 			{
 				if (a.href.match(/(img\.youtube\.com|vimeocdn\.com)/i) == null )
 				{
+						$j(a).attr('class', "spHotImgLink");
 						$j(a).click(
 							function(e){
 								me.clickOnImageLink(e);

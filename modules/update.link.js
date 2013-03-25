@@ -1,4 +1,5 @@
 // Update link in config
+// not completed
 d3.addModule(
 {
 	type: "Сервис-пак",
@@ -21,7 +22,7 @@ d3.addModule(
 				me.updateListener(event);
 			});
 
-			this.runScript("	\
+			d3.service.embedScript("	\
 			checkUpdate = function(data) { \
 				var content = data.data.content.replace(/\\s/g, ''); \
 				var contentDecoded = JSON.parse(atob(content));\
@@ -42,11 +43,12 @@ d3.addModule(
 			}; \
 		");
 
-			this.addScript(this.jsonLink);
+			d3.service.attachScript(this.jsonLink);
 		}
 	},
 
 	updateListener: function (event) {
+//		console.log('update listener called:', event);
 		var now = Date.now();
 		var buildTime = event.detail.buildTime;
 		if (!buildTime || buildTime == undefined) {
@@ -57,19 +59,6 @@ d3.addModule(
 			confirm('Доступна новая версия сервис-пака. Попробуем поставить?')) {
 			document.location = 'https://github.com/crimaniak/dirty-on-steroids/raw/master/result/d3.user.js';
 		}
-	},
-
-	runScript: function(text) {
-		var script2run = document.createElement('script');
-		script2run.type = 'text/javascript';
-		script2run.text = text;
-		document.body.appendChild( script2run );
-	},
-
-	addScript: function(src) {
-		var script2run = document.createElement('script');
-		script2run.type = 'text/javascript';
-		script2run.src = src;
-		document.body.appendChild( script2run );
 	}
+
 });

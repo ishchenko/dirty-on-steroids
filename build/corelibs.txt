@@ -4,6 +4,7 @@ libs/regexp.escape.js
 libs/jquery.unselectable.min.js
 libs/jquery.cookie.js
 libs/url.js
+libs/xregexp-all-min.js
 storage.@browser@.js
 tabsheets.js
 item.js
