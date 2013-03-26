@@ -42,6 +42,11 @@ d3.addModule(
 			{
 				$j(document).ready(function(){
 					$j.getScript("http://api.d3search.ru/checkin/" + d3.user.name, function() {
+						//fix paths for subsites
+						var highlightsStyles = localStorage.getItem('checkinsHighlights');
+						if (highlightsStyles != null){
+							localStorage.setItem('checkinsHighlights', highlightsStyles.replace(/\[href=/g, '[href$='));
+						}
 						drawStuff();
 						localStorage.setItem('lastCheckinTimestamp', now);
 					});
