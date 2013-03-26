@@ -4,10 +4,10 @@ d3.addModule(
 	type: "Социализм",
 	name: 'Анонимные авторы постов',
 	author: 'crimaniak',
-	config: {active:  {type:'checkbox',value:0,caption:"Анонимность"}
-			,posts:   {type:'checkbox',value:0,caption:"Анонимные авторы постов"}
-			,comments:{type:'checkbox',value:0,caption:"Анонимные комментаторы"}
-			,mark:	  {type:'text',value:'?????',caption:"Менять никнеймы на:"}
+	config: {active:  {type:'checkbox',value:0,caption:"Анонимность", description: 'Модуль для анонимизации авторов постов и комментов'}
+			,posts:   {type:'checkbox',value:0,caption:"Анонимные авторы постов", description: 'Скрывать авторов постов'}
+			,comments:{type:'checkbox',value:0,caption:"Анонимные комментаторы", description: 'Скрывать авторов комментариев'}
+			,mark:	  {type:'text',value:'?????',caption:"Менять никнеймы на:", description: 'Что именно писать вместо скрытых имён'}
 			},
 
 	onPost: function(post){

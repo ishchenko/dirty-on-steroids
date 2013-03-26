@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Стилизация",
 	name: 'Игнорировать цветовые настройки блогов',
 	author: 'crea7or',
-	config: {active:{type:'checkbox',value:0}},
+	config: {active:{type:'checkbox',value:0, description: 'Принудительное выставление основной цветовой палитры для подсайтов'}},
 	run: function()
 	{
 		d3.service.embedScript(

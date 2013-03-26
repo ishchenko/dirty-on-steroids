@@ -4,7 +4,7 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Замена %username%',
 	author: 'crimaniak',
-	config: {active:{type:'checkbox',value:0}},
+	config: {active:{type:'checkbox',value:0, description:'Аббревиатура %username% в постах и комментах заменяется на твой ник, %username%.'}},
 
 	noUserName: d3.user.name == null,
 
