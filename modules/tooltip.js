@@ -126,7 +126,7 @@ d3.addModule(
 				//splits are for better performance! :p
 				var dup_user_id = me.extractBetween(dup_text, "voteResultsHandler.showVoteResult('" ,"'");
 				var dup_user_name = obj.href.split('/');
-				dup_user_name = dup_user_name[dup_user_name.length-2];
+				dup_user_name = dup_user_name[dup_user_name.length-1];
 
 				var dateSpan = '<span class="js-date';
 				var dup_date = "неизвестно";
@@ -161,7 +161,10 @@ d3.addModule(
 
 				dup_votes_him = (dup_votes_him!='')?'<b>Ваша оценка:</b> '+dup_votes_him:'<span style="color:#999"><b>Ваших оценок нет в '+((dup_sex=='f')?'её':'его')+' карме</b></span>';
 
-				dup_name = '<span style="font-size:130%;color:#'+((dup_sex=='m')?'009ced':'ff4fdc')+'"><b>'+dup_name+'</b></span>';
+				if (!dup_name || /^\s*$/.test(dup_name)) { // empty user name is replaced with login
+					dup_name = dup_user_name;
+				}
+				dup_name = '<span style="font-size:130%;color:'+((dup_sex=='m')?'#009ced':'#ff4fdc')+'"><b>'+dup_name+'</b></span>';
 
 				var dup_subscribers = me.extractBetween(dup_text, '<span class="b-subscribers_count">' ,'</span>');
 
