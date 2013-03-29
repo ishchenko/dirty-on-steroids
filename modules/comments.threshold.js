@@ -3,13 +3,13 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Порог комментариев',
 	author: 'bearoff',
-	config: {active:{type:'checkbox',value:false, description:'Добавляет выпадающий список, который позволяет скрывать комментарии с низким рейтингом. Рейтинги в списке рассчитываются для каждого поста индивидуально.'}
-            ,optionsCount:{type:'text',value:'6',caption:'Количество опций: '}
-            ,defaultOption:{type:'text',value:'0',caption:'Опция по умолчанию: '}
-            ,minCommentsCount:{type:'text',value:'5',caption:'Минимум комментариев для работы: '}
-            ,saveSelectedOption:{type:'checkbox',value :true,caption:'Использовать опцию, выбранную на странице, вместо умолчания'}
-            ,alwaysShowRepliesToMe:{type:'checkbox',value :true,caption:'Не скрывать ответы мне'}
-            ,beFast:{type:'checkbox',value:false,caption:'Работать очень быстро (кнопка "новые" не будет работать)'}
+	config: {active:{type:'checkbox',value:true, description:'Добавляет выпадающий список, который позволяет скрывать комментарии с низким рейтингом. Рейтинги в списке хитро рассчитываются для каждого поста индивидуально.'}
+            ,beFast:{type:'checkbox',value:false,caption:'Работать очень быстро (кнопка "новые" не будет работать)', description:'Самая важная опция. Быстрый способ работает на порядок быстрее, чем медленный. Это становится заметно в постах от сотни комментариев. Однако быстрый способ ломает кнопки _все комментарии_/_новые_. Если для вас это не критично — смело используйте эту опцию.'}
+            ,optionsCount:{type:'text',value:'6',caption:'Количество опций: ',description:'Cколько опций будет в ниспадающем меню. Когда комментариев в посте мало, опций может быть меньше, чем это значение.'}
+            ,defaultOption:{type:'text',value:'0',caption:'Опция по умолчанию: ', description:'Какая опция применится сразу после того, как вы откроете пост.'}
+            ,saveSelectedOption:{type:'checkbox',value :true,caption:'Использовать опцию, выбранную на странице, вместо умолчания', description:'Если поставить тут галочку, то вместо опции по умолчанию будет использоваться та опция, которую вы последний раз выбрали в ниспадающем меню.'}
+            ,minCommentsCount:{type:'text',value:'5',caption:'Минимум комментариев для работы: ', description:'Если в посте будет меньше комментариев, чем значение этого параметра, трешхолд не появится на странице.'}
+            ,alwaysShowRepliesToMe:{type:'checkbox',value :true,caption:'Не скрывать ответы мне', description:'Всегда показывать ответы на ваши комментарии. Ваши комментарии показываются всегда.'}
 			},
     threshold: 0,
     select:null,
@@ -36,7 +36,7 @@ d3.addModule(
                 }
             } else {
                 this.selected_index = parseInt(this.config.defaultOption.value);
-                if (this.selected_index< 0) {
+                if (this.selected_index < 0) {
                     this.selected_index = 0;
                 }
             }
