@@ -6,12 +6,10 @@ d3.addModule(
 	name: 'Игноратор',
 	author: 'crimaniak,Stasik0',
 	variant: ['d3.ru'],
-	config: {active:{type:'checkbox',value:1, description: 'Рядом с постами появляется кнопка [игнорировать]. Нажав на нее, Вы можете скрыть пост совсем или минимизировать до полоски статуса.'}
+	config: {active:{type:'checkbox',value:1, description: 'Рядом с постами появляется кнопка [скрыть]. Нажав на нее, Вы можете скрыть пост совсем или минимизировать до полоски статуса.'}
 			,ignored:{type:'hidden',value:{}}
+			,confirmation:{type:'checkbox',value:1,caption: 'спрашивать подтверждение при сокрытии'}
 			,hideAtAll:{type:'checkbox',value:1,caption:'скрывать посты совсем'}
-//			,moderation:{type:'checkbox',value:0,caption:'модерация от d3search'}
-//			,postByAuthor:{type:'text'}
-//			,commentByAuthor:{type:'text'}
 			},
 			
 	run: function()
@@ -23,15 +21,7 @@ d3.addModule(
 				if(this.config.ignored.value[i]<rubicon)
 					delete this.config.ignored.value[i];
 		}
-/*		
-		if(this.config.moderation.value)
-		{
-		    var moderation = document.createElement('script');
-		    moderation.setAttribute('type', 'text/javascript');
-		    moderation.setAttribute('src', 'http://api.d3search.ru/moderation/list?t=' + new Date().getTime());
-		    $j('head').get(0).appendChild(moderation);
-		}
-*/	},
+	},
 
 	onPost: function(post)
 	{
@@ -43,7 +33,7 @@ d3.addModule(
 			if (this.config.ignored.value[id] != undefined)
 				(this.config.hideAtAll.value ? post.container : $j('div.dt', post.container)).hide();
 
-			footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold">[игнорировать]</a>');
+			footer.append('&nbsp; <a class="ignorator" href="#" style="font-weight: bold" title="Скрыть или показать этот пост">[скрыть]</a>');
 			$j('.ignorator', footer).click(function () {
 				return me.processClick(post);
 			});
@@ -63,6 +53,8 @@ d3.addModule(
 				content.show();
 			}else
 			{
+				if(this.config.confirmation.value && !confirm('Действительно спрятать этот пост?'))
+					return false;
 				value[id]=Number(new Date());
 				content.hide();
 			}

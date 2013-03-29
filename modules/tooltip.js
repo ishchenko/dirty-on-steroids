@@ -1,3 +1,13 @@
+// need to be refactored more
+(function(){
+
+	// move static method here 
+	var extractBetween = function(string, pre, post){
+		return (string.indexOf(pre)==-1) ? '' : string.split(pre)[1].split(post)[0];
+	};
+	var noteStyle = 'font-size:130%; background-color:#eee;padding:10px;font-family:Times New Roman';
+	
+	
 // Dirty tooltip
 d3.addModule(
 {
@@ -119,26 +129,25 @@ d3.addModule(
 
 	dup_getData_d3: function(obj){
 		if(this.processing==1){
-			var me=this;
 			this.get(obj.href, function(data){
 				//clear all line breaks and spaces
 				var dup_text = data.replace(/(\r\n|\n|\r)/gm,' ').replace(/\s\s+/g,' ');
 				//splits are for better performance! :p
-				var dup_user_id = me.extractBetween(dup_text, "voteResultsHandler.showVoteResult('" ,"'");
-				var dup_user_name = me.extractBetween(dup_text, "class=\"b-user_name-link\">", "</a>");
+				var dup_user_id = extractBetween(dup_text, "voteResultsHandler.showVoteResult('" ,"'");
+				var dup_user_name = extractBetween(dup_text, "class=\"b-user_name-link\">", "</a>");
 
 				var dateSpan = '<span class="js-date';
 				var dup_date = "неизвестно";
 				if(dup_text.indexOf(dateSpan).length != -1) {
-					var timestamp = /data-epoch_date="(\d+)"/.exec(me.extractBetween(dup_text, dateSpan,'</span>'))[1];
+					var timestamp = /data-epoch_date="(\d+)"/.exec(extractBetween(dup_text, dateSpan,'</span>'))[1];
 					var date = new Date(timestamp*1000);
 					var month = ['января','февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 					dup_date = date.getDate()+" "+ month[date.getMonth()]+" "+date.getFullYear();
 				}
 				
-				var dup_karma = me.extractBetween(dup_text, '\'karma\'); return false;">', '<');
-				var dup_pluses = me.extractBetween(dup_text, ' right" data-value="', '"');
-				var dup_minuses = me.extractBetween(dup_text, ' left" data-value="', '"');
+				var dup_karma = extractBetween(dup_text, '\'karma\'); return false;">', '<');
+				var dup_pluses = extractBetween(dup_text, ' right" data-value="', '"');
+				var dup_minuses = extractBetween(dup_text, ' left" data-value="', '"');
 
 				dup_pluses = (dup_pluses>0)?'<span style="color:green;"><b>+'+dup_pluses+'</b></span>':0;
 				dup_minuses = (dup_minuses>0)?'<span style="color:red;"><b>-'+dup_minuses+'</b></span>':0;
@@ -148,15 +157,15 @@ d3.addModule(
 				if(dup_minuses!==0&&dup_pluses!==0) dup_votes_him += ' <span style="color:#ccc">/</span> ';
 				if(dup_pluses!==0) dup_votes_him += dup_pluses;
 
-				var dup_parent = me.extractBetween(dup_text, ' по приглашению ','.');
+				var dup_parent = extractBetween(dup_text, ' по приглашению ','.');
 
-				var dup_name = me.extractBetween(dup_text, '<h3 class="b-user_full_name">', '</h3>');
+				var dup_name = extractBetween(dup_text, '<h3 class="b-user_full_name">', '</h3>');
 
-				var dup_country = me.extractBetween(dup_text, '<div class="b-user_residence">', '</div>');
+				var dup_country = extractBetween(dup_text, '<div class="b-user_residence">', '</div>');
 
 				var dup_sex = (dup_text.indexOf('Она с нами')>-1)?'f':'m';
-				var dup_posts = me.extractBetween(dup_text, 'посты <span class="b-menu_item-stat">', '</span>');
-				var dup_comments = me.extractBetween(dup_text, 'комментарии <span class="b-menu_item-stat">', '</span>');
+				var dup_posts = extractBetween(dup_text, 'посты <span class="b-menu_item-stat">', '</span>');
+				var dup_comments = extractBetween(dup_text, 'комментарии <span class="b-menu_item-stat">', '</span>');
 
 				dup_votes_him = (dup_votes_him!='')?'<b>Ваша оценка:</b> '+dup_votes_him:'<span style="color:#999"><b>Ваших оценок нет в '+((dup_sex=='f')?'её':'его')+' карме</b></span>';
 
@@ -165,33 +174,34 @@ d3.addModule(
 				}
 				dup_name = '<span style="font-size:130%;color:'+((dup_sex=='m')?'#009ced':'#ff4fdc')+'"><b>'+dup_name+'</b></span>';
 
-				var dup_subscribers = me.extractBetween(dup_text, '<span class="b-subscribers_count">' ,'</span>');
+				var dup_subscribers = extractBetween(dup_text, '<span class="b-subscribers_count">' ,'</span>');
 
+				var dup_note = '';
 				if(dup_text.split('<em id="js-usernote" class="b-user_note js-user_note_has_note">').length >= 2){
-					var dup_note = me.extractBetween(dup_text, '<em id="js-usernote" class="b-user_note js-user_note_has_note">', '</em>');
+					dup_note = extractBetween(dup_text, '<em id="js-usernote" class="b-user_note js-user_note_has_note">', '</em>');
 					if(dup_note!='Место для заметок о пользователе. Заметки видны только вам.'){
 
 						dup_temp_body_mini = (dup_note.length>32)?dup_note.substring(0,32)+'...':dup_note;
 
 						if(dup_temp_body_mini!=dup_note){
-							dup_note = '<b>Ваша заметка:</b><div style="font-size:130%; cursor:help;background-color:#eee;padding:10px;font-family:Times New Roman" title="'+dup_note+'"><i>'+dup_temp_body_mini+'</i></div>';
+							dup_note = '<b>Ваша заметка:</b><div style="cursor:help;'+noteStyle+'" title="'+dup_note+'"><i>'+dup_temp_body_mini+'</i></div>';
 						}
 						else{
-							dup_note = '<b>Ваша заметка:</b><div style="font-size:130%; background-color:#eee;padding:10px;font-family:Times New Roman"><i>'+dup_temp_body_mini+'</i></div>';
+							dup_note = '<b>Ваша заметка:</b><div style="'+noteStyle+'"><i>'+dup_temp_body_mini+'</i></div>';
 						}
 					}
-					else dup_note = '';
-				}else{
-					var dup_note = '';
 				}
 
-				dup_output = '<table cellspacing="0" cellpadding="0" border="0"><tr>';
-				dup_output += '<td valign="top" style="padding-right:10px;"><div style="float:left;margin-bottom:5px">'+dup_name+'<br><span style="font-size:10px"><b>'+dup_country+'</b></span></div>';
-				//var image5 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAUCAYAAADlep81AAAAYElEQVRIx2P4DwG9QKwLxAwDhLWAuAWI/4A4XQPoEHRcDSLkBpGDOEEE/yByEMOog0YdNOqgUQeNOmjUQaMOooGDFAeRg4RAxORB5KAWBmgTdhEQewOx8QBhDyCeCXIIABULeHq64cd3AAAAAElFTkSuQmCC';
-				//dup_output += '<div style="float:right;margin-left:5px;margin-bottom:5px"><span style="display:block'+((me.config.useImages.value)?';background-image:url('+image5+');background-repeat:no-repeat':'')+';width:36px;height:20px;line-height:20px;text-align:center;color:#fff;background-color:#999"><b></b></span></div>';
 				var profile_link_opening = ' <a href="http://d3.ru/user/';
-				dup_output += '<div style="clear:both">Автор' + (dup_posts ? profile_link_opening + dup_user_name + '"<b>' + dup_posts + '</b> ' + (dup_posts % 10 == 1 && dup_posts % 100 != 11 ? 'поста':'постов') + '</a>' : '') + (dup_posts && dup_comments ? ' и' + profile_link_opening + dup_user_name + '/comments"':'') + (dup_comments ? profile_link_opening + dup_user_name + '"<b>' + dup_comments + '</b> ' + (dup_comments % 10 == 1 && dup_comments % 100 != 11 ? 'комментария':'комментариев') + '</a>' : '') + '<br>Всего подписчиков: ' + dup_subscribers + '</div>';
-				dup_output += '<div style="margin-top:10px">'+dup_votes_him+'</div><div id="dup_my_vote"></div><div id="dup_his_vote"></div><div style="margin-top:10px">'+dup_note+'</div></td><td align="center" valign="top" style="padding-left:10px; border-left:1px #ccc solid;"><span style="color:#444">№'+dup_user_id+'</span><br>'+dup_parent.replace('<a href="/','<a href="http://d3.ru/') +'<div style="margin-top:10px;font-size:10px"><b>Регистрация:</b><br>'+dup_date+'</div><div style="margin-top:5px; font-size: 130%;"><b>Карма: <span style="color:'+((dup_karma>=0)?'green':'red')+'">'+dup_karma+'</span></b></div></td></tr></table>';
+
+				dup_output = '<table cellspacing="0" cellpadding="0" border="0"><tr>'
+				 + '<td valign="top" style="padding-right:10px;"><div style="float:left;margin-bottom:5px">'+dup_name+'<br><span style="font-size:10px"><b>'+dup_country+'</b></span></div>'
+				 + '<div style="clear:both">Автор' + (dup_posts ? profile_link_opening + dup_user_name + '"<b>' + dup_posts + '</b> ' + (dup_posts % 10 == 1 && dup_posts % 100 != 11 ? 'поста':'постов') + '</a>' : '') 
+				    + (dup_posts && dup_comments ? ' и' + profile_link_opening + dup_user_name + '/comments"':'') 
+				    + (dup_comments ? profile_link_opening + dup_user_name + '"<b>' + dup_comments + '</b> ' + (dup_comments % 10 == 1 && dup_comments % 100 != 11 ? 'комментария':'комментариев') + '</a>' : '') 
+				    + '<br>Всего подписчиков: ' + dup_subscribers 
+				 + '</div>'
+				 + '<div style="margin-top:10px">'+dup_votes_him+'</div><div id="dup_my_vote"></div><div id="dup_his_vote"></div><div style="margin-top:10px">'+dup_note+'</div></td><td align="center" valign="top" style="padding-left:10px; border-left:1px #ccc solid;"><span style="color:#444">№'+dup_user_id+'</span><br>'+dup_parent.replace('<a href="/','<a href="http://d3.ru/') +'<div style="margin-top:10px;font-size:10px"><b>Регистрация:</b><br>'+dup_date+'</div><div style="margin-top:5px; font-size: 130%;"><b>Карма: <span style="color:'+((dup_karma>=0)?'green':'red')+'">'+dup_karma+'</span></b></div></td></tr></table>';
 
 				$j('#dup_current_id').val(obj.href);
 				//FIXME: get incoming votes				
@@ -202,3 +212,5 @@ d3.addModule(
 	}
 
 });
+
+})();
