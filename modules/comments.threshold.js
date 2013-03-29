@@ -3,13 +3,13 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Порог комментариев',
 	author: 'bearoff',
-	config: {active:{type:'checkbox',value:false, description:'Добавляет выпадающий список, который позволяет скрывать комментарии с низким рейтингом. Рейтинги в списке рассчитываются для каждого поста индивидуально.'}
-            ,optionsCount:{type:'text',value:'6',caption:'Количество опций: '}
-            ,defaultOption:{type:'text',value:'0',caption:'Опция по умолчанию: '}
-            ,minCommentsCount:{type:'text',value:'5',caption:'Минимум комментариев для работы: '}
-            ,saveSelectedOption:{type:'checkbox',value :true,caption:'Использовать опцию, выбранную на странице, вместо умолчания'}
-            ,alwaysShowRepliesToMe:{type:'checkbox',value :true,caption:'Не скрывать ответы мне'}
-            ,beFast:{type:'checkbox',value:false,caption:'Работать очень быстро (кнопка "новые" не будет работать)'}
+	config: {active:{type:'checkbox',value:true, description:'Добавляет выпадающий список, который позволяет скрывать комментарии с низким рейтингом. Рейтинги в списке хитро рассчитываются для каждого поста индивидуально.'}
+            ,beFast:{type:'checkbox',value:false,caption:'Работать очень быстро (кнопка "новые" не будет работать)', description:'Самая важная опция. Быстрый способ работает на порядок быстрее, чем медленный. Это становится заметно в постах от сотни комментариев. Однако быстрый способ ломает кнопки _все комментарии_/_новые_. Если для вас это не критично — смело используйте эту опцию.'}
+            ,optionsCount:{type:'text',value:'6',caption:'Количество опций: ',description:'Cколько опций будет в ниспадающем меню. Когда комментариев в посте мало, опций может быть меньше, чем это значение.'}
+            ,defaultOption:{type:'text',value:'0',caption:'Опция по умолчанию: ', description:'Какая опция применится сразу после того, как вы откроете пост.'}
+            ,saveSelectedOption:{type:'checkbox',value :true,caption:'Использовать опцию, выбранную на странице, вместо умолчания', description:'Если поставить тут галочку, то вместо опции по умолчанию будет использоваться та опция, которую вы последний раз выбрали в ниспадающем меню.'}
+            ,minCommentsCount:{type:'text',value:'5',caption:'Минимум комментариев для работы: ', description:'Если в посте будет меньше комментариев, чем значение этого параметра, трешхолд не появится на странице.'}
+            ,alwaysShowRepliesToMe:{type:'checkbox',value :true,caption:'Не скрывать ответы мне', description:'Всегда показывать ответы на ваши комментарии. Ваши комментарии показываются всегда.'}
 			},
     threshold: 0,
     select:null,
@@ -36,7 +36,7 @@ d3.addModule(
                 }
             } else {
                 this.selected_index = parseInt(this.config.defaultOption.value);
-                if (this.selected_index< 0) {
+                if (this.selected_index < 0) {
                     this.selected_index = 0;
                 }
             }
@@ -69,7 +69,7 @@ d3.addModule(
             }
 
             this.select.change(function(e){
-                me.onThresholdChange()
+                me.onThresholdChange();
                 });
         },
 
@@ -78,24 +78,25 @@ d3.addModule(
                 parent.show();
             });
         },
+        
         getStats: function()
         {
             for (var i=0; i<d3.content.comments.length; i++) {
-                var value = parseInt(d3.content.comments[i].ratingValue());
-                if (isNaN(value)) {
+                var rating = parseInt(d3.content.comments[i].ratingValue());
+                if (isNaN(rating)) {
                     // this comment seems to be deleted
                     continue;
                 }
-                if (this.sorted_comments[value]===undefined) {
-                    this.sorted_comments[value] = [];
+                if (this.sorted_comments[rating]===undefined) {
+                    this.sorted_comments[rating] = [];
                 }
-                this.sorted_comments[value].push(i);
+                this.sorted_comments[rating].push(i);
 
-                if (this.min_rating > d3.content.comments[i].ratingValue()) {
-                    this.min_rating = d3.content.comments[i].ratingValue();
+                if (this.min_rating > rating) {
+                    this.min_rating = rating;
                 }
-                if (this.max_rating < d3.content.comments[i].ratingValue()) {
-                    this.max_rating = d3.content.comments[i].ratingValue();
+                if (this.max_rating < rating) {
+                    this.max_rating = rating;
                 }
                 if (d3.content.comments[i].parentId!==undefined) {
                     var parent = $j("#"+d3.content.comments[i].parentId);
@@ -103,6 +104,7 @@ d3.addModule(
                 }
             }
         },
+        
         prepareThresholds: function()
         {
             var comments_count = d3.content.comments.length;
@@ -147,6 +149,7 @@ d3.addModule(
             this.select_properties.selected_strings[this.selected_index] = 'selected';
             this.threshold = this.select_properties.thresholds[this.selected_index];
         },
+        
         updateCounts: function(rating_value, visible)
         {
             for (var i=0; i<this.select_properties.thresholds.length;i++) {
@@ -157,13 +160,11 @@ d3.addModule(
                 }
             }
         },
+        
         isReplyToMe: function(comment){
-            if (comment.parentId && this.my_comments[comment.parentId]) {
-                return true;
-            }
-            return false;
-
+            return comment.parentId && this.my_comments[comment.parentId];
         },
+        
         isVisible: function(comment)
         {
             if (comment.isMine) {
@@ -180,28 +181,20 @@ d3.addModule(
             }
             return false;
         },
+        
         updateVisibility: function(first)
         {
-            var isVisible = false;
-
+            var show = this.config.beFast.value ? function(item){item.css('display','block');} : function(item){item.show();};
+            var hide = this.config.beFast.value ? function(item){item.css('display','none');}  : function(item){item.hide();};
+            
             for (var i=0; i<d3.content.comments.length; i++) {
-                isVisible = this.isVisible(d3.content.comments[i]);
-                if (isVisible) {
-                   if (this.config.beFast.value) {
-                      d3.content.comments[i].container.css("display", "block");
-                   } else {
-                      d3.content.comments[i].container.show();
-                   }
-                } else {
-                   if (this.config.beFast.value) {
-                      d3.content.comments[i].container.css("display", "none");
-                   } else {
-                      d3.content.comments[i].container.hide();
-                   }
-                }
-
+            	var comment = d3.content.comments[i];
+                var isVisible = this.isVisible(comment);
+                
+                (isVisible ? show : hide)(comment.container);
+                
                 if (first) {
-                    this.updateCounts(d3.content.comments[i].ratingValue(), isVisible);
+                    this.updateCounts(comment.ratingValue(), isVisible);
                 }
             }
         },
