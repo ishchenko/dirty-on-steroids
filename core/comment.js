@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 
 var Comment=function(container)
@@ -12,6 +12,7 @@ var Comment=function(container)
 	this.userId=parseInt(/u(\d+)/.exec(this.container.attr('class'))[1],10);
 	this.indent=parseInt(/indent_(\d+)/.exec(this.container.attr('class'))[1],10);
 	this.userName=$j('.c_user',this.container).text();
+    this.parentId=$j('.c_parent',this.container).attr('replyto');
 };
 Comment.prototype=new Item
 ({
