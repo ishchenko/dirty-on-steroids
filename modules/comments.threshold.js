@@ -69,7 +69,7 @@ d3.addModule(
             }
 
             this.select.change(function(e){
-                me.onThresholdChange()
+                me.onThresholdChange();
                 });
         },
 
@@ -78,24 +78,25 @@ d3.addModule(
                 parent.show();
             });
         },
+        
         getStats: function()
         {
             for (var i=0; i<d3.content.comments.length; i++) {
-                var value = parseInt(d3.content.comments[i].ratingValue());
-                if (isNaN(value)) {
+                var rating = parseInt(d3.content.comments[i].ratingValue());
+                if (isNaN(rating)) {
                     // this comment seems to be deleted
                     continue;
                 }
-                if (this.sorted_comments[value]===undefined) {
-                    this.sorted_comments[value] = [];
+                if (this.sorted_comments[rating]===undefined) {
+                    this.sorted_comments[rating] = [];
                 }
-                this.sorted_comments[value].push(i);
+                this.sorted_comments[rating].push(i);
 
-                if (this.min_rating > d3.content.comments[i].ratingValue()) {
-                    this.min_rating = d3.content.comments[i].ratingValue();
+                if (this.min_rating > rating) {
+                    this.min_rating = rating;
                 }
-                if (this.max_rating < d3.content.comments[i].ratingValue()) {
-                    this.max_rating = d3.content.comments[i].ratingValue();
+                if (this.max_rating < rating) {
+                    this.max_rating = rating;
                 }
                 if (d3.content.comments[i].parentId!==undefined) {
                     var parent = $j("#"+d3.content.comments[i].parentId);
@@ -103,6 +104,7 @@ d3.addModule(
                 }
             }
         },
+        
         prepareThresholds: function()
         {
             var comments_count = d3.content.comments.length;
@@ -147,6 +149,7 @@ d3.addModule(
             this.select_properties.selected_strings[this.selected_index] = 'selected';
             this.threshold = this.select_properties.thresholds[this.selected_index];
         },
+        
         updateCounts: function(rating_value, visible)
         {
             for (var i=0; i<this.select_properties.thresholds.length;i++) {
@@ -157,13 +160,11 @@ d3.addModule(
                 }
             }
         },
+        
         isReplyToMe: function(comment){
-            if (comment.parentId && this.my_comments[comment.parentId]) {
-                return true;
-            }
-            return false;
-
+            return comment.parentId && this.my_comments[comment.parentId];
         },
+        
         isVisible: function(comment)
         {
             if (comment.isMine) {
@@ -180,28 +181,20 @@ d3.addModule(
             }
             return false;
         },
+        
         updateVisibility: function(first)
         {
-            var isVisible = false;
-
+            var show = this.config.beFast.value ? function(item){item.css('display','block');} : function(item){item.show();};
+            var hide = this.config.beFast.value ? function(item){item.css('display','none');}  : function(item){item.hide();};
+            
             for (var i=0; i<d3.content.comments.length; i++) {
-                isVisible = this.isVisible(d3.content.comments[i]);
-                if (isVisible) {
-                   if (this.config.beFast.value) {
-                      d3.content.comments[i].container.css("display", "block");
-                   } else {
-                      d3.content.comments[i].container.show();
-                   }
-                } else {
-                   if (this.config.beFast.value) {
-                      d3.content.comments[i].container.css("display", "none");
-                   } else {
-                      d3.content.comments[i].container.hide();
-                   }
-                }
-
+            	var comment = d3.content.comments[i];
+                var isVisible = this.isVisible(comment);
+                
+                (isVisible ? show : hide)(comment.container);
+                
                 if (first) {
-                    this.updateCounts(d3.content.comments[i].ratingValue(), isVisible);
+                    this.updateCounts(comment.ratingValue(), isVisible);
                 }
             }
         },
