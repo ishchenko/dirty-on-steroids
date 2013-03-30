@@ -5,7 +5,7 @@ d3.addModule(
 	name: 'Показывать все комментарии в посте',
 	author: 'crea7or',
 	variant: ['d3.ru'],
-	config: {active:{type:'checkbox',value:1, description: 'При заходе в пост по ссылке  / "X новых" все равно показывать все комментарии'}},
+	config: {active:{type:'checkbox',value:0, description: 'При заходе в пост по ссылке  / "X новых" все равно показывать все комментарии'}},
 
 	run: function()
 	{
