@@ -38,23 +38,24 @@ d3.addModule(
 	processLinks: function(elem){
 		if(!this.config.active.value)return;
 		var me = this;
-		var links = $j('a', elem);
-		var pattern = /(.*)d3.ru\/user\/(.+)/g;
+		var links = $j('a[href*="/user/"]', elem);
+		var pattern = /(.*)d3.ru\/user\/(.+)/;
 		for(var i=0; i<links.length; i++){
 			var href = links[i].href.toString();
+			pattern.lastIndex = 0;
 			if(	pattern.test(href) &&
 			//but none of theres
 			  	href.indexOf('/posts/')<0 && href.indexOf('/comments/')<0 && href.indexOf('/favs/')<0 &&
 			//and this is no button
 				links[i].className.indexOf("button") < 0
 			){
-				$j(links[i]).mouseover(
+				$j(links[i]).one("mouseover",
 					function(e){
 						clearTimeout(me.showing);
 						me.showBaloon(e.target);
 					}
 				)
-				.mouseout(
+				.one("mouseout",
 					function(){
 					clearTimeout(me.showing);
 					me.processing = 0;
