@@ -32,5 +32,4 @@ update.link.js
 user.id.js
 mark.as.read.js
 online.user.js
-fixes20130401.js
 comments.threshold.js

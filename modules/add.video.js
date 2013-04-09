@@ -66,8 +66,11 @@ d3.addModule(
 
 			document.addEventListener("DOMNodeInserted", function(e){
 			    if ( e.target.nodeName == "A" && e.target.className.indexOf('b-textarea_editor_image') == 0 )
-			    {			    	
-			    	me.addVideoLink( e.target );
+			    {
+			    	if ( e.target.parentNode.parentNode.parentNode.className.indexOf('b-comments_reply_block') == 0 )
+			    	{
+			    		me.addVideoLink( e.target );
+			    	}
 				}
 			});
 		}

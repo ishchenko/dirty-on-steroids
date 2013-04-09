@@ -409,15 +409,18 @@ var d3=
 		{
 			this.window=window;
 			this.document=document;
+			this.globals=this.window.globals;
 		}else if($j.browser.mozilla)
 		{
 			this.window=unsafeWindow;
 			this.document=document.wrappedJSObject;
+			this.globals = this.window.globals;
 		}else
 		{
-			var retval=d3.newElement('div',{attributes:{onclick:"return {window:window,document:document};"}}).onclick();
+			var retval=d3.newElement('div',{attributes:{onclick:"return {window:window,document:document,globals: window.globals};"}}).onclick();
 			this.window=retval.window;
 			this.document=retval.document;
+			this.globals=retval.globals;
 		}
 	},
 	xpath:

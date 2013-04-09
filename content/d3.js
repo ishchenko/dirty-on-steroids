@@ -174,9 +174,9 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	findUser: function()
 	{
 		var user = { name: "", id: 0};
-		if ( d3.window.globals.user )
+		if ( d3.globals.user )
 		{
-			user = d3.window.globals.user;
+			user = d3.globals.user;
 			user.name = user.login;
 		}
 		return user;
