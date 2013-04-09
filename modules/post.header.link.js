@@ -21,7 +21,24 @@ d3.addModule(
 				headerLinks = headersArr[i].getElementsByTagName('a');
 				if (headerLinks.length == 1) 
 				{
-					if (headerLinks[0].href.indexOf('d3.ru/comments/') == -1) 
+					var d3link = true;
+					if ( headerLinks[0].href.indexOf('d3.ru/comments/') == -1 ) 
+					{
+						d3link = false;
+					}
+					else
+					{
+						var linkSplit = headerLinks[0].href.split("/");
+						if ( linkSplit.length > 2 )
+						{
+							if ( post.id != linkSplit[linkSplit.length - 2] )
+							{
+								d3link = false;
+							}
+						}
+					}
+					
+					if ( d3link == false ) 
 					{
 						linkHref = headerLinks[0].hostname.replace(/^www\./, '');
 						linkPreview = document.createElement('a');
