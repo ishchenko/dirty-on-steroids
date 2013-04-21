@@ -1,6 +1,7 @@
 libs/util.js
 libs/crc32.js
 libs/regexp.escape.js
+libs/escapehtml.js
 libs/jquery.unselectable.min.js
 libs/jquery.cookie.js
 libs/url.js

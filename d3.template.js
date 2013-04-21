@@ -265,7 +265,7 @@ var d3=
 			this.setValue=function(newValue) {d3.config.data[this.id]=this.module.config[this.name].value=this.value=newValue;};
 			this.getValue=function() {return $j('#'+this.id).val();};
 			this.update=function() {this.setValue(this.getValue());};
-			this.title = function() {return this.description == undefined ? '' : ' title="'+this.description+'"';};
+			this.title = function() {return this.description == undefined ? '' : ' title="'+escapeHtml(this.description)+'"';};
 			
 			// collect properties from config data
 			for(var i in module.config[name])
@@ -331,7 +331,7 @@ var d3=
 				for(var i in this.options)
 				{
 					if((++counter % this.columns) == 0 && counter>2) html+='</tr><tr>';
-					html+='<td><label><input type="radio" name="'+this.id+'" value="'+this.options[i]+'"'+(this.options[i]==this.value?' checked':'')+'> '+i+'</label></td>';
+					html+='<td><label><input type="radio" name="'+this.id+'" value="'+escapeHtml(this.options[i])+'"'+(this.options[i]==this.value?' checked':'')+'> '+i+'</label></td>';
 				}
 				return html+'</tr></tbody></table></td></tr>';
 			},
