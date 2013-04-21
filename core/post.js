@@ -15,6 +15,7 @@ var Post=function(container)
 Post.prototype=new Item
 ({
 	contentClass: '.dt',
+	bodyClass: 'div.dt div.dti div.post_body',
 	footerClass: '.dd',
 	getClass: function(){return 'post';},
 	_idMask: /(\d+)\/?(#.*)?$/,

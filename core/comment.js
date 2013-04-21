@@ -17,6 +17,7 @@ var Comment=function(container)
 Comment.prototype=new Item
 ({
 	contentClass: '.c_body',
+	bodyClass: '.c_body',
 	footerClass: '.c_footer',
 	getAuthor: function(){return new User(this.userName,this.userId);},
 	getClass: function(){return 'comment';}

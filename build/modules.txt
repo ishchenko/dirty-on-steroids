@@ -1,4 +1,5 @@
 ignore.blogs.settings.js
+phage.js
 ignorator.js
 right.navigator.js
 tort.js
