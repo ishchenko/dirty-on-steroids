@@ -51,10 +51,10 @@ d3.addModule(
 				var headerInner = document.querySelector('div.b-comments_controls_new_nav');
 				if ( headerInner )
 				{
-					var oldskval = ( 100 / ( this.newUsers + this.oldUsers )) * this.oldUsers;
+					var oldskval = Number(( 100 / ( this.newUsers + this.oldUsers )) * this.oldUsers).toFixed(2);
 					var newSpan = document.createElement('div');
 					newSpan.setAttribute('style', 'padding: 0px 7px 0px 7px;');
-					newSpan.setAttribute('class', 'b-comments_controls_sort');				
+					newSpan.setAttribute('class', 'b-comments_controls_sort');
 					newSpan.appendChild(document.createTextNode('oldsk: ' + oldskval+' '));
 					headerInner.appendChild( newSpan );
 				}
