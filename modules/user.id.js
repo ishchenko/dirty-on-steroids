@@ -4,8 +4,11 @@ d3.addModule(
 		type: "Социализм",
 		name: 'Выделение новичков',
 		author: 'Aivean',
+		newUsers: 0,
+		oldUsers: 0,
 		config: {
 			active: {type: 'checkbox', value: 1},
+			oldskool: {type: 'checkbox', caption: 'Показывать олдскульность поста', value: 0},
 			style:{type:'radio', caption:'Стиль:', options:{"Звездочка":0, "ID целиком":1,"ID целиком через |":2}, value:0},
 			idThreshold: {type: 'text', caption: 'Выделять ID пользователя больше ', value: '37194'}
 			},
@@ -26,6 +29,11 @@ d3.addModule(
 		processElement:function(userId, footer) {
 			if (userId > this.idParsed) {
 				this.mark($j("a.c_user", footer), userId);
+				this.newUsers++;
+			}
+			else
+			{
+				this.oldUsers++;
 			}
 		},
 
@@ -35,5 +43,21 @@ d3.addModule(
 
 		onPost: function (post) {
 			this.processElement(post.userId, post.getFooter());
+		},
+
+		onCommentsUpdated: function ( comment ) {
+			if ( this.config.oldskool.value == 1)
+			{
+				var headerInner = document.querySelector('div.b-comments_controls_new_nav');
+				if ( headerInner )
+				{
+					var oldskval = ( 100 / ( this.newUsers + this.oldUsers )) * this.oldUsers;
+					var newSpan = document.createElement('div');
+					newSpan.setAttribute('style', 'padding: 0px 7px 0px 7px;');
+					newSpan.setAttribute('class', 'b-comments_controls_sort');				
+					newSpan.appendChild(document.createTextNode('oldsk: ' + oldskval+' '));
+					headerInner.appendChild( newSpan );
+				}
+			}
 		}
 	});
