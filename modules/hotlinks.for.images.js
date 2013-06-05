@@ -58,14 +58,30 @@ d3.addModule(
 				var imgPreview = document.createElement('img');
 				imgPreview.setAttribute('src', e.currentTarget.src );
 				var posy = data.y - (e.currentTarget.height / 2 );
-				if (posy < d3.window.getScroll().y) 
+
+				if ( navigator.userAgent.indexOf('Chrome') != -1 )
 				{
-					posy = d3.window.getScroll().y;
+					if ( posy < window.unsafeTop )
+					{
+						posy = window.unsafeTop;
+					}
+					var posx = data.x - (e.currentTarget.width /2 );
+					if ( posx < window.unsafeLeft)
+					{
+						posx = window.unsafeLeft;
+					}
 				}
-				var posx = data.x - (e.currentTarget.width /2 );
-				if (posx < d3.window.getScroll().x) 
+				else
 				{
-					posx = d3.window.getScroll().x;
+					if (posy < d3.window.getScroll().y) 
+					{
+						posy = d3.window.getScroll().y;
+					}
+					var posx = data.x - (e.currentTarget.width /2 );
+					if (posx < d3.window.getScroll().x) 
+					{
+						posx = d3.window.getScroll().x;
+					}
 				}
 				var imgId = 'imgsp3' + new Date().getTime();
 				imgPreview.setAttribute('id', imgId );
