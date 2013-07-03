@@ -101,7 +101,7 @@ d3.addContentModule(/(.*\.)?leprosorium.ru/i,
 		$j('.post').each(function () {
 			me.countPost(new Post($j(this)));
 		});
-		$j('.comment').each(function () {
+		$j('.tree').each(function () {
 			me.countComment(new Comment($j(this)));
 		});
 	},
