@@ -400,6 +400,10 @@ var d3=
 		this.addModule(d3.config);
 		
 		this.window.d3=this;
+		
+		this.service.getScroll = this.window.getScroll 
+					? function(){return d3.window.getScroll();}
+					: function(){return {x: window.scrollX, y: window.scrollY};};
 	},
 
 	/// Get original window and document objects

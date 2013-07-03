@@ -57,32 +57,10 @@ d3.addModule(
 				var data = e.data;
 				var imgPreview = document.createElement('img');
 				imgPreview.setAttribute('src', e.currentTarget.src );
-				var posy = data.y - (e.currentTarget.height / 2 );
 
-				if ( navigator.userAgent.indexOf('Chrome') != -1 )
-				{
-					if ( posy < window.unsafeTop )
-					{
-						posy = window.unsafeTop;
-					}
-					var posx = data.x - (e.currentTarget.width /2 );
-					if ( posx < window.unsafeLeft)
-					{
-						posx = window.unsafeLeft;
-					}
-				}
-				else
-				{
-					if (posy < d3.window.getScroll().y) 
-					{
-						posy = d3.window.getScroll().y;
-					}
-					var posx = data.x - (e.currentTarget.width /2 );
-					if (posx < d3.window.getScroll().x) 
-					{
-						posx = d3.window.getScroll().x;
-					}
-				}
+				var posy = Math.max(0, Math.min(data.y - Math.ceil(e.currentTarget.height/2), d3.service.getScroll().y));
+				var posx = Math.max(0, Math.min(data.x - Math.ceil(e.currentTarget.width /2), d3.service.getScroll().x));
+				
 				var imgId = 'imgsp3' + new Date().getTime();
 				imgPreview.setAttribute('id', imgId );
 				imgPreview.setAttribute('style', 'position: absolute; cursor: pointer; z-index: 2; zoom: 1; left:' + data.x + 'px ; top:' + data.y + 'px; width:' + 8 + 'px; height:' + 8 + 'px;');
