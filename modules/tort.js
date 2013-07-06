@@ -17,7 +17,7 @@ d3.addModule(
 
 		if (( d3.page.postComments ||  d3.page.inboxComments ) && document.location.href.indexOf('write') == -1 )
 		{
-			css += ' .b-ads { width: 0px; display: hidden;}';
+//			css += ' .b-ads { width: 0px; display: hidden;}';
 			if ( this.config.postInfoMove.value )
 			{
 				var postInfo = document.querySelector('div.dd');
