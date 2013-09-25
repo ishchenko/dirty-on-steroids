@@ -83,9 +83,11 @@ d3.addModule(
 		{			
 			var playerMainDiv = document.createElement('div');
 			var newIframeDiv = document.createElement('div');
-			newIframeDiv.setAttribute('style', 'width: 640px; height: 400px;' );
+			newIframeDiv.setAttribute('style', 'width: 640px; height: 400px;');
 			var newDivToolbar = document.createElement('div');
 			$j(newDivToolbar).css('width','640px');
+			$j(newDivToolbar).css('font-size','13px');
+			$j(newDivToolbar).css('font-face','verdana; tahoma;');
 			
 			var videoTargetId = 'vi' + (new Date()).getTime().toString();
 			thisObject.id = videoTargetId;
@@ -140,6 +142,11 @@ d3.addModule(
 			thisObject.setAttribute('bkpstyle', thisObject.getAttribute('style'));
 			thisObject.parentNode.setAttribute('bkpclass', thisObject.parentNode.getAttribute('class'));
 			thisObject.parentNode.setAttribute('class', 'dti');
+			var outliner = thisObject.parentNode.parentNode.querySelector('div.b-comment_outline');
+			if ( outliner )
+			{
+				outliner.setAttribute('style', 'display: none');
+			}
 			thisObject.setAttribute('style', 'display: none');
 			thisObject.setAttribute('bkpclass', thisObject.getAttribute('class'));
 		
