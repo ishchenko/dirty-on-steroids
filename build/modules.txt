@@ -34,3 +34,4 @@ user.id.js
 mark.as.read.js
 online.user.js
 comments.threshold.js
+ukrhide.js
