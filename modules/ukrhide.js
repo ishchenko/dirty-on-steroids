@@ -1,4 +1,4 @@
-// Hides posts with low rating
+// Hides posts with ukrainian language
 d3.addModule(
 	{
 		type: "Содержание",
