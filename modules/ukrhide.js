@@ -1,4 +1,4 @@
-// Hides posts with ukrainian language
+// Hides posts in Ukranian
 d3.addModule(
 	{
 		type: "Содержание",
