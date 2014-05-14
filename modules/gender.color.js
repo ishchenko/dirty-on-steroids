@@ -55,9 +55,13 @@ d3.addModule(
 		{
 			this.processElements(document.querySelectorAll('a.c_user'));
 			var headerInner = document.querySelector('div.b-comments_controls_new_nav');
+			if ( headerInner == null )
+			{
+				headerInner = document.querySelector('div.b-comments_controls');
+			}
 			if ( headerInner )
 			{
-				var newSpan = document.createElement('div');
+				var newSpan = document.createElement('span');
 				newSpan.setAttribute('style', 'padding: 0px 7px 0px 7px;');
 				newSpan.setAttribute('class', 'b-comments_controls_sort');
 				newSpan.appendChild(document.createTextNode('м: '+this.malesNames.length+' ('+this.malesCommentsCount+') / ж: '+this.femalesNames.length+' ('+this.femalesCommentsCount+')'));

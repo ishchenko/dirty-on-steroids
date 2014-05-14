@@ -4,7 +4,10 @@ d3.addModule(
 	type: "Содержание",
 	name: 'Просмотр видео по клику на ссылке',
 	author: 'crea7or',
-	config: {active:{type:'checkbox',value:1}},
+	config: {active:{type:'checkbox',value:true,caption:'Просмотр видео прямо на сайте',description:'Просмотр видео прямо на сайте, не переходя на youtube'}			
+			,bigwindow:{type:'checkbox',value:false,caption:'открывать в большом размере',description:'видео будет открываться в большом окне 1024px иначе 800px'}
+			,addimages:{type:'checkbox',value:false,caption:'добавлять превью видео к ссылкам',description:'добавлять автоматически картинку-превью ко всем ссылкам на видео без оной'}
+			},
 
 	onPost: function(post) {
 		this.setPlayer(post.container.get(0));
@@ -23,6 +26,11 @@ d3.addModule(
 		{
 			if (allLinksArray[i].href.match(/(youtube\.com|youtu\.be|vimeo\.com)/i))
 			{
+				if ( this.config.addimages.value )
+				{
+					this.addImage4VideoLinks(allLinksArray[i]);
+				}
+
 				$j(allLinksArray[i]).bind( 'click', function( event ) { me.clickOnVideoLink( event )});
 			}
 		}
@@ -83,9 +91,23 @@ d3.addModule(
 		{			
 			var playerMainDiv = document.createElement('div');
 			var newIframeDiv = document.createElement('div');
-			newIframeDiv.setAttribute('style', 'width: 640px; height: 400px;');
+			if ( this.config.bigwindow.value )
+			{
+				newIframeDiv.setAttribute('style', 'width: 1024x; height: 600px;');	
+			}
+			else
+			{
+				newIframeDiv.setAttribute('style', 'width: 860px; height: 500px;');	
+			}
 			var newDivToolbar = document.createElement('div');
-			$j(newDivToolbar).css('width','640px');
+			if ( this.config.bigwindow.value )
+			{
+				$j(newDivToolbar).css('width','1024px');
+			}
+			else
+			{
+				$j(newDivToolbar).css('width','860px');
+			}
 			$j(newDivToolbar).css('font-size','13px');
 			$j(newDivToolbar).css('font-face','verdana; tahoma;');
 			
@@ -107,8 +129,8 @@ d3.addModule(
 			newA.href = '#';
 			newA.appendChild( document.createTextNode('нормальный'));
 			$j(newA).bind('click', function (e) {
-				$j(newDivToolbar).css('width','640px');
-				e.target.parentNode.nextSibling.setAttribute('style', 'width: 640px; height: 400px;' );
+				$j(newDivToolbar).css('width','860px');
+				e.target.parentNode.nextSibling.setAttribute('style', 'width: 860px; height: 500px;' );
 			 	e.preventDefault(); return false; 
 			});
 			newDivToolbar.appendChild( newA );
@@ -118,8 +140,8 @@ d3.addModule(
 			newA.href = '#';
 			newA.appendChild( document.createTextNode('большой'));
 			$j(newA).bind('click', function (e) {
-				$j(newDivToolbar).css('width','860px');
-				e.target.parentNode.nextSibling.setAttribute('style', 'width: 860px; height: 500px;' );
+				$j(newDivToolbar).css('width','1024px');
+				e.target.parentNode.nextSibling.setAttribute('style', 'width: 1024px; height: 600px;' );
 			 	e.preventDefault(); return false; 
 			});
 			newDivToolbar.appendChild( newA );
@@ -153,5 +175,59 @@ d3.addModule(
 			e.preventDefault();
 			return false;
 		}
-	}
+	},
+
+	addImage4VideoLinks: function( linkObject )
+    {
+		videoId = '';
+		if (( linkObject.href.search(/youtube.com/i) > -1 ) && ( linkObject.href.search(/v=/i) > -1 ))
+        {
+            videoTime = 0;
+            videoId = linkObject.href.slice(  linkObject.href.search(/v=/i) + 2 );
+            if ( videoId.indexOf('&') > 1 )
+            {
+                videoId = videoId.slice( 0, videoId.indexOf('&'));
+            }
+            if ( videoId.indexOf('#') > -1 )
+            {
+                videoId = videoId.slice( 0, videoId.indexOf('#'));
+            }            
+        }
+        else if ( linkObject.href.search(/youtu.be/i) > -1 )
+        {
+            videoId = linkObject.href.slice( linkObject.href.search(/youtu.be/i) + 9 );
+        }
+        if ( videoId.length > 0 )
+        {
+            var insertPreview = true;
+            var imgs = linkObject.parentNode.getElementsByTagName('img');
+            if ( imgs )
+            {
+                for ( var cnt =0; cnt < imgs.length; cnt++)
+                {
+                    if ( imgs[cnt].src.indexOf( videoId ) > -1 )
+                    {
+                        insertPreview = false;
+                        break;
+                    }
+                }
+            }
+            if ( insertPreview )
+            {
+                if ( linkObject.innerHTML.indexOf('<img') > -1 )
+                {
+                    insertPreview = false;
+                }
+            }
+
+            if ( insertPreview )
+            {
+                newImg = document.createElement('img');
+                newImg.setAttribute('src', 'http://img.youtube.com/vi/' + videoId + '/0.jpg');
+                linkObject.appendChild( document.createElement('br'));
+                linkObject.appendChild( newImg );
+                linkObject.appendChild( document.createElement('br'));
+            }
+        }
+    }    	
 });

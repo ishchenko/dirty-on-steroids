@@ -2,7 +2,6 @@ ignore.blogs.settings.js
 phage.js
 ignorator.js
 right.navigator.js
-right.navigator.4l.js
 tort.js
 hidden.author.js
 colored.rating.js

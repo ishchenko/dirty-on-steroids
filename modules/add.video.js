@@ -55,22 +55,16 @@ d3.addModule(
 					+ '}';
 			head.appendChild( script1 );
 
-			
-			//broke new inbox creation, need rewrite
 			var commentBox = document.querySelector('a.b-textarea_editor_image');
 			if ( commentBox )
 			{
 				me.addVideoLink( commentBox );
 			}
-			
 
-			document.addEventListener("DOMNodeInserted", function(e){
-			    if ( e.target.nodeName == "A" && e.target.className.indexOf('b-textarea_editor_image') == 0 )
+			$j(document).on('DOMNodeInserted', function (e) {				
+			    if ( e.target.nodeName == "A" && e.target.className.indexOf("b-textarea_editor_image") > -1 )
 			    {
-			    	if ( e.target.parentNode.parentNode.parentNode.className.indexOf('b-comments_reply_block') == 0 )
-			    	{
-			    		me.addVideoLink( e.target );
-			    	}
+		    		me.addVideoLink( e.target );
 				}
 			});
 		}
@@ -82,6 +76,7 @@ d3.addModule(
 		var videoLink = document.createElement('a');
 		videoLink.href = '#';
 		videoLink.textContent = 'Video';
+		textareaEditorImage.parentNode.appendChild( document.createTextNode(' '));
 		textareaEditorImage.parentNode.appendChild( videoLink );
 			$j(videoLink).click( function(e)
 			{
