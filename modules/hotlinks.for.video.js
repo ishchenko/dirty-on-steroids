@@ -24,7 +24,7 @@ d3.addModule(
 		var allLinksArray = container.getElementsByTagName('a');
 		for (var i = 0; i < allLinksArray.length; i++)
 		{
-			if (allLinksArray[i].href.match(/(youtube\.com|youtu\.be|vimeo\.com)/i))
+			if (allLinksArray[i].href.match(/(youtube\.com|youtu\.be|vimeo\.com|coub\.com)/i))
 			{
 				if ( this.config.addimages.value )
 				{
@@ -85,6 +85,12 @@ d3.addModule(
 			{
 				videoId = '';
 			}
+		}
+
+		else if ( thisObject.href.search(/coub.com/i) > -1 )
+		{
+			videoId = thisObject.href.slice( thisObject.href.search(/view/i) + 5 );
+			videoId = 'http://coub.com/embed/' + videoId + '?muted=false&amp;autostart=true&originalSize=false&hideTopBar=false&noSiteButtons=false&startWithHD=true';
 		}
 
 		if ( videoId.length > 0 )
