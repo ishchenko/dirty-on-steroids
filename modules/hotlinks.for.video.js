@@ -94,77 +94,93 @@ d3.addModule(
 		}
 
 		if ( videoId.length > 0 )
-		{			
+		{
 			var playerMainDiv = document.createElement('div');
 			var newIframeDiv = document.createElement('div');
+			var playerWidth = '800px';
+			var playerHeight = '470px';
 			if ( this.config.bigwindow.value )
 			{
-				newIframeDiv.setAttribute('style', 'width: 1024x; height: 600px;');	
+				playerWidth = '1024px';
+				playerHeight = '600px';
 			}
-			else
-			{
-				newIframeDiv.setAttribute('style', 'width: 860px; height: 500px;');	
-			}
+
 			var newDivToolbar = document.createElement('div');
-			if ( this.config.bigwindow.value )
-			{
-				$j(newDivToolbar).css('width','1024px');
-			}
-			else
-			{
-				$j(newDivToolbar).css('width','860px');
-			}
+			$j(newDivToolbar).css('width','100%');
 			$j(newDivToolbar).css('font-size','13px');
-			$j(newDivToolbar).css('font-face','verdana; tahoma;');
+			$j(newDivToolbar).css('font-face','verdana,tahoma');
+			$j(newDivToolbar).css('margin','7px');
+
+			var topToolbar = document.createElement('div');
+			$j(topToolbar).css('width', playerWidth );
+			$j(topToolbar).css('font-size','13px');
+			$j(topToolbar).css('font-face','verdana,tahoma');
+			$j(topToolbar).css('margin','7px');
 			
 			var videoTargetId = 'vi' + (new Date()).getTime().toString();
 			thisObject.id = videoTargetId;
 
 			var iframeObj =  document.createElement('iframe');
-			iframeObj.width = '100%';
-			iframeObj.height = '100%';
+			$j(iframeObj).css('width',playerWidth);
+			$j(iframeObj).css('height',playerHeight);
 			iframeObj.frameBorder = '0';
 			iframeObj.class = 'inlineVideo';
 			iframeObj.src = videoId;
-	
-			newIframeDiv.appendChild( iframeObj );
 
-			newDivToolbar.appendChild( document.createTextNode(' размер видео: '));
-
+			// top toolbar
+			topToolbar.appendChild( document.createTextNode(' размер видео: '));
 			var newA = document.createElement('a');
 			newA.href = '#';
 			newA.appendChild( document.createTextNode('нормальный'));
 			$j(newA).bind('click', function (e) {
-				$j(newDivToolbar).css('width','860px');
-				e.target.parentNode.nextSibling.setAttribute('style', 'width: 860px; height: 500px;' );
+				$j(topToolbar).css('width','800px');
+				$j(iframeObj).css('width','800px');
+				$j(iframeObj).css('height','470px');				
 			 	e.preventDefault(); return false; 
 			});
-			newDivToolbar.appendChild( newA );
-			newDivToolbar.appendChild( document.createTextNode(' | ') );
+			topToolbar.appendChild( newA );
+			topToolbar.appendChild( document.createTextNode(' | ') );
 
 			newA = document.createElement('a');
-			newA.href = '#';
+			newA.href = '#';			
 			newA.appendChild( document.createTextNode('большой'));
 			$j(newA).bind('click', function (e) {
-				$j(newDivToolbar).css('width','1024px');
-				e.target.parentNode.nextSibling.setAttribute('style', 'width: 1024px; height: 600px;' );
+				$j(topToolbar).css('width','1024px');
+				$j(iframeObj).css('width','1024px');
+				$j(iframeObj).css('height','600px');				
 			 	e.preventDefault(); return false; 
 			});
-			newDivToolbar.appendChild( newA );
+			topToolbar.appendChild( newA );
 
+			var newA = document.createElement('a');
+			newA.href = '#';
+			$j(newA).css('float','right');
+			newA.setAttribute('orgObj', videoTargetId );
+			newA.appendChild( document.createTextNode('закрыть плеер'));
+			$j(newA).bind('click', function (e) { 
+				var orgObj = document.getElementById( e.target.getAttribute('orgObj')); 
+				orgObj.setAttribute('style', orgObj.getAttribute('bkpstyle')); 
+				orgObj.setAttribute('class', orgObj.getAttribute('bkpclass')); 
+				playerMainDiv.parentNode.removeChild( playerMainDiv );				
+				e.preventDefault(); return false;});
+			topToolbar.appendChild( newA );
 
 			newA = document.createElement('a');
-			$j(newA).css('float','right');
 			newA.href = '#';
 			newA.setAttribute('orgObj', videoTargetId );
 			newA.appendChild( document.createTextNode('закрыть плеер'));
-			$j(newA).bind('click', function (e) { var orgObj = document.getElementById( e.target.getAttribute('orgObj')); orgObj.setAttribute('style', orgObj.getAttribute('bkpstyle')); orgObj.setAttribute('class', orgObj.getAttribute('bkpclass')); orgObj.parentNode.removeChild( e.target.parentNode.parentNode ); orgObj.parentNode.setAttribute('class', orgObj.parentNode.getAttribute('bkpclass')); e.preventDefault(); return false;});
-			newDivToolbar.appendChild( newA );			
+			$j(newA).bind('click', function (e) { 
+				var orgObj = document.getElementById( e.target.getAttribute('orgObj')); 
+				orgObj.setAttribute('style', orgObj.getAttribute('bkpstyle')); 
+				orgObj.setAttribute('class', orgObj.getAttribute('bkpclass')); 
+				playerMainDiv.parentNode.removeChild( playerMainDiv );
+				e.preventDefault(); return false;});
+			newDivToolbar.appendChild( newA );
 
-			playerMainDiv.appendChild( newDivToolbar );
+			newIframeDiv.appendChild( topToolbar );
+			newIframeDiv.appendChild( iframeObj );
+			newIframeDiv.appendChild( newDivToolbar );
 			playerMainDiv.appendChild( newIframeDiv );
-
-
 			$j(playerMainDiv).insertAfter( thisObject );
 
 			thisObject.setAttribute('bkpstyle', thisObject.getAttribute('style'));
@@ -218,6 +234,13 @@ d3.addModule(
                     }
                 }
             }
+            if ( insertPreview )
+            {
+	            if ( linkObject.parentNode.nodeName == "H3")
+	            {
+	            	insertPreview = false;
+	            }
+        	}
             if ( insertPreview )
             {
                 if ( linkObject.innerHTML.indexOf('<img') > -1 )
