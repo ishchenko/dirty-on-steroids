@@ -9,7 +9,7 @@ d3.addModule(
 			active: {type: 'checkbox', value: 0},
 		},
 
-		//tnx to arkony for regexps (http://servicepack.d3.ru/comments/522252/)
+		//tnx to arkony for regexps (servicepack.d3.ru/comments/522252/)
 		rus: /[ыэъ]/i,
 		ukr: /[єіїґ'’]/i,
 

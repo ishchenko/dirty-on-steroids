@@ -23,7 +23,7 @@ d3.addModule(
 					{
 						newdiv.setAttribute('style', 'margin-top: 300px;');
 					}
-					var fixdomain = checkinsMarkup.replace(/\/user/g, "http://d3.ru/user");
+					var fixdomain = checkinsMarkup.replace(/\/user/g, location.protocol + '//d3.ru/user');
 					newdiv.innerHTML =  fixdomain;
 					divContentLeft.appendChild( newdiv );
 					var module = d3.getModule("Dirty tooltip");

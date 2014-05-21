@@ -8,6 +8,14 @@
 // @include         http://*.leprosorium.ru/*
 // @include         http://d3.ru/*
 // @include         http://*.d3.ru/*
+// @include         https://leprosorium.ru/*
+// @include         https://*.leprosorium.ru/*
+// @include         https://leprosorium.com/*
+// @include         https://*.leprosorium.com/*
+// @include         http://leprosorium.com/*
+// @include         http://*.leprosorium.com/*
+// @include         https://d3.ru/*
+// @include         https://*.d3.ru/*
 // @run-at          document-end
 // @all_frames      true
 // @version         @buildTime@

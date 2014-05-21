@@ -191,9 +191,9 @@ d3.addModule(
 				var val = radios[i].value;
 			}
 	  	}
-		tagpref = "<a href=\"http://www.youtube.com/watch?v="+me.youtube_id+"&t="+d3.window.seconds+"\">";
-		taginf = "<img src=\"http://img.youtube.com/vi/"+me.youtube_id+"/"+val+".jpg\">";
-		tagpost = "</a>";
+		tagpref = '<a href="' + location.protocol + '//www.youtube.com/watch?v='+me.youtube_id+'&t='+d3.window.seconds+'">';
+		taginf = '<img src="' + location.protocol + '//img.youtube.com/vi/'+me.youtube_id+'/'+val+'.jpg">';
+		tagpost = '</a>';
 
 		if(val == 4)
 		{
@@ -235,7 +235,7 @@ d3.addModule(
 
 				textAreas[0].value += '<a href="' + url + '"><img src="' + id_img + '"></a>';
 				
-	    		var url2l = "http://vimeo.com/api/v2/video/" + videoId + ".json?callback=vimeoProcessThumb";
+	    		var url2l = location.protocol + '//vimeo.com/api/v2/video/' + videoId + '.json?callback=vimeoProcessThumb';
 			    var script2 = document.createElement( 'script' );
 		    	script2.type = 'text/javascript';
 		    	script2.src = url2l;

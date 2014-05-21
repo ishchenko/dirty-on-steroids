@@ -70,16 +70,15 @@ d3.addModule(
 			.not('a[class*="b-controls_button"]')
 			.not(':has(img)')
 			.not('a[href=#]')
-//			.not('a[href*="' + window.location.hostname + '"]')
 			,
 			function (index, link) {
 				if (me.inWhiteList(link.hostname)) {
 					var faviconUrl;
 					if (link.hostname.indexOf('d3.ru', link.hostname.length - 'd3.ru'.length) !== -1) {
 						//yandex has no d3.ru icon yet
-						faviconUrl = 'http://www.google.com/s2/favicons?domain=' + link.hostname;
+						faviconUrl = location.protocol + '//www.google.com/s2/favicons?domain=' + link.hostname;
 					} else {
-						faviconUrl = 'http://favicon.yandex.net/favicon/' + link.hostname;
+						faviconUrl = location.protocol + '//favicon.yandex.net/favicon/' + link.hostname;
 					}
 					if (me.config.mouseover.value==1) {
 						$j(link).mouseover(function () {

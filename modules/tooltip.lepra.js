@@ -195,7 +195,7 @@ d3.addModule(
 
 				
 
-				var profile_link_opening = ' <a href="http://leprosorium.ru/users/';
+				var profile_link_opening = '<a href="' + location.protocol + '//leprosorium.ru/users/';
 				
 				dup_output = '<table cellspacing="0" cellpadding="0" border="0"><tr>'
 				 + '<td valign="top" style="padding-right:10px; min-width: 120px;"><div style="float:left;margin-bottom:5px">'+dup_name+'<br><span style="font-size:10px"><b>'+dup_country+'</b></span></div>'
@@ -209,7 +209,7 @@ d3.addModule(
 					dup_output += '<div style="text-align: center; margin-top:10px; width:150px; height: 150px;"><img src="'+dup_img_src+'" style="height: 100%;"></div>';
 				}
 
-				dup_output += '</td><td align="center" valign="top" style="padding-left:10px; border-left:1px #ccc solid; max-width: 200px;"><span style="color:#444">№'+dup_user_id+'</span><br>'+dup_parent.replace('<a href="/','<a href="http://leprosorium.ru/' ) +'<div style="margin-top:10px;font-size:10px"><b>Регистрация:</b><br>'+dup_date+'</div><div style="margin-top:5px; font-size: 130%;"><b>Карма: <span style="color:'+((dup_karma>=0)?'green':'red')+'">'+dup_karma+'</span></b></div></td></tr></table>';
+				dup_output += '</td><td align="center" valign="top" style="padding-left:10px; border-left:1px #ccc solid; max-width: 200px;"><span style="color:#444">№'+dup_user_id+'</span><br>'+dup_parent.replace('<a href="/','<a href="' + location.protocol + '//leprosorium.ru/' ) +'<div style="margin-top:10px;font-size:10px"><b>Регистрация:</b><br>'+dup_date+'</div><div style="margin-top:5px; font-size: 130%;"><b>Карма: <span style="color:'+((dup_karma>=0)?'green':'red')+'">'+dup_karma+'</span></b></div></td></tr></table>';
 
 				$j('#dup_current_id').val(obj.href);
 				//FIXME: get incoming votes				

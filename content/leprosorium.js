@@ -1,10 +1,10 @@
-// content interface module for *.leprosorium.ru
+// content interface module for *.leprosorium. ru|com
 
-d3.addContentModule(/(.*\.)?leprosorium.ru/i,
+d3.addContentModule(/(.*\.)?leprosorium./i,
 {
 	type: "Ядро",
 	author: 'crimaniak, crea7or',
-	name: 'Интерфейс к содержимому leprosorium.ru',
+	name: 'Интерфейс к содержимому сайта leprosorium',
 	variant: 'leprosorium.ru',
 	posts: [],
 	comments: [],

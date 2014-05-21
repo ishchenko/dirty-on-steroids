@@ -80,7 +80,7 @@ d3.addModule(
 				// do not change localstorage to d3.storage
 				localStorage.setItem('dirtySpmRecInbUsers', userNames.join());
 				localStorage.setItem('dirtySpmRecInbTime', new Date().getTime());
-				document.location.href = 'http://d3.ru/my/inbox/write/';
+				document.location.href = location.protocol + '//d3.ru/my/inbox/write/';
 			}
 		}
 		e.preventDefault();

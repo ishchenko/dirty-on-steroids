@@ -32,7 +32,7 @@ d3.addModule(
 	},
 	getDateString: function( d )
 	{
-	    var postsLink = "http://leprosorium.ru/archive/" + d.getFullYear();
+	    var postsLink = location.protocol + '//leprosorium.ru/archive/' + d.getFullYear();
 	    if ( d.getMonth() < 9 )
 	    {
 	        postsLink += "0";

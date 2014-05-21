@@ -67,19 +67,19 @@ d3.addModule(
 				}
 				videoId = videoId.slice( 0, videoId.indexOf('&'));
 			}
-			videoId = 'http://www.youtube.com/embed/' + videoId + '?autoplay=1&fs=1&start=' + videoTime;
+			videoId = location.protocol + '//www.youtube.com/embed/' + videoId + '?autoplay=1&hd=1&fs=1&start=' + videoTime;
 		}
 		else if ( thisObject.href.search(/youtu.be/i) > -1 )
 		{
 			videoId = thisObject.href.slice( thisObject.href.search(/youtu.be/i) + 9 );
-			videoId = 'http://www.youtube.com/embed/' + videoId + '?autoplay=1&fs=1';
+			videoId = location.protocol + '//www.youtube.com/embed/' + videoId + '?autoplay=1&hd=1&fs=1';
 		}
 		else if ( thisObject.href.search(/vimeo.com/i) > -1 )
 		{
 			videoId = thisObject.href.slice( thisObject.href.search(/vimeo.com/i) + 10 );
 			if (!isNaN(parseFloat(videoId)) && isFinite(videoId))
 			{
-				videoId = 'http://player.vimeo.com/video/' + videoId + '?autoplay=1';
+				videoId = location.protocol + '//player.vimeo.com/video/' + videoId + '?autoplay=1';
 			}
 			else
 			{
@@ -90,7 +90,7 @@ d3.addModule(
 		else if ( thisObject.href.search(/coub.com/i) > -1 )
 		{
 			videoId = thisObject.href.slice( thisObject.href.search(/view/i) + 5 );
-			videoId = 'http://coub.com/embed/' + videoId + '?muted=false&amp;autostart=true&originalSize=false&hideTopBar=false&noSiteButtons=false&startWithHD=true';
+			videoId = location.protocol + '//coub.com/embed/' + videoId + '?muted=false&amp;autostart=true&originalSize=false&hideTopBar=false&noSiteButtons=false&startWithHD=true';
 		}
 
 		if ( videoId.length > 0 )
@@ -124,6 +124,7 @@ d3.addModule(
 			$j(iframeObj).css('width',playerWidth);
 			$j(iframeObj).css('height',playerHeight);
 			iframeObj.frameBorder = '0';
+			iframeObj.setAttribute('allowfullscreen', '1');
 			iframeObj.class = 'inlineVideo';
 			iframeObj.src = videoId;
 
@@ -252,7 +253,7 @@ d3.addModule(
             if ( insertPreview )
             {
                 newImg = document.createElement('img');
-                newImg.setAttribute('src', 'http://img.youtube.com/vi/' + videoId + '/0.jpg');
+                newImg.setAttribute('src',  location.protocol + '//img.youtube.com/vi/' + videoId + '/0.jpg');
                 linkObject.appendChild( document.createElement('br'));
                 linkObject.appendChild( newImg );
                 linkObject.appendChild( document.createElement('br'));
