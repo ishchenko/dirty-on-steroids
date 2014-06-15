@@ -9,10 +9,10 @@ var Comment=function(container)
 	this.id=this.container.attr('id');
 	this.isNew=this.container.hasClass('new');
 	this.isMine=this.container.hasClass('mine');
-	this.userId=parseInt(/u(\d+)/.exec(this.container.attr('class'))[1],10);
-	this.indent=parseInt(/indent_(\d+)/.exec(this.container.attr('class'))[1],10);
+	this.userId=this.container.attr('data-user_id');
+	//this.indent=parseInt(/indent_(\d+)/.exec(this.container.attr('class'))[1],10); not safe and not used
 	this.userName=$j('.c_user',this.container).text();
-    this.parentId=$j('.c_parent',this.container).attr('replyto');
+    this.parentId=this.container.attr('data-parent_comment_id');
 };
 Comment.prototype=new Item
 ({

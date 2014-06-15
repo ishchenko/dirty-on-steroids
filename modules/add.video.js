@@ -14,18 +14,18 @@ d3.addModule(
 		{
 			var me = this;
 
-			var width = 720;
-			var height = 295;
+			var width = 750;
+			var height = 320;
 	
 			document.body.appendChild( d3.newDiv(
-			{innerHTML: '<div id="youtube_preview" style="display:none;position:fixed;top:'+((me.viewarea_size().y-height)/2)+'px;left:'+((me.viewarea_size().x-width)/2)+'px;width:'+width+'px;height:'+height+'px;z-index:2999"><table cellspacing="0" cellpadding="0" border="0" width="'+width+'" height="'+height+'"><tr><td width="20" height="35" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png)"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px 0"></td><td width="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right top"></td></tr><tr><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 -35px"></td><td style="background-color:#fff;font-size:10px;padding:0 10px 15px 0;line-height:16px" valign="top">'
-			+'<div id="youtube_preview_close" style="float: right; background: #999 url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-071559-e56ce92235e2c35c7531f9cb843ffa0d.png) no-repeat;width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div>'
+			{innerHTML: '<div id="youtube_preview" style="display:none;position:fixed;top:'+((me.viewarea_size().y-height)/2)+'px;left:'+((me.viewarea_size().x-width)/2)+'px;width:'+width+'px;height:'+height+'px;z-index:2999"><table cellspacing="0" cellpadding="0" border="1" width="'+width+'" height="'+height+'" style="background-color: #fff"><tr><td style="font-size:10px;padding:0 10px 15px 0;line-height:16px" align="center" valign="center">'
+			+'<div id="youtube_preview_close" style="float: right; background-color: #999; width:36px;height:20px;font-size:12px;line-height:20px;text-align:center;color:#fff;cursor:pointer"><b>x</b></div>'
 			+'<table><tr><td><div style="font-size:180%;color:#5880af; padding-bottom: 10px;">Youtube preview</div></td><td><div style="float: left";>Картинка в посте</div></td></tr>'
 			+'<tr><td><div id="youtube_embed" style="width: 340px; float:left;"></div></td>'
 			+'<td><div id="youtube_thumbs"></div></td></tr></table>'
 			+'<div id="youtube_time" style="width: 340px; float:left;">Перемотайте на нужное время. Позиция сейчас: 0 cек. Ссылка будет поставлена именно на эту секунду ролика.</div>'
-			+'<div id="youtube_yarrr" style="cursor: pointer; float: right;"><img src="http://g2.std3.ru/G/1/30/30/28284-b92398def834090bb8f0fd4af38c1cb0.gif"/></div>'
-			+'</td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right -35px"></td></tr><tr><td height="20" style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:0 bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-082056-66b834efdae258a95d3a6e1139ca6aa7.png);background-position:-20px bottom"></td><td style="background-image:url(http://pit.dirty.ru/dirty/1/2010/04/24/11119-061726-d653bb4135a280a228108b2990ef42de.png);background-position:right bottom"></td></tr></table></div>'
+			+'<div id="youtube_yarrr" style="cursor: pointer; float: right; background-image: url(data:image/gif;base64,R0lGODlhNgAUAMQAAPf39ePj4be3tcfHxYCAgHp6eD09PNbW1ZeXlSwsK6enpv7+/l1dXExMSouLiQICAfHx7/T08jAwLvLy8Pb29B4eHBERDyAgHuXl47+/vT8/PuXl5bKysO7u7IiIhujo5iH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4wLWMwNjAgNjEuMTM0Nzc3LCAyMDEwLzAyLzEyLTE3OjMyOjAwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6QjZGRkQ2MzZFMTE3MTFFMzk5NkQ4MDg2M0E3QTBGMkMiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6QjZGRkQ2MzdFMTE3MTFFMzk5NkQ4MDg2M0E3QTBGMkMiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpCNkZGRDYzNEUxMTcxMUUzOTk2RDgwODYzQTdBMEYyQyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpCNkZGRDYzNUUxMTcxMUUzOTk2RDgwODYzQTdBMEYyQyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAAAAAAALAAAAAA2ABQAAAX/4BKMZGmeaKqeixgAcCzPdG3f8ijifO/PAcLrRywChcZkMThUOnHMW+AQOwQoVthhwIUADplBxrsNewGNgRRpO0gaFIjFAWEMIl9JgWH4JvYaeYAwFmo2UTcHFRgKBRGKDBMAAQYCGw+TGpaYlAIBmAAGhjWINhAODQ0RFAgeFpIBmgd9sQIHgbW3MKJrTW0XChETDQwXCJMGDBIKyMrMsQwJzGijNKVtlREBqgga2pUCFyOaAhUj4OYAx708AhIOAQwFcQ8IAQkOHQjLCR4R+wre/VtWiB0OBxw4YBBwhwIHAR8ECAAAYQCHDAJWiUkIgMIAhlDYPBlpTSTJk5NMIKIcycTXSiUjCLhYQbOmTRIEZC7IybOnz59AgwoFuiAEADs=); width: 54px; height: 20px;"></div>'
+			+'</td></tr></table></div>'
 			}));
 	
 			$j('#youtube_preview_close').click( function(e) { me.close(); });
@@ -257,15 +257,15 @@ d3.addModule(
 		    	script3.textContent = inject;
 		    	document.body.appendChild( script3 );
 
-				$j('#youtube_embed').html('<object width="311" height="200" id="yobject"><param name="movie" value="http://www.youtube.com/v/'+id+'?enablejsapi=1&playerapiid=player"></param><param name="allowFullScreen" value="true"></param><param name="allowScriptAccess" value="always"></param><embed id="yembed" src="http://www.youtube.com/v/'+id+'?enablejsapi=1&playerapiid=player" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="311" height="200"></embed></object>');
+				$j('#youtube_embed').html('<object width="311" height="200" id="yobject"><param name="movie" value="'+location.protocol+'//www.youtube.com/v/'+id+'?enablejsapi=1&playerapiid=player"></param><param name="allowFullScreen" value="true"></param><param name="allowScriptAccess" value="always"></param><embed id="yembed" src="'+location.protocol+'//www.youtube.com/v/'+id+'?enablejsapi=1&playerapiid=player" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="311" height="200"></embed></object>');
 				temp = "<table><tr><td width=\"150\">";
-				temp += '<label><input type="radio" name="thumb" value="0" style="position:relative; top: -40px;" checked="checked"/><img src="http://img.youtube.com/vi/'+id+'/0.jpg" width="120" height="90"/></label>';
+				temp += '<label><input type="radio" name="thumb" value="0" style="position:relative; top: -40px;" checked="checked"/><img src="'+location.protocol+'//img.youtube.com/vi/'+id+'/0.jpg" width="120" height="90"/></label>';
 				temp += "</td><td width=\"150\">";
-				temp += '<label><input type="radio" name="thumb" value="1" style="position:relative; top: -40px;" /><img src="http://img.youtube.com/vi/'+id+'/1.jpg" width="120" height="90"/></label>';
+				temp += '<label><input type="radio" name="thumb" value="1" style="position:relative; top: -40px;" /><img src="'+location.protocol+'//img.youtube.com/vi/'+id+'/1.jpg" width="120" height="90"/></label>';
 				temp += "</td></tr><tr><td>";
-				temp +=  '<label><input type="radio" name="thumb" value="2" style="position:relative; top: -40px;" /><img src="http://img.youtube.com/vi/'+id+'/2.jpg" width="120" height="90"/></label>';
+				temp +=  '<label><input type="radio" name="thumb" value="2" style="position:relative; top: -40px;" /><img src="'+location.protocol+'//img.youtube.com/vi/'+id+'/2.jpg" width="120" height="90"/></label>';
 				temp +=  "</td><td>";
-				temp +=  '<label><input type="radio" name="thumb" value="3" style="position:relative; top: -40px;" /><img src="http://img.youtube.com/vi/'+id+'/3.jpg" width="120" height="90"/></label>';
+				temp +=  '<label><input type="radio" name="thumb" value="3" style="position:relative; top: -40px;" /><img src="'+location.protocol+'//img.youtube.com/vi/'+id+'/3.jpg" width="120" height="90"/></label>';
 				temp +=  '</td></tr><tr><td colspan="2"><label><input type="radio" name="thumb" value="4" />Без картинки</label></td></tr></table>';
 				$j('#youtube_thumbs').html( temp );
 
@@ -285,11 +285,23 @@ d3.addModule(
 			if ( videoId.indexOf('&') > 1 )
 			{
 				videoId = videoId.slice( 0, videoId.indexOf('&'));
+			}
+			if ( videoId.indexOf('#') > 1 )
+			{
+				videoId = videoId.slice( 0, videoId.indexOf('#'));
 			}			
 		}
 		else if ( url.search(/youtu.be/i) > -1 )
 		{
 			videoId = url.slice( url.search(/youtu.be/i) + 9 );
+			if ( videoId.indexOf('&') > 1 )
+			{
+				videoId = videoId.slice( 0, videoId.indexOf('&'));
+			}
+			if ( videoId.indexOf('#') > 1 )
+			{
+				videoId = videoId.slice( 0, videoId.indexOf('#'));
+			}			
 		}
 		else if ( url.search(/vimeo.com/i) > -1 )
 		{
