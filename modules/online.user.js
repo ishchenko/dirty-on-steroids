@@ -9,7 +9,7 @@ d3.addModule(
 
 	run: function()
 	{		
-		if( d3.user.name != null && d3.user.name.length > 0 )
+		if( d3.user.name != null && d3.user.name.length > 0 && document.location.href.indexOf('/comments/') == -1 )
 		{
 			var lastCheckinTimestamp = localStorage.getItem('lastCheckinTimestamp', 0 );
 			var drawStuff = function()
