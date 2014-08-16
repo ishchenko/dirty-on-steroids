@@ -35,3 +35,4 @@ online.user.js
 comments.threshold.js
 ukrhide.js
 archive.js
+comments.counter.lepra.js
