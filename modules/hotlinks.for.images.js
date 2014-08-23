@@ -90,16 +90,19 @@ d3.addModule(
 	{
 		var me = this;
 		$j("a", baseElement).each(function(){
-			var a = this;
+			var a = this;			
 			if(a.href.match(/\.(gif|png|jpg|jpeg)$/i))
 			{
-				if (a.href.match(/(img\.youtube\.com|vimeocdn\.com)/i) == null )
+				if ( a.hasAttribute('data-description') == false )
 				{
-						$j(a).attr('class', "spHotImgLink");
-						$j(a).click(
-							function(e){
-								me.clickOnImageLink(e);
-							});
+					if (a.href.match(/(img\.youtube\.com|vimeocdn\.com)/i) == null )
+					{
+							$j(a).attr('class', "spHotImgLink");
+							$j(a).click(
+								function(e){
+									me.clickOnImageLink(e);
+								});
+					}
 				}
 			}
 		});
