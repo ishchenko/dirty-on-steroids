@@ -30,7 +30,6 @@ d3.addModule(
 				{
 					this.addImage4VideoLinks(allLinksArray[i]);
 				}
-
 				$j(allLinksArray[i]).bind( 'click', function( event ) { me.clickOnVideoLink( event )});
 			}
 		}
@@ -95,6 +94,34 @@ d3.addModule(
 
 		if ( videoId.length > 0 )
 		{
+			divCi = thisObject.parentNode;
+			attrb = null;
+			do			
+			{
+				attrb = divCi.getAttribute("class");
+				if ( attrb != null )
+				{
+					if ( attrb.indexOf("c_i") > -1 )
+					{
+						divCi.setAttribute("class","c_i_bkp");
+						
+						divToDel = divCi.querySelector("div.b-c_o");
+						if ( divToDel )
+						{
+							divToDel.parentNode.removeChild( divToDel );
+						}
+
+						break;
+					}
+					if ( attrb.indexOf("comment") > -1 )
+					{
+						break;
+					}
+
+				}
+				divCi = divCi.parentNode;
+			}while( divCi );
+
 			var playerMainDiv = document.createElement('div');
 			var newIframeDiv = document.createElement('div');
 			var playerWidth = '800px';
@@ -162,7 +189,7 @@ d3.addModule(
 				var orgObj = document.getElementById( e.target.getAttribute('orgObj')); 
 				orgObj.setAttribute('style', orgObj.getAttribute('bkpstyle')); 
 				orgObj.setAttribute('class', orgObj.getAttribute('bkpclass')); 
-				playerMainDiv.parentNode.removeChild( playerMainDiv );				
+				playerMainDiv.parentNode.removeChild( playerMainDiv );
 				e.preventDefault(); return false;});
 			topToolbar.appendChild( newA );
 

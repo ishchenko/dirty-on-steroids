@@ -162,7 +162,17 @@ d3.addModule(
 		this.newPosition();
 
 		var content=item.container;
-		var inner = $j(".comment_inner", content);
+
+		var inner;
+		if ( d3.content.variant == "d3.ru")
+		{
+			inner = $j(".comment_inner", content);
+		}
+		else
+		{
+			inner = $j(".c_i", content);
+		}
+
 		if(inner!=null && inner.length > 0){ //is it a comment? if yes get a nested element for a better highlighting
 			content = inner;
 		}
