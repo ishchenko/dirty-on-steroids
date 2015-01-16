@@ -95,11 +95,14 @@ d3.addModule(
 		if ( videoId.length > 0 )
 		{
 			divCi = thisObject.parentNode;
-			attrb = null;
 			do			
 			{
+				if ( divCi == undefined || divCi == null || divCi.nodeName != "DIV")
+				{
+					break;
+				}
 				attrb = divCi.getAttribute("class");
-				if ( attrb != null )
+				if ( attrb != null && attrb != undefined )
 				{
 					if ( attrb.indexOf("c_i") > -1 )
 					{
@@ -110,14 +113,12 @@ d3.addModule(
 						{
 							divToDel.parentNode.removeChild( divToDel );
 						}
-
 						break;
 					}
 					if ( attrb.indexOf("comment") > -1 )
 					{
 						break;
 					}
-
 				}
 				divCi = divCi.parentNode;
 			}while( divCi );

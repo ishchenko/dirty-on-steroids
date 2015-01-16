@@ -1,6 +1,6 @@
 // content interface module for *.leprosorium. ru|com
 
-d3.addContentModule(/(.*\.)?leprosorium./i,
+d3.addContentModule(/(.*\.)?leprosorium.ru/i,
 {
 	type: "Ядро",
 	author: 'crimaniak, crea7or',

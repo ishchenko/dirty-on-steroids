@@ -2,13 +2,13 @@
 d3.addModule(
 	{
 		type: "Социализм",
-		name: 'Выделение новичков',
+		name: 'Выделение пользователей',
 		author: 'Aivean',
 		newUsers: 0,
 		oldUsers: 0,
-		variant: ['d3.ru'],
+		variant: ['d3.ru','leprosorium.ru'],
 		config: {
-			active: {type: 'checkbox', value: 1},
+			active: {type: 'checkbox', value: 0},
 			oldskool: {type: 'checkbox', caption: 'Показывать олдскульность поста', value: 0},
 			style:{type:'radio', caption:'Стиль:', options:{"Звездочка":0, "ID целиком":1,"ID целиком через |":2}, value:0},
 			idThreshold: {type: 'text', caption: 'Выделять ID пользователя больше ', value: '37194'}
