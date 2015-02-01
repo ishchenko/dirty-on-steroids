@@ -1,4 +1,3 @@
-ignore.blogs.settings.js
 phage.js
 ignorator.js
 right.navigator.js
@@ -11,13 +10,10 @@ no.rating.js
 fotki.js
 tooltip.js
 tooltip.lepra.js
-show.all.comments.js
 preview.for.comments.js
 preview.for.inboxes.js
-hotlinks.for.images.js
 favicons.js
 gender.color.js
-canonical.gertrudes.js
 hotlinks.for.video.js
 hide.inbox.users.js
 recreate.inbox.js
