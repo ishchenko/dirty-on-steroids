@@ -1,11 +1,21 @@
 //
 // ==UserScript==
-// @name            Dirty Modular SP
+// @name            Dirty/Lepra Modular SP
 // @author          crimaniak
 // @namespace       http://dirty.ru/
-// @description     Dirty Modular Service Pack. Core manage extensions settings and provide jQuery service.
+// @description     Dirty/Lepra Modular Service Pack. Core manage extensions settings and provide jQuery service.
+// @include         http://leprosorium.ru/*
+// @include         http://*.leprosorium.ru/*
 // @include         http://d3.ru/*
 // @include         http://*.d3.ru/*
+// @include         https://leprosorium.ru/*
+// @include         https://*.leprosorium.ru/*
+// @include         https://leprosorium.com/*
+// @include         https://*.leprosorium.com/*
+// @include         http://leprosorium.com/*
+// @include         http://*.leprosorium.com/*
+// @include         https://d3.ru/*
+// @include         https://*.d3.ru/*
 // @run-at          document-end
 // @all_frames      true
 // @version         @buildTime@

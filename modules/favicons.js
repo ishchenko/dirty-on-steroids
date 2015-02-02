@@ -7,8 +7,8 @@ d3.addModule(
 	config: {
 		active:{type:'checkbox', value:1},
 		mouseover:{type:'radio', caption:'Когда:', options:{"перманентно":0, "только при наведении":1}, value:0},
-		position:{type:'radio', caption:'Где:', options:{"слева от ссылки":0, "справа от ссылки":1}, value:1},
-		domainWhitelist:{type: 'text', caption:'Список доменов', value:'dirty.ru,d3.ru,d3search.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,lepra.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net,youtube.com'
+		position:{type:'radio', caption:'Где:', options:{"слева от ссылки":0, "справа от ссылки":1}, value:0},
+		domainWhitelist:{type: 'text', caption:'Список доменов', value:'d3.ru,livejournal.com,lenta.ru,flickr.com,google.com,google.ru,yandex.ru,yandex.net,rian.ru,wikipedia.org,wikimedia.org,futurico.ru,leprosorium.ru,facebook.com,twitter.com,gazeta.ru,vedomosti.ru,1tv.ru,fontanka.ru,kommersant.ru,vesti.ru,kp.ru,blogspot.com,narod.ru,vimeo.com,rbc.ru,korrespondent.net,youtube.com'
 		}
 	},
 	
@@ -70,16 +70,15 @@ d3.addModule(
 			.not('a[class*="b-controls_button"]')
 			.not(':has(img)')
 			.not('a[href=#]')
-//			.not('a[href*="' + window.location.hostname + '"]')
 			,
 			function (index, link) {
 				if (me.inWhiteList(link.hostname)) {
 					var faviconUrl;
 					if (link.hostname.indexOf('d3.ru', link.hostname.length - 'd3.ru'.length) !== -1) {
 						//yandex has no d3.ru icon yet
-						faviconUrl = 'http://www.google.com/s2/favicons?domain=' + link.hostname;
+						faviconUrl = location.protocol + '//www.google.com/s2/favicons?domain=' + link.hostname;
 					} else {
-						faviconUrl = 'http://favicon.yandex.net/favicon/' + link.hostname;
+						faviconUrl = location.protocol + '//favicon.yandex.net/favicon/' + link.hostname;
 					}
 					if (me.config.mouseover.value==1) {
 						$j(link).mouseover(function () {

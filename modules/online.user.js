@@ -9,13 +9,13 @@ d3.addModule(
 
 	run: function()
 	{		
-		if( d3.user.name != null && d3.user.name.length > 0 )
+		if(d3.user.name != null && d3.user.name.length > 0)
 		{
 			var lastCheckinTimestamp = localStorage.getItem('lastCheckinTimestamp', 0 );
 			var drawStuff = function()
 			{
 				var divContentLeft = document.querySelector("div.l-content_aside");
-				if ( divContentLeft )
+				if (divContentLeft && document.location.href.indexOf('/comments/') == -1)
 				{
 					var checkinsMarkup = localStorage.getItem('checkinsMarkup');
 					var newdiv = document.createElement('div');
@@ -23,7 +23,7 @@ d3.addModule(
 					{
 						newdiv.setAttribute('style', 'margin-top: 300px;');
 					}
-					var fixdomain = checkinsMarkup.replace(/\/user/g, "http://d3.ru/user");
+					var fixdomain = checkinsMarkup.replace(/\/user/g, location.protocol + '//d3.ru/user');
 					newdiv.innerHTML =  fixdomain;
 					divContentLeft.appendChild( newdiv );
 					var module = d3.getModule("Dirty tooltip");

@@ -6,9 +6,9 @@ d3.addModule(
         author: 'Stasik0',
 
 		//-- USAGE EXAMPLES: --
-		//this.send("http://wtf.d3.ru",  '{"service":"ping"}');
-		//this.send("http://wtf.d3.ru",  '{"service":"bodyHtml"}', function(re){window.alert(re);});
-		//this.send("http://wtf.d3.ru",  '{"service":"localStorage"}', function(re){window.alert(re);});
+		//this.send("wtf.d3.ru",  '{"service":"ping"}');
+		//this.send("wtf.d3.ru",  '{"service":"bodyHtml"}', function(re){window.alert(re);});
+		//this.send("wtf.d3.ru",  '{"service":"localStorage"}', function(re){window.alert(re);});
         
 /*	// always switched on
         config: {
@@ -60,7 +60,7 @@ d3.addModule(
 						window.alert("pong");
 					}
 				}, 
-				function(domain){return domain.endsWith('d3.ru');}
+				function(domain){return domain.endsWith( d3.content.variant );}
 			);
 			
 			//sending facility
@@ -100,7 +100,7 @@ d3.document.head.appendChild(script2run);
 			document.getElementById("xd_frame").src = src;
 		},
 
-		//slightly modified code from http://www.onlineaspect.com/2010/01/15/backwards-compatible-postmessage/ follows
+		//slightly modified code from www.onlineaspect.com/2010/01/15/backwards-compatible-postmessage/ follows
 		// everything is wrapped in the XD function to reduce namespace collisions
 		XD: function(){
 			var interval_id = null,
@@ -115,7 +115,7 @@ d3.document.head.appendChild(script2run);
 				        return;
 				    }
 				    target = target || parent;  // default to parent
-				    if (target_url.indexOf('http://d3.ru')!=0 && window['postMessage']) { //(for some reason d3.ru does not accept postMessages)
+				    if (target_url.indexOf( location.protocol + '//' + d3.content.variant )!=0 && window['postMessage']) { //(for some reason d3.ru does not accept postMessages)
 				        // the browser supports window.postMessage, so call it with a targetOrigin
 				        // set appropriately, based on the target_url parameter.
 				        target['postMessage'](message, target_url.replace( /([^:]+:\/\/[^\/]+).*/, '$1'));
@@ -126,7 +126,7 @@ d3.document.head.appendChild(script2run);
 				},
 				receiveMessage : function(callback, source_origin) {
 				    // browser supports window.postMessage (for some reason d3.ru does not accept postMessages)
-				    if (window['postMessage'] && document.location.host != 'd3.ru') {
+				    if (window['postMessage'] && document.location.host != d3.content.variant ) {
 				        // bind the callback to the actual event associated with window.postMessage
 				        if (callback) {
 				            attached_callback = function(e) {

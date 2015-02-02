@@ -4,6 +4,7 @@ d3.addModule(
 	type: "Стилизация",
 	name: 'Рестайлинг сайта от dirty tort',
 	author: 'crea7or',
+	variant: ['d3.ru'],
 	config: {
 		active:{type:'checkbox',value:1}
 		,postInfoMove:{type:'checkbox',caption:'Информация о посте внизу',value:1}

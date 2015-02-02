@@ -1,2 +1,2 @@
-call compile.bat release chrome
+call compile.bat release cross
 php build/buildChromeExtension.php %1
