@@ -8,7 +8,6 @@ replace.username.js
 kdpv.js
 no.rating.js
 fotki.js
-tooltip.js
 tooltip.lepra.js
 preview.for.comments.js
 preview.for.inboxes.js
