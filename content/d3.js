@@ -37,6 +37,7 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 
 		var me=this;
 
+		this.createLeftNavigator();
 		this.countItems();
 
 		//d3.window.d3=d3;
@@ -90,7 +91,6 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 			);
 		});
 
-		this.createLeftNavigator();
 	},
 
 	countItems: function()
@@ -147,19 +147,42 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	
 	addToHeaderNav: function(item)
 	{
-		$j('.b-header_nav').append(item);
+		console.log("Append to header");
+		if(	document.getElementsByClassName('b-header_nav').length)
+			$j(item).insertBefore('.b-header_nav');
+		else
+			$j(item).insertBefore('.l-header_big_login_controls');
+		//$j('.b-header_nav').append(item);
 	},
 	
 	addToLeftNav: function(item, after)
 	{
+		console.log("Append to left");
+
 		var nav = $j('#leftNavigator');
-		var list = $j('ul', nav);
-		if(after !== undefined)
+		if (nav.length) 
 		{
-			after = $j('li:contains("'+after+'")',list);
-			item.insertAfter(after);
-		} else
-			list.append(item);
+			var list = $j('ul', nav);
+			if (after !== undefined) 
+			{
+				after = $j('li:contains("' + after + '")', list);
+				item.insertAfter(after);
+			} else
+				list.append(item);
+		}else
+		{
+			$j(".l-content_aside").append(item);
+			$j(document).bind("DOMNodeInserted", function(event){
+				
+				var node = $j(event.target);
+				if(node.hasClass('l-content_aside'))
+				{
+					console.log(event);
+					node.append(item);
+				}
+			});
+			console.log($j(".l-content_aside"), item, document.getElementsByClassName('l-content_aside'));
+		}
 	},
 
 	addConfigLink: function(id, top)
@@ -184,7 +207,15 @@ d3.addContentModule(/(.*\.)?d3.ru/i,
 	
 	createLeftNavigator: function()
 	{
-		$j('div.l-content_aside').append('<div id="leftNavigator"><ul style="list-style-type: none; padding: 0px 0px 0px 5px; font-size: 0.85em;"></ul></div>');
+		var aside = $j('div.l-content_aside');
+		if(aside.length)
+			aside.append('<div id="leftNavigator"><ul style="list-style-type: none; padding: 0px 0px 0px 5px; font-size: 0.85em;"></ul></div>');
+		else
+		{
+			console.log("Error creating left navigator");
+			$j('body').append('<div id="leftNavigator" style="position:absolute;top:100px;left:20px;border: 2px red solid;z-index:5000"><ul style="list-style-type: none; padding: 0px 0px 0px 5px; font-size: 0.85em;"><li>NAVIGATOR</li></ul></div>');
+			console.log($j("body"));
+		}
 	}
 	
 });
