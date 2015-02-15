@@ -15,6 +15,7 @@ d3.addModule(
 	jsonLink: 'https://api.github.com/repos/crimaniak/dirty-on-steroids/contents/result/pack.version.json?callback=checkUpdate',
 	run: function(){
 		if(!this.config.checkUpdates.value) return;
+		if($j.browser.webkit) return;
 		var lastCheck = d3.storage.get(this.lastCheckName, {time: 0, result: ''});
 		var now = Date.now();
 		var me = this;
