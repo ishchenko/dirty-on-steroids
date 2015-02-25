@@ -21,10 +21,14 @@ d3.addModule(
 //			css += ' .b-ads { width: 0px; display: hidden;}';
 			if ( this.config.postInfoMove.value )
 			{
-				var postInfo = document.querySelector('div.dd');
-				var postParent = postInfo.parentNode;
-				postParent.removeChild( postInfo );
-				postParent.appendChild( postInfo );
+				var postInfo = document.querySelector('div.b-post_footer_about');
+				var postBody = document.querySelector('div.post_body');
+				if ( postInfo && postBody )
+				{
+					postInfo.parentNode.removeChild( postInfo );
+					postBody.parentNode.appendChild( postInfo );
+					postInfo.setAttribute('style','font-size: 10px !important;');
+				}
 			}
 		}
 
